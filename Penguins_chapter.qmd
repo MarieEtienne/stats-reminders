@@ -1,7 +1,9 @@
 ---
 title: "Exploration données sur les manchots"
 
+
 author: " Quentin FAYE" 
+
 
 bibliography: references.bib
 execute: 
