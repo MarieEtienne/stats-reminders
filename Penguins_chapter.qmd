@@ -1,0 +1,41 @@
+---
+
+title: "Exploration données sur les manchots"
+group: "CHOULETTE Klervi, DENIS Manon, DUPORT Maureen, MOTTE Arthur, POYARD Antoine, SESIA Marion, TANGUY Céline" 
+bibliography: references.bib
+execute: 
+  freeze: auto
+output: 
+  html_document:
+   toc: true
+   toc_float: true
+---
+
+Quelle est la différence entre un pingouin et un homme ? --> Un pingouin ne tue pas juste parce qu'il est frustré
+Pourquoi manchot se traduit penguin en anglais ?
+
+
+(O)>
+( )
+ W
+
+
+```{r}
+library(tidyverse)
+```
+les magnifiques pingouins :
+(O)>
+( )
+ W
+
+```{r}
+data <- read.table("penguins_raw.csv", sep = "," , header = TRUE)
+```
+
+
+
+
+A citation @bauer2023writing
+
+
+Il me semble qu'il faut repartir du 544b16e
