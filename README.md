@@ -15,10 +15,12 @@ It’s designed to help you practice **reproducible science skills**, including:
 
 ## Repository Structure
 
-Choose 3 main themes, for exemple Differential Equation, Factorial Analysis  and Linear model
+Choose 3 main themes, for exemple Around Differential Equation, Around Factorial Analysis  and Around Linear Models
 
-Each student choses a theme and devotes his work to produce a basic reminder on a subject within the theme 
+Each student choses a theme and devotes to produce a relvant example of how the specific method could be used to build ecological knowledge from a dataset.
 
-- Markdown files (`.md`) with **short stats reminders**  
-- with **plots, tables, or small example datasets**
+Quarto files (`.qmd`) which contains 
+- a **short stats/math reminders**  
+- data presenation with  **plots, tables, or small example datasets**
 - and references ussing markdown format
+- **explicit ecological results** obtained thanks to the method of interest
