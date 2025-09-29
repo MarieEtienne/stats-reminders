@@ -9,6 +9,8 @@ output:
    toc: true
    toc_float: true
 ---
+
+
 Quelle est la différence entre un pingouin et un homme ? --> Un pingouin ne tue pas juste parce qu'il est frustré
 Pourquoi manchot se traduit penguin en anglais ?
 Erwan représente 40% des commits de ce github (et Léo 20%) et Capucine (50%) 
@@ -17,7 +19,11 @@ Erwan représente 40% des commits de ce github (et Léo 20%) et Capucine (50%)
 (O)>
 ( )
  W
+
+et voila un joli conflit
+
 Il faudrait ajouter une intro
+
 
 
 ```{r}
