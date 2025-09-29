@@ -11,7 +11,7 @@ It’s designed to help you practice **reproducible science skills**, including:
 - Writing **Markdown** for clear, readable documentation  
 - Organizing simple **statistical/mathematical  explanations, formulas, and examples**  
 
-
+It will be used as sandbox during the lectures. Don't be scared by the messy git tree!
 
 ## Repository Structure
 
