@@ -1,5 +1,5 @@
 ---
-title: "Exploration données sur les manchots"
+title: "Exploration données sur les manchots Adelie Gintoo et Chinstrap"
 author: "Justine" 
 bibliography: references.bib
 execute: 
