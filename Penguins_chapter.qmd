@@ -11,7 +11,7 @@ output:
 ---
 Quelle est la différence entre un pingouin et un homme ? --> Un pingouin ne tue pas juste parce qu'il est frustré
 Pourquoi manchot se traduit penguin en anglais ?
-
+Erwan représente 40% des commits de ce github
 (O)>
 ( )
  W
