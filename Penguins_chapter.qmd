@@ -1,6 +1,10 @@
 ---
 title: "Exploration données sur les manchots"
+<<<<<<< HEAD
 author: "Lily" 
+=======
+author: "Margot" 
+>>>>>>> 0cb508431b01a78e062cfe0e4fcbe102b31f29db
 bibliography: references.bib
 execute: 
   freeze: auto
