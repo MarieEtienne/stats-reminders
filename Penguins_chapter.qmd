@@ -1,6 +1,6 @@
 ---
 title: "Exploration données sur les manchots Adelie Gintoo et Chinstrap"
-author: "Everybody in the class" 
+author: "It's me, Mario!" 
 bibliography: references.bib
 execute: 
   freeze: auto
@@ -9,6 +9,7 @@ output:
    toc: true
    toc_float: true
 ---
+Je veux rajouter des conflits par ici
 
 ```{r}
 library(tidyverse)
