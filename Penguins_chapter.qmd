@@ -11,6 +11,10 @@ output:
 ---
 Quelle est la différence entre un pingouin et un homme ? --> Un pingouin ne tue pas juste parce qu'il est frustré
 Pourquoi manchot se traduit Penguins en anglais ?
+
+(O)>
+( )
+ W
 ```{r}
 library(tidyverse)
 ```
