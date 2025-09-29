@@ -1,19 +1,6 @@
 ---
 title: "Exploration données sur les manchots"
-<<<<<<< HEAD
-author: "Everybody in the class ^^ :)" 
->>>>>>> 26158c29fd4909d2574bf9cb0903f320add8f2fa
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-author: "Alexia" 
-=======
-author: "Everybody in the class" 
->>>>>>> bfca44826aaf2a351221586debeb33c571af466f
-=======
 author: "It's me, Mario!" 
->>>>>>> 75f5363fb1f3f9f7a78ae16b93b3c79b1755f3ac
->>>>>>> fe3ac476390e603b150a38e31d62a27a7cd5fb9b
 bibliography: references.bib
 execute: 
   freeze: auto
@@ -40,6 +27,7 @@ alors... pourquoi english penguins = manchots en français et english razorbill 
 (O)>
 ( )
  W
+ 
  
 
 
