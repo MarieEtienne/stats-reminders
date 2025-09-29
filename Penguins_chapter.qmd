@@ -18,7 +18,7 @@ output:
    toc_float: true
 ---
 Je veux rajouter des conflits par ici
-Quelle est la dif entre un pingouin et un machot ?
+Quelle est la dif entre un pingouin et un macho ? Un pingouin ne tue pas juste parce qu'il est frustré
 ```{r}
 library(tidyverse)
 ```
