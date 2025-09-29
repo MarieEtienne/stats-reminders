@@ -10,7 +10,7 @@ It’s designed to help you practice **reproducible science skills**, including:
 - Writing **Markdown** for clear, readable documentation  
 - Organizing simple **statistical/mathematical  explanations, formulas, and examples**  
 
-It will also served as sandbox during the lectures. Therefore the git history might be a bit fuzy.
+It will also served as sandbox during the lectures. Therefore the git history might be a bit fuzzy.
 
 
 ## Repository Structure
