@@ -20,7 +20,10 @@ Erwan représente 40% des commits de ce github (et Léo 20%) et Capucine (50%)
 ```{r}
 library(tidyverse)
 ```
-
+les magnifiques pingouins :
+(O)>
+( )
+ W
 
 ```{r}
 data <- read.table("penguins_raw.csv", sep = "," , header = TRUE)
