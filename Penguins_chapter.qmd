@@ -1,11 +1,7 @@
 ---
 
 title: "Exploration données sur les manchots"
-<<<<<<< HEAD
-group: "CHOULETTE Klervi, DENIS Manon, DUPORT Maureen, MOTTE Arthur, POYARD Antoine, SESIA Marion, TANGUY Céline" 
-=======
-author: "All Contributors Are Beautiful" 
->>>>>>> ac2e798 (Fix qmd examples)
+author: "Mp Etienne" 
 bibliography: references.bib
 execute: 
   freeze: auto
@@ -17,9 +13,10 @@ output:
 
 
 
-(O)>
-( )
- W
+
+Pourquoi manchot se traduit Penguins en anglais ?
+
+
 
 (O)>
 ( )
@@ -49,13 +46,12 @@ data <- read.table("penguins_raw.csv", sep = "," , header = TRUE)
 
 
 
-
 A citation @bauer2023writing
 
 
-Il me semble qu'il faut repartir du 544b16e
 
 ### References
 
 ::: {#refs}
 :::
+
