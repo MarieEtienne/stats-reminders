@@ -29,7 +29,7 @@ library(tidyverse)
 data <- read.table("penguins_raw.csv", sep = "," , header = TRUE)
 ```
 
-alors...
+alors... pourquoi english penguins = manchots en français et english razorbill = pingouin en français ?
 
 
 
