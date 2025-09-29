@@ -16,7 +16,7 @@ output:
 ---
 Je veux rajouter des conflits par ici
 
-Quelle est la dif entre un pingouin et un macho ? Un pingouin ne tue pas juste parce qu'il est frustré
+Quelle est la dif entre un pingouin et un homme ? Un pingouin ne tue pas juste parce qu'il est frustré
 Pourquoi manchot se traduit Penguins en anglais ?
 ```{r}
 library(tidyverse)
