@@ -19,6 +19,7 @@ library(tidyverse)
 data <- read.table("penguins_raw.csv", sep = "," , header = TRUE)
 ```
 
+alors...
 
 
 
