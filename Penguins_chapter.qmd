@@ -1,11 +1,6 @@
 ---
-<<<<<<< HEAD
 title: "Exploration données sur les manchots"
 author: "OcéanePicot" 
-=======
-title: "Exploration données sur les manchots Adelie Gintoo et Chinstrap"
-author: "It's me, Mario!" 
->>>>>>> 875c8cf081b55f4b152ee22f66c190794e0c5329
 bibliography: references.bib
 execute: 
   freeze: auto
@@ -14,8 +9,6 @@ output:
    toc: true
    toc_float: true
 ---
-Je veux rajouter des conflits par ici
-
 Quelle est la dif entre un pingouin et un homme ? Un pingouin ne tue pas juste parce qu'il est frustré
 Pourquoi manchot se traduit Penguins en anglais ?
 ```{r}
