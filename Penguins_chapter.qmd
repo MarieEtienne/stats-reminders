@@ -1,6 +1,6 @@
 ---
 title: "Exploration données sur les manchots"
-author: "Everybody in the class ^^" 
+author: "Everybody in the class ^^ :)" 
 >>>>>>> 26158c29fd4909d2574bf9cb0903f320add8f2fa
 bibliography: references.bib
 execute: 
@@ -11,7 +11,7 @@ output:
    toc_float: true
 ---
 Je veux rajouter des conflits par ici
-
+Quelle est la dif entre un pingouin et un machot ?
 ```{r}
 library(tidyverse)
 ```
