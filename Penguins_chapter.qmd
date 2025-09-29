@@ -1,6 +1,14 @@
 ---
 title: "Exploration données sur les manchots"
+<<<<<<< HEAD
+<<<<<<< HEAD
+author: "Alexia" 
+=======
+author: "Everybody in the class" 
+>>>>>>> bfca44826aaf2a351221586debeb33c571af466f
+=======
 author: "It's me, Mario!" 
+>>>>>>> 75f5363fb1f3f9f7a78ae16b93b3c79b1755f3ac
 bibliography: references.bib
 execute: 
   freeze: auto
@@ -10,7 +18,7 @@ output:
    toc_float: true
 ---
 Je veux rajouter des conflits par ici
-
+Quelle est la dif entre un pingouin et un machot ?
 ```{r}
 library(tidyverse)
 ```
