@@ -12,6 +12,8 @@ output:
    toc_float: true
 ---
 
+This file should be dismissed !!
+
 This chapter is a simple example using R
 
 You can import R package using the code

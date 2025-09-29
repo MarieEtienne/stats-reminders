@@ -17,6 +17,9 @@ Erwan représente 40% des commits de ce github (et Léo 20%) et Capucine (50%)
 (O)>
 ( )
  W
+Il faudrait ajouter une intro
+
+
 ```{r}
 library(tidyverse)
 ```
