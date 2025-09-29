@@ -1,7 +1,7 @@
 ---
 title: "Exploration données sur les manchots"
 author: "All Contributors Are Beautiful" 
-bibliography: references.bib
+bibliography: sources_tinquiete.bib
 execute: 
   freeze: auto
 output: 
@@ -11,7 +11,8 @@ output:
 ---
 Quelle est la différence entre un pingouin et un homme ? --> Un pingouin ne tue pas juste parce qu'il est frustré
 Pourquoi manchot se traduit penguin en anglais ?
-Erwan représente 40% des commits de ce github
+Erwan représente 40% des commits de ce github (et Léo 20%)
+
 (O)>
 ( )
  W
