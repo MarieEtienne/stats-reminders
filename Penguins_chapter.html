@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Mp Etienne">
 
-<title>Exploration données sur les manchots</title>
+<title>penguins_chapter</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -156,7 +155,7 @@ div.csl-indent {
         <li class="dropdown-header">r-chapter.qmd</li>
         <li>
     <a class="dropdown-item" href="./Penguins_chapter.html">
- <span class="dropdown-text">Exploration données sur les manchots</span></a>
+ <span class="dropdown-text">toc_float: true</span></a>
   </li>  
     </ul>
   </li>
@@ -210,39 +209,17 @@ div.csl-indent {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Exploration données sur les manchots</h1>
-</div>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 
 
-<div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Mp Etienne </p>
-          </div>
-  </div>
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
+<hr>
+<p>title: “Exploration données sur les manchots” author: “Mp Etienne” bibliography: references.bib execute: freeze: auto output: html_document: toc: true toc_float: true —</p>
 <p>Pourquoi manchot se traduit Penguins en anglais ?</p>
 <p>(O)&gt; ( ) W</p>
 <p>(O)&gt; ( ) W</p>
 <p>(O)&gt; ( ) W</p>
-<p>et voila un joli conflit</p>
-<p>Il faudrait ajouter une intro</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -262,10 +239,7 @@ div.csl-indent {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"penguins_raw.csv"</span>, <span class="at">sep =</span> <span class="st">","</span> , <span class="at">header =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>alors… pourquoi english penguins = manchots en français et english razorbill = pingouin en français ?</p>
-<p>(O)&gt; ( ) W</p>
-<p>Quel est ton nudibranche pref?</p>
-<p>A citation <span class="citation" data-cites="bauer2023writing">(<a href="#ref-bauer2023writing" role="doc-biblioref"><strong>bauer2023writing?</strong></a>)</span></p>
+<p>A citation <span class="citation" data-cites="bauer2023writing">@bauer2023writing</span></p>
 <section id="references" class="level3">
 <h3 class="anchored" data-anchor-id="references">References</h3>
 <div id="refs" role="list">
