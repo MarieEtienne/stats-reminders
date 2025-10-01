@@ -1,0 +1,42 @@
+project:
+  type: website
+
+website:
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: https://github.com/MarieEtienne/stats-reminders
+        text: Stats Reminders
+      - text: "Two examples"
+        menu:
+        - r-chapter.qmd
+        - Penguins_chapter.qmd       
+        
+        
+
+    right:
+      - text: "Linear Model"
+        menu:
+        - lm1.qmd
+        - lm2.qmd 
+      - text: "Factorial Analysis"
+        menu:
+        - pca.qmd
+        - cca.qmd 
+      - text: "Differential Equation"
+        menu:
+        - ode.qmd
+        - pde.qmd 
+
+
+format:
+  html:
+    theme: flatly
+    linkcolor: "#c0392b"
+    fontcolor: "#057174"
+    css: mpe_pres_revealjs.css
+    toc: true
+
+
+    
