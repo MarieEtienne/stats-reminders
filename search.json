@@ -1,0 +1,44 @@
+[
+  {
+    "objectID": "r_chapter.html",
+    "href": "r_chapter.html",
+    "title": "Basic overview of Markdown potentials with R and Quarto",
+    "section": "",
+    "text": "This chapter is a simple example using R\nYou can import R package using the code\n\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.5\n✔ forcats   1.0.0     ✔ stringr   1.5.2\n✔ ggplot2   4.0.0     ✔ tibble    3.3.0\n✔ lubridate 1.9.4     ✔ tidyr     1.3.1\n✔ purrr     1.1.0     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\n\nand then describe the purpose of your chapter as well as executing R command.\nYou can also add images\n![Gentoo penguins](images/6123849122_b66af201ea_c.jpg}\nFor example a basic summary of a dataset is given by\n\ndf &lt;- read.table(\"https://gist.githubusercontent.com/slopp/ce3b90b9168f2f921784de84fa445651/raw/4ecf3041f0ed4913e7c230758733948bc561f434/penguins.csv\", sep = \",\" , header = TRUE)\n\nand produce a graph\n\ndf %&gt;% ggplot() +\n    aes(x=species, y = body_mass_g) +\n    geom_boxplot()  \n\nWarning: Removed 2 rows containing non-finite outside the scale range\n(`stat_boxplot()`).\n\n\n\n\n\n\n\n\n\nJust for curiosity, you could add an image of Gentoo penguins\nYou can also add images\n\n\n\n\n\n\nFigure 1: Gentoo penguins\n\n\n\nYou can refer to one image using cross-reference. For example, Figure Figure 1 is a photo of a gentoo penguin with chicks by Liam Quinn.\nYou can also add reference associated with models. For example, if you want to study how the body mass differ between species you should use a one way analysis of variance as described in Equation Equation 1\n\\[Y_{sk} = \\mu + \\alpha_s + E_{sk},\n\\tag{1}\\]\nwhere \\(s\\) standes for species and \\(k\\) denotes each individual.\nA useful citation about reproducible reserach Alston and Rick (2021)\n\n\n\n\nReferences\n\nAlston, Jesse M, and Jessica A Rick. 2021. “A Beginner’s Guide to Conducting Reproducible Research.” Bulletin of the Ecological Society of America 102 (2): 1–14."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Statistics to explore environmental questions",
+    "section": "",
+    "text": "This website is produced by the M2 MODE student uring year 2024-2025 as part of their assignment in the Online Collaborative Ressources course.\nAfter a short introduction regarding the principles and the tools of a reproducible science, they have been collaborating to produce a book wich presents an example based on environmental data for different statistical examples.\nTable of Contents"
+  },
+  {
+    "objectID": "Penguins_chapter.html",
+    "href": "Penguins_chapter.html",
+    "title": "Exploration données sur les manchots",
+    "section": "",
+    "text": "Quelle est la différence entre un pingouin et un homme ? –&gt; Un pingouin ne tue pas juste parce qu’il est frustré Pourquoi manchot se traduit penguin en anglais ? Erwan représente 40% des commits de ce github (et Léo 20%) et Capucine (50%) Ça fait 110%, on est pas des sauvages mais on est pas à l’aise en proba.\nCes manchots sont très jolis je vais en mettre plusieurs\n(O)&gt; ( ) W\n(O)&gt; ( ) W\n(O)&gt; ( ) W\n(O)&gt; ( ) W\net voila un joli conflit\nIl faudrait ajouter une intro\n\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.5\n✔ forcats   1.0.0     ✔ stringr   1.5.2\n✔ ggplot2   4.0.0     ✔ tibble    3.3.0\n✔ lubridate 1.9.4     ✔ tidyr     1.3.1\n✔ purrr     1.1.0     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\n\nles magnifiques pingouins : (O)&gt; ( ) W\n\ndata &lt;- read.table(\"penguins_raw.csv\", sep = \",\" , header = TRUE)\n\nalors… pourquoi english penguins = manchots en français et english razorbill = pingouin en français ?\n(O)&gt; ( ) W\nQuel est ton nudibranche pref?\nA citation (bauer2023writing?)\nIl me semble qu’il faut repartir du 544b16e\n\nReferences"
+  },
+  {
+    "objectID": "instructions.html",
+    "href": "instructions.html",
+    "title": "How to contribute",
+    "section": "",
+    "text": "Create a specific branch for your chapter named an_explicit_name_for_the_branch and switch on this branch\n\ngit checkout -b an_explicit_name_for_the_branch\nIn the development of the project, you might find necessary to have several branches per chapter.\n\nCreate a quarto file for the chapter chapter0.qmd in your branch\n\ngit add chapter0.qmd\ngit commit -m \"first commit in the chapter branch\"\n\nPush everything on the remote repo on Github\n\nFor the first push after the branch creation, you have to specify the name of the branch on the remote repo and you can use git  push --set-upstream origin an_explicit_name_for_the_branch or\nFor the push to come after the first one, you will simply push by\ngit  push\nOnce you are quite happy with your production, you will be willing to integrate your production on the main branch. A good practice is to ask the permission to push on the main branch, which is named a pull request (PR).\n\nAsk for a PR on Github\nIf needed, specify in the PR message the package you need and mention MarieEtienne as reviewer of the PR.\n\nA mock rendering of the qmd file will start when you request a PR using the Github Action mechanism (called runner on gitlab). If the action passes (green signal), you can go to the next step. If not, you will have to fix the issue (again you can ask assistance if you don’t understand the error).\n\nOnce the PR is checked, mention one of your colleage as reviewer."
+  },
+  {
+    "objectID": "instructions.html#one-chapter-corresponds-at-least-to-one-branch",
+    "href": "instructions.html#one-chapter-corresponds-at-least-to-one-branch",
+    "title": "How to contribute",
+    "section": "",
+    "text": "Create a specific branch for your chapter named an_explicit_name_for_the_branch and switch on this branch\n\ngit checkout -b an_explicit_name_for_the_branch\nIn the development of the project, you might find necessary to have several branches per chapter.\n\nCreate a quarto file for the chapter chapter0.qmd in your branch\n\ngit add chapter0.qmd\ngit commit -m \"first commit in the chapter branch\"\n\nPush everything on the remote repo on Github\n\nFor the first push after the branch creation, you have to specify the name of the branch on the remote repo and you can use git  push --set-upstream origin an_explicit_name_for_the_branch or\nFor the push to come after the first one, you will simply push by\ngit  push\nOnce you are quite happy with your production, you will be willing to integrate your production on the main branch. A good practice is to ask the permission to push on the main branch, which is named a pull request (PR).\n\nAsk for a PR on Github\nIf needed, specify in the PR message the package you need and mention MarieEtienne as reviewer of the PR.\n\nA mock rendering of the qmd file will start when you request a PR using the Github Action mechanism (called runner on gitlab). If the action passes (green signal), you can go to the next step. If not, you will have to fix the issue (again you can ask assistance if you don’t understand the error).\n\nOnce the PR is checked, mention one of your colleage as reviewer."
+  },
+  {
+    "objectID": "instructions.html#as-a-reviewer",
+    "href": "instructions.html#as-a-reviewer",
+    "title": "How to contribute",
+    "section": "As a reviewer",
+    "text": "As a reviewer\nYour role is essential as you are responsible for the quality of the submission you were assigned to. Read carefully the production and ask for correction/clarification if needed. One you are happy with the correction you can accept the PR."
+  }
+]
