@@ -20,4 +20,4 @@ They were asked to produce collaboratively different illustrations on ecological
 
 Just click on one of the three menus on top right side of this page to visit their work. They have used up to data version control workflows to produce this website using git Github, Pull Request, Code review. A set of good practices to help them producible research in the futur.
 
-The website is fully generated using Continuous Integration based on Github Action. 
+The website is fully generated using Continuous Integration (CI) based on Github Action. 
