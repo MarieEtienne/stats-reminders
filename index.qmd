@@ -14,17 +14,10 @@ library(tidyverse)
 
 
 
-This website is produced by the M2 MODE student uring year 2024-2025 as part of their assignment in the Online Collaborative Ressources course.
+This website is produced by the M2 MODE student during year 2025-2026 as part of their assignment in the Online Collaborative Resources course.
 
-After a short introduction regarding the principles and the tools of a reproducible science, they have been collaborating to produce a book wich presents an example based on environmental data for different statistical examples.
+They were asked to produce collaboratively different illustrations on ecological data for different statistical and mathematical models.
 
-Table of Contents 
+Just click on one of the three menus on top right side of this page to visit their work. They have used up to data version control workflows to produce this website using git Github, Pull Request, Code review. A set of good practices to help them producible research in the futur.
 
-<!-- * [Multivariate analysis](AMV_chapter.html) -->
-<!-- * [Linear modelling in ecology](linear_modelling.html) -->
-<!-- * [Mixed models in Ecology](Mixed_models.html) -->
-<!-- * [Dependent Data](chapter_dependance.html) -->
-<!-- * [Matrix models and applications in ecology](Matrix.html) -->
-<!-- * [Ordinary Differential Equations and their application in Ecology](Chap_ODE.html) -->
-<!-- * [Resampling methods](r_chapter_boostrapping_resampling.html) -->
-<!-- * [Bayesian models](bayesian_modeles.html) -->
+The website is fully generated using Continuous Integration based on Github Action. 
