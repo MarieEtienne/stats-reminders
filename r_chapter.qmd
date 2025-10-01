@@ -1,8 +1,6 @@
 ---
-
-title: "Exploration données sur les manchots"
-group: "CHOULETTE Klervi, DENIS Manon, DUPORT Maureen, MOTTE Arthur, POYARD Antoine, Sésia Marion, TANGUY Céline" 
-
+title: "Basic overview of Markdown potentials with R and Quarto"
+group: "Marie-Pierre Etienne" 
 bibliography: references.bib
 execute: 
   freeze: auto
@@ -11,6 +9,7 @@ output:
    toc: true
    toc_float: true
 ---
+
 
 This chapter is a simple example using R
 
