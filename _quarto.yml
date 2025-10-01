@@ -6,8 +6,9 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - href: https://github.com/MarieEtienne/stats-reminders
-        text: Stats Reminders
+      - icon: github
+        href: https://github.com/MarieEtienne/stats-reminders
+        aria-label: GitHub
       - text: "Two examples"
         menu:
         - r-chapter.qmd
