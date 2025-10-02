@@ -23,22 +23,71 @@
   {
     "objectID": "instructions.html",
     "href": "instructions.html",
-    "title": "How to contribute",
+    "title": "Stats Reminder Project - Instructions",
     "section": "",
-    "text": "Create a specific branch for your chapter named an_explicit_name_for_the_branch and switch on this branch\n\ngit checkout -b an_explicit_name_for_the_branch\nIn the development of the project, you might find necessary to have several branches per chapter.\n\nCreate a quarto file for the chapter chapter0.qmd in your branch\n\ngit add chapter0.qmd\ngit commit -m \"first commit in the chapter branch\"\n\nPush everything on the remote repo on Github\n\nFor the first push after the branch creation, you have to specify the name of the branch on the remote repo and you can use git  push --set-upstream origin an_explicit_name_for_the_branch or\nFor the push to come after the first one, you will simply push by\ngit  push\nOnce you are quite happy with your production, you will be willing to integrate your production on the main branch. A good practice is to ask the permission to push on the main branch, which is named a pull request (PR).\n\nAsk for a PR on Github\nIf needed, specify in the PR message the package you need and mention MarieEtienne as reviewer of the PR.\n\nA mock rendering of the qmd file will start when you request a PR using the Github Action mechanism (called runner on gitlab). If the action passes (green signal), you can go to the next step. If not, you will have to fix the issue (again you can ask assistance if you don’t understand the error).\n\nOnce the PR is checked, mention one of your colleage as reviewer."
+    "text": "Team project for groups of 3 students. Create examples demonstrating statistical/mathematical methods applied to ecological questions.\nRepository: https://github.com/MarieEtienne/stats-reminder\n\n\n\n\n\n\nDeliverables\n\n\n\nEach team creates 1 example among one of the major theme:\n\nLinear models\nDifferential equations\n\nMultivariate analysis\n\nEach student should devote time to the review process ass well\nThe repository will close on December 1st at 1PM and only the work merged on master will be reviewed and evaluated.\nFinal mark for this assignment will consider\n\nMastering git workflow (commit, pull push , handling conflict, Pull Request, optimmaly rebase to have a clean history)\nTaking part of the reviewing process to increase global quality of the project\n\nDuring the last lab on git, November 5th, students will have a test to evaluate the overall understanding of git process\nThe final grad will be based on both evaluation"
   },
   {
-    "objectID": "instructions.html#one-chapter-corresponds-at-least-to-one-branch",
-    "href": "instructions.html#one-chapter-corresponds-at-least-to-one-branch",
-    "title": "How to contribute",
+    "objectID": "instructions.html#sec-overview",
+    "href": "instructions.html#sec-overview",
+    "title": "Stats Reminder Project - Instructions",
     "section": "",
-    "text": "Create a specific branch for your chapter named an_explicit_name_for_the_branch and switch on this branch\n\ngit checkout -b an_explicit_name_for_the_branch\nIn the development of the project, you might find necessary to have several branches per chapter.\n\nCreate a quarto file for the chapter chapter0.qmd in your branch\n\ngit add chapter0.qmd\ngit commit -m \"first commit in the chapter branch\"\n\nPush everything on the remote repo on Github\n\nFor the first push after the branch creation, you have to specify the name of the branch on the remote repo and you can use git  push --set-upstream origin an_explicit_name_for_the_branch or\nFor the push to come after the first one, you will simply push by\ngit  push\nOnce you are quite happy with your production, you will be willing to integrate your production on the main branch. A good practice is to ask the permission to push on the main branch, which is named a pull request (PR).\n\nAsk for a PR on Github\nIf needed, specify in the PR message the package you need and mention MarieEtienne as reviewer of the PR.\n\nA mock rendering of the qmd file will start when you request a PR using the Github Action mechanism (called runner on gitlab). If the action passes (green signal), you can go to the next step. If not, you will have to fix the issue (again you can ask assistance if you don’t understand the error).\n\nOnce the PR is checked, mention one of your colleage as reviewer."
+    "text": "Team project for groups of 3 students. Create examples demonstrating statistical/mathematical methods applied to ecological questions.\nRepository: https://github.com/MarieEtienne/stats-reminder\n\n\n\n\n\n\nDeliverables\n\n\n\nEach team creates 1 example among one of the major theme:\n\nLinear models\nDifferential equations\n\nMultivariate analysis\n\nEach student should devote time to the review process ass well\nThe repository will close on December 1st at 1PM and only the work merged on master will be reviewed and evaluated.\nFinal mark for this assignment will consider\n\nMastering git workflow (commit, pull push , handling conflict, Pull Request, optimmaly rebase to have a clean history)\nTaking part of the reviewing process to increase global quality of the project\n\nDuring the last lab on git, November 5th, students will have a test to evaluate the overall understanding of git process\nThe final grad will be based on both evaluation"
   },
   {
-    "objectID": "instructions.html#as-a-reviewer",
-    "href": "instructions.html#as-a-reviewer",
-    "title": "How to contribute",
-    "section": "As a reviewer",
-    "text": "As a reviewer\nYour role is essential as you are responsible for the quality of the submission you were assigned to. Read carefully the production and ask for correction/clarification if needed. One you are happy with the correction you can accept the PR."
+    "objectID": "instructions.html#sec-requirements",
+    "href": "instructions.html#sec-requirements",
+    "title": "Stats Reminder Project - Instructions",
+    "section": "2 Project requirements",
+    "text": "2 Project requirements\n\n2.1 Content\nEach .qmd example must include:\n\nClear ecological question with real/realistic data\nProper cross-references: sections (@sec-methods), figures (@fig-plot), tables (@tbl-results) or equations (@eq-model)\nCitations and bibliography\nWell-documented code and results\n\n\n\n2.2 Git Workflow\n\nOne branch per example: team-[names]-[method]-[description]\nUpdate _quarto.yml to include your examples in the website structure (see Section 3.3)\nOptimally Rebase before PR to ensure linear history (see Section 3.4)\nPR requirements (see Section 4.2):\n\n✅ No merge conflicts\n✅ Automated checks pass\n✅ One peer review\n✅ At least one discussion thread"
+  },
+  {
+    "objectID": "instructions.html#sec-workflow",
+    "href": "instructions.html#sec-workflow",
+    "title": "Stats Reminder Project - Instructions",
+    "section": "3 Git Workflow",
+    "text": "3 Git Workflow\n\n3.1 Setup\n# Clone repository\ngit clone https://github.com/MarieEtienne/stats-reminder.git\ncd stats-reminder\n\n# Create team branch\ngit switch -b teamA\ngit push origin teamA\n\n\n3.2 Create one branch per task\n# From your team branch, create example branches\ngit switch teamA\ngit switch -b teamA-intro\n\n# Work on your .qmd file\ngit add linear_model_teamA.qmd\ngit commit -m \"Add linear model example\"\n....\ngit fetch origin teamA\ngit rebase teamA \n\n# If conflicts: resolve, then\ngit add &lt;resolved-files&gt;\ngit rebase --continue\n\n# switch to team branch and update the branch with this neaw linear history\ngit switch teamA\ngit merge teamA-intro\n\n\n3.3 Updating _quarto.yml\nAdd your examples to the website structure:\nwebsite:\n  navbar:\n    left:\n      - text: \"Team Examples\"\n        menu:\n          - text: \"Team Smith\"\n            menu:\n              - text: \"Plant Growth (Linear)\"\n                href: linear_model_teamA.qmd\n              - text: \"Predator-Prey (Diff Eq)\"\n                href: team-smith-diffeq-predator.qmd\n\n\n\n3.4 Update Before PR\n\n\n\n\n\n\nWarning\n\n\n\nAlways rebase on master before creating PR to ensure clean linear history and avoid conflicts.\n\n\ngit switch teamA\ngit switch -c teamA_PR #create a new branch to avoid destruction\n\n# Fetch and rebase\ngit fetch origin master\ngit rebase origin/master\n\n# If conflicts: resolve, then\ngit add &lt;resolved-files&gt;\ngit rebase --continue\n\n# push teamA_PR and ask for PR in github, there should be no conflict\ngit push origin teamA_PR"
+  },
+  {
+    "objectID": "instructions.html#sec-pull-requests",
+    "href": "instructions.html#sec-pull-requests",
+    "title": "Stats Reminder Project - Instructions",
+    "section": "4 Pull Requests",
+    "text": "4 Pull Requests\n\n4.1 Creating a PR\n\nGo to repository → Pull requests → New pull request\nBase: master, Compare: teamA_PR\nWrite clear description (method, question, team)\n\n\n\n4.2 PR Requirements\nAll must be met before merge:\n\n✅ No conflicts (rebase if needed, see Section 3.4)\n✅ Automated checks pass (builds website successfully)\n✅ One review from peer/instructor\n✅ One discussion thread (respond to reviewer comments)\n\nAfter merge, the website automatically deploys to GitHub Pages.\nBe careful that, history in teamA and teamA_PR differ, and teamA_PR is the one to be merged. So if you want to add more contents to your project, remove local and remote teamA branch (and teamA_PR once merge into master) and starts a new branch from the current master branch"
+  },
+  {
+    "objectID": "instructions.html#sec-markdown",
+    "href": "instructions.html#sec-markdown",
+    "title": "Stats Reminder Project - Instructions",
+    "section": "5 Cross-References & Citations",
+    "text": "5 Cross-References & Citations\n\n5.1 Cross-References\n## Methods {#sec-methods}\n\nThe model (@eq-linear) uses data shown in @fig-scatter and @tbl-summary.\n\n$$ y = \\beta_0 + \\beta_1 x $$ {#eq-linear}\n\n```{r}\n#| label: fig-scatter\n#| fig-cap: \"Relationship between variables\"\nplot(x, y)\n```\n\nAs described in @sec-methods...\n\n\n5.2 Citations\nCreate references.bib:\n@article{smith2020,\n  author = {Smith, J.},\n  title = {Statistical Methods},\n  journal = {Ecology},\n  year = {2020}\n}\nIn your YAML:\nbibliography: references.bib\nIn text:\nAccording to @smith2020, the method..."
+  },
+  {
+    "objectID": "instructions.html#sec-rules",
+    "href": "instructions.html#sec-rules",
+    "title": "Stats Reminder Project - Instructions",
+    "section": "6 Important Rules",
+    "text": "6 Important Rules\n\n\n\n\n\n\nImportant\n\n\n\n\nMaster is protected - you cannot push directly\nUse rebase not merge (see Section 3.4) as much as possible, that is the good practice\nPass all checks before requesting merge"
+  },
+  {
+    "objectID": "instructions.html#sec-troubleshooting",
+    "href": "instructions.html#sec-troubleshooting",
+    "title": "Stats Reminder Project - Instructions",
+    "section": "7 Common Issues",
+    "text": "7 Common Issues\nBuild failing: Check logs for syntax errors in .qmd, missing packages, broken cross-references, or invalid _quarto.yml.\nCan’t push to master: Expected! Create a branch instead (see Section 3.2)."
+  },
+  {
+    "objectID": "instructions.html#sec-checklist",
+    "href": "instructions.html#sec-checklist",
+    "title": "Stats Reminder Project - Instructions",
+    "section": "8 Checklist",
+    "text": "8 Checklist\nBefore submitting PR:\n\n_quarto.yml updated\nCross-references used throughout\nCitations included\nNo conflicts\nRebased on master\nPR created with clear description\nChecks passing\nReview requested"
+  },
+  {
+    "objectID": "instructions.html#sec-resources",
+    "href": "instructions.html#sec-resources",
+    "title": "Stats Reminder Project - Instructions",
+    "section": "9 Resources",
+    "text": "9 Resources\n\nQuarto Cross-References\nGit Rebase Tutorial\nCreating Pull Requests\n\nQuestions? Check GitHub Issues or contact the instructor. Good luck! 🚀"
   }
 ]

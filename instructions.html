@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Marie-Pierre Etienne">
+<meta name="author" content="MP Etienne">
 
-<title>How to contribute</title>
+<title>Stats Reminder Project - Instructions</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -40,7 +75,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-638d8182227a61cdddae47a21d1b4d26.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-76f1434e0410b66b3936567ce5ec3593.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -157,9 +192,16 @@ ul.task-list li input[type="checkbox"] {
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
-  <ul>
-  <li><a href="#one-chapter-corresponds-at-least-to-one-branch" id="toc-one-chapter-corresponds-at-least-to-one-branch" class="nav-link active" data-scroll-target="#one-chapter-corresponds-at-least-to-one-branch">One chapter corresponds at least to one branch</a></li>
-  <li><a href="#as-a-reviewer" id="toc-as-a-reviewer" class="nav-link" data-scroll-target="#as-a-reviewer">As a reviewer</a></li>
+  <ul class="collapse">
+  <li><a href="#sec-overview" id="toc-sec-overview" class="nav-link active" data-scroll-target="#sec-overview"><span class="header-section-number">1</span> Project Overview</a></li>
+  <li><a href="#sec-requirements" id="toc-sec-requirements" class="nav-link" data-scroll-target="#sec-requirements"><span class="header-section-number">2</span> Project requirements</a></li>
+  <li><a href="#sec-workflow" id="toc-sec-workflow" class="nav-link" data-scroll-target="#sec-workflow"><span class="header-section-number">3</span> Git Workflow</a></li>
+  <li><a href="#sec-pull-requests" id="toc-sec-pull-requests" class="nav-link" data-scroll-target="#sec-pull-requests"><span class="header-section-number">4</span> Pull Requests</a></li>
+  <li><a href="#sec-markdown" id="toc-sec-markdown" class="nav-link" data-scroll-target="#sec-markdown"><span class="header-section-number">5</span> Cross-References &amp; Citations</a></li>
+  <li><a href="#sec-rules" id="toc-sec-rules" class="nav-link" data-scroll-target="#sec-rules"><span class="header-section-number">6</span> Important Rules</a></li>
+  <li><a href="#sec-troubleshooting" id="toc-sec-troubleshooting" class="nav-link" data-scroll-target="#sec-troubleshooting"><span class="header-section-number">7</span> Common Issues</a></li>
+  <li><a href="#sec-checklist" id="toc-sec-checklist" class="nav-link" data-scroll-target="#sec-checklist"><span class="header-section-number">8</span> Checklist</a></li>
+  <li><a href="#sec-resources" id="toc-sec-resources" class="nav-link" data-scroll-target="#sec-resources"><span class="header-section-number">9</span> Resources</a></li>
   </ul>
 </nav>
     </div>
@@ -168,7 +210,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">How to contribute</h1>
+<h1 class="title">Stats Reminder Project - Instructions</h1>
 </div>
 
 
@@ -178,7 +220,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Marie-Pierre Etienne </p>
+             <p>MP Etienne </p>
           </div>
   </div>
     
@@ -191,58 +233,256 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="one-chapter-corresponds-at-least-to-one-branch" class="level2">
-<h2 class="anchored" data-anchor-id="one-chapter-corresponds-at-least-to-one-branch">One chapter corresponds at least to one branch</h2>
+<section id="sec-overview" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="sec-overview"><span class="header-section-number">1</span> Project Overview</h2>
+<p><strong>Team project</strong> for groups of <strong>3 students</strong>. Create examples demonstrating statistical/mathematical methods applied to ecological questions.</p>
+<p><strong>Repository</strong>: <code>https://github.com/MarieEtienne/stats-reminder</code></p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Deliverables
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Each team creates <strong>1 example</strong> among one of the major theme:</p>
 <ul>
-<li>Create a specific branch for your chapter named <code>an_explicit_name_for_the_branch</code> and switch on this branch</li>
+<li>Linear models</li>
+<li>Differential equations<br>
+</li>
+<li>Multivariate analysis</li>
 </ul>
-<p><code>git checkout -b an_explicit_name_for_the_branch</code></p>
-<p>In the development of the project, you might find necessary to have several branches per chapter.</p>
+<p>Each student should devote time to the review process ass well</p>
+<p>The repository will close on December 1st at 1PM and only the work merged on master will be reviewed and evaluated.</p>
+<p>Final mark for this assignment will consider</p>
 <ul>
-<li>Create a quarto file for the chapter <code>chapter0.qmd</code> in your branch</li>
+<li><p>Mastering git workflow (commit, pull push , handling conflict, Pull Request, optimmaly rebase to have a clean history)</p></li>
+<li><p>Taking part of the reviewing process to increase global quality of the project</p></li>
 </ul>
-<p><code>git add chapter0.qmd</code></p>
-<p><code>git commit -m "first commit in the chapter branch"</code></p>
+<p>During the last lab on git, November 5th, students will have a test to evaluate the overall understanding of git process</p>
+<p>The final grad will be based on both evaluation</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="sec-requirements" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="sec-requirements"><span class="header-section-number">2</span> Project requirements</h2>
+<section id="content" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="content"><span class="header-section-number">2.1</span> Content</h3>
+<p>Each <code>.qmd</code> example must include:</p>
 <ul>
-<li>Push everything on the remote repo on Github</li>
-</ul>
-<p>For the first push after the branch creation, you have to specify the name of the branch on the remote repo and you can use <code>git  push --set-upstream origin an_explicit_name_for_the_branch</code> or</p>
-<p>For the push to come after the first one, you will simply push by</p>
-<p><code>git  push</code></p>
-<p>Once you are quite happy with your production, you will be willing to integrate your production on the main branch. A good practice is to ask the permission to push on the main branch, which is named a pull request (PR).</p>
-<ul>
-<li><p>Ask for a PR on Github</p></li>
-<li><p>If needed, specify in the PR message the package you need and mention MarieEtienne as reviewer of the PR.</p></li>
-</ul>
-<p>A mock rendering of the qmd file will start when you request a PR using the Github Action mechanism (called runner on gitlab). If the action passes (green signal), you can go to the next step. If not, you will have to fix the issue (again you can ask assistance if you don’t understand the error).</p>
-<ul>
-<li>Once the PR is checked, mention one of your colleage as reviewer.</li>
+<li>Clear ecological question with real/realistic data</li>
+<li>Proper cross-references: sections (<code>@sec-methods</code>), figures (<code>@fig-plot</code>), tables (<code>@tbl-results</code>) or equations (<code>@eq-model</code>)</li>
+<li>Citations and bibliography</li>
+<li>Well-documented code and results</li>
 </ul>
 </section>
-<section id="as-a-reviewer" class="level2">
-<h2 class="anchored" data-anchor-id="as-a-reviewer">As a reviewer</h2>
-<p>Your role is essential as you are responsible for the quality of the submission you were assigned to. Read carefully the production and ask for correction/clarification if needed. One you are happy with the correction you can accept the PR.</p>
-<!-- ## The Technical dtails -->
-<!-- ### Docker -->
-<!-- Lien vers la fiche pense-bête : [https://www.docker.com/sites/default/files/d8/2019-09/docker-cheat-sheet.pdf] -->
-<!-- Pour créer des images Docker en local sur sa machine, voici une liste de commandes utiles -->
-<!-- - Pour construire une image docker, il faut créer un fichier Dockerfile qui contient la recette du Docker. Pour ce site le ficher Dockerfile a la forme suivante -->
-<!-- ```{r engine='bash', comment='', echo = FALSE} -->
-<!-- cat Dockerfile -->
-<!-- ``` -->
-<!-- puis demander la construction  de  l'image à l'aide de la commande -->
-<!-- ```{r docker_build, comment='', echo = TRUE, eval = FALSE} -->
-<!--  docker build -t nom_depot_dockerhub/nom_du_repo:version  . ## avec un nom -->
-<!-- ``` -->
-<!-- et enfin pousser sur  Dockerhub -->
-<!-- ```{r docker_push, echo = TRUE, eval = FALSE} -->
-<!--  docker push nom_depot_dockerhub/nom_du_repo:version -->
-<!-- ``` -->
-<!-- ### Les actions -->
-<!-- Dans les action de Github, on peut spécifier un container docker à utiliser, c'est ce que fait la ligne container du fichier d'action suivant, utiliser pour créer ce site web -->
-<!-- ```{r engine='bash', comment='', echo = FALSE} -->
-<!-- cat .github/workflows/website.yml  -->
-<!-- ``` -->
+<section id="git-workflow" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="git-workflow"><span class="header-section-number">2.2</span> Git Workflow</h3>
+<ol type="1">
+<li><strong>One branch per example</strong>: <code>team-[names]-[method]-[description]</code></li>
+<li><strong>Update <code>_quarto.yml</code></strong> to include your examples in the website structure (see <a href="#sec-quarto-config" class="quarto-xref">Section&nbsp;3.3</a>)</li>
+<li>Optimally <strong>Rebase before PR</strong> to ensure linear history (see <a href="#sec-rebase" class="quarto-xref">Section&nbsp;3.4</a>)</li>
+<li><strong>PR requirements</strong> (see <a href="#sec-pr-requirements" class="quarto-xref">Section&nbsp;4.2</a>):
+<ul>
+<li>✅ No merge conflicts</li>
+<li>✅ Automated checks pass</li>
+<li>✅ One peer review</li>
+<li>✅ At least one discussion thread</li>
+</ul></li>
+</ol>
+<hr>
+</section>
+</section>
+<section id="sec-workflow" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="sec-workflow"><span class="header-section-number">3</span> Git Workflow</h2>
+<section id="setup" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="setup"><span class="header-section-number">3.1</span> Setup</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Clone repository</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/MarieEtienne/stats-reminder.git</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> stats-reminder</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create team branch</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> switch <span class="at">-b</span> teamA</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin teamA</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="sec-branches" class="level3" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="sec-branches"><span class="header-section-number">3.2</span> Create one branch per task</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># From your team branch, create example branches</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> switch teamA</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> switch <span class="at">-b</span> teamA-intro</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Work on your .qmd file</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add linear_model_teamA.qmd</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Add linear model example"</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">....</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> fetch origin teamA</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> rebase teamA </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># If conflicts: resolve, then</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add <span class="op">&lt;</span>resolved-files<span class="op">&gt;</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> rebase <span class="at">--continue</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># switch to team branch and update the branch with this neaw linear history</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> switch teamA</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> merge teamA-intro</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="sec-quarto-config" class="level3" data-number="3.3">
+<h3 data-number="3.3" class="anchored" data-anchor-id="sec-quarto-config"><span class="header-section-number">3.3</span> Updating <code>_quarto.yml</code></h3>
+<p>Add your examples to the website structure:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">website</span><span class="kw">:</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">navbar</span><span class="kw">:</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">left</span><span class="kw">:</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">text</span><span class="kw">:</span><span class="at"> </span><span class="st">"Team Examples"</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">menu</span><span class="kw">:</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="kw">-</span><span class="at"> </span><span class="fu">text</span><span class="kw">:</span><span class="at"> </span><span class="st">"Team Smith"</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">menu</span><span class="kw">:</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="kw">-</span><span class="at"> </span><span class="fu">text</span><span class="kw">:</span><span class="at"> </span><span class="st">"Plant Growth (Linear)"</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">href</span><span class="kw">:</span><span class="at"> linear_model_teamA.qmd</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="kw">-</span><span class="at"> </span><span class="fu">text</span><span class="kw">:</span><span class="at"> </span><span class="st">"Predator-Prey (Diff Eq)"</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">href</span><span class="kw">:</span><span class="at"> team-smith-diffeq-predator.qmd</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+<section id="sec-rebase" class="level3" data-number="3.4">
+<h3 data-number="3.4" class="anchored" data-anchor-id="sec-rebase"><span class="header-section-number">3.4</span> Update Before PR</h3>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Always rebase on master before creating PR to ensure clean linear history and avoid conflicts.</p>
+</div>
+</div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> switch teamA</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> switch <span class="at">-c</span> teamA_PR <span class="co">#create a new branch to avoid destruction</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch and rebase</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> fetch origin master</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> rebase origin/master</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># If conflicts: resolve, then</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add <span class="op">&lt;</span>resolved-files<span class="op">&gt;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> rebase <span class="at">--continue</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co"># push teamA_PR and ask for PR in github, there should be no conflict</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin teamA_PR</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="sec-pull-requests" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="sec-pull-requests"><span class="header-section-number">4</span> Pull Requests</h2>
+<section id="creating-a-pr" class="level3" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="creating-a-pr"><span class="header-section-number">4.1</span> Creating a PR</h3>
+<ol type="1">
+<li>Go to repository → <strong>Pull requests</strong> → <strong>New pull request</strong></li>
+<li>Base: <code>master</code>, Compare: <code>teamA_PR</code></li>
+<li>Write clear description (method, question, team)</li>
+</ol>
+</section>
+<section id="sec-pr-requirements" class="level3" data-number="4.2">
+<h3 data-number="4.2" class="anchored" data-anchor-id="sec-pr-requirements"><span class="header-section-number">4.2</span> PR Requirements</h3>
+<p>All must be met before merge:</p>
+<ul>
+<li>✅ <strong>No conflicts</strong> (rebase if needed, see <a href="#sec-rebase" class="quarto-xref">Section&nbsp;3.4</a>)</li>
+<li>✅ <strong>Automated checks pass</strong> (builds website successfully)</li>
+<li>✅ <strong>One review</strong> from peer/instructor</li>
+<li>✅ <strong>One discussion thread</strong> (respond to reviewer comments)</li>
+</ul>
+<p>After merge, the website automatically deploys to GitHub Pages.</p>
+<p><span class="care">Be careful that, history in teamA and teamA_PR differ, and teamA_PR is the one to be merged. So if you want to add more contents to your project, remove local and remote teamA branch (and teamA_PR once merge into master) and starts a new branch from the current master branch</span></p>
+<hr>
+</section>
+</section>
+<section id="sec-markdown" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="sec-markdown"><span class="header-section-number">5</span> Cross-References &amp; Citations</h2>
+<section id="cross-references" class="level3" data-number="5.1">
+<h3 data-number="5.1" class="anchored" data-anchor-id="cross-references"><span class="header-section-number">5.1</span> Cross-References</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## Methods {#sec-methods}</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>The model (@eq-linear) uses data shown in @fig-scatter and @tbl-summary.</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>$$ y = \beta_0 + \beta_1 x $$ {#eq-linear}</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-scatter</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Relationship between variables"</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x, y)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>As described in @sec-methods...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="citations" class="level3" data-number="5.2">
+<h3 data-number="5.2" class="anchored" data-anchor-id="citations"><span class="header-section-number">5.2</span> Citations</h3>
+<p>Create <code>references.bib</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bibtex code-with-copy"><code class="sourceCode bibtex"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="va">@article</span>{<span class="ot">smith2020</span>,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">author</span> = {Smith, J.},</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">title</span> = {Statistical Methods},</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">journal</span> = {Ecology},</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">year</span> = {2020}</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In your YAML:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bibliography</span><span class="kw">:</span><span class="at"> references.bib</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In text:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>According to @smith2020, the method...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="sec-rules" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="sec-rules"><span class="header-section-number">6</span> Important Rules</h2>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Master is protected</strong> - you cannot push directly</li>
+<li><strong>Use rebase</strong> not merge (see <a href="#sec-rebase" class="quarto-xref">Section&nbsp;3.4</a>) as much as possible, that is the good practice</li>
+<li><strong>Pass all checks</strong> before requesting merge</li>
+</ul>
+</div>
+</div>
+<hr>
+</section>
+<section id="sec-troubleshooting" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="sec-troubleshooting"><span class="header-section-number">7</span> Common Issues</h2>
+<p><strong>Build failing:</strong> Check logs for syntax errors in <code>.qmd</code>, missing packages, broken cross-references, or invalid <code>_quarto.yml</code>.</p>
+<p><strong>Can’t push to master:</strong> Expected! Create a branch instead (see <a href="#sec-branches" class="quarto-xref">Section&nbsp;3.2</a>).</p>
+<hr>
+</section>
+<section id="sec-checklist" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="sec-checklist"><span class="header-section-number">8</span> Checklist</h2>
+<p>Before submitting PR:</p>
+<ul class="task-list">
+<li><label><input type="checkbox"><code>_quarto.yml</code> updated</label></li>
+<li><label><input type="checkbox">Cross-references used throughout</label></li>
+<li><label><input type="checkbox">Citations included</label></li>
+<li><label><input type="checkbox">No conflicts</label></li>
+<li><label><input type="checkbox">Rebased on master</label></li>
+<li><label><input type="checkbox">PR created with clear description</label></li>
+<li><label><input type="checkbox">Checks passing</label></li>
+<li><label><input type="checkbox">Review requested</label></li>
+</ul>
+<hr>
+</section>
+<section id="sec-resources" class="level2" data-number="9">
+<h2 data-number="9" class="anchored" data-anchor-id="sec-resources"><span class="header-section-number">9</span> Resources</h2>
+<ul>
+<li><a href="https://quarto.org/docs/authoring/cross-references.html">Quarto Cross-References</a></li>
+<li><a href="https://git-scm.com/book/en/v2/Git-Branching-Rebasing">Git Rebase Tutorial</a></li>
+<li><a href="https://docs.github.com/en/pull-requests">Creating Pull Requests</a></li>
+</ul>
+<p>Questions? Check GitHub Issues or contact the instructor. Good luck! 🚀</p>
 
 
 </section>
