@@ -1,95 +1,254 @@
 ---
-title: "How to contribute"
-author: 
-  - Marie-Pierre Etienne
-format: html
+title: "Stats Reminder Project - Instructions"
+author: "MP Etienne"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    theme: cosmo
 ---
 
+## Project Overview {#sec-overview}
 
+**Team project** for groups of **3 students**. Create examples demonstrating statistical/mathematical methods applied to ecological questions.
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+**Repository**: `https://github.com/MarieEtienne/stats-reminder`
+
+::: {.callout-important}
+## Deliverables
+Each team creates **1 example** among one of the major theme:
+
+- Linear models
+- Differential equations  
+- Multivariate analysis
+
+Each student should devote time to the review process ass well
+
+The repository will close on December 1st at 1PM and only the work merged on master will be reviewed and evaluated.
+
+Final mark for this assignment will consider
+
+* Mastering git workflow (commit, pull push , handling conflict, Pull Request, optimmaly rebase to have a clean history)
+
+* Taking part of the reviewing process to increase global quality of the project
+
+During the last lab on git, November 5th, students will have a test to evaluate the overall understanding of git process
+
+The final grad will be based on both evaluation
+:::
+
+---
+
+## Project requirements {#sec-requirements}
+
+### Content
+
+Each `.qmd` example must include:
+
+- Clear ecological question with real/realistic data
+- Proper cross-references: sections (`@sec-methods`), figures (`@fig-plot`), tables (`@tbl-results`) or equations (`@eq-model`)
+- Citations and bibliography
+- Well-documented code and results
+
+### Git Workflow
+
+1. **One branch per example**: `team-[names]-[method]-[description]`
+2. **Update `_quarto.yml`** to include your examples in the website structure (see @sec-quarto-config)
+3. Optimally **Rebase before PR** to ensure linear history (see @sec-rebase)
+4. **PR requirements** (see @sec-pr-requirements):
+   - ✅ No merge conflicts
+   - ✅ Automated checks pass
+   - ✅ One peer review
+   - ✅ At least one discussion thread
+
+---
+
+## Git Workflow {#sec-workflow}
+
+### Setup
+
+```bash
+# Clone repository
+git clone https://github.com/MarieEtienne/stats-reminder.git
+cd stats-reminder
+
+# Create team branch
+git switch -b teamA
+git push origin teamA
+```
+
+### Create one branch per task {#sec-branches}
+
+```bash
+# From your team branch, create example branches
+git switch teamA
+git switch -b teamA-intro
+
+# Work on your .qmd file
+git add linear_model_teamA.qmd
+git commit -m "Add linear model example"
+....
+git fetch origin teamA
+git rebase teamA 
+
+# If conflicts: resolve, then
+git add <resolved-files>
+git rebase --continue
+
+# switch to team branch and update the branch with this neaw linear history
+git switch teamA
+git merge teamA-intro
 ```
 
 
-## One chapter corresponds at least to one branch
+### Updating `_quarto.yml` {#sec-quarto-config}
 
-* Create a specific branch for your chapter named `an_explicit_name_for_the_branch`  and switch on this branch
+Add your examples to the website structure:
 
-` git checkout -b an_explicit_name_for_the_branch` 
+```yaml
+website:
+  navbar:
+    left:
+      - text: "Team Examples"
+        menu:
+          - text: "Team Smith"
+            menu:
+              - text: "Plant Growth (Linear)"
+                href: linear_model_teamA.qmd
+              - text: "Predator-Prey (Diff Eq)"
+                href: team-smith-diffeq-predator.qmd
+```
 
-In the development of the project, you might find necessary to have several branches per chapter.
+---
 
-*  Create a quarto file for the chapter  `chapter0.qmd` in your branch
+### Update Before PR {#sec-rebase}
 
-` git add chapter0.qmd `
+::: {.callout-warning}
+Always rebase on master before creating PR to ensure clean linear history and avoid conflicts.
+:::
 
-` git commit -m "first commit in the chapter branch" `
+```bash
+git switch teamA
+git switch -c teamA_PR #create a new branch to avoid destruction
 
-* Push everything on the remote repo on Github
- 
- For the first push after the branch creation, you have to specify the name of the branch on the remote repo and you can use
-` git  push --set-upstream origin an_explicit_name_for_the_branch` or 
+# Fetch and rebase
+git fetch origin master
+git rebase origin/master
 
-For the push to come after the first one, you will simply push by 
+# If conflicts: resolve, then
+git add <resolved-files>
+git rebase --continue
 
-` git  push ` 
+# push teamA_PR and ask for PR in github, there should be no conflict
+git push origin teamA_PR
+```
 
+## Pull Requests {#sec-pull-requests}
 
-Once you are quite happy with your production, you will be willing to integrate your production on the main branch. A good practice is to ask the permission to push on the main branch, which is named a pull request (PR).
+### Creating a PR
 
-* Ask for a PR on Github
+1. Go to repository → **Pull requests** → **New pull request**
+2. Base: `master`, Compare: `teamA_PR`
+3. Write clear description (method, question, team)
 
-- If needed, specify in the PR message the package you need and mention MarieEtienne as reviewer of the PR.
+### PR Requirements {#sec-pr-requirements}
 
-A mock rendering of the qmd file will start when you request a PR using the Github Action mechanism (called runner on gitlab). If the action passes (green signal), you can go to the next step. If not, you will have to fix the issue (again you can ask assistance if you don't understand the error).
+All must be met before merge:
 
-* Once the PR is checked, mention one of your colleage as reviewer.
+- ✅ **No conflicts** (rebase if needed, see @sec-rebase)
+- ✅ **Automated checks pass** (builds website successfully)
+- ✅ **One review** from peer/instructor
+- ✅ **One discussion thread** (respond to reviewer comments)
 
+After merge, the website automatically deploys to GitHub Pages.
 
+[Be careful that, history in teamA and teamA_PR differ, and teamA_PR is the one to be merged. So if you want to add more contents to your project, remove local and remote teamA branch (and teamA_PR once merge into master) and starts a new branch from the current master branch]{.care}
 
-## As a reviewer
+---
 
-Your role is essential as you are responsible for the quality of the submission you were assigned to. Read carefully the production and ask for correction/clarification if needed. One you are happy with the correction you can accept the PR.
+## Cross-References & Citations {#sec-markdown}
 
+### Cross-References
 
-<!-- ## The Technical dtails -->
+````markdown
+## Methods {#sec-methods}
 
+The model (@eq-linear) uses data shown in @fig-scatter and @tbl-summary.
 
-<!-- ### Docker -->
+$$ y = \beta_0 + \beta_1 x $$ {#eq-linear}
 
-<!-- Lien vers la fiche pense-bête : [https://www.docker.com/sites/default/files/d8/2019-09/docker-cheat-sheet.pdf] -->
+```{{r}}
+#| label: fig-scatter
+#| fig-cap: "Relationship between variables"
+plot(x, y)
+```
 
-<!-- Pour créer des images Docker en local sur sa machine, voici une liste de commandes utiles -->
+As described in @sec-methods...
+````
 
-<!-- - Pour construire une image docker, il faut créer un fichier Dockerfile qui contient la recette du Docker. Pour ce site le ficher Dockerfile a la forme suivante -->
+### Citations
 
-<!-- ```{r engine='bash', comment='', echo = FALSE} -->
-<!-- cat Dockerfile -->
-<!-- ``` -->
+Create `references.bib`:
+```bibtex
+@article{smith2020,
+  author = {Smith, J.},
+  title = {Statistical Methods},
+  journal = {Ecology},
+  year = {2020}
+}
+```
 
-<!-- puis demander la construction  de  l'image à l'aide de la commande -->
+In your YAML:
+```yaml
+bibliography: references.bib
+```
 
-<!-- ```{r docker_build, comment='', echo = TRUE, eval = FALSE} -->
-<!--  docker build -t nom_depot_dockerhub/nom_du_repo:version  . ## avec un nom -->
-<!-- ``` -->
+In text:
+```markdown
+According to @smith2020, the method...
+```
 
-<!-- et enfin pousser sur  Dockerhub -->
+---
 
-<!-- ```{r docker_push, echo = TRUE, eval = FALSE} -->
+## Important Rules {#sec-rules}
 
-<!--  docker push nom_depot_dockerhub/nom_du_repo:version -->
-<!-- ``` -->
+::: {.callout-important}
+- **Master is protected** - you cannot push directly
+- **Use rebase** not merge (see @sec-rebase) as much as possible, that is the good practice
+- **Pass all checks** before requesting merge
+:::
 
+---
 
-<!-- ### Les actions -->
+## Common Issues {#sec-troubleshooting}
 
-<!-- Dans les action de Github, on peut spécifier un container docker à utiliser, c'est ce que fait la ligne container du fichier d'action suivant, utiliser pour créer ce site web -->
+**Build failing:** Check logs for syntax errors in `.qmd`, missing packages, broken cross-references, or invalid `_quarto.yml`.
 
+**Can't push to master:** Expected! Create a branch instead (see @sec-branches).
 
-<!-- ```{r engine='bash', comment='', echo = FALSE} -->
-<!-- cat .github/workflows/website.yml  -->
-<!-- ``` -->
+---
 
+## Checklist {#sec-checklist}
 
+Before submitting PR:
+
+- [ ] `_quarto.yml` updated
+- [ ] Cross-references used throughout
+- [ ] Citations included
+- [ ] No conflicts
+- [ ] Rebased on master
+- [ ] PR created with clear description
+- [ ] Checks passing
+- [ ] Review requested
+
+---
+
+## Resources {#sec-resources}
+
+- [Quarto Cross-References](https://quarto.org/docs/authoring/cross-references.html)
+- [Git Rebase Tutorial](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
+- [Creating Pull Requests](https://docs.github.com/en/pull-requests)
+
+Questions? Check GitHub Issues or contact the instructor. Good luck! 🚀
 
