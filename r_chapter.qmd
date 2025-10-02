@@ -7,7 +7,7 @@ execute:
 format:
   html:
     theme: cosmo
-    css: theme.scss
+    css: theme.css
     toc: true
     toc_float: true
 ---
