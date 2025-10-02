@@ -37,10 +37,8 @@ website:
 
 format:
   html:
-    theme: flatly
-    linkcolor: "#c0392b"
-    fontcolor: "#057174"
-    css: mpe_pres_revealjs.css
+    theme: cosmo
+    css: theme.scss
     toc: true
 
 
