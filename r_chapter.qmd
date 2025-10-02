@@ -50,11 +50,11 @@ You can also add images
 
 ![Gentoo penguins](images/6123849122_b66af201ea_c.jpg){#fig-gentoo}
 
-You can refer to one image using cross-reference. For example, Figure @fig-gentoo is a photo of a gentoo penguin with chicks by Liam Quinn.
+You can refer to one image using cross-reference. For example,  @fig-gentoo is a photo of a gentoo penguin with chicks by Liam Quinn.
 
 
 
-You can also add reference associated with models. For example, if you want to study how the body mass  differ between species you should use a one way analysis of variance as described in Equation @eq-onewayanova
+You can also add reference associated with models. For example, if you want to study how the body mass  differ between species you should use a one way analysis of variance as described in  @eq-onewayanova
 
 $$Y_{sk} = \mu + \alpha_s + E_{sk},
 $$ {#eq-onewayanova}
