@@ -1,8 +1,11 @@
 ---
 title: "Statistics to explore environmental questions"
 subtitle: "Based on our internship or example from the literature"
-format: html
-toc: true
+format:
+  html:
+    theme: cosmo
+    css: theme.scss
+    toc: true
 date: last-modified
 date-format: "[Last Updated on] MMMM, YYYY"
 ---

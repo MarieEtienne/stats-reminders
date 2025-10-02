@@ -3,11 +3,12 @@ title: "Stats Reminder Project - Instructions"
 author: "MP Etienne"
 format:
   html:
-    toc: true
-    toc-depth: 2
-    number-sections: true
     theme: cosmo
+    css: theme.scss
+    toc: true
+    toc_float: true
 ---
+
 
 ## Project Overview {#sec-overview}
 
