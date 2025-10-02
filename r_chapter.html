@@ -177,15 +177,22 @@ window.Quarto = {
 </i> 
 <span class="menu-text"></span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./instructions.html"> 
+<span class="menu-text">Instructions</span></a>
+  </li>  
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-two-examples" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Two examples</span>
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-two-examples">    
-        <li class="dropdown-header">r-chapter.qmd</li>
+        <li>
+    <a class="dropdown-item" href="./r_chapter.html">
+ <span class="dropdown-text">Basic quarto cross ref example</span></a>
+  </li>  
         <li>
     <a class="dropdown-item" href="./Penguins_chapter.html">
- <span class="dropdown-text">toc_float: true</span></a>
+ <span class="dropdown-text">Penguins example</span></a>
   </li>  
     </ul>
   </li>
@@ -307,8 +314,8 @@ Figure&nbsp;1: Gentoo penguins
 </figcaption>
 </figure>
 </div>
-<p>You can refer to one image using cross-reference. For example, Figure <a href="#fig-gentoo" class="quarto-xref">Figure&nbsp;1</a> is a photo of a gentoo penguin with chicks by Liam Quinn.</p>
-<p>You can also add reference associated with models. For example, if you want to study how the body mass differ between species you should use a one way analysis of variance as described in Equation <a href="#eq-onewayanova" class="quarto-xref">Equation&nbsp;1</a></p>
+<p>You can refer to one image using cross-reference. For example, <a href="#fig-gentoo" class="quarto-xref">Figure&nbsp;1</a> is a photo of a gentoo penguin with chicks by Liam Quinn.</p>
+<p>You can also add reference associated with models. For example, if you want to study how the body mass differ between species you should use a one way analysis of variance as described in <a href="#eq-onewayanova" class="quarto-xref">Equation&nbsp;1</a></p>
 <p><span id="eq-onewayanova"><span class="math display">\[Y_{sk} = \mu + \alpha_s + E_{sk},
 \tag{1}\]</span></span></p>
 <p>where <span class="math inline">\(s\)</span> standes for species and <span class="math inline">\(k\)</span> denotes each individual.</p>

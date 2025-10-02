@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Mp Etienne">
 
-<title>penguins_chapter</title>
+<title>Exploration données sur les manchots</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -59,6 +60,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -147,15 +149,22 @@ div.csl-indent {
 </i> 
 <span class="menu-text"></span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./instructions.html"> 
+<span class="menu-text">Instructions</span></a>
+  </li>  
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-two-examples" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Two examples</span>
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-two-examples">    
-        <li class="dropdown-header">r-chapter.qmd</li>
+        <li>
+    <a class="dropdown-item" href="./r_chapter.html">
+ <span class="dropdown-text">Basic quarto cross ref example</span></a>
+  </li>  
         <li>
     <a class="dropdown-item" href="./Penguins_chapter.html">
- <span class="dropdown-text">toc_float: true</span></a>
+ <span class="dropdown-text">Penguins example</span></a>
   </li>  
     </ul>
   </li>
@@ -209,13 +218,33 @@ div.csl-indent {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Exploration données sur les manchots</h1>
+</div>
 
 
 
+<div class="quarto-title-meta">
 
-<hr>
-<p>title: “Exploration données sur les manchots” author: “Mp Etienne” bibliography: references.bib execute: freeze: auto output: html_document: toc: true toc_float: true —</p>
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Mp Etienne </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
 <p>Pourquoi manchot se traduit Penguins en anglais ?</p>
 <p>(O)&gt; ( ) W</p>
 <p>(O)&gt; ( ) W</p>
@@ -239,11 +268,13 @@ div.csl-indent {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"penguins_raw.csv"</span>, <span class="at">sep =</span> <span class="st">","</span> , <span class="at">header =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>A citation <span class="citation" data-cites="bauer2023writing">@bauer2023writing</span></p>
+<p>A citation <span class="citation" data-cites="alston2021beginner">Alston and Rick (<a href="#ref-alston2021beginner" role="doc-biblioref">2021</a>)</span></p>
 <section id="references" class="level3">
 <h3 class="anchored" data-anchor-id="references">References</h3>
-<div id="refs" role="list">
-
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-alston2021beginner" class="csl-entry" role="listitem">
+Alston, Jesse M, and Jessica A Rick. 2021. <span>“A Beginner’s Guide to Conducting Reproducible Research.”</span> <em>Bulletin of the Ecological Society of America</em> 102 (2): 1–14.
+</div>
 </div>
 
 
