@@ -1,5 +1,5 @@
 ---
-title: "EDO compétition"
+title: "EDO Estimation of parameters : Logistic Regression"
 format: html
 editor: visual
 ---
