@@ -1,5 +1,5 @@
 ---
-title: "EDO Estimation of parameters : Logistic Regression"
+title: "EDO Estimation of parameters : the logistic growth"
 format: html
 editor: visual
 ---
