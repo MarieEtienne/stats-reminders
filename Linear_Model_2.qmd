@@ -1,5 +1,6 @@
 ---
-title: "Blaireau"
+title: "MODELES LINEAIRES GÉNÉRALISÉS"
+subtitle: "EXEMPLE DU BLAIREAU"
 format: html
 editor: visual
 ---
