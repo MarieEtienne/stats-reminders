@@ -4,8 +4,38 @@ format: html
 editor: visual
 ---
 
+
+# MODELE LINERAIRE GÉNÉRALISÉ 
+
+## 1) Introduction 
+
+#### a. Généralités et rappels 
+
+Rappel : Les modèles linéaires généraux (régression linéaire, ANOVA, ANCOVA) sont utilisés pour modéliser la relation entre une variable réponse quantitative $Y$ et une ou plusieurs variables explicatives $X_{1}$,$X_{2}$...$X_{p}$, quantitatives et/ou qualitatives. Les trois conditions d'application associées sont *l'indépendance des résidus*, *la normalité des résidus* et *l'homogénéité des variances*. Cependant, nous analysons souvent des réponses $Y$ qui peuvent être discrètes et s'écarter alors de l'hypothèse gaussienne.
+
+Les comptages et les données binaires (réponses $Y$ discrètes), présentent généralement une relation moyenne-variance telle que la variance de $Y$ varie avec la moyenne de $Y$. Cette relation moyenne-variance suggère que la variance ne peut donc pas être homogène car elle dépend de la moyenne alors que les modèles linéaires généraux ont pour hypothèse d'application une homogénéité de la variance. En conclusion, l'utilisation d'un modèle linéaire général sur des réponses discrètes génère le plus souvent des écarts par rapport aux conditions d'application. C'est dans ce contexte qu'ont été introduit les modèles liénaires généralisés.
+
+#### b. Construction d'un modèle linéaire généralisé
+
+La construction d'un modèle linéaire généralisé (GLM) se décompose en trois étapes :\
+1. L'hypothèse de la loi de distribution de la variable réponse $Y_{i}$\
+2. La spécification de la partie systématique : il s'agit de la fonction linéaire des variables explicatives $X_s$ (appelé le prédicteur linéaire et noté $\eta$)\
+3. La relation entre la valeur moyenne de $Y_{i}$ et le prédicteur linéaire. On l'appelle également le lien entre la moyenne et le prédicteur linéaire : **la fonction de lien notée** $g$.
+
+En conséquence, un modèle linéaire généralisé (GLM) repose sur les hypothèses suivantes :\
+1. Les observées $Y$ sont indépendantes, conditionnellement à certains prédicteurs $X$.\
+2. La réponse $Y$ provient d'une distribution connue avec une relation moyenne-variance connue.\
+3. Il existe une relation linéaire entre une fonction connue $g$ de la moyenne de $Y$ et les prédicteurs $X$.
+
+Ainsi, une modèle linéaire généralisé s'écrit de la manière suivante : $$g(\mu_{y})= \alpha+ \beta_{1}.X_{i1}+ \beta_{2}.X_{i2}+\beta_{3}.X_{i3}+...\beta_{p}.X_{ip} = \eta $$
+
+Le prédicteur linéaire, $\eta$, est issu du modèle linéaire comme la somme des $p$ termes associés à chacun des paramètres $\beta_{p}$. Il ne s'agit pas de la valeur de $Y$. La valeur du prédicteur linéaire $\eta$ est obtenue en transformant la valeur de $Y$ par la fonction de lien, et la valeur prédite de $Y$ est obtenue en appliquant à $\eta$ la fonction inverse de la fonction de lien .
+
+
+
+
 ```{r}
-data <- read.table("BadgersFarmSurveysNoNA.txt", header = TRUE)
+data <- read.table("BadgersFarmSurveysNoNA.txt", header = TRUE,  stringsAsFactors = TRUE)
 ```
 
 ```{r}
@@ -15,12 +45,10 @@ data <- data %>%
   group_by(farm_code_numeric) %>%
   mutate(mean_signs_farm = mean(Signs_in_yard, na.rm = TRUE)) %>%
   ungroup()
-
 ```
 
 ```{r}
 library(ggplot2)
-library(dplyr)
 
 # Résumé : une ligne par ferme
 data_summary <- data %>%
