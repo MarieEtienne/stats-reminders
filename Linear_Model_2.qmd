@@ -8,6 +8,8 @@ editor: visual
 # MODELE LINERAIRE GÉNÉRALISÉ
 
 ## 1) Introduction
+=======
+# MODELE LINERAIRE GÉNÉRALISÉ 
 
 #### a. Généralités et rappels
 
@@ -30,6 +32,44 @@ En conséquence, un modèle linéaire généralisé (GLM) repose sur les hypoth�
 Ainsi, une modèle linéaire généralisé s'écrit de la manière suivante : $$g(\mu_{y})= \alpha+ \beta_{1}.X_{i1}+ \beta_{2}.X_{i2}+\beta_{3}.X_{i3}+...\beta_{p}.X_{ip} = \eta $$
 
 Le prédicteur linéaire, $\eta$, est issu du modèle linéaire comme la somme des $p$ termes associés à chacun des paramètres $\beta_{p}$. Il ne s'agit pas de la valeur de $Y$. La valeur du prédicteur linéaire $\eta$ est obtenue en transformant la valeur de $Y$ par la fonction de lien, et la valeur prédite de $Y$ est obtenue en appliquant à $\eta$ la fonction inverse de la fonction de lien .
+
+=======
+
+::: {style="text-align: justify"}
+## Présentation des données
+
+Les données utilisées sont issues de Zuur *et al*. (2019), et sont constituées des signes d'activité de blaireaux (*Meles meles*) autour d'exploitations agricoles situées dans le sud-ouest de l'Angleterre, où la densité de blaireaux est importante. Cette étude a été réalisée dans le contexte de la tuberculose bovine, et de sa possible transmission au bétail par l'intermédiaire des blaireaux. La réduction du nombre de visites des exploitations agricoles par les blaireaux, particulièrement aux endroits où ils pourraient entrer en contact avec le bétail, pourrait permettre de limiter la transmission de la maladie. Ainsi, cette étude a pour objectif la prédiction de l'occurence des signes d'activité des blaireaux dans les exploitations agricoles.
+
+Entre l'automne 2003 et l'été 2005, une enquête a été menée dans 36 exploitations différentes : les données sont ainsi longitudinales, puisque chaque exploitation a été analysée sur 8 saisons consécutives. Au sein d'une même exploitation, les observations peuvent être temporellement autocorrélées.
+
+La variable réponse (présence ou absence de signes d'activité de blaireaux) est binaire : elle prend la valeur 1 quand des signes d'activité ont été détectés, et 0 sinon. Les signes d'activité incluent la présence de fèces, de blaireautières ou encore de traces d'alimentation.
+
+Les données sont disponibles dans le fichier `BadgersFarmSurveysNoNA.txt`. Les variables sont :
+
+-   `Year` : année d'étude
+-   `Season` : 1 = printemps, 2 = été, 3 = automne, 4 = hiver
+-   `farm_code_numeric` : identifiant de l'exploitation
+-   `Survey` : code du relevé (indicateur du temps)
+-   `Signs_in_yard` : indicateur binaire de l'activité des blaireaux (variable réponse)
+-   `No_setts_in_fields` : nombre de blaireautières observées
+-   `No_active_setts_in_fields` : nombre de blaireautières activement utilisées observées
+-   `No_buildings` : nombre de bâtiments dans l'exploitation
+-   `No_cattle_in_buildings_yard` : nombre de bovins dans les bâtiments de l'exploitation
+-   `Accessible_feed_store_present` : présence / absence d'une réserve d'alimentation animale dans l'exploitation
+-   `Accessible_cattle_house_present` : présence / absence d'un accès direct à l'étable
+-   `Accessible_feed_present` : présence / absence d'aliments accessibles dans l'exploitation
+-   `Grass_silage` : présence / absence d'ensilage herbe
+-   `Cereal_silage` : présence / absence d'ensilage céréale
+-   `HayStraw` : présence / absence de foin et / ou de paille
+-   `Cereal_grains` : présence / absence de grains de céréales
+-   `Concentrates` : présence / absence de concentrés
+-   `Proteinblocks` : présence / absence de blocs à lécher protéinés
+-   `Sugarbeet` : présence / absence de betterave sucrière
+-   `Vegetables` : présence / absence de légumes
+-   `Molasses` : présence / absence de mélasse
+:::
+
+## Exploration des données
 
 ```{r}
 data <- read.table("BadgersFarmSurveysNoNA.txt", header = TRUE,  stringsAsFactors = TRUE)
@@ -99,3 +139,4 @@ ggplot(data_summary, aes(x = farm_code_numeric, y = mean_signs_farm)) +
 ```{r}
 plot(x= data_summary$farm_code_numeric , y=data_summary$mean_cereal_farm)
 ```
+=======
