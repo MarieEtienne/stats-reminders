@@ -4,23 +4,36 @@ format: html
 editor: visual
 ---
 
-## Quarto
+::: {style="text-align: justify"}
+## Présentation des données
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+Les données utilisées sont issues de Zuur *et al*. (2019), et sont constituées des signes d'activité de blaireaux (*Meles meles*) autour d'exploitations agricoles situées dans le sud-ouest de l'Angleterre, où la densité de blaireaux est importante. Cette étude a été réalisée dans le contexte de la tuberculose bovine, et de sa possible transmission au bétail par l'intermédiaire des blaireaux. La réduction du nombre de visites des exploitations agricoles par les blaireaux, particulièrement aux endroits où ils pourraient entrer en contact avec le bétail, pourrait permettre de limiter la transmission de la maladie. Ainsi, cette étude a pour objectif la prédiction de l'occurence des signes d'activité des blaireaux dans les exploitations agricoles.
 
-## Running Code
+Entre l'automne 2003 et l'été 2005, une enquête a été menée dans 36 exploitations différentes : les données sont ainsi longitudinales, puisque chaque exploitation a été analysée sur 8 saisons consécutives. Au sein d'une même exploitation, les observations peuvent être temporellement autocorrélées.
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+La variable réponse (présence ou absence de signes d'activité de blaireaux) est binaire : elle prend la valeur 1 quand des signes d'activité ont été détectés, et 0 sinon. Les signes d'activité incluent la présence de fèces, de blaireautières ou encore de traces d'alimentation.
 
-```{r}
-1 + 1
-```
+Les données sont disponibles dans le fichier `BadgersFarmSurveysNoNA.txt`. Les variables sont :
 
-You can add options to executable code like this
-
-```{r}
-#| echo: false
-2 * 2
-```
-
-The `echo: false` option disables the printing of code (only output is displayed).
+-   `Year` : année d'étude
+-   `Season` : 1 = printemps, 2 = été, 3 = automne, 4 = hiver
+-   `farm_code_numeric` : identifiant de l'exploitation
+-   `Survey` : code du relevé (indicateur du temps)
+-   `Signs_in_yard` : indicateur binaire de l'activité des blaireaux (variable réponse)
+-   `No_setts_in_fields` : nombre de blaireautières observées
+-   `No_active_setts_in_fields` : nombre de blaireautières activement utilisées observées
+-   `No_buildings` : nombre de bâtiments dans l'exploitation
+-   `No_cattle_in_buildings_yard` : nombre de bovins dans les bâtiments de l'exploitation
+-   `Accessible_feed_store_present` : présence / absence d'une réserve d'alimentation animale dans l'exploitation
+-   `Accessible_cattle_house_present` : présence / absence d'un accès direct à l'étable
+-   `Accessible_feed_present` : présence / absence d'aliments accessibles dans l'exploitation
+-   `Grass_silage` : présence / absence d'ensilage herbe
+-   `Cereal_silage` : présence / absence d'ensilage céréale
+-   `HayStraw` : présence / absence de foin et / ou de paille
+-   `Cereal_grains` : présence / absence de grains de céréales
+-   `Concentrates` : présence / absence de concentrés
+-   `Proteinblocks` : présence / absence de blocs à lécher protéinés
+-   `Sugarbeet` : présence / absence de betterave sucrière
+-   `Vegetables` : présence / absence de légumes
+-   `Molasses` : présence / absence de mélasse
+:::
