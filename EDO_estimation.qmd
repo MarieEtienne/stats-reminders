@@ -6,7 +6,6 @@ editor: visual
 
 # Introduction
 
-
 This document aims to be a presentation of a logistic growth simulation: from the data simulation to the estimation of the parameters.
 
 The following document will thus be organized in two parts : the data simulation and the estimation of the parameters.
@@ -33,15 +32,6 @@ y <- sapply(time, logistic, r = r, K = K, y0 = y0, error = error)
 # Plot the result
 plot(time, y, col = "blue", xlab = "Time", ylab = "Population", main = "Logistic Growth with Error")
 ```
-
-You can add options to executable code like this
-
-```{r}
-#| echo: false
-2 * 2
-```
-
-The `echo: false` option disables the printing of code (only output is displayed).
 
 # Estimation of the parameters
 
