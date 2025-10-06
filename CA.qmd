@@ -15,8 +15,8 @@ Just like in the PCA, we will be looking the orthogonal axis that maximizes the 
 
 The columns and lines have a symmetrical role, so you'll have the same results in both directions.
 
-To use it you'll need to follow certain rules :
+To use it you'll need to pay attention to certain things :
 
 -    all values need to be positive (which shouldn't be a problem if it's a contingency table),
 
--   
+-   if you have rare species it may change the shape of your results significantly. It's not always a bad thing, just something you need to be aware of.
