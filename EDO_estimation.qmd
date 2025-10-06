@@ -35,4 +35,27 @@ plot(time, y, col = "blue", xlab = "Time", ylab = "Population", main = "Logistic
 
 # Estimation of the parameters
 
+We have p parameters $\theta = (\theta_1,\theta_2,...,\theta_p)$.
+
 ## General theory
+
+### Maximum likelihood
+
+Likelihood corresponds to the probability of observing the data, knowing the parameters $\theta$. The likelihood function is as follows :
+$$
+L(\theta) = \prod_{i=1}^n f(x_i , \theta)
+$$
+In this function, $x_i$ corresponds to the observations and $f(x_i,\theta)$ corresponds to the probability density function of the random variable X.
+
+The maximum likelihood method consists of determining the $\hat\theta$ which allows obtaining the highest possible likelihood value :
+$$
+\hat\theta = \arg\max_\theta L(\theta)
+$$
+If the errors of the data are independent and identically distributed, this method is equivalent to the least squares method :
+$$
+\hat{\theta} = \arg\max_{\theta} L(\theta) = \arg\min_{\theta} SCE(\theta)
+$$
+We prefer to work on the logarithm of the product $L(\theta)$ as it converts products into sums :
+$$
+LL(\theta) = ln(L(\theta)) = \sum_{i=1}^n lnf(x_i,\theta)
+$$
