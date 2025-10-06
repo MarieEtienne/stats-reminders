@@ -33,8 +33,9 @@ summary(spiders)
 Data is not centered reduced.
 
 ```{r}
-spiders <- read.delim("C:/Users/kilir/OneDrive/Bureau/ACO/Cours ACO/M2/OCR/S2_WolffData-Curated.txt")
+spiders <- read.delim("S2_WolffData-Curated.txt", header = TRUE, stringsAsFactors = TRUE)
 spiders <- spiders[c("Family","rAME","rALE","rPME","rPLE")]
+summary(spiders)
 ```
 
 Let's center reduce.
