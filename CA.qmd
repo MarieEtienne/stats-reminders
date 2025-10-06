@@ -1,4 +1,21 @@
 ---
-title: "CA"
+title: "What is a CA and how to use it"
+author: "Capucine, Marion et Maite"
 editor: visual
 ---
+
+## Introduction
+
+A Correspondence Analysis (CA), or "Analyse Factorielle de Correspondance" (AFC) in French, is a multivariate statistical method used to measure the distance between different profiles in your data or how different the data is to the independence hypothesis. The values can be quantitative, qualitative or semi-qualitative.
+
+It is usually applied to contingency tables or when you have a table with data about species abundance in different places and another one with data about the ecology of those same places.
+
+Just like in the PCA, we will be looking the orthogonal axis that maximizes the inertia. The parameter used is the chi 2 distance. The AFC gives a weight to each profile, proportional to the abundance of the profile.
+
+The columns and lines have a symmetrical role, so you'll have the same results in both directions.
+
+To use it you'll need to follow certain rules :
+
+-    all values need to be positive (which shouldn't be a problem if it's a contingency table),
+
+-   
