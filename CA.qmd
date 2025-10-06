@@ -29,3 +29,24 @@ A study was conducted in 2022 on the wetlands of the municipality of Grabels (34
 In this study, two streams (the Rieu Querelle and the Verdanson), permanent ponds and an artificial water source (the retention basin) were sampled and the individuals identified. Each wetland was sampled at several points randomly selected from the water body, and three passes were made at each point.
 
 The purpose of this analysis is to study the species assemblages depending of the site. In this context, the AFC is one of the right choices.
+
+```{r}
+rm(list = ls())
+#imports
+#install.packages("dplyr")
+library(dplyr)
+library(readr)
+
+#Import data
+macroinv <- read.csv("ABC_macroinv.csv", header = TRUE, fileEncoding = "latin1", sep = ";")
+classification <- read_delim(
+  "classif_macroinv.csv",
+  delim = ";",
+  col_names = FALSE,              
+  locale = locale(encoding = "latin1"),
+  name_repair = "minimal"
+)
+
+head(macroinv) ; head(classification)
+```
+
