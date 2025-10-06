@@ -4,15 +4,64 @@ format: html
 editor: visual
 ---
 
+```{r}
+## Packages
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+```
 
-$$\frac{dN}{dt}=r_1N(1-\frac{N}{K})-b_1NP$$
-$$\frac{dP}{dt}=-r_2P+b_2NP$$
+$$\frac{dN}{dt}=r_1N(1-\frac{N}{K})-b_1NP$$ $$\frac{dP}{dt}=-r_2P+b_2NP$$
 
-
-
-``` r
+```{r}
 ##Fonction simulation trajectoires
-simul_traj <- function(){
-  
+equation_proie <- function(N,P,r1,b1,K){
+  return(r1*N*(1-(N/K))-b1*N*P)
 }
+
+equation_predateur <- function(N,P,r2,b2){
+  return(-r2*P+b2*N*P)
+}
+
+## N_0   : effectif des proies au temps 0 
+## P_0   : effectif des prédateurs au temps 0
+## t_end : temps final de la simulation
+## pas   : pas de temps
+## r1    : taux de reproduction intrinsèque des proies
+## b1    : taux de mortalités des proies dû aux prédateurs
+## r2    : taux de reproduction des prédateur en fonction des proies 
+## b2    : taux de mortalité intrinsèques des prédateurs
+## K     : capacité de charge des proies
+simul_traj <- function(N_0,P_0,t_end,pas,r1,b1,r2,b2,K){
+  list_N <- c(N_0)
+  dN <- N_0
+  list_P <- c(P_0)
+  dP <- P_0
+  list_t <- c(0)
+  t <- 0
+  while (t<t_end){
+    t<- t+pas
+    list_t <- c(list_t,t)
+    dN <- equation_proie(dN,dP,r1,b1,K)*pas
+    if (dN<0){dN <- 0}
+    dP <- equation_predateur(dN,dP,r2,b2)*pas
+    if (dP<0){dP <- 0}
+    list_N <- c(list_N,dN)
+    list_P <- c(list_P,dP)
+  }
+  #return(list(list_N=list_N,list_P=list_P,list_t=list_t))
+  
+  ##data_wrangling
+  data <- data.frame(time=list_t,prey=list_N,predator=list_P)
+  data <- gather(data,key="specie",value="number",prey:predator)
+  
+  ##plot
+  plot <- ggplot(data,aes(x=time,y=number,color=specie,group=specie)) +
+    geom_line()
+  plot
+}
+
+##Just for the example of the function
+simul_traj(100,5,100,1,1.5,0.05,0.5,0.05,500)
+
 ```
