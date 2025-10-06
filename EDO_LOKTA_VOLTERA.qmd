@@ -5,5 +5,14 @@ editor: visual
 ---
 
 
-$$\frac{dN}{dt}=r_1N(1-\frac{N}{K})-b_1NP$ $\frac{dP}{dt}=-r_2P+b_2NP$$
+$$\frac{dN}{dt}=r_1N(1-\frac{N}{K})-b_1NP$$
+$$\frac{dP}{dt}=-r_2P+b_2NP$$
 
+
+
+``` r
+##Fonction simulation trajectoires
+simul_traj <- function(){
+  
+}
+```
