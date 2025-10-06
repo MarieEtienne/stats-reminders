@@ -47,9 +47,11 @@ summary(spiders)
 Data is not centered reduced.
 
 ```{r}
+
 spiders <- read.delim("S2_WolffData-Curated.txt", header = TRUE, stringsAsFactors = TRUE)
 spiders <- spiders[c("Family","rAME","rALE","rPME","rPLE")]
 summary(spiders)
+
 ```
 
 Let's center reduce.
