@@ -5,8 +5,6 @@ format: html
 editor: visual
 ---
 
-To realize a PCA, you need first to standardize the data (center and scale variables), to show how the variables vary together with a covariance matrix, to calculate eigenvalues and eigenvectors, to sort the components by decreasing values (the first components explain the most variance) and to project the data on the new axes.
-
 ## Example's presentation : Eye size evolution in spider
 
 Our example is based on the article "*Allometry and ecology shape eye size evolution in spiders* " (Chong et al., 2024, Current Biology 34, 3178–3188 July 22, 2024 ª 2024 The Authors. Published by Elsevier Inc. https://doi.org/10.1016/j.cub.2024.06.020). This study examines how eye size evolves in spiders, which possess up to four pairs of eyes of variable sizes. Researchers analyzed 1,098 individuals from 39 species and supplemented their data with approximately 474 additional species.
@@ -39,3 +37,14 @@ spiders$rPLE <- (spiders$rPLE-mean(spiders$rPLE))/sd(spiders$rPLE)
 spiders$rPME <- (spiders$rPME-mean(spiders$rPME))/sd(spiders$rPME)
 summary(spiders) #all means are equal to 0
 ```
+
+## Introduction
+
+PCA (Principal Component Analysis) is a dimensionality reduction technique used in data analysis and machine learning. It helps you to reduce the number of features in a dataset while keeping the most important information (variance).
+
+The main goals are to reduce the number of variables, to visualize high-dimensional data in 2D or 3D, to detect patterns, clusters and outliers, remove noise and redundant information.
+
+For example, if you get a data set with 10 correlated variables, PCA can reduce it to 2 or 3 components that explains 90% of the variance and makes it easier to visualize.
+
+To realize a PCA, you need first to standardize the data (center and scale variables), to show how the variables vary together with a covariance matrix, to calculate eigenvalues and eigenvectors, to sort the components by decreasing values (the first components explain the most variance) and to project the data on the new axes.
+
