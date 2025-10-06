@@ -7,9 +7,9 @@ editor: visual
 
 # MODELE LINERAIRE GÉNÉRALISÉ
 
-## 1) Introduction
-=======
-# MODELE LINERAIRE GÉNÉRALISÉ 
+# \## 1) Introduction
+
+# MODELE LINERAIRE GÉNÉRALISÉ
 
 #### a. Généralités et rappels
 
@@ -32,8 +32,6 @@ En conséquence, un modèle linéaire généralisé (GLM) repose sur les hypoth�
 Ainsi, une modèle linéaire généralisé s'écrit de la manière suivante : $$g(\mu_{y})= \alpha+ \beta_{1}.X_{i1}+ \beta_{2}.X_{i2}+\beta_{3}.X_{i3}+...\beta_{p}.X_{ip} = \eta $$
 
 Le prédicteur linéaire, $\eta$, est issu du modèle linéaire comme la somme des $p$ termes associés à chacun des paramètres $\beta_{p}$. Il ne s'agit pas de la valeur de $Y$. La valeur du prédicteur linéaire $\eta$ est obtenue en transformant la valeur de $Y$ par la fonction de lien, et la valeur prédite de $Y$ est obtenue en appliquant à $\eta$ la fonction inverse de la fonction de lien .
-
-=======
 
 ::: {style="text-align: justify"}
 ## Présentation des données
@@ -139,4 +137,3 @@ ggplot(data_summary, aes(x = farm_code_numeric, y = mean_signs_farm)) +
 ```{r}
 plot(x= data_summary$farm_code_numeric , y=data_summary$mean_cereal_farm)
 ```
-=======
