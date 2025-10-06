@@ -4,13 +4,14 @@ author: "Capucine, Marion et Maite"
 editor: visual
 ---
 
-## Introduction
+# Introduction
 
-A Correspondence Analysis (CA), or "Analyse Factorielle de Correspondance" (AFC) in French, is a multivariate statistical method used to measure the distance between different profiles in your data or how different the data is to the independence hypothesis. The values can be quantitative, qualitative or semi-qualitative.
+A Correspondence Analysis (CA), or "Analyse Factorielle de Correspondance" (AFC) in French, is a multivariate statistical method used to measure the distance between different profiles in your data, or the discrepancy between the data and the chi-square $\chi²$ independence hypothesis. This hypothesis (also called the null hypothesis H0) implies that the 2 variables studied are independent.    
 
+The values can be quantitative, qualitative or semi-qualitative.
 It is usually applied to contingency tables or when you have a table with data about species abundance in different places and another one with data about the ecology of those same places.
 
-Just like in the PCA, we will be looking the orthogonal axis that maximizes the inertia. The parameter used is the chi 2 distance. The AFC gives a weight to each profile, proportional to the abundance of the profile.
+Just like in the PCA, we will be looking the orthogonal axis that maximizes the inertia. The parameter used is the $\chi²$ distance : this distance is calculated between 2 rows or 2 columns. The AFC gives a weight to each profile, proportional to the abundance of the profile.
 
 The columns and lines have a symmetrical role, so you'll have the same results in both directions.
 
