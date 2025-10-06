@@ -1,16 +1,15 @@
 ---
-title: "MODELES LINEAIRES GÉNÉRALISÉS"
-subtitle: "EXEMPLE DU BLAIREAU"
+title: "GENERALIZED LINEAR MODEL"
+subtitle: "BADGER EXAMPLE"
 format: html
 editor: visual
 ---
 
+# MODELE LINERAIRE GÉNÉRALISÉ
 
-# MODELE LINERAIRE GÉNÉRALISÉ 
+## 1) Introduction
 
-## 1) Introduction 
-
-#### a. Généralités et rappels 
+#### a. Généralités et rappels
 
 Rappel : Les modèles linéaires généraux (régression linéaire, ANOVA, ANCOVA) sont utilisés pour modéliser la relation entre une variable réponse quantitative $Y$ et une ou plusieurs variables explicatives $X_{1}$,$X_{2}$...$X_{p}$, quantitatives et/ou qualitatives. Les trois conditions d'application associées sont *l'indépendance des résidus*, *la normalité des résidus* et *l'homogénéité des variances*. Cependant, nous analysons souvent des réponses $Y$ qui peuvent être discrètes et s'écarter alors de l'hypothèse gaussienne.
 
@@ -31,9 +30,6 @@ En conséquence, un modèle linéaire généralisé (GLM) repose sur les hypoth�
 Ainsi, une modèle linéaire généralisé s'écrit de la manière suivante : $$g(\mu_{y})= \alpha+ \beta_{1}.X_{i1}+ \beta_{2}.X_{i2}+\beta_{3}.X_{i3}+...\beta_{p}.X_{ip} = \eta $$
 
 Le prédicteur linéaire, $\eta$, est issu du modèle linéaire comme la somme des $p$ termes associés à chacun des paramètres $\beta_{p}$. Il ne s'agit pas de la valeur de $Y$. La valeur du prédicteur linéaire $\eta$ est obtenue en transformant la valeur de $Y$ par la fonction de lien, et la valeur prédite de $Y$ est obtenue en appliquant à $\eta$ la fonction inverse de la fonction de lien .
-
-
-
 
 ```{r}
 data <- read.table("BadgersFarmSurveysNoNA.txt", header = TRUE,  stringsAsFactors = TRUE)
