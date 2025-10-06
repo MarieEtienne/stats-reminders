@@ -3,8 +3,8 @@ title: "CA"
 editor: visual
 ---
 
-# Data 
+# Ecological context
 A study was conducted in 2022 on the wetlands of the municipality of Grabels (34), as part of a Municipal Biodiversity Atlas. The aim was to characterise the state of these environments using bioindicator species : benthic macroinvertebrates. This taxon, which is sensitive to pollution, can be used to study water quality (ref).    
-In this study, two watercourses (the Rieu Querelle and the Verdanson), permanent ponds and an artificial water source (the retention basin) were sampled and the individuals identified.
+In this study, two watercourses (the Rieu Querelle and the Verdanson), permanent ponds and an artificial water source (the retention basin) were sampled and the individuals identified. Each wetland was sampled at several points randomly selected from the water body, and three passes were made at each point.
 
 The purpose of this analysis is to study the specific composition of species assemblages using AFC. 
