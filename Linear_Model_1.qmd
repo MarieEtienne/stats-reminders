@@ -4,47 +4,39 @@ format: html
 editor: visual
 ---
 
+# General Linear Model
 
-General linear model
+We present here, a reminder sheet on the General Linear Model (GLM) and its specific features. Its use will be illustrated through an example applied to ecological data on penguins.
 
-Nous présentons ici une fiche rappel sur le modèle linéaire général et ses spécificités. Son utilisation sera illustrée à travers un exemple appliqué à des données écologiques sur les manchots. 
+Remark : the concepts covered in this reminder sheet are taken from our Master's courses and tutorials, written and taught by several professors (A. Masson and Y. Outreman). During these courses, we learned how to explore data and then analyze it using this type of model (ajouter la référence).
 
-Point important : les concepts abordés dans cette fiche récapitulative sont tirés de nos cours et TD de Master écrits et dispensés par plusieurs professeurs (A. Masson et Y. Outreman). Durant ces cours, nous avons appris à explorer les données puis les analyser à l’aide de ce type de modèle (mettre un lien vers une page web)
+The objective of the GLM is to explain a dependent variable as a function of independent explanatory variables measured on statistical units from a sample of a population. This type of model is generally constructed as follows:
 
-L’objectif du modèle linéaire est d’expliquer une variable dépendante en fonction de variables indépendantes explicatives mesurées sur des unités statistiques d’un échantillon d’une population. 
-Ce type de modèle se construit généralement de la façon suivante : 
+Y = β\*X + ε
 
-Y = β*X + ε 
+Y is the response (dependent) variable to be explained. X is an explanatory (independent) variable that can explain Y. There can be several in the model. βi represents a coefficient, placed in front of the X variables, to measure their effect on the response variable. ε represents the errors in the model, i.e., what the model cannot explain.
 
-Y est la variable réponse (dépendante) qui est à expliquer.
-X est une variable explicative (indépendante) permettant d’expliquer Y. Il peut y en avoir plusieurs dans le modèle. 
-β représente un coefficient, placé devant les X, il permet de mesurer leur effet sur la variable réponse. 
-ε représente les erreurs dans le modèle, c’est à dire ce que le modèle ne permet pas d’expliquer. 
+There are three general types of linear models:
 
-Il existe trois types de modèles linéaires généraux : 
+-   Linear regression
+-   Analysis of variance (ANOVA)
+-   Analysis of variance-covariance (ANCOVA)
 
-- la régression linéaire 
-- l’analyse de variance (ANOVA)
-- l’analyse de variance - covariance (ANCOVA)
+They each have their own specificities and depend on the nature of the independent variables X, which can be quantitative or qualitative. The response variable Y is always quantitative.
 
-Ils ont chacun leurs spécificités et dépendent de la nature des variables indépendantes X, qui peuvent être quantitatives ou qualitatives. La variable réponse Y est toujours quantitative. 
+Linear regression is used when we want to determine whether a linear relationship exists between the response variable Y and one or more quantitative X variables (then called covariates).
 
-La régression linéaire s’applique lorsque l’on souhaite voir si une relation linéaire existe entre la variable réponse Y et une ou plusieurs variables X quantitatives (alors appelées covariables). 
+ANOVA is used when the explanatory variables X are qualitative (then called factors). These qualitative X variables often have multiple categories called modalities.
 
-L’ANOVA est le modèle linéaire général utilisé lorsque les variables explicatives X sont qualitatives (alors appelées facteurs). Ces variables X qualitatives ont souvent plusieurs catégories appelées modalités. 
+ANCOVA is used when we want to model the variable Y as a function of several X variables, which can be qualitative and quantitative.
 
-L’ANCOVA est utilisée lorsque l’on souhaite modéliser la variable Y en fonction de plusieurs variables X qui peuvent être qualitatives et/ou quantitatives. 
+Choosing the right model therefore requires knowing the type of variables we wish to study before beginning the modeling process.
 
-Choisir le bon modèle nécessite donc de connaître le type de variables que l’on souhaite étudier avant de commencer la modélisation. 
+Another important aspect to consider is that for this type of model to be valid, three conditions must be met:
 
-Un autre aspect important est à prendre en compte : pour que l’utilisation de ce type de modèle soit valide, trois conditions sont à respecter : 
+The errors (residuals) must follow a normal distribution; the principle of homoscedasticity (homogeneity of the variance of the residuals) must be respected; the residuals are uncorrelated and independent.
 
-les erreurs (résidus) doivent suivre une loi normale 
-le principe d’homoscedasticité (homogénéité de la variance des résidus) doit être respecté 
-les résidus ne sont pas corrélés, les observations sont indépendantes 
-
-Ces conditions sont systématiquement vérifiées après la modélisation : l’application de cette vérification sera illustrée dans l’exemple choisi. 
-
+These conditions are systematically verified after modeling: the application of this verification will be illustrated in the chosen example.
 
 # II) Data exploration
 
@@ -120,4 +112,3 @@ summary(penguins$sex)
 ```
 
 Some groups are under-represented, in the island and species groups.
-
