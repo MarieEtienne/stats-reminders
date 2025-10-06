@@ -7,9 +7,7 @@ editor: visual
 
 # MODELE LINERAIRE GÉNÉRALISÉ
 
-## 1) Introduction
-=======
-# MODELE LINERAIRE GÉNÉRALISÉ 
+# \## 1) Introduction
 
 #### a. Généralités et rappels
 
@@ -36,37 +34,37 @@ Le prédicteur linéaire, $\eta$, est issu du modèle linéaire comme la somme d
 =======
 
 ::: {style="text-align: justify"}
-## Présentation des données
+## Data presentation
 
-Les données utilisées sont issues de Zuur *et al*. (2019), et sont constituées des signes d'activité de blaireaux (*Meles meles*) autour d'exploitations agricoles situées dans le sud-ouest de l'Angleterre, où la densité de blaireaux est importante. Cette étude a été réalisée dans le contexte de la tuberculose bovine, et de sa possible transmission au bétail par l'intermédiaire des blaireaux. La réduction du nombre de visites des exploitations agricoles par les blaireaux, particulièrement aux endroits où ils pourraient entrer en contact avec le bétail, pourrait permettre de limiter la transmission de la maladie. Ainsi, cette étude a pour objectif la prédiction de l'occurence des signes d'activité des blaireaux dans les exploitations agricoles.
+The data used come from Zuur *et al.* (2019) and consist of signs of badger (*Meles meles*) activity around farms located in the southwest of England, where badger density is high. This study was carried out in the context of bovine tuberculosis and its possible transmission to cattle through badgers. Reducing the number of farm visits by badgers — especially in places where they might come into contact with livestock — could help limit the spread of the disease. Thus, the aim of this study is to predict the occurrence of badger activity signs on farms.
 
-Entre l'automne 2003 et l'été 2005, une enquête a été menée dans 36 exploitations différentes : les données sont ainsi longitudinales, puisque chaque exploitation a été analysée sur 8 saisons consécutives. Au sein d'une même exploitation, les observations peuvent être temporellement autocorrélées.
+Between autumn 2003 and summer 2005, a survey was conducted on 36 different farms; the data are therefore longitudinal, since each farm was monitored over eight consecutive seasons. Within the same farm, observations may be temporally autocorrelated.
 
-La variable réponse (présence ou absence de signes d'activité de blaireaux) est binaire : elle prend la valeur 1 quand des signes d'activité ont été détectés, et 0 sinon. Les signes d'activité incluent la présence de fèces, de blaireautières ou encore de traces d'alimentation.
+The response variable (presence or absence of signs of badger activity) is binary: it takes the value 1 when signs of activity were detected, and 0 otherwise. Signs of activity include the presence of feces, setts, or feeding traces.
 
-Les données sont disponibles dans le fichier `BadgersFarmSurveysNoNA.txt`. Les variables sont :
+The data are available in the file `BadgersFarmSurveysNoNA.txt`. The variables are:
 
--   `Year` : année d'étude
--   `Season` : 1 = printemps, 2 = été, 3 = automne, 4 = hiver
--   `farm_code_numeric` : identifiant de l'exploitation
--   `Survey` : code du relevé (indicateur du temps)
--   `Signs_in_yard` : indicateur binaire de l'activité des blaireaux (variable réponse)
--   `No_setts_in_fields` : nombre de blaireautières observées
--   `No_active_setts_in_fields` : nombre de blaireautières activement utilisées observées
--   `No_buildings` : nombre de bâtiments dans l'exploitation
--   `No_cattle_in_buildings_yard` : nombre de bovins dans les bâtiments de l'exploitation
--   `Accessible_feed_store_present` : présence / absence d'une réserve d'alimentation animale dans l'exploitation
--   `Accessible_cattle_house_present` : présence / absence d'un accès direct à l'étable
--   `Accessible_feed_present` : présence / absence d'aliments accessibles dans l'exploitation
--   `Grass_silage` : présence / absence d'ensilage herbe
--   `Cereal_silage` : présence / absence d'ensilage céréale
--   `HayStraw` : présence / absence de foin et / ou de paille
--   `Cereal_grains` : présence / absence de grains de céréales
--   `Concentrates` : présence / absence de concentrés
--   `Proteinblocks` : présence / absence de blocs à lécher protéinés
--   `Sugarbeet` : présence / absence de betterave sucrière
--   `Vegetables` : présence / absence de légumes
--   `Molasses` : présence / absence de mélasse
+-   `Year` : studied year
+-   `Season` : 1 = spring, 2 = summer, 3 = autumn, 4 = winter
+-   `farm_code_numeric` : farm identifier
+-   `Survey` : survey identifier (time indicator)
+-   `Signs_in_yard` : binary indicator of badger activity (response variable)
+-   `No_setts_in_fields` : number of setts
+-   `No_active_setts_in_fields` : number of actively occupied setts
+-   `No_buildings` : number of buildings in the farm
+-   `No_cattle_in_buildings_yard` : number of cattle in building yards
+-   `Accessible_feed_store_present` : presence / absence of an accessible feed store
+-   `Accessible_cattle_house_present` : presence / absence of a direct access to the cattle house
+-   `Accessible_feed_present` : presence / absence of accessible feed in the farm
+-   `Grass_silage` : presence / absence of grass silage
+-   `Cereal_silage` : presence / absence of cereal silage
+-   `HayStraw` : presence / absence of hay and / or straw
+-   `Cereal_grains` : presence / absence of cereal grains
+-   `Concentrates` : presence / absence of concentrates
+-   `Proteinblocks` : presence / absence of protein blocks
+-   `Sugarbeet` : presence / absence of sugar beet
+-   `Vegetables` : presence / absence of vegetables
+-   `Molasses` : presence / absence of molasses
 :::
 
 ## Exploration des données
@@ -139,4 +137,5 @@ ggplot(data_summary, aes(x = farm_code_numeric, y = mean_signs_farm)) +
 ```{r}
 plot(x= data_summary$farm_code_numeric , y=data_summary$mean_cereal_farm)
 ```
+
 =======
