@@ -1,15 +1,88 @@
 ---
-title: "Manchots"
+title: "Penguins"
 bibliography: references.bib
 format: html
 editor: visual
 ---
 
-## Quarto
+# II) Data exploration 
 
 
+
+=======
+```{r}
+#Data importation
+library(palmerpenguins)
+data("penguins")
+penguins$sex<-as.factor(penguins$sex)
+penguins$species<-as.factor(penguins$species)
+penguins$island<-as.factor(penguins$island)
+str(penguins)
+```
+
+```{r}
+#Is NA? 
+colSums(is.na(penguins))
+```
+
+There is NA values in the data set.
+
+```{r}
+par(mfrow=c(2,2))
+# Boxplot
+boxplot(penguins$bill_depth_mm,col='aquamarine3',ylab='Bill depth')
+# Cleveland plot
+dotchart(penguins$bill_depth_mm,pch=16,col='aquamarine3',xlab='Bill depth')
+# Histogram
+hist(penguins$bill_depth_mm,col='aquamarine3',xlab="Bill depth",main="")
+# Quantile-Quantile plot
+qqnorm(penguins$bill_depth_mm,pch=16,col='aquamarine3',xlab='')
+qqline(penguins$bill_depth_mm,col='red',lwd=2)
+```
+
+There is no outlier in Y and Y distribution.
+
+```{r}
+par(mfrow = c(1, 3))
+
+# Bill lenght 
+# Cleveland plot
+dotchart(penguins$bill_length_mm,pch=16,col='aquamarine3',xlab='Bill Length')
+# Histogram
+hist(penguins$bill_length_mm,col='aquamarine3',xlab="Bill Length",main="")
+# Quantile-Quantile plot
+qqnorm(penguins$bill_length_mm,pch=16,col='aquamarine3',xlab='')
+qqline(penguins$bill_length_mm,col='red',lwd=2)
+
+# Flipper lenght 
+# Cleveland plot
+dotchart(penguins$flipper_length_mm,pch=16,col='aquamarine3',xlab='Flipper Lenght')
+# Histogram
+hist(penguins$flipper_length_mm,col='aquamarine3',xlab="Flipper Lenght",main="")
+# Quantile-Quantile plot
+qqnorm(penguins$flipper_length_mm,pch=16,col='aquamarine3',xlab='')
+qqline(penguins$flipper_length_mm,col='red',lwd=2)
+
+# Body mass
+# Cleveland plot
+dotchart(penguins$body_mass_g,pch=16,col='aquamarine3',xlab='Body Mass')
+# Histogram
+hist(penguins$body_mass_g,col='aquamarine3',xlab="Body Mass",main="")
+# Quantile-Quantile plot
+qqnorm(penguins$body_mass_g,pch=16,col='aquamarine3',xlab='')
+qqline(penguins$body_mass_g,col='red',lwd=2)
+```
+
+There is no outlier in X and X distribution
+
+```{r}
+summary(penguins$species)
+summary(penguins$island)
+summary(penguins$sex)
+```
+
+Some groups are under-represented, in the island and species groups.
 
 ### References
-
-
 @Gorman2014
+
