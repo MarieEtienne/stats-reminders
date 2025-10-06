@@ -1,37 +1,29 @@
 ---
-title: "MODELES LINEAIRES GÉNÉRALISÉS"
-subtitle: "EXEMPLE DU BLAIREAU"
+title: "GENERALIZED LINEAR MODEL"
+subtitle: "BADGER EXAMPLE"
 format: html
 editor: visual
 ---
+# GENERAL INTRODUCTION
 
-# MODELE LINERAIRE GÉNÉRALISÉ
+General Linear Models are used to model the relationship between a continuous response variable $Y$ and one or more explanatory variables $X_{1}$,$X_{2}$...$X_{p}$. Three assumptions are associated with the use of General linear models, being *independence of residuals*, *normality of residuals* and *homogeneity of variances*. However, we often analyse $Y$ response that could be discrete and then, may depart from the Gaussian assumption. 
 
-# \## 1) Introduction
+Discrete response data, like counts and binary data, generally exhibits a mean-variance relationship such that the variance of $Y$ varies with mean of $Y$. This mean-variance relationship suggests that variance can not be homogeneous in a dataset as depending on the mean while General Linear Models expect constant variance (homogeneity of variance). In addition, when performing a General Linear Model on a count data, predicted values can be negative and residuals non normally distributed. In conclusion, using General Linear Model on discrete response often generate departures from its expectancies. Hence, we need specific tools to analyse discrete response data. These tools are **Generalized Linear Models**. 
 
-#### a. Généralités et rappels
+A Generalized Linear Model (GLM) consists of three steps:  
+1. Assumption of the distribution of the response variable $Y_{i}$  
+2. The specification of the systematic part; this is the linear function of the explanatory variables (the linear predictor called $\eta$)  
+3. The relationship between the mean value of $Y_{i}$ and the systematic part. This is also called the link between the mean and the systematic part: **the link function noted $g$ **. 
 
-Rappel : Les modèles linéaires généraux (régression linéaire, ANOVA, ANCOVA) sont utilisés pour modéliser la relation entre une variable réponse quantitative $Y$ et une ou plusieurs variables explicatives $X_{1}$,$X_{2}$...$X_{p}$, quantitatives et/ou qualitatives. Les trois conditions d'application associées sont *l'indépendance des résidus*, *la normalité des résidus* et *l'homogénéité des variances*. Cependant, nous analysons souvent des réponses $Y$ qui peuvent être discrètes et s'écarter alors de l'hypothèse gaussienne.
+As a consequence, a Generalized Linear Model (GLM) makes some important assumptions :  
+1. The observed $Y$ are independent, conditional on some predictors $X$  
+2. The response $Y$ come from a known distribution with a known mean-variance relationship  
+3. There is a straight line relationship between a known function $g$ of the mean of $Y$ and the predictors $X$
 
-Les comptages et les données binaires (réponses $Y$ discrètes), présentent généralement une relation moyenne-variance telle que la variance de $Y$ varie avec la moyenne de $Y$. Cette relation moyenne-variance suggère que la variance ne peut donc pas être homogène car elle dépend de la moyenne alors que les modèles linéaires généraux ont pour hypothèse d'application une homogénéité de la variance. En conclusion, l'utilisation d'un modèle linéaire général sur des réponses discrètes génère le plus souvent des écarts par rapport aux conditions d'application. C'est dans ce contexte qu'ont été introduit les modèles liénaires généralisés.
+So, a generalized linear model can be written as follow:
+$$g(\mu_{y})= \alpha+ \beta_{1}.X{i1}+ \beta_{2}.X{i2}+\beta_{3}.X{i3}+...\beta_{p}.X{ip} = \eta $$
+The linear predictor, $\eta$, emerges from the linear model as a sum of the terms for each of the $p$ parameters. This is not a value of $Y$. The value of $\eta$ is obtained by transforming the value of $Y$ by the link function, and the predicted value of $Y$ is obtained by applying the inverse link function to $\eta$.
 
-#### b. Construction d'un modèle linéaire généralisé
-
-La construction d'un modèle linéaire généralisé (GLM) se décompose en trois étapes :\
-1. L'hypothèse de la loi de distribution de la variable réponse $Y_{i}$\
-2. La spécification de la partie systématique : il s'agit de la fonction linéaire des variables explicatives $X_s$ (appelé le prédicteur linéaire et noté $\eta$)\
-3. La relation entre la valeur moyenne de $Y_{i}$ et le prédicteur linéaire. On l'appelle également le lien entre la moyenne et le prédicteur linéaire : **la fonction de lien notée** $g$.
-
-En conséquence, un modèle linéaire généralisé (GLM) repose sur les hypothèses suivantes :\
-1. Les observées $Y$ sont indépendantes, conditionnellement à certains prédicteurs $X$.\
-2. La réponse $Y$ provient d'une distribution connue avec une relation moyenne-variance connue.\
-3. Il existe une relation linéaire entre une fonction connue $g$ de la moyenne de $Y$ et les prédicteurs $X$.
-
-Ainsi, une modèle linéaire généralisé s'écrit de la manière suivante : $$g(\mu_{y})= \alpha+ \beta_{1}.X_{i1}+ \beta_{2}.X_{i2}+\beta_{3}.X_{i3}+...\beta_{p}.X_{ip} = \eta $$
-
-Le prédicteur linéaire, $\eta$, est issu du modèle linéaire comme la somme des $p$ termes associés à chacun des paramètres $\beta_{p}$. Il ne s'agit pas de la valeur de $Y$. La valeur du prédicteur linéaire $\eta$ est obtenue en transformant la valeur de $Y$ par la fonction de lien, et la valeur prédite de $Y$ est obtenue en appliquant à $\eta$ la fonction inverse de la fonction de lien .
-
-::: {style="text-align: justify"}
 ## Data presentation
 
 The data used come from Zuur *et al.* (2019) and consist of signs of badger (*Meles meles*) activity around farms located in the southwest of England, where badger density is high. This study was carried out in the context of bovine tuberculosis and its possible transmission to cattle through badgers. Reducing the number of farm visits by badgers — especially in places where they might come into contact with livestock — could help limit the spread of the disease. Thus, the aim of this study is to predict the occurrence of badger activity signs on farms.
