@@ -4,6 +4,48 @@ format: html
 editor: visual
 ---
 
+
+General linear model
+
+Nous présentons ici une fiche rappel sur le modèle linéaire général et ses spécificités. Son utilisation sera illustrée à travers un exemple appliqué à des données écologiques sur les manchots. 
+
+Point important : les concepts abordés dans cette fiche récapitulative sont tirés de nos cours et TD de Master écrits et dispensés par plusieurs professeurs (A. Masson et Y. Outreman). Durant ces cours, nous avons appris à explorer les données puis les analyser à l’aide de ce type de modèle (mettre un lien vers une page web)
+
+L’objectif du modèle linéaire est d’expliquer une variable dépendante en fonction de variables indépendantes explicatives mesurées sur des unités statistiques d’un échantillon d’une population. 
+Ce type de modèle se construit généralement de la façon suivante : 
+
+Y = β*X + ε 
+
+Y est la variable réponse (dépendante) qui est à expliquer.
+X est une variable explicative (indépendante) permettant d’expliquer Y. Il peut y en avoir plusieurs dans le modèle. 
+β représente un coefficient, placé devant les X, il permet de mesurer leur effet sur la variable réponse. 
+ε représente les erreurs dans le modèle, c’est à dire ce que le modèle ne permet pas d’expliquer. 
+
+Il existe trois types de modèles linéaires généraux : 
+
+- la régression linéaire 
+- l’analyse de variance (ANOVA)
+- l’analyse de variance - covariance (ANCOVA)
+
+Ils ont chacun leurs spécificités et dépendent de la nature des variables indépendantes X, qui peuvent être quantitatives ou qualitatives. La variable réponse Y est toujours quantitative. 
+
+La régression linéaire s’applique lorsque l’on souhaite voir si une relation linéaire existe entre la variable réponse Y et une ou plusieurs variables X quantitatives (alors appelées covariables). 
+
+L’ANOVA est le modèle linéaire général utilisé lorsque les variables explicatives X sont qualitatives (alors appelées facteurs). Ces variables X qualitatives ont souvent plusieurs catégories appelées modalités. 
+
+L’ANCOVA est utilisée lorsque l’on souhaite modéliser la variable Y en fonction de plusieurs variables X qui peuvent être qualitatives et/ou quantitatives. 
+
+Choisir le bon modèle nécessite donc de connaître le type de variables que l’on souhaite étudier avant de commencer la modélisation. 
+
+Un autre aspect important est à prendre en compte : pour que l’utilisation de ce type de modèle soit valide, trois conditions sont à respecter : 
+
+les erreurs (résidus) doivent suivre une loi normale 
+le principe d’homoscedasticité (homogénéité de la variance des résidus) doit être respecté 
+les résidus ne sont pas corrélés, les observations sont indépendantes 
+
+Ces conditions sont systématiquement vérifiées après la modélisation : l’application de cette vérification sera illustrée dans l’exemple choisi. 
+
+
 # II) Data exploration
 
 ```{r}
@@ -78,3 +120,4 @@ summary(penguins$sex)
 ```
 
 Some groups are under-represented, in the island and species groups.
+
