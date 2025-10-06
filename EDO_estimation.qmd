@@ -59,3 +59,14 @@ We prefer to work on the logarithm of the product $L(\theta)$ as it converts pro
 $$
 LL(\theta) = ln(L(\theta)) = \sum_{i=1}^n lnf(x_i,\theta)
 $$
+
+## Least squares method
+
+One of the most used methods to appreciate the quality of a model is the least squares method, also known as mean square error method. It compares the simulated data with the real ones through the gap between them. This gap is meant to be the littlest as possible, and is estimated with the following formula:
+
+$$
+\text{MSE} = \sum_{i}^{}(Y_{i}-\hat{Y})^{2}\\\hat{Y} = \text{mean value of the data set}\\Y_{i} = \text{value of the individual i}
+$$
+
+Graphically, a good model means that the gap between every simulated point and its real correspondent is the smallest possible.
+
