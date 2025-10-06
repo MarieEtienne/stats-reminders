@@ -7,6 +7,9 @@ editor: visual
 # Introduction
 
 
+This document aims to be a presentation of a logistic growth simulation: from the data simulation to the estimation of the parameters.
+
+The following document will thus be organized in two parts : the data simulation and the estimation of the parameters.
 
 # Data Simulation
 
