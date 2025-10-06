@@ -7,9 +7,6 @@ editor: visual
 
 ## Quarto
 
-
-
 ### References
-
 
 @Gorman2014
