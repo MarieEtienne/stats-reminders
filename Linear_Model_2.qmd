@@ -4,23 +4,64 @@ format: html
 editor: visual
 ---
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
-
 ```{r}
-1 + 1
+data <- read.table("BadgersFarmSurveysNoNA.txt", header = TRUE)
 ```
 
-You can add options to executable code like this
-
 ```{r}
-#| echo: false
-2 * 2
+library(dplyr)
+
+data <- data %>%
+  group_by(farm_code_numeric) %>%
+  mutate(mean_signs_farm = mean(Signs_in_yard, na.rm = TRUE)) %>%
+  ungroup()
+
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+```{r}
+library(ggplot2)
+library(dplyr)
+
+# Résumé : une ligne par ferme
+data_summary <- data %>%
+  select(farm_code_numeric, mean_signs_farm) %>%
+  distinct()
+
+# Plot
+ggplot(data_summary, aes(x = farm_code_numeric, y = mean_signs_farm)) +
+  # Points
+  geom_point(color = "#0072B2", size = 3) +
+  
+  # Étiquettes pour fermes avec moyenne > 0
+  geom_text(
+    data = subset(data_summary, mean_signs_farm > 0),
+    aes(label = farm_code_numeric),
+    nudge_y = 0.05,  # 🔼 décalage vers le haut
+    color = "black",
+    size = 3.2,
+    fontface = "bold"
+  ) +
+
+  # Thème clair et épuré
+  theme_minimal(base_size = 12) +
+  
+  theme(
+  axis.title.y = element_text(size = 9)  # Ajuste la taille ici
+)+
+  
+  # Titres
+  labs(
+    title = "Présence moyenne des blaireaux par ferme",
+    x = "Numéro de ferme",
+    y = "Présence moyenne des blaireaux (présence/abscence par saison)"
+  ) +
+  
+  # Axes plus lisibles
+  scale_x_continuous(breaks = unique(data_summary$farm_code_numeric)) +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+
+
+```
