@@ -4,6 +4,7 @@ format: html
 editor: visual
 ---
 
+
 ```{r}
 ## Packages
 library(ggplot2)
@@ -11,7 +12,52 @@ library(dplyr)
 library(tidyr)
 ```
 
-$$\frac{dN}{dt}=r_1N(1-\frac{N}{K})-b_1NP$$ $$\frac{dP}{dt}=-r_2P+b_2NP$$
+
+**INTRODUCTION** :
+
+When having a dynamic system modeled by an ODE, we usually can't find a mathematical solution. Thus, we have 2 options : a numerical approach and a qualitative one. Here, we will focus on the latter, that is to say qualitatively predict the evolution (in terms of behavior) of N(t) (the number of the population at time t), in particular asymptotically.
+
+Looking at lynx and hare pelts from the Hudson's Bay Company's (fur-collecting) trappers' hunts over a 90-year period, we see that the number of hare and lynx pelts is correlated. If we assume that the number of pelts collected is proportional to the total population, then we arrive at the conclusion that the hare and lynx population is correlated with a phase shift of a few years for the lynx.
+
+What is the intuition behind this? Lynxes need hares to survive, and so the lynx population can only grow if the hare population grows. There's a time lag: when the lynx population is low, the hare population begins to grow. The lynxes then begin to have food again, and will then grow again and begin to massacre a large part of the hare population, only to run out of food. Then the cycle begins again.
+
+**Logistic Prey-Predator model (in a limited environment)** :
+
+$$
+\begin{cases} 
+\frac{dN}{dt}=r_1N(1-\frac{N}{K})-b_1NP \\
+\frac{dP}{dt}=-r_2P+b_2NP
+\end{cases}
+$$
+
+The parameters are the following ones (they are all positive :) ) :
+
+| Parameters | Meaning                             |
+|------------|-------------------------------------|
+| $r_{1}$    | growth rate of preys' population    |
+| $r_{2}$    | death rate of predators' population |
+| $b_{1}$    | predation efficiency                |
+| $b_{2}$    | predation yield                     |
+| ${K}$      | biotic capacity                     |
+
+The overall expected mecanism is the following :
+
+```{r}
+Proiepred<- function(t, y, parameters) {
+  N <- y[1]
+  P <- y[2]
+  r1 <- parameters[1]
+  r2 <- parameters[2]
+  b1 <- parameters[3]
+  b2 <- parameters[4]
+  dPop <- numeric(2)
+  dPop[1] <- r1*N - b1*N*P
+  dPop[2] <- - r2*P + b2*N*P
+  list(dPop)
+}
+```
+
+
 
 ```{r}
 ##Fonction simulation trajectoires
