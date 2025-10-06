@@ -24,7 +24,12 @@ classification <- read_delim(
   name_repair = "minimal"
 )
 
-#replace colnames :
+#replace colnames in both dataframes
+colnames(macroinv) <- colnames(macroinv) %>%
+                  stri_trans_general("Latin-ASCII") %>% 
+                  gsub("\\.", "_", .) %>%
+                  gsub("[^A-Za-z0-9_]", "", .)
+
 classification <- classification %>%
   mutate(across(everything(), \(x)
                 x %>%
@@ -48,5 +53,3 @@ species_keep <- names(species_sum[species_sum > 1])
 #create reduced dataframe
 macroinv_red <- macroinv[, c(names(macroinv)[1:2], species_keep)]
 ```
-
-#### Merge macro-invertebrate counts with group name
