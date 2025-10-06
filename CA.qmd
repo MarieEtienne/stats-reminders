@@ -30,15 +30,19 @@ In this study, two streams (the Rieu Querelle and the Verdanson), permanent pond
 
 The purpose of this analysis is to study the species assemblages depending of the site. In this context, the AFC is one of the right choices.
 
+#### Imports
+
 ```{r}
 rm(list = ls())
 #imports
 #install.packages("dplyr")
 library(dplyr)
 library(readr)
+library(stringi)
 
 #Import data
 macroinv <- read.csv("ABC_macroinv.csv", header = TRUE, fileEncoding = "latin1", sep = ";")
+
 classification <- read_delim(
   "classif_macroinv.csv",
   delim = ";",
@@ -47,6 +51,29 @@ classification <- read_delim(
   name_repair = "minimal"
 )
 
+#replace colnames :
+classification <- classification %>%
+  mutate(across(everything(), \(x)
+                x %>%
+                  stri_trans_general("Latin-ASCII") %>% 
+                  gsub(" ", "_", .) %>%
+                  gsub("[^A-Za-z0-9_]", "", .)
+                ))
+
 head(macroinv) ; head(classification)
 ```
 
+#### Reduce the size of the data frame to remove rare species (\<1):
+
+```{r}
+#check each specie count
+species_sum = colSums(macroinv[,-c(1,2)])
+
+#keep only names of species with <1 occurences
+species_keep <- names(species_sum[species_sum > 1])
+
+#create reduced dataframe
+macroinv_red <- macroinv[, c(names(macroinv)[1:2], species_keep)]
+```
+
+#### Merge macro-invertebrate counts with group name
