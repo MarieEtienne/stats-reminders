@@ -6,10 +6,13 @@ editor: visual
 
 # Introduction
 
+<<<<<<< HEAD
 This document aims to be a presentation of a logistic growth simulation: from the data simulation to the estimation of the parameters.
 
 The following document will thus be organized in two parts : the data simulation and the estimation of the parameters.
 
+=======
+>>>>>>> b89ca69 (Add data simulation R script)
 # Data Simulation
 
 ```{r}
