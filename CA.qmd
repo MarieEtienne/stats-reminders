@@ -6,10 +6,9 @@ editor: visual
 
 # Introduction
 
-A Correspondence Analysis (CA), or "Analyse Factorielle de Correspondance" (AFC) in French, is a multivariate statistical method used to measure the distance between different profiles in your data, or the discrepancy between the data and the chi-square $\chi²$ independence hypothesis. This hypothesis (also called the null hypothesis H0) implies that the 2 variables studied are independent.    
+A Correspondence Analysis (CA), or "Analyse Factorielle de Correspondance" (AFC) in French, is a multivariate statistical method used to measure the distance between different profiles in your data, or the discrepancy between the data and the chi-square $\chi²$ independence hypothesis. This hypothesis (also called the null hypothesis H0) implies that the 2 variables studied are independent.
 
-The values can be quantitative, qualitative or semi-qualitative.
-It is usually applied to contingency tables or when you have a table with data about species abundance in different places and another one with data about the ecology of those same places.
+The values can be quantitative, qualitative or semi-qualitative. It is usually applied to contingency tables or when you have a table with data about species abundance in different places and another one with data about the ecology of those same places.
 
 Just like in the PCA, we will be looking the orthogonal axis that maximizes the inertia. The parameter used is the $\chi²$ distance : this distance is calculated between 2 rows or 2 columns. The AFC gives a weight to each profile, proportional to the abundance of the profile.
 
@@ -17,13 +16,11 @@ The columns and lines have a symmetrical role, so you'll have the same results i
 
 To use it you'll need to pay attention to certain things :
 
--    all values need to be positive (which shouldn't be a problem if it's a contingency table),
+-   all values need to be positive (which shouldn't be a problem if it's a contingency table),
 
 -   if you have rare species it may change the shape of your results significantly. It's not always a bad thing, just something you need to be aware of.
 
-
 # Ecological context
-
 
 A study was conducted in 2022 on the wetlands of the municipality of Grabels (34), as part of a Municipal Biodiversity Atlas. The aim was to characterise the state of these environments using bioindicator species : benthic macroinvertebrates. This taxon, which is sensitive to pollution, can be used to study water quality (ref).\
 In this study, two streams (the Rieu Querelle and the Verdanson), permanent ponds and an artificial water source (the retention basin) were sampled and the individuals identified. Each wetland was sampled at several points randomly selected from the water body, and three passes were made at each point.
