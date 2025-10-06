@@ -1,0 +1,45 @@
+---
+title: "EDO Estimation of parameters : the logistic growth"
+format: html
+editor: visual
+---
+
+# Introduction
+
+
+
+# Data Simulation
+
+```{r}
+# Parameters
+time <- seq(0, 25, 0.25)
+r <- 0.5
+K <- 100
+error <- 5
+y0 <- 1
+
+# Logistic growth function with error
+logistic <- function(t, r, K, y0, error) {
+  growth <- K / (1 + ((K - y0) / y0) * exp(-r * t))
+  return(growth + rnorm(1, mean = 0, sd = error))  # Add random error
+}
+
+# Apply the logistic function over the time vector
+y <- sapply(time, logistic, r = r, K = K, y0 = y0, error = error)
+
+# Plot the result
+plot(time, y, col = "blue", xlab = "Time", ylab = "Population", main = "Logistic Growth with Error")
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
+
+# Estimation of the parameters
+
+## General theory
