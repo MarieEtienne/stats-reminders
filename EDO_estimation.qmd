@@ -6,9 +6,7 @@ editor: visual
 
 # Introduction
 
-This document aims to be a presentation of a logistic growth simulation: from the data simulation to the estimation of the parameters.
-
-The following document will thus be organized in two parts : the data simulation and the estimation of the parameters.
+This document aims to be a presentation of a logistic growth simulation: from the data simulation to the estimation of the parameters. The following document will thus be organized in two parts : the data simulation and the estimation of the parameters.
 
 # Data Simulation
 
@@ -17,7 +15,7 @@ $$
 \frac{dN}{dt} = rN(1-\frac{N}{K})
 $$
 
-where N is the size of a population, r is the growth rate and K is the carrying capacity. Thankfully, there is an explicit solution of the verhulst model that allows us to simulate the data.
+where N is the size of a population, r is the growth rate and K is the carrying capacity. Thankfully, there is an explicit solution of the Verhulst model that allows us to simulate the data. For each x (the time), we calculate the deterministic solution and add a noise, a centered, normally distributed deviation from the deterministic model.
 
 ```{r}
 # Parameters
