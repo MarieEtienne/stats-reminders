@@ -12,6 +12,12 @@ The following document will thus be organized in two parts : the data simulation
 
 # Data Simulation
 
+We first simulate the data on which we will illustrate two estimation methods. The simulation is based on the logistic growth (Verhulst model). The ordinary differential equation describing the logistic growth is defined as $$
+\frac{dN}{dt} = rN(1-\frac{N}{K})
+$$
+
+where N is the size of a population, r is the growth rate and K is the carrying capacity. Thankfully, there is an explicit solution of the verhulst model that allows us to simulate the data.
+
 ```{r}
 # Parameters
 time <- seq(0, 25, 0.25)
@@ -41,21 +47,14 @@ We have p parameters $\theta = (\theta_1,\theta_2,...,\theta_p)$.
 
 ### Maximum likelihood
 
-Likelihood corresponds to the probability of observing the data, knowing the parameters $\theta$. The likelihood function is as follows :
-$$
+Likelihood corresponds to the probability of observing the data, knowing the parameters $\theta$. The likelihood function is as follows : $$
 L(\theta) = \prod_{i=1}^n f(x_i , \theta)
-$$
-In this function, $x_i$ corresponds to the observations and $f(x_i,\theta)$ corresponds to the probability density function of the random variable X.
+$$ In this function, $x_i$ corresponds to the observations and $f(x_i,\theta)$ corresponds to the probability density function of the random variable X.
 
-The maximum likelihood method consists of determining the $\hat\theta$ which allows obtaining the highest possible likelihood value :
-$$
+The maximum likelihood method consists of determining the $\hat\theta$ which allows obtaining the highest possible likelihood value : $$
 \hat\theta = \arg\max_\theta L(\theta)
-$$
-If the errors of the data are independent and identically distributed, this method is equivalent to the least squares method :
-$$
+$$ If the errors of the data are independent and identically distributed, this method is equivalent to the least squares method : $$
 \hat{\theta} = \arg\max_{\theta} L(\theta) = \arg\min_{\theta} SCE(\theta)
-$$
-We prefer to work on the logarithm of the product $L(\theta)$ as it converts products into sums :
-$$
+$$ We prefer to work on the logarithm of the product $L(\theta)$ as it converts products into sums : $$
 LL(\theta) = ln(L(\theta)) = \sum_{i=1}^n lnf(x_i,\theta)
 $$
