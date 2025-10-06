@@ -5,12 +5,11 @@ format: html
 editor: visual
 ---
 
+# MODELE LINERAIRE GÉNÉRALISÉ
 
-# MODELE LINERAIRE GÉNÉRALISÉ 
+## 1) Introduction
 
-## 1) Introduction 
-
-#### a. Généralités et rappels 
+#### a. Généralités et rappels
 
 Rappel : Les modèles linéaires généraux (régression linéaire, ANOVA, ANCOVA) sont utilisés pour modéliser la relation entre une variable réponse quantitative $Y$ et une ou plusieurs variables explicatives $X_{1}$,$X_{2}$...$X_{p}$, quantitatives et/ou qualitatives. Les trois conditions d'application associées sont *l'indépendance des résidus*, *la normalité des résidus* et *l'homogénéité des variances*. Cependant, nous analysons souvent des réponses $Y$ qui peuvent être discrètes et s'écarter alors de l'hypothèse gaussienne.
 
@@ -32,9 +31,6 @@ Ainsi, une modèle linéaire généralisé s'écrit de la manière suivante : $$
 
 Le prédicteur linéaire, $\eta$, est issu du modèle linéaire comme la somme des $p$ termes associés à chacun des paramètres $\beta_{p}$. Il ne s'agit pas de la valeur de $Y$. La valeur du prédicteur linéaire $\eta$ est obtenue en transformant la valeur de $Y$ par la fonction de lien, et la valeur prédite de $Y$ est obtenue en appliquant à $\eta$ la fonction inverse de la fonction de lien .
 
-
-
-
 ```{r}
 data <- read.table("BadgersFarmSurveysNoNA.txt", header = TRUE,  stringsAsFactors = TRUE)
 ```
@@ -46,6 +42,11 @@ data <- data %>%
   group_by(farm_code_numeric) %>%
   mutate(mean_signs_farm = mean(Signs_in_yard, na.rm = TRUE)) %>%
   ungroup()
+
+data <- data %>%
+  group_by(farm_code_numeric) %>%
+  mutate(mean_cereal_farm = mean(Cereal_grains, na.rm = TRUE)) %>%
+  ungroup()
 ```
 
 ```{r}
@@ -53,7 +54,7 @@ library(ggplot2)
 
 # Résumé : une ligne par ferme
 data_summary <- data %>%
-  select(farm_code_numeric, mean_signs_farm) %>%
+  select(farm_code_numeric, mean_signs_farm, mean_cereal_farm) %>%
   distinct()
 
 # Plot
@@ -93,4 +94,8 @@ ggplot(data_summary, aes(x = farm_code_numeric, y = mean_signs_farm)) +
   )
 
 
+```
+
+```{r}
+plot(x= data_summary$farm_code_numeric , y=data_summary$mean_cereal_farm)
 ```
