@@ -19,4 +19,37 @@ data <-read.delim("S2_WolffData-Curated.txt",header = TRUE, stringsAsFactors = T
 summary(data)
 ```
 
+
 The raw data set is composed of 473 observations of 24 variables.
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
+
+```{r}
+head(spiders)
+summary(spiders)
+```
+
+Data is not centered reduced.
+
+```{r}
+spiders <- read.delim("C:/Users/kilir/OneDrive/Bureau/ACO/Cours ACO/M2/OCR/S2_WolffData-Curated.txt")
+spiders <- spiders[c("Family","rAME","rALE","rPME","rPLE")]
+```
+
+Let's center reduce.
+
+```{r}
+spiders$rALE <- (spiders$rALE-mean(spiders$rALE))/sd(spiders$rALE)
+spiders$rAME <- (spiders$rAME-mean(spiders$rAME))/sd(spiders$rAME)
+spiders$rPLE <- (spiders$rPLE-mean(spiders$rPLE))/sd(spiders$rPLE)
+spiders$rPME <- (spiders$rPME-mean(spiders$rPME))/sd(spiders$rPME)
+
+```
+
