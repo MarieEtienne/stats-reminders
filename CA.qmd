@@ -2,3 +2,23 @@
 title: "CA"
 editor: visual
 ---
+
+```{r}
+rm(list = ls())
+#imports
+#install.packages("dplyr")
+library(dplyr)
+library(readr)
+
+#Import data
+macroinv <- read.csv("ABC_macroinv.csv", header = TRUE, fileEncoding = "latin1", sep = ";")
+classification <- read_delim(
+  "classif_macroinv.csv",
+  delim = ";",
+  col_names = FALSE,              
+  locale = locale(encoding = "latin1"),
+  name_repair = "minimal"
+)
+
+head(macroinv) ; head(classification)
+```
