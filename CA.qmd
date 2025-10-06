@@ -20,3 +20,11 @@ To use it you'll need to pay attention to certain things :
 -    all values need to be positive (which shouldn't be a problem if it's a contingency table),
 
 -   if you have rare species it may change the shape of your results significantly. It's not always a bad thing, just something you need to be aware of.
+
+
+# Data 
+A study was conducted in 2022 on the wetlands of the municipality of Grabels (34), as part of a Municipal Biodiversity Atlas. The aim was to characterise the state of these environments using bioindicator species : benthic macroinvertebrates. This taxon, which is sensitive to pollution, can be used to study water quality (ref).    
+In this study, two watercourses (the Rieu Querelle and the Verdanson), permanent ponds and an artificial water source (the retention basin) were sampled and the individuals identified.
+
+The purpose of this analysis is to study the specific composition of species assemblages using AFC. 
+
