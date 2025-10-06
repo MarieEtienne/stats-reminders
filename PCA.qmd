@@ -1,5 +1,5 @@
 ---
-title: "Principal Componant Analysis"
+title: "Principal Component Analysis"
 authors: "Kilian Rocher, Océane Picot, Alexia Orhan"
 format: html
 editor: visual
@@ -12,12 +12,11 @@ To realize a PCA, you need first to standardize the data (center and scale varia
 
 Our example is based on the article "*Allometry and ecology shape eye size evolution in spiders* " (Chong et al., 2024, Current Biology 34, 3178–3188 July 22, 2024 ª 2024 The Authors. Published by Elsevier Inc. https://doi.org/10.1016/j.cub.2024.06.020). This study examines how eye size evolves in spiders, which possess up to four pairs of eyes of variable sizes. Researchers analyzed 1,098 individuals from 39 species and supplemented their data with approximately 474 additional species.
 
-The researchers measured **four different eye pairs** simultaneously. PCA reduces this 4-dimensional dataset into interpretable components, making it easier to visualize and understand patterns.
+The researchers measured four different eye pairs simultaneously. PCA reduces this 4-dimensional dataset into interpretable components, making it easier to visualize and understand patterns.
 
 ```{r}
 data <-read.delim("S2_WolffData-Curated.txt",header = TRUE, stringsAsFactors = TRUE)
 summary(data)
 ```
 
-The raw dataset is composed of 473 observation of 24 variable:
-
+The raw data set is composed of 473 observations of 24 variables.
