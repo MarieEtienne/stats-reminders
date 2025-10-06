@@ -12,7 +12,8 @@ The following document will thus be organized in two parts : the data simulation
 
 # Data Simulation
 
-We first simulate the data on which we will illustrate two estimation methods. The simulation is based on the logistic growth (Verhulst model). The ordinary differential equation describing the logistic growth is defined as $$
+We first simulate the data on which we will illustrate two estimation methods. The simulation is based on the logistic growth (Verhulst model). The ordinary differential equation describing the logistic growth is defined as 
+$$
 \frac{dN}{dt} = rN(1-\frac{N}{K})
 $$
 
