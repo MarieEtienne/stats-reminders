@@ -31,14 +31,13 @@ The raw data set is composed of 473 observations of 24 variables.
 
 ## Data preprocessing
 
-We don't want to analyze all speceis so we just keep the families. Also we keep relative variables instead of absolute ones in order to be able to compare spider families with different sizes. Data is not centered reduced yet.
+We don't want to analyze all species so we just keep the families. Also we keep relative variables instead of absolute ones in order to be able to compare spider families with different sizes. Data is not centered reduced yet.
 
 ```{r}
 spiders <- spiders[c("Family","rAME","rALE","rPME","rPLE")] #data selection
 summary(spiders)
 ```
 
->>>>>>> 9be27b6 (Solve conflicts from the REBASE)
 Let's center reduce.
 
 ```{r}
@@ -48,3 +47,45 @@ spiders$rPLE <- (spiders$rPLE-mean(spiders$rPLE))/sd(spiders$rPLE)
 spiders$rPME <- (spiders$rPME-mean(spiders$rPME))/sd(spiders$rPME)
 summary(spiders) #all means are equal to 0
 ```
+
+## PCA Analysis
+
+PCA Analysis
+
+```{r}
+library(FactoMineR)
+res.pca <- PCA(spiders,
+               scale.unit = FALSE,    # already centered-reduced
+               quali.sup = 1,         # "Family" is qualitative
+               graph = FALSE)
+```
+
+Data visualisation
+
+Graph of variables :
+
+```{r}
+library(factoextra)
+fviz_pca_var(res.pca,
+             col.var = "contrib",
+             gradient.cols = c("blue", "yellow", "red"),
+             repel = TRUE) #show how relative eyed sizes are correlated
+```
+
+Graph of individuals :
+
+```{r}
+fviz_pca_ind(res.pca, geom.ind = "point", # points uniquement 
+             label = "none", # pas de texte sur les points 
+             habillage = spiders$Family, # couleurs par famille (optionnel)
+             legend = "none", # supprime complètement la légende 
+             repel = TRUE)
+```
+
+```{r}
+top_families <- names(sort(table(spiders$Family), decreasing = TRUE))[1:8] #only frequent families to have a clearer graph
+spiders_sub <- subset(spiders, Family %in% top_families)
+res.pca2 <- PCA(spiders_sub, scale.unit = FALSE, quali.sup = 1, graph = FALSE)
+fviz_pca_ind(res.pca2, habillage = spiders_sub$Family, palette = "Dark2", repel = TRUE)
+```
+Global visualisation (individuals+quantitative variables):
