@@ -77,3 +77,66 @@ species_keep <- names(species_sum[species_sum > 1])
 #create reduced dataframe
 macroinv_red <- macroinv[, c(names(macroinv)[1:2], species_keep)]
 ```
+
+#Analysis
+
+```{r}
+library(FactoMineR)
+library(ade4)
+```
+
+```{r}
+CA <- CA(macroinv_red[,-c(1,2)])
+CA <- CA(macroinv_red[,-c(1,2)], axes = c(3,4))
+plot(CA$eig[,2], type = "h")
+
+CA$col$contrib
+CA$row
+```
+
+```{r}
+CA_ade4 <- dudi.coa(macroinv_red[,-c(1,2)],scannf=FALSE,nf=60)
+CA_ade4
+barplot(CA_ade4$eig)
+
+pourcentage <- CA_ade4$eig/sum(CA_ade4$eig)*100
+pourcentage #pourcentage d'inertie expliquée selon les axes
+
+round(cumsum(pourcentage),2) #inertie cumulée
+```
+
+```{r}
+scatter(CA_ade4)
+s.label(CA, xax = 3, yax= 4, boxes=FALSE)
+```
+
+Les axes ont peu d'inertie (mais bon c'est de l'écologie)
+
+Représentation du diagramme avec les trajectoires
+
+```{r}
+s.traject(CA_ade4$li)
+s.traject(CA_ade4$li)
+
+```
+
+Pas très lisible, refaire en enlevant les points qui sont très loins?
+
+```{r}
+table.value(macroinv_red[,-c(1,2)][order(CA_ade4$li[,1]),order(CA_ade4$co[,1])], grid=T,csize=0.5,clabel.col=0.6)
+```
+
+Distribution des espèces
+
+```{r}
+esp = 22 #esp dans le bassin isolé des autres données
+esp = 23 #esp un peu partout
+s.distri(CA_ade4$li,macroinv_red[,esp],cell=1.5,sub=macroinv_red[1,esp],csub=2)
+```
+
+Distribution des sites
+
+```{r}
+site = 3
+s.distri(CA_ade4$co,macroinv_red[site],cell=1.5,csub=2)
+```
