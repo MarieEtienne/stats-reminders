@@ -7,40 +7,27 @@ editor: visual
 
 To realize a PCA, you need first to standardize the data (center and scale variables), to show how the variables vary together with a covariance matrix, to calculate eigenvalues and eigenvectors, to sort the components by decreasing values (the first components explain the most variance) and to project the data on the new axes.
 
-
-## Example's presentation : Eye size evolution in spider 
+## Example's presentation : Eye size evolution in spider
 
 Our example is based on the article "*Allometry and ecology shape eye size evolution in spiders* " (Chong et al., 2024, Current Biology 34, 3178–3188 July 22, 2024 ª 2024 The Authors. Published by Elsevier Inc. https://doi.org/10.1016/j.cub.2024.06.020). This study examines how eye size evolves in spiders, which possess up to four pairs of eyes of variable sizes. Researchers analyzed 1,098 individuals from 39 species and supplemented their data with approximately 474 additional species.
 
 The researchers measured four different eye pairs simultaneously. PCA reduces this 4-dimensional dataset into interpretable components, making it easier to visualize and understand patterns.
 
 ```{r}
-data <-read.delim("S2_WolffData-Curated.txt",header = TRUE, stringsAsFactors = TRUE)
-summary(data)
+spiders <-read.delim("S2_WolffData-Curated.txt",header = TRUE, stringsAsFactors = TRUE) #data importation
+summary(spiders)
+head(spiders)
 ```
-
 
 The raw data set is composed of 473 observations of 24 variables.
 
-You can add options to executable code like this
+## Data preprocessing
+
+We don't want to analyze all speceis so we just keep the families. Also we keep relative variables instead of absolute ones in order to be able to compare spider families with different sizes. Data is not centered reduced yet.
 
 ```{r}
-#| echo: false
-2 * 2
-```
-
-The `echo: false` option disables the printing of code (only output is displayed).
-
-```{r}
-head(spiders)
+spiders <- spiders[c("Family","rAME","rALE","rPME","rPLE")] #data selection
 summary(spiders)
-```
-
-Data is not centered reduced.
-
-```{r}
-spiders <- read.delim("C:/Users/kilir/OneDrive/Bureau/ACO/Cours ACO/M2/OCR/S2_WolffData-Curated.txt")
-spiders <- spiders[c("Family","rAME","rALE","rPME","rPLE")]
 ```
 
 Let's center reduce.
@@ -50,6 +37,5 @@ spiders$rALE <- (spiders$rALE-mean(spiders$rALE))/sd(spiders$rALE)
 spiders$rAME <- (spiders$rAME-mean(spiders$rAME))/sd(spiders$rAME)
 spiders$rPLE <- (spiders$rPLE-mean(spiders$rPLE))/sd(spiders$rPLE)
 spiders$rPME <- (spiders$rPME-mean(spiders$rPME))/sd(spiders$rPME)
-
+summary(spiders) #all means are equal to 0
 ```
-
