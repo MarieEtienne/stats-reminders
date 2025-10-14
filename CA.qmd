@@ -36,6 +36,10 @@ rm(list = ls())
 library(dplyr)
 library(readr)
 library(stringi)
+library(FactoMineR)
+library(ade4)
+library(ggplot2)
+
 
 #Import data
 macroinv <- read.csv("ABC_macroinv.csv", header = TRUE, fileEncoding = "latin1", sep = ";")
@@ -106,7 +110,6 @@ library(factoextra)
 fviz_contrib(CA, choice = "col", axes = 1, top = Inf)  # contributions Axis 1
 fviz_contrib(CA, choice = "col", axes = 2, top = Inf)  # contributions Axis 2
 
-
 ```
 
 ```{r}
@@ -114,16 +117,35 @@ CA_ade4 <- dudi.coa(macroinv_red[,-c(1,2)],scannf=FALSE,nf=60)
 CA_ade4
 barplot(CA_ade4$eig)
 
+#I remove the bassin that drags the Axis 1
+CA_ade4_sansbassin <- dudi.coa(macroinv_red[-c(27,28,29),-c(1,2)],scannf=FALSE, nf=58)
+barplot(CA_ade4_sansbassin$eig)
+
+
 pourcentage <- CA_ade4$eig/sum(CA_ade4$eig)*100
 pourcentage #pourcentage d'inertie expliquée selon les axes
 
+pourcentage_sansbassin <- CA_ade4_sansbassin$eig/sum(CA_ade4_sansbassin$eig)*100
+pourcentage_sansbassin #pourcentage d'inertie expliquée selon les axes
+
 round(cumsum(pourcentage),2) #inertie cumulée
+round(cumsum(pourcentage_sansbassin),2)
+
+#c'est un peu mieux sans le bassin
 ```
 
 ```{r}
+<<<<<<< HEAD
 scatter(CA_ade4, posieig = "none")
 s.label(CA_ade4$li, xax = 1, yax = 2, boxes = FALSE)
 s.label(CA_ade4$co, xax = 1, yax = 2, boxes = FALSE)
+=======
+
+scatter(CA_ade4)
+scatter(CA_ade4_sansbassin)
+#s.label(CA, xax = 3, yax= 4, boxes=FALSE)
+
+>>>>>>> 5a38aba (Did a CA without the bassin that had a lot of weight)
 ```
 
 The first two axes explain $28.58%$ of the total inertia, with approximately $14%$ for each axis. Although this is not a large proportion, such values are not uncommon in ecological datasets. Axis 1 represents essentially a Bivalve gradient, with Bivalve contributing $69%$, followed by *Thaumaleidae* ($12%$), *Culicidae* ($5.3%$), and *Asellidae* ($3.7%$). Axis 2 is mainly explained by *Thaumaleidae* ($79%$), with smaller yet notable contributions from Bivalve ($8.8%$) and *Simuliidae* ($3.5%$).
@@ -132,11 +154,31 @@ The high contribution of *Bivalve* may be explained by the fact that, unlike the
 
 Regarding the correspondances between stations and species, the analysis shows - as expected - a proximity between *Thaumaleidae* and stations 28, 27 and 29, which are the stations it was almost excusively sampled from. It could therefore be interesting to redo the analysis without those 3 stations to remove the high correlation between these "Bassin" samples and *Thaumaleidae*.
 
+```{r}
+CA_ade4_ligne_ZH <- merge(CA_ade4$li, macroinv_red$ZH, by=0)
+CA_ade4_sansbassin_ligne_ZH <- merge(CA_ade4_sansbassin$li, macroinv_red$ZH, by=0)
+
+#CA_ade4_col_ZH <- merge(CA_ade4$co,t(classification),by.x="row.names", by.y=t(classification)[,2]) 
+#ça marche pas encore, il y a un problème avec les by
+
+#graph of the CA for the lines, dim 1 and 2, colour depends on the water source type 
+ggplot(data=CA_ade4_ligne_ZH)+
+  aes(x=Axis1,y=Axis2,color=y)+
+  geom_point()+
+  labs(fill="ZH")
+
+ggplot(data=CA_ade4_sansbassin_ligne_ZH)+
+  aes(x=Axis1,y=Axis2,color=y)+
+  geom_point()+
+  labs(fill="ZH")
+
+```
+
 Représentation du diagramme avec les trajectoires
 
 ```{r}
 s.traject(CA_ade4$li)
-s.traject(CA_ade4$li)
+s.traject(CA_ade4_sansbassin$li)
 
 ```
 
@@ -144,6 +186,7 @@ Pas très lisible, refaire en enlevant les points qui sont très loins?
 
 ```{r}
 table.value(macroinv_red[,-c(1,2)][order(CA_ade4$li[,1]),order(CA_ade4$co[,1])], grid=T,csize=0.5,clabel.col=0.6)
+table.value(macroinv_red[,-c(1,2)][order(CA_ade4_sansbassin$li[,1]),order(CA_ade4_sansbassin$co[,1])], grid=T,csize=0.5,clabel.col=0.6)
 ```
 
 Distribution des espèces
@@ -152,6 +195,8 @@ Distribution des espèces
 esp = 22 #esp dans le bassin isolé des autres données
 esp = 23 #esp un peu partout
 s.distri(CA_ade4$li,macroinv_red[,esp],cell=1.5,sub=macroinv_red[1,esp],csub=2)
+#s.distri(CA_ade4_sansbassin$li,macroinv_red[,esp],cell=1.5,sub=macroinv_red[1,esp],csub=2)
+#non equal row numbers, à voir pourquoi
 ```
 
 Distribution des sites
