@@ -106,8 +106,9 @@ round(cumsum(pourcentage),2) #inertie cumulée
 ```
 
 ```{r}
-scatter(CA_ade4)
-s.label(CA, xax = 3, yax= 4, boxes=FALSE)
+scatter(CA_ade4, posieig = "none")
+s.label(CA_ade4$li, xax = 3, yax = 4, boxes = FALSE)
+s.label(CA_ade4$co, xax = 3, yax = 4, boxes = FALSE)
 ```
 
 Les axes ont peu d'inertie (mais bon c'est de l'écologie)
