@@ -37,7 +37,6 @@ We don't want to analyze all speceis so we just keep the families. Also we keep 
 spiders <- read.delim("S2_WolffData-Curated.txt", header = TRUE, stringsAsFactors = TRUE)
 spiders <- spiders[c("Family","rAME","rALE","rPME","rPLE")]
 summary(spiders)
-
 ```
 
 Let's center reduce.
