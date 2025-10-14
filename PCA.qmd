@@ -92,7 +92,7 @@ Graph of individuals :
 ```{r}
 fviz_pca_ind(res.pca, geom.ind = "point", # points uniquement 
              label = "none", # pas de texte sur les points 
-             #habillage = spiders$Family, # couleurs par famille (optionnel)
+             habillage = spiders$Family, # couleurs par famille (optionnel)
              legend = "none", # supprime complètement la légende 
              repel = TRUE)
 ```
@@ -163,3 +163,8 @@ When we visualise families, it looks like individuals from the *Salticidae* are 
 ::: {style="text-align:center"}
 ![Figure 1 — Family *Salticidae* contributing the most to explained variance.](Salticidae.jpg){width="50%"}
 :::
+=======
+fviz_pca_ind(res.pca2, habillage = spiders_sub$Family, palette = "Dark2", repel = TRUE)
+```
+Global visualisation (individuals+quantitative variables):
+>>>>>>> 28b2eec (Data visualisation : individuals+variables graphs)
