@@ -182,7 +182,6 @@ s.traject(CA_ade4_sansbassin$li)
 
 ```
 
-Pas très lisible, refaire en enlevant les points qui sont très loins?
 
 ```{r}
 table.value(macroinv_red[,-c(1,2)][order(CA_ade4$li[,1]),order(CA_ade4$co[,1])], grid=T,csize=0.5,clabel.col=0.6)
@@ -195,13 +194,13 @@ Distribution des espèces
 esp = 22 #esp dans le bassin isolé des autres données
 esp = 23 #esp un peu partout
 s.distri(CA_ade4$li,macroinv_red[,esp],cell=1.5,sub=macroinv_red[1,esp],csub=2)
-#s.distri(CA_ade4_sansbassin$li,macroinv_red[,esp],cell=1.5,sub=macroinv_red[1,esp],csub=2)
-#non equal row numbers, à voir pourquoi
+s.distri(CA_ade4_sansbassin$li,macroinv_red[-c(27,28,29),esp],cell=1.5,sub=macroinv_red[1,esp],csub=2)
+
 ```
 
 Distribution des sites
 
 ```{r}
-site = 3
-s.distri(CA_ade4$co,macroinv_red[site],cell=1.5,csub=2)
+site = 5
+s.distri(CA_ade4$co,macroinv_red[site,-c(1,2)],cell=1.5,csub=2)
 ```
