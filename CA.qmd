@@ -86,12 +86,27 @@ library(ade4)
 ```
 
 ```{r}
-CA <- CA(macroinv_red[,-c(1,2)])
-CA <- CA(macroinv_red[,-c(1,2)], axes = c(3,4))
+CA <- CA(macroinv_red[,-c(1,2)], axes = c(1,2))
 plot(CA$eig[,2], type = "h")
 
 CA$col$contrib
 CA$row
+
+which_contrib_high1 <- which(CA$col$contrib[,1] >= 100/nrow(CA$col$contrib))
+which_contrib_high2 <- which(CA$col$contrib[,2] >= 100/nrow(CA$col$contrib))
+
+print("Species that contribute to axe 1:")
+print(CA$col$contrib[which_contrib_high1, ])
+
+print("Species that contribute to axe 2:")
+print(CA$col$contrib[which_contrib_high2, ])
+
+#BONUS: visualize axis contribution
+library(factoextra)
+fviz_contrib(CA, choice = "col", axes = 1, top = Inf)  # contributions Axis 1
+fviz_contrib(CA, choice = "col", axes = 2, top = Inf)  # contributions Axis 2
+
+
 ```
 
 ```{r}
@@ -107,11 +122,15 @@ round(cumsum(pourcentage),2) #inertie cumulée
 
 ```{r}
 scatter(CA_ade4, posieig = "none")
-s.label(CA_ade4$li, xax = 3, yax = 4, boxes = FALSE)
-s.label(CA_ade4$co, xax = 3, yax = 4, boxes = FALSE)
+s.label(CA_ade4$li, xax = 1, yax = 2, boxes = FALSE)
+s.label(CA_ade4$co, xax = 1, yax = 2, boxes = FALSE)
 ```
 
-Les axes ont peu d'inertie (mais bon c'est de l'écologie)
+The first two axes explain $28.58%$ of the total inertia, with approximately $14%$ for each axis. Although this is not a large proportion, such values are not uncommon in ecological datasets. Axis 1 represents essentially a Bivalve gradient, with Bivalve contributing $69%$, followed by *Thaumaleidae* ($12%$), *Culicidae* ($5.3%$), and *Asellidae* ($3.7%$). Axis 2 is mainly explained by *Thaumaleidae* ($79%$), with smaller yet notable contributions from Bivalve ($8.8%$) and *Simuliidae* ($3.5%$).
+
+The high contribution of *Bivalve* may be explained by the fact that, unlike the other taxa, it refers to a class and therefore represents a much broader group. This could account for the prevalence of various Bivalve individuals across some sampling stations (e.g. between 62 and 700 individuals in "Ruche" samples), and consequently, its dominant role in shaping Axis 1. The $79%$ contribution of *Thaumaleidae* likely reflects its high density in three stations ("Bassin"), a peculiar environment where only *Thaumaleidae* were found, while they were nearly absent from other sites. This group thus stretches Axis 2. "Bassin" environnement was a cemented artificial pound which is hard to colonize for most organisms other than *Thaumaleidae*.
+
+Regarding the correspondances between stations and species, the analysis shows - as expected - a proximity between *Thaumaleidae* and stations 28, 27 and 29, which are the stations it was almost excusively sampled from. It could therefore be interesting to redo the analysis without those 3 stations to remove the high correlation between these "Bassin" samples and *Thaumaleidae*.
 
 Représentation du diagramme avec les trajectoires
 
