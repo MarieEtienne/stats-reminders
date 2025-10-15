@@ -4,14 +4,12 @@ format: html
 editor: visual
 ---
 
-
 ```{r}
 ## Packages
 library(ggplot2)
 library(dplyr)
 library(tidyr)
 ```
-
 
 **INTRODUCTION** :
 
@@ -40,7 +38,33 @@ The parameters are the following ones (they are all positive :) ) :
 | $b_{2}$    | predation yield                     |
 | ${K}$      | biotic capacity                     |
 
-The overall expected mecanism is the following :
+In such conditions, we expect the populations dynamics to evolve in different ways according to parameters value and initials conditions (the size of both population). We can relatively easily assume that a big predator's population paired with a high predation efficiency would lead prey's population to go extinct and, shortly after, predator's population is expected to follow the same dynamic. The question we may now ask ourselves is the following : how would the system evolve according to parameters variation? This is where qualitative analysis steps in. But first let's do a little bit of math.
+
+**Equilibrium points and isoclines**
+
+Let's start with a bit of vocabulary, in qualitative analysis we call equilibrium points all value of N for which the derivative is 0. Mathematicaly it's expressed as following : $$
+\frac{dN}{dt}=0\;\Longleftrightarrow\;f(N^{*})=0 \\
+\text{with}\;\ \frac{dN}{dt}=f(N)
+$$ For equation system such as Lokta-Voltera it would be as following : $$
+\begin{cases} \frac{dN_{1}}{dt}=0 \\ \frac{dN_{2}}{dt}=0 \end{cases} \;\Longleftrightarrow\; \begin{cases} f_{1}(N1^{*},N2^{*})=0 \\ f_{2}(N1^{*},N2^{*})=0 \end{cases}\\
+\text{with}\;\ \begin{cases} \frac{dN_{1}}{dt}=f_{1}(N1,N2) \\ \frac{dN_{2}}{dt}=f_{2}(N1,N2) \end{cases}
+$$ Those equilibrium points carry the information about the population sizes at which the system does not change. They can be either stable (LAS) unstable (repeller) and in the case the system has more than one differential equation, saddle points may appear. Around LAS points, system will go towards the equilibrium, around repeller points, system will tend to move away from equilibrium. As for saddle points, depending on the area the system will go toward or away the equilibrium points.
+
+In contrast to equilibrium points, where all derivative must be equal to zero, isoclines correspond to lines for which an equation of the system is individually equal to zero. Mathematicaly it's expressed as following :
+
+$$
+\text{Isoclines N1 :} \\
+\frac{dN_{1}}{dt}=0 \;\Longleftrightarrow\; f_{1}(N1,N2)=0 \\
+\text{Isoclines N2 :}\\
+\frac{dN_{2}}{dt}=0\;\Longleftrightarrow\; f_{2}(N1,N2)=0 \\
+\text{with}\;\begin{cases} \frac{dN_{1}}{dt}=f_{1}(N1,N2) \\ \frac{dN_{2}}{dt}=f_{2}(N1,N2) \end{cases}
+$$
+
+Plotting those isoclines on a phase plane allows us to identify some areas where the system may evolve in different ways. We can then examine the behavior of each population in the previously defined area , allowing to characterize the system overall behavior.
+
+All of that is analytically calculable for some systems of differential equation system (including Lotka-Volterra logistic), but lazy as we are, we will focus on numerically approximate those solutions.
+
+**Numerical approximation of equilibrium points and phase plane**
 
 ```{r}
 Proiepred<- function(t, y, parameters) {
@@ -56,8 +80,6 @@ Proiepred<- function(t, y, parameters) {
   list(dPop)
 }
 ```
-
-
 
 ```{r}
 ##Fonction simulation trajectoires
