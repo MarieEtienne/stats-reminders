@@ -42,7 +42,12 @@ These conditions are systematically verified after modeling: the application of 
 
 ```{r data_importation, echo = F, include = F}
 #Data importation 
-library(palmerpenguins) data("penguins") penguins$sex<-as.factor(penguins$sex) penguins$species<-as.factor(penguins$species) penguins$island<-as.factor(penguins$island) str(penguins)
+library(palmerpenguins) 
+data("penguins") 
+penguins$sex<-as.factor(penguins$sex) 
+penguins$species<-as.factor(penguins$species) 
+penguins$island<-as.factor(penguins$island) 
+str(penguins)
 ```
 
 ```{r data_NA, echo = F}
@@ -63,7 +68,8 @@ par(mfrow=c(2,2),
     col.lab="gray20",     
     col.main="gray20",     
     cex.axis=0.9,      
-    cex.lab=1) col_transp <- adjustcolor("aquamarine3", alpha.f=0.5) 
+    cex.lab=1) 
+col_transp <- adjustcolor("aquamarine3", alpha.f=0.5) 
 # Boxplot 
 boxplot(penguins$bill_depth_mm,         
         col=col_transp, border="gray30",         
@@ -101,7 +107,8 @@ par(mfrow=c(2,2),
     col.lab="gray20",      
     col.main="gray20",      
     cex.axis=0.9,      
-    cex.lab=1) col_transp <- adjustcolor("darkgreen", alpha.f=0.5)  
+    cex.lab=1) 
+col_transp <- adjustcolor("darkgreen", alpha.f=0.5)  
 
 # Bill lenght  
 # Boxplot 
@@ -211,12 +218,13 @@ There appears to be a positive linear relationship between bill depth and all ot
 This section aims to check for potential interaction effects between the two qualitative variables. To do so, all combinations of their categories must be present in the data.
 
 ```{r data_cross_qualitative_exploration, echo = F}
-table(penguins$species, penguins$sex) table(penguins$species, penguins$island)
+table(penguins$species, penguins$sex) 
+table(penguins$species, penguins$island)
 ```
 
 All categories are present and well balanced across the factors, allowing us to test for potential interactions between them. However, some information related to the island variable is missing across certain categories, so this variable will be excluded from the model.
 
-```{r}
+```{r data_qualitative_interaction, echo = F}
 par(mfrow=c(1,1)) 
 boxplot(penguins$bill_depth_mm~penguins$sex*penguins$species, varwidth = TRUE, ylab = "Bill Depth", col='brown1', main = "",cex.axis=0.7)
 ```
@@ -226,27 +234,39 @@ Both factors species and sex seems to interact.
 ```{r data_interaction_qualitative_quantitative, echo = F}
 par(mfrow=c(2,1)) 
 # Interactions between Bill Length & Sex 
-plot(penguins$bill_depth_mm~penguins$bill_length_mm,type='n',ylab = "Bill Depth",xlab="Bill Length") points(penguins$bill_depth_mm[penguins$sex=="male"]~penguins$bill_depth_mm[penguins$sex=="male"],pch=16,col='darkolivegreen4') points(penguins$bill_depth_mm[penguins$sex=="female"]~penguins$bill_length_mm[penguins$sex=="female"],pch=17,col='darkorchid')  
+plot(penguins$bill_depth_mm~penguins$bill_length_mm,type='n',ylab = "Bill Depth",xlab="Bill Length") 
+points(penguins$bill_depth_mm[penguins$sex=="male"]~penguins$bill_depth_mm[penguins$sex=="male"],pch=16,col='darkolivegreen4') 
+points(penguins$bill_depth_mm[penguins$sex=="female"]~penguins$bill_length_mm[penguins$sex=="female"],pch=17,col='darkorchid')  
 
 # Interactions between Bill Length & Species 
-plot(penguins$bill_depth_mm~penguins$bill_length_mm,type='n',ylab = "Bill depth",xlab="Bill Length") points(penguins$bill_depth_mm[penguins$species=="Adelie"]~penguins$bill_length_mm[penguins$species=="Adelie"],pch=16,col='olivedrab') 
+plot(penguins$bill_depth_mm~penguins$bill_length_mm,type='n',ylab = "Bill depth",xlab="Bill Length") 
+points(penguins$bill_depth_mm[penguins$species=="Adelie"]~penguins$bill_length_mm[penguins$species=="Adelie"],pch=16,col='olivedrab') 
 points(penguins$bill_depth_mm[penguins$species=="Chinstrap"]~penguins$bill_length_mm[penguins$species=="Chinstrap"],pch=17,col='lightsalmon3') 
 points(penguins$bill_depth_mm[penguins$species=="Gentoo"]~penguins$bill_length_mm[penguins$species=="Gentoo"],pch=17,col='orange3')
 
 par(mfrow=c(2,1)) 
 
 # Interactions between Flipper Length & Sex 
-plot(penguins$bill_depth_mm~penguins$flipper_length_mm,type='n',ylab = "Bill Depth",xlab="Flipper Length") points(penguins$bill_depth_mm[penguins$sex=="male"]~penguins$flipper_length_mm[penguins$sex=="male"],pch=16,col='darkolivegreen4') points(penguins$bill_depth_mm[penguins$sex=="female"]~penguins$flipper_length_mm[penguins$sex=="female"],pch=17,col='darkorchid')  
+plot(penguins$bill_depth_mm~penguins$flipper_length_mm,type='n',ylab = "Bill Depth",xlab="Flipper Length") 
+points(penguins$bill_depth_mm[penguins$sex =="male"]~penguins$flipper_length_mm[penguins$sex=="male"],pch=16,col='darkolivegreen4') 
+points(penguins$bill_depth_mm[penguins$sex=="female"]~penguins$flipper_length_mm[penguins$sex=="female"],pch=17,col='darkorchid')  
 
-# Interactions between Flipper Length & Species plot(penguins$bill_depth_mm~penguins$flipper_length_mm,type='n',ylab = "Bill Length",xlab="Flipper Length") 
-points(penguins$bill_depth_mm[penguins$species=="Adelie"]~penguins$flipper_length_mm[penguins$species=="Adelie"],pch=16,col='olivedrab') points(penguins$bill_depth_mm[penguins$species=="Chinstrap"]~penguins$flipper_length_mm[penguins$species=="Chinstrap"],pch=17,col='lightsalmon3') points(penguins$bill_depth_mm[penguins$species=="Gentoo"]~penguins$flipper_length_mm[penguins$species=="Gentoo"],pch=17,col='orange3')
+# Interactions between Flipper Length & Species 
+plot(penguins$bill_depth_mm~penguins$flipper_length_mm,type='n',ylab = "Bill Length",xlab="Flipper Length") 
+points(penguins$bill_depth_mm[penguins$species=="Adelie"]~penguins$flipper_length_mm[penguins$species=="Adelie"],pch=16,col='olivedrab') 
+points(penguins$bill_depth_mm[penguins$species=="Chinstrap"]~penguins$flipper_length_mm[penguins$species=="Chinstrap"],pch=17,col='lightsalmon3') 
+points(penguins$bill_depth_mm[penguins$species=="Gentoo"]~penguins$flipper_length_mm[penguins$species=="Gentoo"],pch=17,col='orange3')
 
 par(mfrow=c(2,1)) 
 
 # Interactions between Body Mass & Sex 
-plot(penguins$bill_depth_mm~penguins$body_mass_g,type='n',ylab = "Bill Depth",xlab="Body Mass") points(penguins$bill_depth_mm[penguins$sex=="male"]~penguins$body_mass_g[penguins$sex=="male"],pch=16,col='darkolivegreen4') points(penguins$bill_depth_mm[penguins$sex=="female"]~penguins$body_mass_g[penguins$sex=="female"],pch=17,col='darkorchid')  
+plot(penguins$bill_depth_mm~penguins$body_mass_g,type='n',ylab = "Bill Depth",xlab="Body Mass")
+points(penguins$bill_depth_mm[penguins$sex=="male"]~penguins$body_mass_g[penguins$sex=="male"],pch=16,col='darkolivegreen4') 
+points(penguins$bill_depth_mm[penguins$sex=="female"]~penguins$body_mass_g[penguins$sex=="female"],pch=17,col='darkorchid')  
 
 # Interactions between Body Mass & Species 
-plot(penguins$bill_depth_mm~penguins$body_mass_g,type='n',ylab = "Bill Length",xlab="Body Mass") points(penguins$bill_depth_mm[penguins$species=="Adelie"]~penguins$body_mass_g[penguins$species=="Adelie"],pch=16,col='olivedrab') points(penguins$bill_depth_mm[penguins$species=="Chinstrap"]~penguins$body_mass_g[penguins$species=="Chinstrap"],pch=17,col='lightsalmon3') 
+plot(penguins$bill_depth_mm~penguins$body_mass_g,type='n',ylab = "Bill Length",xlab="Body Mass") 
+points(penguins$bill_depth_mm[penguins$species=="Adelie"]~penguins$body_mass_g[penguins$species=="Adelie"],pch=16,col='olivedrab') 
+points(penguins$bill_depth_mm[penguins$species=="Chinstrap"]~penguins$body_mass_g[penguins$species=="Chinstrap"],pch=17,col='lightsalmon3') 
 points(penguins$bill_depth_mm[penguins$species=="Gentoo"]~penguins$body_mass_g[penguins$species=="Gentoo"],pch=17,col='orange3')
 ```
