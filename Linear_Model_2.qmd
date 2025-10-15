@@ -1,5 +1,5 @@
 ---
-title: "GENERALIZED LINEAR MODEL"
+title: "GENERALIZED LINEAR MIXED MODEL"
 subtitle: "BADGER EXAMPLE"
 format: html
 editor: visual
@@ -9,23 +9,29 @@ editor: visual
 
 ### Generalities
 
-General Linear Models are used to model the relationship between a continuous response variable $Y$ and one or more explanatory variables $X_{1}$,$X_{2}$...$X_{p}$. Three assumptions are associated with the use of General linear models, being *independence of residuals*, *normality of residuals* and *homogeneity of variances*. However, we often analyse $Y$ response that could be discrete and then, may depart from the Gaussian assumption.
+General Linear Models are used to describe the relationship between a continuous response $Y$ and one or more explanatory variables $X_{1}$,$X_{2}$...$X_{p}$. They rely on three main assumptions : *independence of residuals*, *normality of residuals* and *homogeneity of variances*. However, in many cases, the response variable $Y$ is **discrete** (for example, counts or binary outcomes).
 
-Discrete response data, like counts and binary data, generally exhibits a mean-variance relationship such that the variance of $Y$ varies with mean of $Y$. This mean-variance relationship suggests that variance can not be homogeneous in a dataset as depending on the mean while General Linear Models expect constant variance (homogeneity of variance). In addition, when performing a General Linear Model on a count data, predicted values can be negative and residuals non normally distributed. In conclusion, using General Linear Model on discrete response often generate departures from its expectancies. Hence, we need specific tools to analyse discrete response data. These tools are **Generalized Linear Models**.
+For discrete responses, the variance of $Y$ typically depends on its mean-variance relationship. As a result, the variance is not constant across observations, invalidating the assumption of homogeneity required by linear models. Morover, fitting a General Linear Model to count data can lead to negative predicted values and non-normal residuals. In shorts, General Linear Models are not well-suited for discrete responses. Hence, we need specific tools to analyse discrete response data. These are **Generalized Linear Models (GLMs)**.
 
-A Generalized Linear Model (GLM) consists of three steps:\
-1. Assumption of the distribution of the response variable $Y_{i}$\
-2. The specification of the systematic part; this is the linear function of the explanatory variables (the linear predictor called $\eta$)\
-3. The relationship between the mean value of $Y_{i}$ and the systematic part. This is also called the link between the mean and the systematic part: **the link function noted** $g$ .
+### Structure of a Generalized Linear Model
 
-As a consequence, a Generalized Linear Model (GLM) makes some important assumptions :\
-1. The observed $Y$ are independent, conditional on some predictors $X$\
-2. The response $Y$ come from a known distribution with a known mean-variance relationship\
-3. There is a straight line relationship between a known function $g$ of the mean of $Y$ and the predictors $X$
+A GLM extends the classical linear model through three steps :
 
-So, a generalized linear model can be written as follow: $$g(\mu_{y})= \alpha+ \beta_{1}.X{i1}+ \beta_{2}.X{i2}+\beta_{3}.X{i3}+...\beta_{p}.X{ip} = \eta $$
+1.  Assumption of the distribution of the response variable $Y_{i}$
+
+2.  The specification of the systematic part; this is the linear function of the explanatory variables (the linear predictor called $\eta$)
+
+3.  The relationship between the mean value of $Y_{i}$ and the systematic part. This is also called the link between the mean and the systematic part: **the link function noted** $g$ .
+
+A Generalized Linear Model can be written as : $$g(\mu_{y})= \alpha+ \beta_{1}.X{i1}+ \beta_{2}.X{i2}+\beta_{3}.X{i3}+...\beta_{p}.X{ip} = \eta $$
 
 The linear predictor, $\eta$, emerges from the linear model as a sum of the terms for each of the $p$ parameters. This is not a value of $Y$. The value of $\eta$ is obtained by transforming the value of $Y$ by the link function, and the predicted value of $Y$ is obtained by applying the inverse link function to $\eta$.
+
+### From GLM to GLMM
+
+Depending on the sampling design or the experimental set-up, independence of residuals is often not respected : some statistical units are related. To account for this dependence structure, we can include **random effects** in the model.
+
+The resulting model, called Generalized Linear Mixed Model (GLMM) extends the GLM by adding these random effects alongside the fixed effects. Therefore, GLMMs allow us to model both the relationship between predictors and responses and the non-independence among observations.
 
 ## Data presentation
 
@@ -57,8 +63,7 @@ The data are available in the file `BadgersFarmSurveysNoNA.txt`. The variables a
 -   `Proteinblocks` : presence / absence of protein blocks
 -   `Sugarbeet` : presence / absence of sugar beet
 -   `Vegetables` : presence / absence of vegetables
--   `Molasses` : presence / absence of molasses
-:::
+-   `Molasses` : presence / absence of molasses :::
 
 ## DATASET IMPORT
 
