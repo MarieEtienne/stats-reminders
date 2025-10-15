@@ -3,6 +3,7 @@ title: "GENERALIZED LINEAR MIXED MODEL"
 subtitle: "BADGER EXAMPLE"
 format: html
 editor: visual
+bibliography: references.bib
 ---
 
 # GENERAL INTRODUCTION
