@@ -71,6 +71,8 @@ The data are available in the file `BadgersFarmSurveysNoNA.txt`. The variables a
 ```{r}
 # library import
 library(corrplot)
+library(lme4)
+library(rsq)
 ```
 
 ```{r global data, include=TRUE,echo=TRUE}
@@ -278,9 +280,10 @@ corrplot.mixed(M,upper="square",lower.col="black", tl.col="black",cl.cex = 0.8,t
 A weak collinearity between both quantitative variables is possible (N buildings and N cattle housed). No other case of collinearity has been found (not developed here).
 
 ## Generalized Linear Mixed Model (GLMM)
+
 ### Building the model
-```{r}
-library(lme4)
+
+```{r fullmodel, include = TRUE}
 mod<-glmer(Activity~N_setts
               + N_buildings
               + N_cattle
@@ -295,7 +298,246 @@ mod<-glmer(Activity~N_setts
               + concen
               + sugar
               + (1|farm_code)
-              ,data=data
+              ,data=dataBadger
               ,family=binomial)
 ```
 
+```{r backwardselection, include = TRUE, warning = FALSE}
+# Backward selection procedure based on AIC
+drop1(mod,test="Chi") # We remove season
+mod1<-glmer(Activity~N_setts
+              + N_buildings
+              + N_cattle
+              + feed_store
+              + cattle_house
+              + feed
+              + grass
+              + cereal
+              + straw
+              + grains
+              + concen
+              + sugar
+              + (1|farm_code)
+              ,data=dataBadger
+              ,family=binomial)
+
+drop1(mod1,test="Chi") # We remove concentration
+mod2<-glmer(Activity~N_setts
+              + N_buildings
+              + N_cattle
+              + feed_store
+              + cattle_house
+              + feed
+              + grass
+              + cereal
+              + straw
+              + grains
+              + sugar
+              + (1|farm_code)
+              ,data=dataBadger
+              ,family=binomial)
+
+drop1(mod2,test="Chi") # We remove feed
+mod3<-glmer(Activity~N_setts
+              + N_buildings
+              + N_cattle
+              + feed_store
+              + cattle_house
+              + grass
+              + cereal
+              + straw
+              + grains
+              + sugar
+              + (1|farm_code)
+              ,data=dataBadger
+              ,family=binomial)
+
+drop1(mod3,test="Chi") # We remove grass
+mod4<-glmer(Activity~N_setts
+              + N_buildings
+              + N_cattle
+              + feed_store
+              + cattle_house
+              + cereal
+              + straw
+              + grains
+              + sugar
+              + (1|farm_code)
+              ,data=dataBadger
+              ,family=binomial)
+
+drop1(mod4,test="Chi") # We remove cattle house
+mod5<-glmer(Activity~N_setts
+              + N_buildings
+              + N_cattle
+              + feed_store
+              + cereal
+              + straw
+              + grains
+              + sugar
+              + (1|farm_code)
+              ,data=dataBadger
+              ,family=binomial)
+
+drop1(mod5,test="Chi") # We remove grains
+mod6<-glmer(Activity~N_setts
+              + N_buildings
+              + N_cattle
+              + feed_store
+              + cereal
+              + straw
+              + sugar
+              + (1|farm_code)
+              ,data=dataBadger
+              ,family=binomial)
+
+drop1(mod6,test="Chi") # We remove cereal
+mod7<-glmer(Activity~N_setts
+              + N_buildings
+              + N_cattle
+              + feed_store
+              + straw
+              + sugar
+              + (1|farm_code)
+              ,data=dataBadger
+              ,family=binomial)
+
+drop1(mod7,test="Chi") # We remove N_cattle
+mod8<-glmer(Activity~N_setts
+              + N_buildings
+              + feed_store
+              + straw
+              + sugar
+              + (1|farm_code)
+              ,data=dataBadger
+              ,family=binomial)
+
+drop1(mod8,test="Chi") # We remove feed_store (same AIC as straw, but higher p value)
+mod9<-glmer(Activity~N_setts
+              + N_buildings
+              + straw
+              + sugar
+              + (1|farm_code)
+              ,data=dataBadger
+              ,family=binomial)
+
+drop1(mod9,test="Chi") # We remove straw
+mod10<-glmer(Activity~N_setts
+              + N_buildings
+              + sugar
+              + (1|farm_code)
+              ,data=dataBadger
+              ,family=binomial)
+
+drop1(mod10,test="Chi") # We remove sugar
+mod11<-glmer(Activity~N_setts
+              + N_buildings
+              + (1|farm_code)
+              ,data=dataBadger
+              ,family=binomial)
+
+drop1(mod11,test="Chi") # We remove N_buildings
+mod12<-glmer(Activity~N_setts
+              + (1|farm_code)
+              ,data=dataBadger
+              ,family=binomial)
+
+drop1(mod12,test="Chi") # mod12 is the best model
+```
+
+### Model coefficients
+
+```{r coefficients, include = TRUE}
+summary(mod12)
+```
+
+### Significance of the random effect
+```{r boot random, echo=TRUE,fig.height=4, fig.width=4, warning=FALSE}
+nBoot <- 1000
+lrStat <- rep(NA, nBoot)
+ft.null <-glm(Activity~N_setts,data=dataBadger,family=binomial(link=logit)) # null model
+ft.alt <- glmer(Activity~N_setts+(1|farm_code),data=dataBadger,family=binomial) # alternate model
+lrObs <- 2 * logLik(ft.alt) - 2 * logLik(ft.null) # observed test stat
+
+for (iBoot in 1:nBoot)
+{
+  dataBadger$ActivitySim <- unlist(simulate(ft.null)) # resampled data
+  tryCatch(
+    { # sometimes the glmer code doesn't converge
+      bNull <-glm(ActivitySim ~ N_setts,data=dataBadger,family=binomial(link=logit)) # null model
+      bAlt <- glmer(ActivitySim ~ N_setts+(1|farm_code),data=dataBadger,family=binomial)# alternate model
+      lrStat[iBoot] <- 2 * logLik(bAlt) - 2 * logLik(bNull) # resampled test stat
+    },
+    warning = function(war) {
+      lrStat[iBoot] <- NA
+    },
+    error = function(err) {
+      lrStat[iBoot] <- NA
+    }
+  ) # if code doesn't converge skip sim
+}
+
+mean(lrStat > lrObs) # P-value for test of the random effect
+
+hist(lrStat,xlim = c(0,40), col='blue') # Histogram of the 1000 values of likelihood of the simulated model
+abline(v = lrObs, col="red", lwd=3, lty=2) # Vertical red line representing the likelihood of the observed model including the random factor
+```
+
+### Part of the variance explained by the model
+```{r devianceGLMM, include=TRUE}
+# Estimates of deviance explained (library 'rsq')
+rsq(mod12)
+```
+
+### Residual analysis
+```{r ResidNB, include=TRUE, fig.height=4, fig.width=5}
+
+resid<-residuals(mod12, type="pearson")
+
+par(mfrow=c(1,2))
+# residuals vs fitted
+plot(resid~fitted(mod2)
+      , col='dodgerblue4'
+      , pch=16)
+abline(h = 0)
+
+# residuals against Number of mites
+plot(resid~ dataBadger$N_setts, 
+         pch=16,
+         col="dodgerblue4",
+         ylab = "Residuals",
+         xlab = "Number of Setts",
+         main = "")
+abline(h = 0)
+```
+
+### Model predictions
+```{r Simul, include=TRUE, fig.height=4, fig.width=4}
+
+# We could do a simulation
+N    <- nrow(dataBadger)
+Pi   <- fitted(mod2)
+dataBadger$Ysim <- rbinom(N, size = 1, Pi)
+# Classification table
+Z <- table(dataBadger$Activity, dataBadger$Ysim) / N
+rownames(Z) <- c("Observed 0", "Observed 1")
+colnames(Z) <- c("Predicted 0", "Predicted 1")
+Z
+#Correctly classified:
+sum(diag(Z))
+
+# And repeat this 1000 times, store the results and calculate an average classification table
+
+Pi   <- fitted(mod2)
+N    <- nrow(dataBadger)					
+NSim <- 1000                           
+diagZ<- matrix(nrow = N, ncol = NSim)
+for (i in 1:NSim) {
+  Ysim <- rbinom(N, size = 1, Pi)
+  Z<- table(dataBadger$Activity, Ysim) / N
+  diagZ[,i]<-sum(diag(Z))
+  }
+#Average rate of individuals well-classified by the model
+boxplot(diagZ[2,], col='dodgerblue4',ylab='#Rate of farms well-classified')
+mean(diagZ[2,])
+```
