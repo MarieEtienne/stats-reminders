@@ -135,17 +135,14 @@ round(cumsum(pourcentage_sansbassin),2)
 ```
 
 ```{r}
-<<<<<<< HEAD
+
 scatter(CA_ade4, posieig = "none")
 s.label(CA_ade4$li, xax = 1, yax = 2, boxes = FALSE)
 s.label(CA_ade4$co, xax = 1, yax = 2, boxes = FALSE)
-=======
 
-scatter(CA_ade4)
+
 scatter(CA_ade4_sansbassin)
-#s.label(CA, xax = 3, yax= 4, boxes=FALSE)
 
->>>>>>> 5a38aba (Did a CA without the bassin that had a lot of weight)
 ```
 
 The first two axes explain $28.58%$ of the total inertia, with approximately $14%$ for each axis. Although this is not a large proportion, such values are not uncommon in ecological datasets. Axis 1 represents essentially a Bivalve gradient, with Bivalve contributing $69%$, followed by *Thaumaleidae* ($12%$), *Culicidae* ($5.3%$), and *Asellidae* ($3.7%$). Axis 2 is mainly explained by *Thaumaleidae* ($79%$), with smaller yet notable contributions from Bivalve ($8.8%$) and *Simuliidae* ($3.5%$).
