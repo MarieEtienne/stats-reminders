@@ -150,6 +150,7 @@ hist(dataBadger$N_cattle,col='blue',xlab="Number of cattle",main="")
 qqnorm(dataBadger$N_cattle,pch=16,col='blue',xlab='')
 qqline(dataBadger$N_cattle,col='red')
 ```
+<<<<<<< HEAD
 
 For this $X$ continuous independent variable we don't see obvious outliers. And we can see the different distributions of the variables.
 
@@ -275,3 +276,26 @@ corrplot.mixed(M,upper="square",lower.col="black", tl.col="black",cl.cex = 0.8,t
 ```
 
 A weak collinearity between both quantitative variables is possible (N buildings and N cattle housed). No other case of collinearity has been found (not developed here).
+
+## Generalized Linear Mixed Model (GLMM)
+### Building the model
+```{r}
+library(lme4)
+mod<-glmer(Activity~N_setts
+              + N_buildings
+              + N_cattle
+              + season
+              + feed_store
+              + cattle_house
+              + feed
+              + grass
+              + cereal
+              + straw
+              + grains
+              + concen
+              + sugar
+              + (1|farm_code)
+              ,data=data
+              ,family=binomial)
+```
+
