@@ -2,11 +2,12 @@
 title: "Penguins"
 format: html
 editor: visual
+bibliography: references.bib
 ---
 
 # General Linear Model
 
-We present here, a reminder sheet on the General Linear Model (GLM) and its specific features. Its use will be illustrated through an example applied to ecological data on penguins.
+We present here, a reminder sheet on the General Linear Model (GLM) and its specific features. Its use will be illustrated through an example applied to ecological data on penguins from @Gorman2014.
 
 Remark : the concepts covered in this reminder sheet are taken from our Master's courses and tutorials, written and taught by several professors (A. Masson and Y. Outreman). During these courses, we learned how to explore data and then analyze it using this type of model (ajouter la référence).
 
