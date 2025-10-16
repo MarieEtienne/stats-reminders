@@ -6,7 +6,7 @@ editor: visual
 
 # Introduction
 
-A Correspondence Analysis (CA), or "Analyse Factorielle de Correspondance" (AFC) in French, is a multivariate statistical method used to measure the distance between different profiles in your data, or the discrepancy between the data and the chi-square $\chi²$ independence hypothesis. This hypothesis (also called the null hypothesis H0) implies that the 2 variables studied are independent.
+A Correspondence Analysis (CA), or *Analyse Factorielle de Correspondance* (AFC) in French, is a multivariate statistical method used to measure the distance between different profiles in your data, or the discrepancy between the data and the chi-square $\chi²$ independence hypothesis. This hypothesis (also called the null hypothesis H0) implies that the 2 variables studied are independent.
 
 The values can be quantitative, qualitative or semi-qualitative. It is usually applied to contingency tables or when you have a table with data about species abundance in different places and another one with data about the ecology of those same places.
 
@@ -14,23 +14,20 @@ Just like in the PCA, we will be looking the orthogonal axis that maximizes the 
 
 The columns and lines have a symmetrical role, so you'll have the same results in both directions.
 
-To use it you'll need to pay attention to certain things :
-
--   all values need to be positive (which shouldn't be a problem if it's a contingency table),
-
+To use it you'll need to pay attention to certain things :  
+-   all values need to be positive (which shouldn't be a problem if it's a contingency table),  
 -   if you have rare species it may change the shape of your results significantly. It's not always a bad thing, just something you need to be aware of.
 
 
 # Ecological exemple
-
 ## Ecological context
+A study was conducted in 2022 on the permanents wetlands of the municipality of Grabels (34), as part of a Municipal Biodiversity Atlas. The aim was to characterise the state of these environments using bioindicator species : benthic macroinvertebrates. This taxon, which is sensitive to pollution, can be used to study water quality (ref).\
+In this study, the standardised I2M2 protocol of the Water Framework Directive (in french, *Directive Cadre sur l'Eau*) was adapted to a context of ponds and very shallow watercourses.
+Two streams (the *Rieu Querelle* and the *Verdanson*), permanent ponds (*Ruche*, *Terrain de Foot* and *Foot2*) and an artificial water source (*Bassin*) were sampled and the macroinvertebrates collected were identified. Each wetland was sampled at several points randomly selected from the water body (*Zi*), and three replicas were made at each point (*Zi_j*).
 
-A study was conducted in 2022 on the wetlands of the municipality of Grabels (34), as part of a Municipal Biodiversity Atlas. The aim was to characterise the state of these environments using bioindicator species : benthic macroinvertebrates. This taxon, which is sensitive to pollution, can be used to study water quality (ref).\
-In this study, two streams (the Rieu Querelle and the Verdanson), permanent ponds and an artificial water source (the retention basin) were sampled and the individuals identified. Each wetland was sampled at several points (Zi) randomly selected from the water body, and three passes were made at each point (Zi_j).
+The purpose of this analysis is to study the species assemblages depending of the site. In this context, the CA is one of the right choices.
 
-The purpose of this analysis is to study the species assemblages depending of the site. In this context, the AFC is one of the right choices.
-
-## Packages {-}
+## Packages
 ```{r, message = FALSE, warning = FALSE}
 rm(list = ls())
 requiredPackages <- c("dplyr","readr", "stringi", "ggplot2", "vegan", 
@@ -54,8 +51,9 @@ library(ggtext)
 
 ## Data
 ```{r}
-#Import data
-macroinv <- read.csv("ABC_macroinv.csv", header = TRUE, fileEncoding = "latin1", 
+# Import data
+macroinv <- read.csv("ABC_macroinv.csv", header = TRUE, 
+                     fileEncoding = "latin1", 
                      sep = ";")
 
 classification <- read_delim("classif_macroinv.csv", delim = ";", 
@@ -63,7 +61,7 @@ classification <- read_delim("classif_macroinv.csv", delim = ";",
                              locale = locale(encoding = "latin1"),
                              name_repair = "minimal")
 
-#replace colnames in both dataframes
+# Replace colnames in both dataframes
 colnames(macroinv) <- colnames(macroinv) %>%
                   stri_trans_general("Latin-ASCII") %>% 
                   gsub("\\.", "_", .) %>%
@@ -76,14 +74,14 @@ classification <- classification %>%
                   gsub(" ", "_", .) %>%
                   gsub("[^A-Za-z0-9_]", "", .)
                 ))
-
-head(macroinv) ; head(classification)
-```
-
-```{r}
 classification <- classification %>% 
   t() %>% 
   data.frame()
+```
+
+```{r}
+head(macroinv)
+head(classification)
 ```
 
 ### Reduce the size of the data frame to remove rare species (\<1):
@@ -222,7 +220,7 @@ scatter(CA_ade4_sansbassin)
 
 The first two axes explain $28.58%$ of the total inertia, with approximately $14%$ for each axis. Although this is not a large proportion, such values are not uncommon in ecological datasets. Axis 1 represents essentially a Bivalve gradient, with Bivalve contributing $69%$, followed by *Thaumaleidae* ($12%$), *Culicidae* ($5.3%$), and *Asellidae* ($3.7%$). Axis 2 is mainly explained by *Thaumaleidae* ($79%$), with smaller yet notable contributions from Bivalve ($8.8%$) and *Simuliidae* ($3.5%$).
 
-The high contribution of *Bivalve* may be explained by the fact that, unlike the other taxa, it refers to a class and therefore represents a much broader group. This could account for the prevalence of various Bivalve individuals across some sampling stations (e.g. between 62 and 700 individuals in "Ruche" samples), and consequently, its dominant role in shaping Axis 1. The $79%$ contribution of *Thaumaleidae* likely reflects its high density in three stations ("Bassin"), a peculiar environment where only *Thaumaleidae* were found, while they were nearly absent from other sites. This group thus stretches Axis 2. "Bassin" environnement was a cemented artificial pound which is hard to colonize for most organisms other than *Thaumaleidae*.
+The high contribution of *Bivalve* may be explained by the fact that, unlike the other taxa (at the family level), it refers to a class and therefore represents a much broader group. This could account for the prevalence of various Bivalve individuals across some sampling stations (e.g. between 62 and 700 individuals in "Ruche" samples), and consequently, its dominant role in shaping Axis 1. The $79%$ contribution of *Thaumaleidae* likely reflects its high density in three stations ("Bassin"), a peculiar environment where only *Thaumaleidae* were found, while they were nearly absent from other sites. This group thus stretches Axis 2. "Bassin" environnement was a cemented artificial pound which is hard to colonize for most organisms other than *Thaumaleidae*. Indeed, this taxon belongs to the *Diptera* order, very tolerant to pollution (Vivier, P., 1970) and ubiquitous.
 
 Regarding the correspondances between stations and species, the analysis shows - as expected - a proximity between *Thaumaleidae* and stations 28, 27 and 29, which are the stations it was almost excusively sampled from. It could therefore be interesting to redo the analysis without those 3 stations to remove the high correlation between these "Bassin" samples and *Thaumaleidae*.
 
@@ -240,12 +238,11 @@ ggplot(data = CA_ade4_ligne_ZH) +
   aes(x = Axis1, y = Axis2, color = y) +
   geom_point() +
   labs(fill = "**Wetland**") + 
-  ggtitle("**Abundance of individuals per macroinvertebrate
-          order for each sample per wetland**") +
+  ggtitle("**Abundance of individuals per macroinvertebrate order for each sample per wetland**") +
   xlab("**CA Axis 1**") + 
   ylab("**CA Axis 2**") +
   theme_bw() + 
-  theme(axis.text.x = element_markdown(angle = 45, vjust = 1, hjust = 1, size = 11), 
+  theme(axis.text.x = element_markdown(vjust = 1, hjust = 1, size = 11), 
         axis.text.y = element_markdown(size = 11),
         axis.title = element_markdown(size = 13),
         plot.title = element_markdown(hjust = 0.5, size = 15),
@@ -255,15 +252,16 @@ ggplot(data = CA_ade4_sansbassin_ligne_ZH) +
   aes(x = Axis1, y = Axis2, color = y) +
   geom_point() +
   labs(fill = "**Wetland**") + 
-  ggtitle("**Abundance of individuals per macroinvertebrate
-          order for each sample per wetland**") +
+  ggtitle("**Abundance of individuals per macroinvertebrate order for each sample per wetland**", 
+          subtitle = "Without Bassin samples") +
   xlab("**CA Axis 1**") + 
   ylab("**CA Axis 2**") +
   theme_bw() + 
-  theme(axis.text.x = element_markdown(angle = 45, vjust = 1, hjust = 1, size = 11), 
+  theme(axis.text.x = element_markdown(vjust = 1, hjust = 1, size = 11), 
         axis.text.y = element_markdown(size = 11),
         axis.title = element_markdown(size = 13),
         plot.title = element_markdown(hjust = 0.5, size = 15),
+        plot.subtitle = element_markdown(hjust = 0.5, size = 15),
         legend.title = element_markdown(size = 13)) 
 ```
 
