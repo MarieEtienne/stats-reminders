@@ -30,8 +30,7 @@ In this study, two streams (the Rieu Querelle and the Verdanson), permanent pond
 
 The purpose of this analysis is to study the species assemblages depending of the site. In this context, the AFC is one of the right choices.
 
-## Packages
-
+## Packages {-}
 ```{r, message = FALSE, warning = FALSE}
 rm(list = ls())
 requiredPackages <- c("dplyr","readr", "stringi", "ggplot2", "vegan", 
@@ -109,7 +108,8 @@ macroinv_red %>%
   theme_bw() +
   xlab("**Wetland**") + 
   ylab("**Number of replicates**") +
-  theme(axis.text.x = element_markdown(angle = 45, vjust = 1, hjust = 1, size = 11), 
+  theme(axis.text.x = element_markdown(angle = 45, vjust = 1, 
+                                       hjust = 1, size = 11), 
         axis.text.y = element_markdown(size = 11),
         axis.title = element_markdown(size = 13),
         plot.title = element_markdown(hjust = 0.5, size = 15), 
@@ -124,7 +124,8 @@ macroinv_red %>%
   ggplot(., aes(x = Echantillon, y = Abondance, fill = Familles)) +
   geom_bar(stat = "identity") +
   facet_wrap(~ ZH) + 
-  ggtitle("**Abundance of individuals per macroinvertebrate family for each sample per wetland**") +
+  ggtitle("**Abundance of individuals per macroinvertebrate
+          family for each sample per wetland**") +
   xlab("**Number of individuals by sample**") + 
   ylab("**Sample**") +
   theme_bw() + 
@@ -142,7 +143,8 @@ macroinv_red %>%
   ggplot(., aes(x = Echantillon, y = Abondance, fill = X1)) +
   geom_bar(stat = "identity") +
   facet_wrap(~ ZH) + 
-  ggtitle("**Abundance of individuals per macroinvertebrate order for each sample per wetland**") +
+  ggtitle("**Abundance of individuals per macroinvertebrate
+          order for each sample per wetland**") +
   xlab("**Number of individuals by sample**") + 
   ylab("**Sample**") +
   theme_bw() + 
@@ -154,8 +156,7 @@ macroinv_red %>%
         legend.title = element_markdown(size = 13))
 ```
 
-# Analysis
-
+# Analysis : Correspondance Analysis
 ```{r}
 CA <- CA(macroinv_red[,-c(1,2)], axes = c(1,2))
 plot(CA$eig[,2], type = "h")
@@ -171,8 +172,10 @@ print(CA$col$contrib[which_contrib_high1, ])
 
 print("Species that contribute to axe 2:")
 print(CA$col$contrib[which_contrib_high2, ])
+```
 
-#BONUS: visualize axis contribution
+**BONUS : visualize axis contribution**
+```{r}
 fviz_contrib(CA, choice = "col", axes = 1, top = Inf)  # contributions Axis 1
 fviz_contrib(CA, choice = "col", axes = 2, top = Inf)  # contributions Axis 2
 ```
@@ -181,33 +184,40 @@ fviz_contrib(CA, choice = "col", axes = 2, top = Inf)  # contributions Axis 2
 CA_ade4 <- dudi.coa(macroinv_red[,-c(1,2)],scannf=FALSE,nf=60)
 CA_ade4
 barplot(CA_ade4$eig)
-
-#I remove the bassin that drags the Axis 1
-CA_ade4_sansbassin <- dudi.coa(macroinv_red[-c(27,28,29),-c(1,2)],scannf=FALSE, nf=58)
-barplot(CA_ade4_sansbassin$eig)
-
-
-pourcentage <- CA_ade4$eig/sum(CA_ade4$eig)*100
-pourcentage #pourcentage d'inertie expliquée selon les axes
-
-pourcentage_sansbassin <- CA_ade4_sansbassin$eig/sum(CA_ade4_sansbassin$eig)*100
-pourcentage_sansbassin #pourcentage d'inertie expliquée selon les axes
-
-round(cumsum(pourcentage),2) #inertie cumulée
-round(cumsum(pourcentage_sansbassin),2)
-
-#c'est un peu mieux sans le bassin
 ```
 
 ```{r}
+# I remove the bassin that drags the Axis 1
+CA_ade4_sansbassin <- dudi.coa(macroinv_red[-c(27,28,29), -c(1,2)], 
+                               scannf=FALSE, nf = 58)
+barplot(CA_ade4_sansbassin$eig)
+```
 
+## Inertia explained
+### Percentage of inertia explained according to the axes
+```{r}
+pourcentage <- CA_ade4$eig/sum(CA_ade4$eig)*100
+pourcentage
+
+pourcentage_sansbassin <- CA_ade4_sansbassin$eig/sum(CA_ade4_sansbassin$eig)*100
+pourcentage_sansbassin
+```
+
+### Cumulative inertia
+```{r}
+round(cumsum(pourcentage),2)
+round(cumsum(pourcentage_sansbassin),2)
+```
+Better explication without the "Bassin" 
+
+## Some plot
+```{r}
 scatter(CA_ade4, posieig = "none")
 s.label(CA_ade4$li, xax = 1, yax = 2, boxes = FALSE)
 s.label(CA_ade4$co, xax = 1, yax = 2, boxes = FALSE)
 
 
 scatter(CA_ade4_sansbassin)
-
 ```
 
 The first two axes explain $28.58%$ of the total inertia, with approximately $14%$ for each axis. Although this is not a large proportion, such values are not uncommon in ecological datasets. Axis 1 represents essentially a Bivalve gradient, with Bivalve contributing $69%$, followed by *Thaumaleidae* ($12%$), *Culicidae* ($5.3%$), and *Asellidae* ($3.7%$). Axis 2 is mainly explained by *Thaumaleidae* ($79%$), with smaller yet notable contributions from Bivalve ($8.8%$) and *Simuliidae* ($3.5%$).
@@ -222,47 +232,68 @@ CA_ade4_sansbassin_ligne_ZH <- merge(CA_ade4_sansbassin$li, macroinv_red$ZH, by=
 
 #CA_ade4_col_ZH <- merge(CA_ade4$co,t(classification),by.x="row.names", by.y=t(classification)[,2]) 
 #ça marche pas encore, il y a un problème avec les by
-
-#graph of the CA for the lines, dim 1 and 2, colour depends on the water source type 
-ggplot(data=CA_ade4_ligne_ZH)+
-  aes(x=Axis1,y=Axis2,color=y)+
-  geom_point()+
-  labs(fill="ZH")
-
-ggplot(data=CA_ade4_sansbassin_ligne_ZH)+
-  aes(x=Axis1,y=Axis2,color=y)+
-  geom_point()+
-  labs(fill="ZH")
-
 ```
 
-Représentation du diagramme avec les trajectoires
+**Plot CA for the lines, dim 1 and 2, colour depends on the water source type :**
+```{r}
+ggplot(data = CA_ade4_ligne_ZH) +
+  aes(x = Axis1, y = Axis2, color = y) +
+  geom_point() +
+  labs(fill = "**Wetland**") + 
+  ggtitle("**Abundance of individuals per macroinvertebrate
+          order for each sample per wetland**") +
+  xlab("**CA Axis 1**") + 
+  ylab("**CA Axis 2**") +
+  theme_bw() + 
+  theme(axis.text.x = element_markdown(angle = 45, vjust = 1, hjust = 1, size = 11), 
+        axis.text.y = element_markdown(size = 11),
+        axis.title = element_markdown(size = 13),
+        plot.title = element_markdown(hjust = 0.5, size = 15),
+        legend.title = element_markdown(size = 13))
 
+ggplot(data = CA_ade4_sansbassin_ligne_ZH) +
+  aes(x = Axis1, y = Axis2, color = y) +
+  geom_point() +
+  labs(fill = "**Wetland**") + 
+  ggtitle("**Abundance of individuals per macroinvertebrate
+          order for each sample per wetland**") +
+  xlab("**CA Axis 1**") + 
+  ylab("**CA Axis 2**") +
+  theme_bw() + 
+  theme(axis.text.x = element_markdown(angle = 45, vjust = 1, hjust = 1, size = 11), 
+        axis.text.y = element_markdown(size = 11),
+        axis.title = element_markdown(size = 13),
+        plot.title = element_markdown(hjust = 0.5, size = 15),
+        legend.title = element_markdown(size = 13)) 
+```
+
+### Trajectorie diagramm
 ```{r}
 s.traject(CA_ade4$li)
 s.traject(CA_ade4_sansbassin$li)
-
 ```
-
 
 ```{r}
-table.value(macroinv_red[,-c(1,2)][order(CA_ade4$li[,1]),order(CA_ade4$co[,1])], grid=T,csize=0.5,clabel.col=0.6)
-table.value(macroinv_red[,-c(1,2)][order(CA_ade4_sansbassin$li[,1]),order(CA_ade4_sansbassin$co[,1])], grid=T,csize=0.5,clabel.col=0.6)
+table.value(macroinv_red[,-c(1,2)][order(CA_ade4$li[,1]),
+                                   order(CA_ade4$co[,1])],
+            grid = T, csize = 0.5, clabel.col = 0.6)
+table.value(macroinv_red[,-c(1,2)][order(CA_ade4_sansbassin$li[,1]),
+                                   order(CA_ade4_sansbassin$co[,1])], 
+            grid = T, csize = 0.5, clabel.col = 0.6)
 ```
 
-Distribution des espèces
-
+### Species distribution
 ```{r}
 esp = 22 #esp dans le bassin isolé des autres données
 esp = 23 #esp un peu partout
-s.distri(CA_ade4$li,macroinv_red[,esp],cell=1.5,sub=macroinv_red[1,esp],csub=2)
-s.distri(CA_ade4_sansbassin$li,macroinv_red[-c(27,28,29),esp],cell=1.5,sub=macroinv_red[1,esp],csub=2)
-
+s.distri(CA_ade4$li, macroinv_red[, esp], cell = 1.5, 
+         sub = macroinv_red[1, esp], csub = 2)
+s.distri(CA_ade4_sansbassin$li, macroinv_red[-c(27,28,29),esp], cell = 1.5,
+         sub = macroinv_red[1, esp], csub = 2)
 ```
 
-Distribution des sites
-
+### Sites distribution
 ```{r}
 site = 5
-s.distri(CA_ade4$co,macroinv_red[site,-c(1,2)],cell=1.5,csub=2)
+s.distri(CA_ade4$co, macroinv_red[site, -c(1, 2)], cell = 1.5, csub = 2)
 ```
