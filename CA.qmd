@@ -1,12 +1,16 @@
 ---
-title: "What is a CA and how to use it"
+title: "What is a CA and how to use it ?"
 author: "Capucine, Marion et Maite"
 editor: visual
+output: 
+  html_document:
+   toc: true
+   toc_float: true
 ---
 
-# Introduction
+# Introduction to the CA Methods
 
-A Correspondence Analysis (CA), or *Analyse Factorielle de Correspondance* (AFC) in French, is a multivariate statistical method used to measure the distance between different profiles in your data, or the discrepancy between the data and the chi-square $\chi²$ independence hypothesis. This hypothesis (also called the null hypothesis H0) implies that the 2 variables studied are independent.
+A **Correspondence Analysis** (CA), or **Analyse Factorielle de Correspondance** (AFC) in French, is a multivariate statistical method used to measure the distance between different profiles in your data, or the discrepancy between the data and the chi-square $\chi²$ independence hypothesis. This hypothesis (also called the null hypothesis H0) implies that the 2 variables studied are independent.
 
 The values can be quantitative, qualitative or semi-qualitative. It is usually applied to contingency tables or when you have a table with data about species abundance in different places and another one with data about the ecology of those same places.
 
@@ -14,15 +18,23 @@ Just like in the PCA, we will be looking the orthogonal axis that maximizes the 
 
 The columns and lines have a symmetrical role, so you'll have the same results in both directions.
 
-To use it you'll need to pay attention to certain things :  
--   all values need to be positive (which shouldn't be a problem if it's a contingency table),  
--   if you have rare species it may change the shape of your results significantly. It's not always a bad thing, just something you need to be aware of.
-
+To use it you'll need to pay attention to certain things :\
+-   all values need to be **positive** (which shouldn't be a problem if it's a contingency table),\
+-   if you have **rare species**, it may change the shape of your results significantly. It's not always a bad thing, just something you need to be aware of.   
 
 # Ecological exemple
+
 ## Ecological context
-A study was conducted in 2022 on the permanents wetlands of the municipality of Grabels (34), as part of a Municipal Biodiversity Atlas. The aim was to characterise the state of these environments using bioindicator species : benthic macroinvertebrates. This taxon, which is sensitive to pollution, can be used to study water quality (ref).\
-In this study, the standardised I2M2 protocol of the Water Framework Directive (in french, *Directive Cadre sur l'Eau*) was adapted to a context of ponds and very shallow watercourses.
+
+A study was conducted in 2022 on the permanents wetlands of the municipality of Grabels (34), as part of a Municipal Biodiversity Atlas. The aim was to characterise the state of these environments using bioindicator species : benthic macroinvertebrates (@fig-CA_macroinvertebrates). This taxon, which is sensitive to pollution, can be used to study water quality (ref).\
+
+::: {#fig-CA_macroinvertebrates layout="[1,1]"}
+![Libellulidae](./images/Libellulidae.jpg){#fig-lib} ![Physidae](images/Physidae.jpg){#fig-phys}
+
+Family of benthic macroinvertebrates
+:::
+
+In this study, the standardised **I2M2 protocol** of the Water Framework Directive (in french, Directive Cadre sur l'Eau (ref)) was adapted to a context of ponds and very shallow watercourses.   
 Two streams (the *Rieu Querelle* and the *Verdanson*), permanent ponds (*Ruche*, *Terrain de Foot* and *Foot2*) and an artificial water source (*Bassin*) were sampled and the macroinvertebrates collected were identified. Each wetland was sampled at several points randomly selected from the water body (*Zi*), and three replicas were made at each point (*Zi_j*).
 
 The purpose of this analysis is to study the species assemblages depending of the site. In this context, the CA is one of the right choices.
@@ -47,10 +59,11 @@ library(tidyr)
 library(factoextra)
 library(gridtext)
 library(ggtext)
+library(knitr)
 ```
 
 ## Data
-```{r}
+```{r, message = FALSE, warning = FALSE}
 # Import data
 macroinv <- read.csv("ABC_macroinv.csv", header = TRUE, 
                      fileEncoding = "latin1", 
@@ -72,16 +85,28 @@ classification <- classification %>%
                 x %>%
                   stri_trans_general("Latin-ASCII") %>% 
                   gsub(" ", "_", .) %>%
-                  gsub("[^A-Za-z0-9_]", "", .)
-                ))
+                  gsub("[^A-Za-z0-9_]", "", .)))
+
+# Rotate classification tabs
 classification <- classification %>% 
   t() %>% 
   data.frame()
 ```
 
+In each sample (each row), macroinvertebrates have been identified at the family level (@tbl-CA_datamacroinv), and the CA analysis will be performed at this taxonomic level.
 ```{r}
-head(macroinv)
-head(classification)
+#| label: tbl-CA_datamacroinv
+#| tbl-cap: Overview of the dataset
+
+kable(head(macroinv[,1:10]), "html")
+```
+
+However, the taxonomic level of the order was also retained in most cases (Coleoptera, Odonata, etc.) in order to clearly group together the numerous families identified and enable an ecological interpretation of the results obtained (@tbl-CA_classifmacroinv). Other families were grouped at the class level (Bivalves, Gastropods, etc.) and the paraphyletic group of Crustaceans was retained. 
+```{r}
+#| label: tbl-CA_classifmacroinv
+#| tbl-cap: Correspondence between taxonomic levels of macroinvertebrates families and orders
+
+kable(head(classification[,1:2]), "html", col.names = c("Order", "Family"))
 ```
 
 ### Reduce the size of the data frame to remove rare species (\<1):
@@ -98,11 +123,13 @@ macroinv_red <- macroinv[, c(names(macroinv)[1:2], species_keep)]
 
 ## Data exploration
 ```{r}
+#| label: fig-CA_nbreplicates
+#| fig-cap: Number of replicates per wetland
+
 macroinv_red %>% 
   group_by(ZH, Echantillon) %>% 
   ggplot(., aes(x = ZH, fill = ZH)) +  
   geom_bar() + 
-  ggtitle("**Number of replicates per wetland**") +
   theme_bw() +
   xlab("**Wetland**") + 
   ylab("**Number of replicates**") +
@@ -110,29 +137,31 @@ macroinv_red %>%
                                        hjust = 1, size = 11), 
         axis.text.y = element_markdown(size = 11),
         axis.title = element_markdown(size = 13),
-        plot.title = element_markdown(hjust = 0.5, size = 15), 
         legend.position = "none")
 ```
 
-
 ```{r}
+#| label: fig-CA_abundFamily
+#| fig-cap: Abundance of individuals per macroinvertebrate taxonomic level for each sample per wetland
+#| fig-subcap: 
+#| - "Family level"
+#| - "Order level"
+#| layout-nrow: 2
+
 macroinv_red %>% 
   group_by(ZH) %>% 
   pivot_longer(cols = c(3:40), names_to = "Familles", values_to = "Abondance") %>%
   ggplot(., aes(x = Echantillon, y = Abondance, fill = Familles)) +
   geom_bar(stat = "identity") +
   facet_wrap(~ ZH) + 
-  ggtitle("**Abundance of individuals per macroinvertebrate
-          family for each sample per wetland**") +
   xlab("**Number of individuals by sample**") + 
   ylab("**Sample**") +
   theme_bw() + 
   labs(fill = "**Family**") + 
-  theme(axis.text.x = element_markdown(angle = 45, vjust = 1, hjust = 1, size = 11), 
+  theme(axis.text.x = element_markdown(angle = 90, vjust = 1, hjust = 1), 
         axis.text.y = element_markdown(size = 11),
         axis.title = element_markdown(size = 13),
-        plot.title = element_markdown(hjust = 0.5, size = 15),
-        legend.title = element_markdown(size = 13))
+        legend.title = element_markdown())
 
 macroinv_red %>% 
   group_by(ZH) %>% 
@@ -141,18 +170,16 @@ macroinv_red %>%
   ggplot(., aes(x = Echantillon, y = Abondance, fill = X1)) +
   geom_bar(stat = "identity") +
   facet_wrap(~ ZH) + 
-  ggtitle("**Abundance of individuals per macroinvertebrate
-          order for each sample per wetland**") +
   xlab("**Number of individuals by sample**") + 
   ylab("**Sample**") +
   theme_bw() + 
   labs(fill = "**Order**") + 
-  theme(axis.text.x = element_markdown(angle = 45, vjust = 1, hjust = 1, size = 11), 
+  theme(axis.text.x = element_markdown(angle = 90, vjust = 1, hjust = 1), 
         axis.text.y = element_markdown(size = 11),
-        axis.title = element_markdown(size = 13),
         plot.title = element_markdown(hjust = 0.5, size = 15),
-        legend.title = element_markdown(size = 13))
+        legend.title = element_markdown())
 ```
+
 
 # Analysis : Correspondance Analysis
 ```{r}
@@ -192,7 +219,9 @@ barplot(CA_ade4_sansbassin$eig)
 ```
 
 ## Inertia explained
+
 ### Percentage of inertia explained according to the axes
+
 ```{r}
 pourcentage <- CA_ade4$eig/sum(CA_ade4$eig)*100
 pourcentage
@@ -202,13 +231,16 @@ pourcentage_sansbassin
 ```
 
 ### Cumulative inertia
+
 ```{r}
 round(cumsum(pourcentage),2)
 round(cumsum(pourcentage_sansbassin),2)
 ```
-Better explication without the "Bassin" 
+
+Better explication without the "Bassin"
 
 ## Some plot
+
 ```{r}
 scatter(CA_ade4, posieig = "none")
 s.label(CA_ade4$li, xax = 1, yax = 2, boxes = FALSE)
@@ -233,39 +265,43 @@ CA_ade4_sansbassin_ligne_ZH <- merge(CA_ade4_sansbassin$li, macroinv_red$ZH, by=
 ```
 
 **Plot CA for the lines, dim 1 and 2, colour depends on the water source type :**
+
 ```{r}
+#| label: fig-CA_CAwetland_position
+#| fig-cap: Samples position on Axis 1 and 2 of the CA, depending on wetland
+#| fig-subcap: 
+#| - "CA with Bassin samples"
+#| - "CA without Bassin samples"
+#| layout-nrow: 2
+
 ggplot(data = CA_ade4_ligne_ZH) +
   aes(x = Axis1, y = Axis2, color = y) +
   geom_point() +
-  labs(fill = "**Wetland**") + 
-  ggtitle("**Abundance of individuals per macroinvertebrate order for each sample per wetland**") +
   xlab("**CA Axis 1**") + 
   ylab("**CA Axis 2**") +
+  labs(color = "**Wetland**") +
   theme_bw() + 
   theme(axis.text.x = element_markdown(vjust = 1, hjust = 1, size = 11), 
         axis.text.y = element_markdown(size = 11),
         axis.title = element_markdown(size = 13),
-        plot.title = element_markdown(hjust = 0.5, size = 15),
-        legend.title = element_markdown(size = 13))
+        legend.title = element_markdown(size = 13), 
+        legend.text = element_markdown(size = 13),
+        legend.position = "top")
 
 ggplot(data = CA_ade4_sansbassin_ligne_ZH) +
   aes(x = Axis1, y = Axis2, color = y) +
   geom_point() +
-  labs(fill = "**Wetland**") + 
-  ggtitle("**Abundance of individuals per macroinvertebrate order for each sample per wetland**", 
-          subtitle = "Without Bassin samples") +
   xlab("**CA Axis 1**") + 
   ylab("**CA Axis 2**") +
   theme_bw() + 
   theme(axis.text.x = element_markdown(vjust = 1, hjust = 1, size = 11), 
         axis.text.y = element_markdown(size = 11),
         axis.title = element_markdown(size = 13),
-        plot.title = element_markdown(hjust = 0.5, size = 15),
-        plot.subtitle = element_markdown(hjust = 0.5, size = 15),
-        legend.title = element_markdown(size = 13)) 
+        legend.position = "none") 
 ```
 
 ### Trajectorie diagramm
+
 ```{r}
 s.traject(CA_ade4$li)
 s.traject(CA_ade4_sansbassin$li)
@@ -281,6 +317,7 @@ table.value(macroinv_red[,-c(1,2)][order(CA_ade4_sansbassin$li[,1]),
 ```
 
 ### Species distribution
+
 ```{r}
 esp = 22 #esp dans le bassin isolé des autres données
 esp = 23 #esp un peu partout
@@ -291,7 +328,8 @@ s.distri(CA_ade4_sansbassin$li, macroinv_red[-c(27,28,29),esp], cell = 1.5,
 ```
 
 ### Sites distribution
+
 ```{r}
 site = 5
-s.distri(CA_ade4$co, macroinv_red[site, -c(1, 2)], cell = 1.5, csub = 2)
+#s.distri(CA_ade4$co, macroinv_red[site, -c(1, 2)], cell = 1.5, csub = 2)
 ```
