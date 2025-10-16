@@ -20,16 +20,19 @@ To use it you'll need to pay attention to certain things :
 
 -   if you have rare species it may change the shape of your results significantly. It's not always a bad thing, just something you need to be aware of.
 
-# Ecological context
+
+# Ecological exemple
+
+## Ecological context
 
 A study was conducted in 2022 on the wetlands of the municipality of Grabels (34), as part of a Municipal Biodiversity Atlas. The aim was to characterise the state of these environments using bioindicator species : benthic macroinvertebrates. This taxon, which is sensitive to pollution, can be used to study water quality (ref).\
-In this study, two streams (the Rieu Querelle and the Verdanson), permanent ponds and an artificial water source (the retention basin) were sampled and the individuals identified. Each wetland was sampled at several points randomly selected from the water body, and three passes were made at each point.
+In this study, two streams (the Rieu Querelle and the Verdanson), permanent ponds and an artificial water source (the retention basin) were sampled and the individuals identified. Each wetland was sampled at several points (Zi) randomly selected from the water body, and three passes were made at each point (Zi_j).
 
 The purpose of this analysis is to study the species assemblages depending of the site. In this context, the AFC is one of the right choices.
 
-#### Imports
+## Packages
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 rm(list = ls())
 #imports
 #install.packages("dplyr")
@@ -39,18 +42,22 @@ library(stringi)
 library(FactoMineR)
 library(ade4)
 library(ggplot2)
+library(vegan)
+library(tidyr)
+library(factoextra)
+```
 
+## Data
 
+```{r}
 #Import data
-macroinv <- read.csv("ABC_macroinv.csv", header = TRUE, fileEncoding = "latin1", sep = ";")
+macroinv <- read.csv("ABC_macroinv.csv", header = TRUE, fileEncoding = "latin1", 
+                     sep = ";")
 
-classification <- read_delim(
-  "classif_macroinv.csv",
-  delim = ";",
-  col_names = FALSE,              
-  locale = locale(encoding = "latin1"),
-  name_repair = "minimal"
-)
+classification <- read_delim("classif_macroinv.csv", delim = ";", 
+                             col_names = FALSE, 
+                             locale = locale(encoding = "latin1"),
+                             name_repair = "minimal")
 
 #replace colnames in both dataframes
 colnames(macroinv) <- colnames(macroinv) %>%
@@ -69,11 +76,16 @@ classification <- classification %>%
 head(macroinv) ; head(classification)
 ```
 
-#### Reduce the size of the data frame to remove rare species (\<1):
+```{r}
+classification <- classification %>% 
+  t() %>% 
+  data.frame()
+```
 
+### Reduce the size of the data frame to remove rare species (\<1):
 ```{r}
 #check each specie count
-species_sum = colSums(macroinv[,-c(1,2)])
+species_sum <- colSums(macroinv[,-c(1,2)])
 
 #keep only names of species with <1 occurences
 species_keep <- names(species_sum[species_sum > 1])
@@ -82,12 +94,43 @@ species_keep <- names(species_sum[species_sum > 1])
 macroinv_red <- macroinv[, c(names(macroinv)[1:2], species_keep)]
 ```
 
-#Analysis
+## Data exploration
+```{r}
+macroinv_red %>% 
+  group_by(ZH, Echantillon) %>% 
+  # summarize(div = n()) %>%
+  ggplot(., aes(x = Echantillon, fill = ZH)) +  
+  geom_bar() + 
+  ggtitle("Nombre de familles de macro-invertébrés par zones humides") +
+  theme_bw()
+```
 
 ```{r}
-library(FactoMineR)
-library(ade4)
+macroinv_red %>% 
+  group_by(ZH) %>% 
+  pivot_longer(cols = c(3:40), names_to = "Familles", values_to = "Abondance") %>%
+  ggplot(., aes(x = Echantillon, y = Abondance, fill = Familles)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~ ZH) + 
+    ggtitle("Abondance d'individus par famille de macro-invertébrés pour chaque échantillon par zone humide") +
+  theme_bw() + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1), 
+        plot.title = element_text(hjust = 0.5))
+
+macroinv_red %>% 
+  group_by(ZH) %>% 
+  pivot_longer(cols = c(3:40), names_to = "Familles", values_to = "Abondance") %>%
+  left_join(., classification, by = c("Familles" = "X2")) %>%
+  ggplot(., aes(x = Echantillon, y = Abondance, fill = X1)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~ ZH) + 
+  ggtitle("Abondance d'individus par famille de macro-invertébrés par réplica pour chaque zone humide") +
+  theme_bw() + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1), 
+        plot.title = element_text(hjust = 0.5))
 ```
+
+# Analysis
 
 ```{r}
 CA <- CA(macroinv_red[,-c(1,2)], axes = c(1,2))
@@ -106,10 +149,8 @@ print("Species that contribute to axe 2:")
 print(CA$col$contrib[which_contrib_high2, ])
 
 #BONUS: visualize axis contribution
-library(factoextra)
 fviz_contrib(CA, choice = "col", axes = 1, top = Inf)  # contributions Axis 1
 fviz_contrib(CA, choice = "col", axes = 2, top = Inf)  # contributions Axis 2
-
 ```
 
 ```{r}
