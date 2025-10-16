@@ -134,3 +134,53 @@ simul_traj(100,5,100,1,1.5,0.05,0.5,0.05,500)
 
 
 ```
+
+***Bonus :*** We lied !! In the end, for those who are interested, we are going to describe the analytic approach.
+
+To do so, we will introduce the **Jacobian Matrix** (Fun Fact : it was named after Carl Gustav Jacobi, an important 19th century mathematician who added huge contributions to the field of linear algebra).
+
+This matrix is composed of the first-order partial derivatives of a multivariable function. The formula for the Jacobian Matrix is the following :
+
+$$
+\begin{equation}
+Jac(N_1, N_2) =
+\begin{pmatrix}
+\frac{\partial f_1}{\partial N_1} & \frac{\partial f_1}{\partial N_2} \\
+\frac{\partial f_2}{\partial N_1} & \frac{\partial f_2}{\partial N_2}
+\end{pmatrix}
+\end{equation}
+$$
+
+In contrast with the previous part where we had 2 equations, here we have 4 terms in the matrix, in particular 4 partial derivatives. After finding the fixed points, by resolving the equations detailed in the first part, now we can easily replace the values of $N1^{*}$ and $N2^{*}$ in the Jacobian Matrix and then study the stability of the fixed points.
+
+In the analytic approach, the stability of a fixed point ($N1^{*}$, $N2^{*}$) is related to the signs of the real parts of the **eigenvalues** ​​of $Jac(N1^{*},N2^{*})$:
+
+-   ($N1^{*}$, $N2^{*}$) is locally **asymptotically stable (LAS)** if all its eigenvalues are (with real parts) \<0
+
+-   ($N1^{*}$, $N2^{*}$) is **unstable** otherwise, including:
+
+    **repulsor** if all eigenvalues ​​are (with real parts) \>0
+
+    **saddle point** if some eigenvalues are (with real parts) \<0 and the others (with real parts) \>0.
+
+Because the matrix $Jac(N1^{*},N2^{*})$ is of dimension 2, it has exactly two eigenvalues and we can calculate the Trace (sum of the eigenvalues ) and the Determinant (product of the eigenvalues) of the Jacobian Matrix which will help us to determine the stability of the fixed points. If a Jacobian Matrix is defined as followed :
+
+$$
+\begin{equation}
+Jac(N_1^*, N_2^*) =
+\begin{pmatrix}
+a & b \\
+c & d
+\end{pmatrix}
+\end{equation}
+$$
+
+The Trace and the Determinant correspond to : 𝑇𝑟𝑎𝑐𝑒 = 𝑎 + 𝑑 and 𝐷𝑒𝑡 = 𝑎𝑑 − 𝑏𝑐.
+
+In particular,
+
+-   ($N1^{*}$, $N2^{*}$) is locally **asymptotically stable (LAS)** if Trace \<0 and Det \>0.
+-   ($N1^{*}$, $N2^{*}$) is **repulsor** if Trace \> 0 and Det \>0.
+-   ($N1^{*}$, $N2^{*}$) is **saddle point** if Det \< 0 (whatever the Trace).
+
+**CONCLUSION :**
