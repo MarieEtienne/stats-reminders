@@ -34,8 +34,12 @@ The purpose of this analysis is to study the species assemblages depending of th
 
 ```{r, message = FALSE, warning = FALSE}
 rm(list = ls())
-#imports
-#install.packages("dplyr")
+requiredPackages <- c("dplyr","readr", "stringi", "ggplot2", "vegan", 
+                      "tidyr", "gridtext", "ggtext")
+for(package in requiredPackages){ #Installs packages if not yet installed
+  if(!requireNamespace(package, quietly = TRUE))
+    install.packages(package)
+}
 library(dplyr)
 library(readr)
 library(stringi)
@@ -45,10 +49,11 @@ library(ggplot2)
 library(vegan)
 library(tidyr)
 library(factoextra)
+library(gridtext)
+library(ggtext)
 ```
 
 ## Data
-
 ```{r}
 #Import data
 macroinv <- read.csv("ABC_macroinv.csv", header = TRUE, fileEncoding = "latin1", 
@@ -98,12 +103,19 @@ macroinv_red <- macroinv[, c(names(macroinv)[1:2], species_keep)]
 ```{r}
 macroinv_red %>% 
   group_by(ZH, Echantillon) %>% 
-  # summarize(div = n()) %>%
-  ggplot(., aes(x = Echantillon, fill = ZH)) +  
+  ggplot(., aes(x = ZH, fill = ZH)) +  
   geom_bar() + 
-  ggtitle("Nombre de familles de macro-invertébrés par zones humides") +
-  theme_bw()
+  ggtitle("**Number of replicates per wetland**") +
+  theme_bw() +
+  xlab("**Wetland**") + 
+  ylab("**Number of replicates**") +
+  theme(axis.text.x = element_markdown(angle = 45, vjust = 1, hjust = 1, size = 11), 
+        axis.text.y = element_markdown(size = 11),
+        axis.title = element_markdown(size = 13),
+        plot.title = element_markdown(hjust = 0.5, size = 15), 
+        legend.position = "none")
 ```
+
 
 ```{r}
 macroinv_red %>% 
@@ -112,22 +124,34 @@ macroinv_red %>%
   ggplot(., aes(x = Echantillon, y = Abondance, fill = Familles)) +
   geom_bar(stat = "identity") +
   facet_wrap(~ ZH) + 
-    ggtitle("Abondance d'individus par famille de macro-invertébrés pour chaque échantillon par zone humide") +
+  ggtitle("**Abundance of individuals per macroinvertebrate family for each sample per wetland**") +
+  xlab("**Number of individuals by sample**") + 
+  ylab("**Sample**") +
   theme_bw() + 
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1), 
-        plot.title = element_text(hjust = 0.5))
+  labs(fill = "**Family**") + 
+  theme(axis.text.x = element_markdown(angle = 45, vjust = 1, hjust = 1, size = 11), 
+        axis.text.y = element_markdown(size = 11),
+        axis.title = element_markdown(size = 13),
+        plot.title = element_markdown(hjust = 0.5, size = 15),
+        legend.title = element_markdown(size = 13))
 
 macroinv_red %>% 
   group_by(ZH) %>% 
-  pivot_longer(cols = c(3:40), names_to = "Familles", values_to = "Abondance") %>%
-  left_join(., classification, by = c("Familles" = "X2")) %>%
+  pivot_longer(cols = c(3:40), names_to = "Family", values_to = "Abondance") %>%
+  left_join(., classification, by = c("Family" = "X2")) %>%
   ggplot(., aes(x = Echantillon, y = Abondance, fill = X1)) +
   geom_bar(stat = "identity") +
   facet_wrap(~ ZH) + 
-  ggtitle("Abondance d'individus par famille de macro-invertébrés par réplica pour chaque zone humide") +
+  ggtitle("**Abundance of individuals per macroinvertebrate order for each sample per wetland**") +
+  xlab("**Number of individuals by sample**") + 
+  ylab("**Sample**") +
   theme_bw() + 
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1), 
-        plot.title = element_text(hjust = 0.5))
+  labs(fill = "**Order**") + 
+  theme(axis.text.x = element_markdown(angle = 45, vjust = 1, hjust = 1, size = 11), 
+        axis.text.y = element_markdown(size = 11),
+        axis.title = element_markdown(size = 13),
+        plot.title = element_markdown(hjust = 0.5, size = 15),
+        legend.title = element_markdown(size = 13))
 ```
 
 # Analysis
