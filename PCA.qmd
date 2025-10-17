@@ -1,5 +1,9 @@
 ---
+<<<<<<< HEAD
 title: "Principal Component Analysis"
+=======
+title: "Principal Componant Analysis"
+>>>>>>> f2f6bc8 (Example presentation)
 authors: "Kilian Rocher, Océane Picot, Alexia Orhan"
 format: html
 editor: visual
@@ -54,5 +58,3 @@ spiders$rPLE <- (spiders$rPLE-mean(spiders$rPLE))/sd(spiders$rPLE)
 spiders$rPME <- (spiders$rPME-mean(spiders$rPME))/sd(spiders$rPME)
 summary(spiders) #all means are equal to 0
 ```
-
-
