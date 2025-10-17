@@ -88,4 +88,5 @@ spiders_sub <- subset(spiders, Family %in% top_families)
 res.pca2 <- PCA(spiders_sub, scale.unit = FALSE, quali.sup = 1, graph = FALSE)
 fviz_pca_ind(res.pca2, habillage = spiders_sub$Family, palette = "Dark2", repel = TRUE)
 ```
+
 Global visualisation (individuals+quantitative variables):
