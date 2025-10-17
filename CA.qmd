@@ -8,38 +8,46 @@ output:
    toc_float: true
 ---
 
-# Introduction to the CA Methods
+# Introduction to the Correspondence Analysis
 
 A **Correspondence Analysis** (CA), or **Analyse Factorielle de Correspondance** (AFC) in French, is a multivariate statistical method used to measure the distance between different profiles in your data, or the discrepancy between the data and the chi-square $\chi²$ independence hypothesis. This hypothesis (also called the null hypothesis H0) implies that the 2 variables studied are independent.
 
-The values can be quantitative, qualitative or semi-qualitative. It is usually applied to contingency tables or when you have a table with data about species abundance in different places and another one with data about the ecology of those same places.
+The values can be **quantitative, qualitative or semi-qualitative**. It is usually applied to **contingency tables** or when you have a table with data about species abundance in different places and another one with data about the ecology of those same places.
 
 Just like in the PCA, we will be looking the orthogonal axis that maximizes the inertia. The parameter used is the $\chi²$ distance : this distance is calculated between 2 rows or 2 columns. The AFC gives a weight to each profile, proportional to the abundance of the profile.
 
 The columns and lines have a symmetrical role, so you'll have the same results in both directions.
 
 To use it you'll need to pay attention to certain things :\
--   all values need to be **positive** (which shouldn't be a problem if it's a contingency table),\
--   if you have **rare species**, it may change the shape of your results significantly. It's not always a bad thing, just something you need to be aware of.   
+- all values need to be **positive** (which shouldn't be a problem if it's a contingency table),\
+- if you have **rare species**, it may change the shape of your results significantly. It's not always a bad thing, just something you need to be aware of.
 
 # Ecological exemple
-
 ## Ecological context
 
 A study was conducted in 2022 on the permanents wetlands of the municipality of Grabels (34), as part of a Municipal Biodiversity Atlas. The aim was to characterise the state of these environments using bioindicator species : benthic macroinvertebrates (@fig-CA_macroinvertebrates). This taxon, which is sensitive to pollution, can be used to study water quality (ref).\
 
-::: {#fig-CA_macroinvertebrates layout="[1,1]"}
-![Libellulidae](./images/Libellulidae.jpg){#fig-lib} ![Physidae](images/Physidae.jpg){#fig-phys}
+```{r}
+#| echo: false
+#| label: fig-CA_macroinvertebrates
+#| fig-cap: "Family of benthic macroinvertebrates"
+#| fig-subcap: 
+#| - "Libellulidae"
+#| - "Physidae"
+#| layout-nrow: 1
+#| layout-ncol: 2
 
-Family of benthic macroinvertebrates
-:::
+knitr::include_graphics("./images/Libellulidae.jpg")
+knitr::include_graphics("./images/Physidae.jpg")
+```
 
-In this study, the standardised **I2M2 protocol** of the Water Framework Directive (in french, Directive Cadre sur l'Eau (ref)) was adapted to a context of ponds and very shallow watercourses.   
+In this study, the standardised **I2M2 protocol** of the Water Framework Directive (in french, Directive Cadre sur l'Eau (ref)) was adapted to a context of ponds and very shallow watercourses.\
 Two streams (the *Rieu Querelle* and the *Verdanson*), permanent ponds (*Ruche*, *Terrain de Foot* and *Foot2*) and an artificial water source (*Bassin*) were sampled and the macroinvertebrates collected were identified. Each wetland was sampled at several points randomly selected from the water body (*Zi*), and three replicas were made at each point (*Zi_j*).
 
 The purpose of this analysis is to study the species assemblages depending of the site. In this context, the CA is one of the right choices.
 
 ## Packages
+
 ```{r, message = FALSE, warning = FALSE}
 rm(list = ls())
 requiredPackages <- c("dplyr","readr", "stringi", "ggplot2", "vegan", 
@@ -63,6 +71,7 @@ library(knitr)
 ```
 
 ## Data
+
 ```{r, message = FALSE, warning = FALSE}
 # Import data
 macroinv <- read.csv("ABC_macroinv.csv", header = TRUE, 
@@ -94,6 +103,7 @@ classification <- classification %>%
 ```
 
 In each sample (each row), macroinvertebrates have been identified at the family level (@tbl-CA_datamacroinv), and the CA analysis will be performed at this taxonomic level.
+
 ```{r}
 #| label: tbl-CA_datamacroinv
 #| tbl-cap: Overview of the dataset
@@ -101,7 +111,8 @@ In each sample (each row), macroinvertebrates have been identified at the family
 kable(head(macroinv[,1:10]), "html")
 ```
 
-However, the taxonomic level of the order was also retained in most cases (Coleoptera, Odonata, etc.) in order to clearly group together the numerous families identified and enable an ecological interpretation of the results obtained (@tbl-CA_classifmacroinv). Other families were grouped at the class level (Bivalves, Gastropods, etc.) and the paraphyletic group of Crustaceans was retained. 
+However, the taxonomic level of the order was also retained in most cases (Coleoptera, Odonata, etc.) in order to clearly group together the numerous families identified and enable an ecological interpretation of the results obtained (@tbl-CA_classifmacroinv). Other families were grouped at the class level (Bivalves, Gastropods, etc.) and the paraphyletic group of Crustaceans was retained.
+
 ```{r}
 #| label: tbl-CA_classifmacroinv
 #| tbl-cap: Correspondence between taxonomic levels of macroinvertebrates families and orders
@@ -110,6 +121,7 @@ kable(head(classification[,1:2]), "html", col.names = c("Order", "Family"))
 ```
 
 ### Reduce the size of the data frame to remove rare species (\<1):
+
 ```{r}
 #check each specie count
 species_sum <- colSums(macroinv[,-c(1,2)])
@@ -122,6 +134,7 @@ macroinv_red <- macroinv[, c(names(macroinv)[1:2], species_keep)]
 ```
 
 ## Data exploration
+
 ```{r}
 #| label: fig-CA_nbreplicates
 #| fig-cap: Number of replicates per wetland
@@ -180,61 +193,95 @@ macroinv_red %>%
         legend.title = element_markdown())
 ```
 
-
 # Analysis : Correspondance Analysis
+
+## CA with FactoMineR
+
 ```{r}
 CA <- CA(macroinv_red[,-c(1,2)], axes = c(1,2))
 plot(CA$eig[,2], type = "h")
+```
 
+```{r}
 CA$col$contrib
 CA$row
+```
+
+CA allows to see species contribution to the main axis ( @tbl-CA_spcontrib , @fig-CA_plotspcontrib )
+
+```{r}
+#| label: tbl-CA_spcontrib
+#| tbl-cap: "Species that contribute to Axis 1-2"
+#| tbl-subcap: 
+#| - "Species that contribute to axe 1"
+#| - "Species that contribute to axe 2"
+#| layout-nrow: 2
+#| layout-ncol: 1
 
 which_contrib_high1 <- which(CA$col$contrib[,1] >= 100/nrow(CA$col$contrib))
 which_contrib_high2 <- which(CA$col$contrib[,2] >= 100/nrow(CA$col$contrib))
 
-print("Species that contribute to axe 1:")
-print(CA$col$contrib[which_contrib_high1, ])
+kable(CA$col$contrib[which_contrib_high1, ], "html")
 
-print("Species that contribute to axe 2:")
-print(CA$col$contrib[which_contrib_high2, ])
+kable(CA$col$contrib[which_contrib_high2, ], "html")
 ```
 
-**BONUS : visualize axis contribution**
 ```{r}
+#| label: fig-CA_plotspcontrib
+#| fig-cap: "Species contribution to Axis 1-2"
+#| fig-subcap: 
+#| - "Species contribution to axe 1"
+#| - "Species contribution to axe 2"
+#| layout-nrow: 2
+
+# BONUS : visualize axis contribution
 fviz_contrib(CA, choice = "col", axes = 1, top = Inf)  # contributions Axis 1
 fviz_contrib(CA, choice = "col", axes = 2, top = Inf)  # contributions Axis 2
 ```
 
-```{r}
-CA_ade4 <- dudi.coa(macroinv_red[,-c(1,2)],scannf=FALSE,nf=60)
-CA_ade4
-barplot(CA_ade4$eig)
-```
+## CA with ade4
 
 ```{r}
-# I remove the bassin that drags the Axis 1
+#| label: fig-CA_eig1
+#| fig-cap: "Eigen values associates to CA dimensions"
+#| fig-subcap: 
+#| - "With Bassin samples"
+#| - "Without Bassin samples, that drags the Axis 1"
+#| layout-nrow: 2
+#| layout-ncol: 1
+
+CA_ade4 <- dudi.coa(macroinv_red[,-c(1,2)], scannf=FALSE,nf=60)
+#CA_ade4
+barplot(CA_ade4$eig)
+
 CA_ade4_sansbassin <- dudi.coa(macroinv_red[-c(27,28,29), -c(1,2)], 
-                               scannf=FALSE, nf = 58)
+                               scannf = FALSE, nf = 58)
 barplot(CA_ade4_sansbassin$eig)
 ```
 
-## Inertia explained
+### Inertia explained
 
-### Percentage of inertia explained according to the axes
+**Percentage of inertia explained according to the axes :**
 
 ```{r}
 pourcentage <- CA_ade4$eig/sum(CA_ade4$eig)*100
-pourcentage
+round(pourcentage, 2)
 
 pourcentage_sansbassin <- CA_ade4_sansbassin$eig/sum(CA_ade4_sansbassin$eig)*100
-pourcentage_sansbassin
+round(pourcentage_sansbassin, 2)
 ```
 
-### Cumulative inertia
+**Cumulative inertia :**
 
 ```{r}
-round(cumsum(pourcentage),2)
-round(cumsum(pourcentage_sansbassin),2)
+#| label: tbl-CA_eigcumul
+#| tbl-cap: "Cumulative eigenvalues associates to CA dimensions"
+#| tbl-subcap: 
+#| - "With Bassin samples"
+#| - "Without Bassin samples"
+
+round(cumsum(pourcentage), 2)
+round(cumsum(pourcentage_sansbassin), 2)
 ```
 
 Better explication without the "Bassin"
@@ -243,6 +290,7 @@ Better explication without the "Bassin"
 
 ```{r}
 scatter(CA_ade4, posieig = "none")
+
 s.label(CA_ade4$li, xax = 1, yax = 2, boxes = FALSE)
 s.label(CA_ade4$co, xax = 1, yax = 2, boxes = FALSE)
 
@@ -250,9 +298,10 @@ s.label(CA_ade4$co, xax = 1, yax = 2, boxes = FALSE)
 scatter(CA_ade4_sansbassin)
 ```
 
-The first two axes explain $28.58%$ of the total inertia, with approximately $14%$ for each axis. Although this is not a large proportion, such values are not uncommon in ecological datasets. Axis 1 represents essentially a Bivalve gradient, with Bivalve contributing $69%$, followed by *Thaumaleidae* ($12%$), *Culicidae* ($5.3%$), and *Asellidae* ($3.7%$). Axis 2 is mainly explained by *Thaumaleidae* ($79%$), with smaller yet notable contributions from Bivalve ($8.8%$) and *Simuliidae* ($3.5%$).
+The first two axes explain $28.58%$ of the total inertia, with approximately $14%$ for each axis (@tbl-CA_eigcumul). Although this is not a large proportion, such values are not uncommon in ecological datasets. Axis 1 represents essentially a Bivalve gradient, with Bivalve contributing $69%$, followed by *Thaumaleidae* ($12%$), *Culicidae* ($5.3%$), and *Asellidae* ($3.7%$) (@tbl-CA_spcontrib). Axis 2 is mainly explained by *Thaumaleidae* ($79%$), with smaller yet notable contributions from Bivalve ($8.8%$) and *Simuliidae* ($3.5%$), as we can see on @tbl-CA_spcontrib.
 
-The high contribution of *Bivalve* may be explained by the fact that, unlike the other taxa (at the family level), it refers to a class and therefore represents a much broader group. This could account for the prevalence of various Bivalve individuals across some sampling stations (e.g. between 62 and 700 individuals in "Ruche" samples), and consequently, its dominant role in shaping Axis 1. The $79%$ contribution of *Thaumaleidae* likely reflects its high density in three stations ("Bassin"), a peculiar environment where only *Thaumaleidae* were found, while they were nearly absent from other sites. This group thus stretches Axis 2. "Bassin" environnement was a cemented artificial pound which is hard to colonize for most organisms other than *Thaumaleidae*. Indeed, this taxon belongs to the *Diptera* order, very tolerant to pollution (Vivier, P., 1970) and ubiquitous.
+The high contribution of *Bivalve* may be explained by the fact that, unlike the other taxa (at the family level), it refers to a class and therefore represents a much broader group. This could account for the prevalence of various Bivalve individuals across some sampling stations (e.g. between 62 and 700 individuals in "Ruche" samples), and consequently, its dominant role in shaping Axis 1.   
+The $79%$ contribution of *Thaumaleidae* likely reflects its high density in three stations ("Bassin"), a peculiar environment where only *Thaumaleidae* were found, while they were nearly absent from other sites. This group thus stretches Axis 2. "Bassin" environnement was a cemented artificial pound which is hard to colonize for most organisms other than *Thaumaleidae*. Indeed, this taxon belongs to the *Diptera* order, very tolerant to pollution (Vivier, P., 1970) and ubiquitous.
 
 Regarding the correspondances between stations and species, the analysis shows - as expected - a proximity between *Thaumaleidae* and stations 28, 27 and 29, which are the stations it was almost excusively sampled from. It could therefore be interesting to redo the analysis without those 3 stations to remove the high correlation between these "Bassin" samples and *Thaumaleidae*.
 
@@ -300,7 +349,7 @@ ggplot(data = CA_ade4_sansbassin_ligne_ZH) +
         legend.position = "none") 
 ```
 
-### Trajectorie diagramm
+### Trajectory diagramm
 
 ```{r}
 s.traject(CA_ade4$li)
@@ -328,7 +377,6 @@ s.distri(CA_ade4_sansbassin$li, macroinv_red[-c(27,28,29),esp], cell = 1.5,
 ```
 
 ### Sites distribution
-
 ```{r}
 site = 5
 #s.distri(CA_ade4$co, macroinv_red[site, -c(1, 2)], cell = 1.5, csub = 2)
