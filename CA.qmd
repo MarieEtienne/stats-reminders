@@ -2,6 +2,7 @@
 title: "What is a CA and how to use it ?"
 author: "Capucine, Marion et Maite"
 editor: visual
+bibliography: references.bib
 output: 
   html_document:
    toc: true
@@ -22,10 +23,12 @@ To use it you'll need to pay attention to certain things :\
 - all values need to be **positive** (which shouldn't be a problem if it's a contingency table),\
 - if you have **rare species**, it may change the shape of your results significantly. It's not always a bad thing, just something you need to be aware of.
 
+Two R packages can be used to perform CA : *ade4* (@ade4_dray2007) and *FactoMineR* (@factominer_le2008). 
+
 # Ecological exemple
 ## Ecological context
 
-A study was conducted in 2022 on the permanents wetlands of the municipality of Grabels (34), as part of a Municipal Biodiversity Atlas. The aim was to characterise the state of these environments using bioindicator species : benthic macroinvertebrates (@fig-CA_macroinvertebrates). This taxon, which is sensitive to pollution, can be used to study water quality (ref).\
+A study was conducted in 2022 on the permanents wetlands of the municipality of Grabels (34), as part of a Municipal Biodiversity Atlas (@ABC_macroinv2022). The aim was to characterise the state of these environments using bioindicator species : benthic macroinvertebrates (@fig-CA_macroinvertebrates). This taxon, which is sensitive to pollution, can be used to study water quality (ref).\
 
 ```{r}
 #| echo: false
@@ -41,7 +44,7 @@ knitr::include_graphics("./images/Libellulidae.jpg")
 knitr::include_graphics("./images/Physidae.jpg")
 ```
 
-In this study, the standardised **I2M2 protocol** of the Water Framework Directive (in french, Directive Cadre sur l'Eau (ref)) was adapted to a context of ponds and very shallow watercourses.\
+In this study, the standardised **I2M2 protocol** of the Water Framework Directive (@DCE_2014) was adapted to a context of ponds and very shallow watercourses.\
 Two streams (the *Rieu Querelle* and the *Verdanson*), permanent ponds (*Ruche*, *Terrain de Foot* and *Foot2*) and an artificial water source (*Bassin*) were sampled and the macroinvertebrates collected were identified. Each wetland was sampled at several points randomly selected from the water body (*Zi*), and three replicas were made at each point (*Zi_j*).
 
 The purpose of this analysis is to study the species assemblages depending of the site. In this context, the CA is one of the right choices.
@@ -301,7 +304,7 @@ scatter(CA_ade4_sansbassin)
 The first two axes explain $28.58%$ of the total inertia, with approximately $14%$ for each axis (@tbl-CA_eigcumul). Although this is not a large proportion, such values are not uncommon in ecological datasets. Axis 1 represents essentially a Bivalve gradient, with Bivalve contributing $69%$, followed by *Thaumaleidae* ($12%$), *Culicidae* ($5.3%$), and *Asellidae* ($3.7%$) (@tbl-CA_spcontrib). Axis 2 is mainly explained by *Thaumaleidae* ($79%$), with smaller yet notable contributions from Bivalve ($8.8%$) and *Simuliidae* ($3.5%$), as we can see on @tbl-CA_spcontrib.
 
 The high contribution of *Bivalve* may be explained by the fact that, unlike the other taxa (at the family level), it refers to a class and therefore represents a much broader group. This could account for the prevalence of various Bivalve individuals across some sampling stations (e.g. between 62 and 700 individuals in "Ruche" samples), and consequently, its dominant role in shaping Axis 1.   
-The $79%$ contribution of *Thaumaleidae* likely reflects its high density in three stations ("Bassin"), a peculiar environment where only *Thaumaleidae* were found, while they were nearly absent from other sites. This group thus stretches Axis 2. "Bassin" environnement was a cemented artificial pound which is hard to colonize for most organisms other than *Thaumaleidae*. Indeed, this taxon belongs to the *Diptera* order, very tolerant to pollution (Vivier, P., 1970) and ubiquitous.
+The $79%$ contribution of *Thaumaleidae* likely reflects its high density in three stations ("Bassin"), a peculiar environment where only *Thaumaleidae* were found, while they were nearly absent from other sites. This group thus stretches Axis 2. "Bassin" environnement was a cemented artificial pound which is hard to colonize for most organisms other than *Thaumaleidae*. Indeed, this taxon belongs to the *Diptera* order, very tolerant to pollution (@vivier_macroinv1970) and ubiquitous (@faunefrance_macroin1927).
 
 Regarding the correspondances between stations and species, the analysis shows - as expected - a proximity between *Thaumaleidae* and stations 28, 27 and 29, which are the stations it was almost excusively sampled from. It could therefore be interesting to redo the analysis without those 3 stations to remove the high correlation between these "Bassin" samples and *Thaumaleidae*.
 
@@ -366,7 +369,6 @@ table.value(macroinv_red[,-c(1,2)][order(CA_ade4_sansbassin$li[,1]),
 ```
 
 ### Species distribution
-
 ```{r}
 esp = 22 #esp dans le bassin isolé des autres données
 esp = 23 #esp un peu partout
