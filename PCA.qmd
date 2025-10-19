@@ -62,6 +62,14 @@ res.pca <- PCA(spiders,
 
 Data visualisation
 
+Graph of inertia :
+
+```{r}
+res.pca$eig
+fviz_eig(res.pca, ylim = c(0, 100), geom='bar', main='Percentage of inertia explained by axes')
+
+```
+
 Graph of variables :
 
 ```{r}
@@ -77,7 +85,7 @@ Graph of individuals :
 ```{r}
 fviz_pca_ind(res.pca, geom.ind = "point", # points uniquement 
              label = "none", # pas de texte sur les points 
-             habillage = spiders$Family, # couleurs par famille (optionnel)
+             #habillage = spiders$Family, # couleurs par famille (optionnel)
              legend = "none", # supprime complètement la légende 
              repel = TRUE)
 ```
@@ -88,5 +96,21 @@ spiders_sub <- subset(spiders, Family %in% top_families)
 res.pca2 <- PCA(spiders_sub, scale.unit = FALSE, quali.sup = 1, graph = FALSE)
 fviz_pca_ind(res.pca2, habillage = spiders_sub$Family, palette = "Dark2", repel = TRUE)
 ```
+Graph of contributions by variables :
 
-Global visualisation (individuals+quantitative variables):
+```{r}
+res.pca$var$contrib
+
+```
+
+Graph of contributions by individuals :
+
+```{r}
+#res.pca$ind$contrib
+
+#Axis 1
+head(sort(res.pca$ind$contrib[,1], decreasing = TRUE), 10)
+
+#Axis 2
+head(sort(res.pca$ind$contrib[,2], decreasing = TRUE), 10)
+```
