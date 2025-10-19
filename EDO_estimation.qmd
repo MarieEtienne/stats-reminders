@@ -6,36 +6,35 @@ editor: visual
 
 # Introduction
 
-This document aims to be a presentation of a logistic growth simulation: from the data simulation to the estimation of the parameters. The following document will thus be organized in two parts : the data simulation and the estimation of the parameters.
+This document aims to be a roadmap to estimate the parameters of a logistic growth from a population: from the data simulation to the estimation of the parameters. The following document will thus be organized in two parts : the data simulation and the estimation of the parameters.
 
 # Data Simulation
 
-We first simulate the data on which we will illustrate two estimation methods. The simulation is based on the logistic growth (Verhulst model). The ordinary differential equation describing the logistic growth is defined as 
-$$
+We first simulate the data on which we will illustrate two estimation methods. The simulation is based on the logistic growth (Verhulst model). The ordinary differential equation describing the logistic growth is defined as $$
 \frac{dN}{dt} = rN(1-\frac{N}{K})
-$$
-
-where N is the size of a population, r is the growth rate and K is the carrying capacity. Thankfully, there is an explicit solution of the Verhulst model that allows us to simulate the data. For each x (the time), we calculate the deterministic solution and add a noise, a centered, normally distributed deviation from the deterministic model.
+$$ where N is the size of a population, r is the growth rate and K is the carrying capacity. Thankfully, there is an explicit solution of the Verhulst model that allows us to simulate the data easily. For each x (the time), we calculate the deterministic solution and add a noise, a centered, normally distributed deviation from the deterministic model.
 
 ```{r}
 # Parameters
-time <- seq(0, 25, 0.25)
 r <- 0.5
 K <- 100
 error <- 5
 y0 <- 1
 
-# Logistic growth function with error
-logistic <- function(t, r, K, y0, error) {
+# Define a logistic growth function with noise
+logistic_noised <- function(t, r, K, y0, error) {
   growth <- K / (1 + ((K - y0) / y0) * exp(-r * t))
   return(growth + rnorm(1, mean = 0, sd = error))  # Add random error
 }
 
+# Create the time vector
+time <- seq(0, 25, 0.25)
+
 # Apply the logistic function over the time vector
-y <- sapply(time, logistic, r = r, K = K, y0 = y0, error = error)
+sim_data <- sapply(time, logistic_noised, r = r, K = K, y0 = y0, error = error)
 
 # Plot the result
-plot(time, y, col = "blue", xlab = "Time", ylab = "Population", main = "Logistic Growth with Error")
+plot(time, sim_data, col = "blue", xlab = "Time", ylab = "Population", main = "Logistic Growth with random noise")
 ```
 
 # Estimation of the parameters
@@ -43,6 +42,8 @@ plot(time, y, col = "blue", xlab = "Time", ylab = "Population", main = "Logistic
 We have p parameters $\theta = (\theta_1,\theta_2,...,\theta_p)$.
 
 ## General theory
+
+### Least squares
 
 ### Maximum likelihood
 
@@ -56,4 +57,40 @@ $$ If the errors of the data are independent and identically distributed, this m
 \hat{\theta} = \arg\max_{\theta} L(\theta) = \arg\min_{\theta} SCE(\theta)
 $$ We prefer to work on the logarithm of the product $L(\theta)$ as it converts products into sums : $$
 LL(\theta) = ln(L(\theta)) = \sum_{i=1}^n lnf(x_i,\theta)
-$$
+$$ \## Implementation of the two methods
+
+### Least squares
+
+We first need to redefine a function of the model we want to fit (without noise this time).
+
+```{r}
+logistic <- function(t, r, K, y0) {
+  growth <- K / (1 + ((K - y0) / y0) * exp(-r * t))
+  return(growth)
+}
+```
+
+We then need a function that compute the sum of the squared errors between the data and the model prediction y given a x.
+
+```{r}
+# NB : theta is a vector of parameters
+SSE <- function(theta) {
+  r <- theta[1]
+  K <- theta[2]
+  y0 <- theta[3]
+  mod_pred <- sapply(time, logistic, r = r, K = K, y0 = y0)
+  return(sum((sim_data - mod_pred)**2))
+}
+```
+
+We now have to find a way to modify the parameters iteratively to find the best ones : the set of parameters $\theta$ that minimize the sum of squared errors. Thankfully, there are several functions implemented in R to do so. We'll use optim(), based on a gradient descent algorithm. We need to specify initial guess on the parameters to initialize the gradient descent algorithm. We'll take biologically meaningful parameters as initial guess.
+
+```{r}
+ig_r <- 1
+ig_K <- 50
+ig_y0 <- 5
+fitted_params <- optim(c(ig_r, ig_K, ig_y0), SSE)$par
+print(fitted_params)
+```
+
+### Maximum likelihood
