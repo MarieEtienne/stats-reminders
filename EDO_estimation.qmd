@@ -24,7 +24,7 @@ y0 <- 1
 # Define a logistic growth function with noise
 logistic_noised <- function(t, r, K, y0, error) {
   growth <- K / (1 + ((K - y0) / y0) * exp(-r * t))
-  return(growth + rnorm(1, mean = 0, sd = error))  # Add random error
+  return(round(growth + rnorm(1, mean = 0, sd = error)))  # Add random error
 }
 
 # Create the time vector
@@ -53,16 +53,20 @@ $$ In this function, $x_i$ corresponds to the observations and $f(x_i,\theta)$ c
 
 The maximum likelihood method consists of determining the $\hat\theta$ which allows obtaining the highest possible likelihood value : $$
 \hat\theta = \arg\max_\theta L(\theta)
-$$ If the errors of the data are independent and identically distributed, this method is equivalent to the least squares method : $$
-\hat{\theta} = \arg\max_{\theta} L(\theta) = \arg\min_{\theta} SCE(\theta)
-$$ We prefer to work on the logarithm of the product $L(\theta)$ as it converts products into sums : $$
-LL(\theta) = ln(L(\theta)) = \sum_{i=1}^n lnf(x_i,\theta)
-$$ \## Implementation of the two methods
+$$
 
-### Least squares
+If the errors of the data are independent and identically distributed, this method is equivalent to the least squares method :
+
+$$
+\hat{\theta} = \arg\max_{\theta} L(\theta) = \arg\min_{\theta} SCE(\theta)
+$$
+We prefer to work on the logarithm of the product $L(\theta)$ as it converts products into sums :
+$$
+LL(\theta) = ln(L(\theta)) = \sum_{i=1}^n lnf(x_i,\theta)
+$$
+## Implementation of the two methods
 
 We first need to redefine a function of the model we want to fit (without noise this time).
-
 ```{r}
 logistic <- function(t, r, K, y0) {
   growth <- K / (1 + ((K - y0) / y0) * exp(-r * t))
@@ -70,8 +74,9 @@ logistic <- function(t, r, K, y0) {
 }
 ```
 
-We then need a function that compute the sum of the squared errors between the data and the model prediction y given a x.
+### Least squares
 
+We need a function that compute the sum of the squared errors between the data and the model prediction y given a x.
 ```{r}
 # NB : theta is a vector of parameters
 SSE <- function(theta) {
@@ -84,13 +89,29 @@ SSE <- function(theta) {
 ```
 
 We now have to find a way to modify the parameters iteratively to find the best ones : the set of parameters $\theta$ that minimize the sum of squared errors. Thankfully, there are several functions implemented in R to do so. We'll use optim(), based on a gradient descent algorithm. We need to specify initial guess on the parameters to initialize the gradient descent algorithm. We'll take biologically meaningful parameters as initial guess.
-
 ```{r}
 ig_r <- 1
-ig_K <- 50
-ig_y0 <- 5
-fitted_params <- optim(c(ig_r, ig_K, ig_y0), SSE)$par
-print(fitted_params)
+ig_K <- 75
+ig_y0 <- 2
+fitted_params_SSE <- optim(c(ig_r, ig_K, ig_y0), SSE)$par
+print(fitted_params_SSE)
 ```
 
 ### Maximum likelihood
+
+```{r}
+MMV <- function(theta){
+  r <- theta[1]
+  K <- theta[2]
+  y0 <- theta[3]
+  mod_pred <- sapply(time, logistic, r = r, K = K, y0 = y0)
+  mod_pred <- pmax(mod_pred, 1e-6)
+  Nobs = dpois(sim_data, mod_pred,log = T)
+  return(sum(Nobs))
+}
+```
+
+```{r}
+fitted_params_MMV <- optim(c(ig_r, ig_K, ig_y0), MMV, control=list(fnscale=-1))$par
+print(fitted_params_MMV)
+```
