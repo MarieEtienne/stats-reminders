@@ -36,7 +36,7 @@ The resulting model, called Generalized Linear Mixed Model (GLMM) extends the GL
 
 ## Data presentation
 
-The data used come from Zuur *et al.* (2019) and consist of signs of badger (*Meles meles*) activity around farms located in the southwest of England, where badger density is high. This study was carried out in the context of bovine tuberculosis and its possible transmission to cattle through badgers. Reducing the number of farm visits by badgers — especially in places where they might come into contact with livestock — could help limit the spread of the disease. Thus, the aim of this study is to predict the occurrence of badger activity signs on farms.
+The data used come from @Walker2009a and consist of signs of badger (*Meles meles*) activity around farms located in the southwest of England, where badger density is high. This study was carried out in the context of bovine tuberculosis and its possible transmission to cattle through badgers. Reducing the number of farm visits by badgers — especially in places where they might come into contact with livestock — could help limit the spread of the disease. Thus, the aim of this study is to predict the occurrence of badger activity signs on farms.
 
 Between autumn 2003 and summer 2005, a survey was conducted on 36 different farms; the data are therefore longitudinal, since each farm was monitored over eight consecutive seasons. Within the same farm, observations may be temporally autocorrelated.
 
@@ -452,6 +452,7 @@ summary(mod12)
 ```
 
 ### Significance of the random effect
+
 ```{r boot random, echo=TRUE,fig.height=4, fig.width=4, warning=FALSE}
 nBoot <- 1000
 lrStat <- rep(NA, nBoot)
@@ -484,12 +485,14 @@ abline(v = lrObs, col="red", lwd=3, lty=2) # Vertical red line representing the 
 ```
 
 ### Part of the variance explained by the model
+
 ```{r devianceGLMM, include=TRUE}
 # Estimates of deviance explained (library 'rsq')
 rsq(mod12)
 ```
 
 ### Residual analysis
+
 ```{r ResidNB, include=TRUE, fig.height=4, fig.width=5}
 
 resid<-residuals(mod12, type="pearson")
@@ -512,6 +515,7 @@ abline(h = 0)
 ```
 
 ### Model predictions
+
 ```{r Simul, include=TRUE, fig.height=4, fig.width=4}
 
 # We could do a simulation
