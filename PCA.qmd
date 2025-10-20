@@ -1,9 +1,5 @@
 ---
-<<<<<<< HEAD
-title: "Principal Component Analysis"
-=======
 title: "Principal Componant Analysis"
->>>>>>> f2f6bc8 (Example presentation)
 authors: "Kilian Rocher, Océane Picot, Alexia Orhan"
 format: html
 editor: visual
