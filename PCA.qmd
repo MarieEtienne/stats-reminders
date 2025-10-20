@@ -61,7 +61,11 @@ PCA Analysis
 
 ```{r}
 library(FactoMineR)
+<<<<<<< HEAD
 library(factoextra)
+=======
+library("factoextra")
+>>>>>>> dfbbab7 (ajout phrases sur dimensions et ajout de package factextra plus tot dans le code)
 res.pca <- PCA(spiders,
                scale.unit = FALSE,    # already centered-reduced
                quali.sup = 1, # "Family" is qualitative and illustrative
@@ -74,9 +78,13 @@ Graph of inertia :
 
 ```{r}
 res.pca$eig
+library(factoextra)
+library(ggplot2)
 fviz_eig(res.pca, ylim = c(0, 100), geom='bar', main='Percentage of inertia explained by axes')
 
 ```
+
+Dimensions 1 explains 61.9% of total variance and dimensions 2 explains 24.2%, all together the two first dimensions explain 86.1% of the total inertia.
 
 Graph of variables :
 
