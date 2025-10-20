@@ -15,7 +15,7 @@ A **Correspondence Analysis** (CA), or **Analyse Factorielle de Correspondance**
 
 The values can be **quantitative, qualitative or semi-qualitative**. It is usually applied to **contingency tables** or when you have a table with data about species abundance in different places and another one with data about the ecology of those same places.
 
-Just like in the PCA, we will be looking the orthogonal axis that maximizes the inertia. The parameter used is the $\chi²$ distance : this distance is calculated between 2 rows or 2 columns. The AFC gives a weight to each profile, proportional to the abundance of the profile.
+Just like in the PCA, we will be looking at the orthogonal axes that maximize the inertia. The parameter used is the $\chi²$ distance : this distance is calculated between 2 rows or 2 columns. The CA gives a weight to each profile, proportional to the abundance of the profile.
 
 The columns and lines have a symmetrical role, so you'll have the same results in both directions.
 
@@ -28,7 +28,15 @@ Two R packages can be used to perform CA : *ade4* (@ade4_dray2007) and *FactoMin
 # Ecological exemple
 ## Ecological context
 
-A study was conducted in 2022 on the permanents wetlands of the municipality of Grabels (34), as part of a Municipal Biodiversity Atlas (@ABC_macroinv2022). The aim was to characterise the state of these environments using bioindicator species : benthic macroinvertebrates (@fig-CA_macroinvertebrates). This taxon, which is sensitive to pollution, can be used to study water quality (ref).\
+
+A study was conducted in 2022 on the permanent wetlands of the municipality of Grabels (34), as part of a Municipal Biodiversity Atlas (@ABC_macroinv2022). The aim was to characterize the state of these environments using bioindicator species : benthic macroinvertebrates (@fig-CA_macroinvertebrates). This taxon, which is sensitive to pollution, can be used to study water quality (ref).\
+
+In this study, two streams (the Rieu Querelle and the Verdanson), permanent ponds and an artificial water source (the retention basin) were sampled and the individuals identified. Each wetland was sampled at several randomly selected points, and three passes were made at each point.
+
+The purpose of this analysis is to study the species assemblages depending of the site. In this context, the CA is one of the right choices.
+
+#### Imports
+
 
 ```{r}
 #| echo: false
@@ -72,6 +80,7 @@ library(gridtext)
 library(ggtext)
 library(knitr)
 ```
+
 
 ## Data
 
@@ -200,12 +209,17 @@ macroinv_red %>%
 
 ## CA with FactoMineR
 
+
+
 ```{r}
+#First CA with the reduced data set
 CA <- CA(macroinv_red[,-c(1,2)], axes = c(1,2))
 plot(CA$eig[,2], type = "h")
 ```
 
+
 ```{r}
+#Contribution of each individual and site to the CA
 CA$col$contrib
 CA$row
 ```
@@ -221,6 +235,7 @@ CA allows to see species contribution to the main axis ( @tbl-CA_spcontrib , @fi
 #| layout-nrow: 2
 #| layout-ncol: 1
 
+#Selection of the species that contribute significantly to the axes one and two
 which_contrib_high1 <- which(CA$col$contrib[,1] >= 100/nrow(CA$col$contrib))
 which_contrib_high2 <- which(CA$col$contrib[,2] >= 100/nrow(CA$col$contrib))
 
@@ -228,6 +243,7 @@ kable(CA$col$contrib[which_contrib_high1, ], "html")
 
 kable(CA$col$contrib[which_contrib_high2, ], "html")
 ```
+
 
 ```{r}
 #| label: fig-CA_plotspcontrib
@@ -238,6 +254,7 @@ kable(CA$col$contrib[which_contrib_high2, ], "html")
 #| layout-nrow: 2
 
 # BONUS : visualize axis contribution
+
 fviz_contrib(CA, choice = "col", axes = 1, top = Inf)  # contributions Axis 1
 fviz_contrib(CA, choice = "col", axes = 2, top = Inf)  # contributions Axis 2
 ```
@@ -255,6 +272,7 @@ fviz_contrib(CA, choice = "col", axes = 2, top = Inf)  # contributions Axis 2
 
 CA_ade4 <- dudi.coa(macroinv_red[,-c(1,2)], scannf=FALSE,nf=60)
 #CA_ade4
+
 barplot(CA_ade4$eig)
 
 CA_ade4_sansbassin <- dudi.coa(macroinv_red[-c(27,28,29), -c(1,2)], 
@@ -287,7 +305,7 @@ round(cumsum(pourcentage), 2)
 round(cumsum(pourcentage_sansbassin), 2)
 ```
 
-Better explication without the "Bassin"
+Better explanation without the "Bassin"
 
 ## Some plot
 
@@ -299,6 +317,7 @@ s.label(CA_ade4$co, xax = 1, yax = 2, boxes = FALSE)
 
 
 scatter(CA_ade4_sansbassin)
+#we can see things more clearly when we remove the bassin
 ```
 
 The first two axes explain $28.58%$ of the total inertia, with approximately $14%$ for each axis (@tbl-CA_eigcumul). Although this is not a large proportion, such values are not uncommon in ecological datasets. Axis 1 represents essentially a Bivalve gradient, with Bivalve contributing $69%$, followed by *Thaumaleidae* ($12%$), *Culicidae* ($5.3%$), and *Asellidae* ($3.7%$) (@tbl-CA_spcontrib). Axis 2 is mainly explained by *Thaumaleidae* ($79%$), with smaller yet notable contributions from Bivalve ($8.8%$) and *Simuliidae* ($3.5%$), as we can see on @tbl-CA_spcontrib.
@@ -369,16 +388,20 @@ table.value(macroinv_red[,-c(1,2)][order(CA_ade4_sansbassin$li[,1]),
 ```
 
 ### Species distribution
+
+
 ```{r}
-esp = 22 #esp dans le bassin isolé des autres données
-esp = 23 #esp un peu partout
+esp = 22 #esp dans le bassin isolé des autres données pour les données avec bassin
+esp = 23 #esp un peu partout pour les données avec bassin
 s.distri(CA_ade4$li, macroinv_red[, esp], cell = 1.5, 
          sub = macroinv_red[1, esp], csub = 2)
 s.distri(CA_ade4_sansbassin$li, macroinv_red[-c(27,28,29),esp], cell = 1.5,
          sub = macroinv_red[1, esp], csub = 2)
 ```
 
+
 ### Sites distribution
+
 ```{r}
 site = 5
 #s.distri(CA_ade4$co, macroinv_red[site, -c(1, 2)], cell = 1.5, csub = 2)
