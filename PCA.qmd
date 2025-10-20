@@ -34,7 +34,7 @@ The raw data set is composed of 473 observations of 24 variables.
 We don't want to analyze all species so we just keep the families. Also we keep relative variables instead of absolute ones in order to be able to compare spider families with different sizes. Data is not centered reduced yet.
 
 ```{r}
-spiders <- spiders[c("Family","rAME","rALE","rPME","rPLE")] #data selection
+spiders <- spiders[c("Family", "rAME","rALE","rPME","rPLE")] #data selection
 summary(spiders)
 ```
 
@@ -54,9 +54,10 @@ PCA Analysis
 
 ```{r}
 library(FactoMineR)
+library(factoextra)
 res.pca <- PCA(spiders,
                scale.unit = FALSE,    # already centered-reduced
-               quali.sup = 1,         # "Family" is qualitative
+               quali.sup = 1, # "Family" is qualitative and illustrative
                graph = FALSE)
 ```
 
@@ -73,7 +74,6 @@ fviz_eig(res.pca, ylim = c(0, 100), geom='bar', main='Percentage of inertia expl
 Graph of variables :
 
 ```{r}
-library(factoextra)
 fviz_pca_var(res.pca,
              col.var = "contrib",
              gradient.cols = c("blue", "yellow", "red"),
@@ -94,13 +94,18 @@ fviz_pca_ind(res.pca, geom.ind = "point", # points uniquement
 top_families <- names(sort(table(spiders$Family), decreasing = TRUE))[1:8] #only frequent families to have a clearer graph
 spiders_sub <- subset(spiders, Family %in% top_families)
 res.pca2 <- PCA(spiders_sub, scale.unit = FALSE, quali.sup = 1, graph = FALSE)
-fviz_pca_ind(res.pca2, habillage = spiders_sub$Family, palette = "Dark2", repel = TRUE)
+fviz_pca_ind(res.pca2, habillage = spiders_sub$Family, 
+             #palette = "Dark2", 
+             #repel = TRUE,
+             select.ind = list(name = NULL, cos2 = NULL, contrib = NULL),
+             label="none"
+             )
 ```
+
 Graph of contributions by variables :
 
 ```{r}
 res.pca$var$contrib
-
 ```
 
 Graph of contributions by individuals :
@@ -109,8 +114,46 @@ Graph of contributions by individuals :
 #res.pca$ind$contrib
 
 #Axis 1
-head(sort(res.pca$ind$contrib[,1], decreasing = TRUE), 10)
+
+top10_ind <- order(res.pca$ind$contrib[,1], decreasing = TRUE)[1:10] #the 10 individuals contributing the most to the first axis
+
+top10_ind_fam <- data.frame(
+  Individual = rownames(spiders)[top10_ind],
+  Family = spiders$Family[top10_ind],
+  Contribution = res.pca$ind$contrib[top10_ind, 1]
+) #families associated to the individuals contributing the most
+
+top10_ind_fam
 
 #Axis 2
+top10_ind_2 <- order(res.pca$ind$contrib[,2], decreasing = TRUE)[1:10] #the 10 individuals contributing the most to the first axis
+
+top10_ind_fam_2 <- data.frame(
+  Individual = rownames(spiders)[top10_ind_2],
+  Family = spiders$Family[top10_ind_2],
+  Contribution = res.pca$ind$contrib[top10_ind_2, 2]
+) #families associated to the individuals contributing the most
+
+top10_ind_fam_2
+
+# Axis 1
+head(sort(res.pca$ind$contrib[,1], decreasing = TRUE), 10)
+
+# Axis 2
 head(sort(res.pca$ind$contrib[,2], decreasing = TRUE), 10)
 ```
+
+## Interpretation of the analysis
+
+The two first axis explain more than 86% of the total variance so only two main components are selected for the analysis. The first dimension explains 61.9% of the variance while the second dimension explains 24.2% of the variance.
+
+All variables are contributing a lot to the first axis. However, rALE and rPLE explain the best the axis with contributions higher than 30%. rAME and rPME explain the second axis with contributions respectively equal to 54% and 44%.
+
+The individuals are mainly distributed along the first axis which can be interpreted as a gradient of variation in eye size. Individuals are also concentrated around zero which means that a majority of spiders has similar eye proportions.
+
+When we visualise families, it looks like individuals from the *Salticidae* are atypical individuals because they are far on the first axis. In fact, those individuals have the highest contributions.
+
+::: {style="text-align:center"}
+![Figure 1 — Family *Salticidae* contributing the most to explained variance.](Salticidae.jpg){width="50%"}
+:::
+
