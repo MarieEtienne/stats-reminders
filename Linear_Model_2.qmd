@@ -16,7 +16,7 @@ Remark : the concepts covered are taken from our Master's courses and tutorials,
 
 General Linear Models are used to describe the relationship between a continuous response $Y$ and one or more explanatory variables $X_{1}$,$X_{2}$...$X_{p}$. They rely on three main assumptions : *independence of residuals*, *normality of residuals* and *homogeneity of variances*. However, in many cases, the response variable $Y$ is **discrete** (for example, counts or binary outcomes).
 
-For discrete responses, the variance of $Y$ typically depends on its mean-variance relationship. As a result, the variance is not constant across observations, invalidating the assumption of homogeneity required by linear models. Morover, fitting a General Linear Model to count data can lead to negative predicted values and non-normal residuals. In shorts, General Linear Models are not well-suited for discrete responses. Hence, we need specific tools to analyse discrete response data. These are **Generalized Linear Models (GLMs)**.
+For discrete responses, the variance of $Y$ typically depends on its mean-variance relationship. As a result, the variance is not constant across observations, invalidating the assumption of homogeneity required by linear models. Moreover, fitting a General Linear Model to count data can lead to negative predicted values and non-normal residuals. In shorts, General Linear Models are not well-suited for discrete responses. Hence, we need specific tools to analyse discrete response data. These are **Generalized Linear Models (GLMs)**.
 
 ### Structure of a Generalized Linear Model
 
@@ -30,7 +30,7 @@ A GLM extends the classical linear model through three steps :
 
 A Generalized Linear Model can be written as : $$g(\mu_{y})= \alpha+ \beta_{1}.X{i1}+ \beta_{2}.X{i2}+\beta_{3}.X{i3}+...\beta_{p}.X{ip} = \eta $$
 
-The linear predictor, $\eta$, emerges from the linear model as a sum of the terms for each of the $p$ parameters. This is not a value of $Y$. The value of $\eta$ is obtained by transforming the value of $Y$ by the link function, and the predicted value of $Y$ is obtained by applying the inverse link function to $\eta$.
+The linear predictor $\eta$, emerges from the linear model as a sum of the terms for each of the $p$ parameters. This is not a value of $Y$. The value of $\eta$ is obtained by transforming the value of $Y$ by the link function, and the predicted value of $Y$ is obtained by applying the inverse link function to $\eta$.
 
 ### From GLM to GLMM
 
