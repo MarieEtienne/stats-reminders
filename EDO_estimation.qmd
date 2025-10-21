@@ -39,7 +39,7 @@ plot(time, sim_data, col = "blue", xlab = "Time", ylab = "Population", main = "L
 
 # Estimation of the parameters
 
-We have p parameters $\theta = (\theta_1,\theta_2,...,\theta_p)$.
+We have p parameters $\theta = (\theta_1,\theta_2,...,\theta_p)$. Several methods can be used to optimize model parameters, such as least squares and maximum likelihood. In this section, we will examine the application of each method to estimate the parameters of the previously simulated logistic growth.
 
 ## General theory
 
