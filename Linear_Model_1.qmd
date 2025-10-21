@@ -64,6 +64,9 @@ The model can be build like this : model <- lm (body_mass_g ~ ..., data = pengui
 
 # II) Data exploration
 
+Firstly, we need to import the data, explore it, and see if there are any NA values, outliers, and so on.
+The data is accessible via the package palmerpenguins (indicate source).
+
 ```{r data_importation, echo = F, include = F}
 #Data importation 
 library(palmerpenguins) 
@@ -79,7 +82,8 @@ str(penguins)
 colSums(is.na(penguins))
 ```
 
-There is NA values in the data set.
+There are NA values in the dataset.
+We decide to remove them but there are different options for handling the presence of NA values.
 
 ## i) Check the response variable values
 
