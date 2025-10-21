@@ -156,4 +156,3 @@ When we visualise families, it looks like individuals from the *Salticidae* are 
 ::: {style="text-align:center"}
 ![Figure 1 — Family *Salticidae* contributing the most to explained variance.](Salticidae.jpg){width="50%"}
 :::
-
