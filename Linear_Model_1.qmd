@@ -40,6 +40,28 @@ Another important aspect to consider is that for this type of model to be valid,
 
 These conditions are systematically verified after modeling : the verification will be illustrated in the following example.
 
+# ii) Presentation of data and objectives of the analysis
+
+In this application example, we will use data from a study conducted by Dr. Kristen Gorman, who studied the physical characteristics of three species of penguins in the Palmer Archipelago in Antarctica. The data was collected on three islands of the archipelago in 2007, 2008, and 2009.
+
+The researcher noted the following characteristics in the individuals studied: 
+
+- **species** = species of individuals, qualitative variables, 3 levels (Adelie, Gentoo, Chinstrap)
+- **sex** = sex of individuals, qualitative variables, 2 levels (male, female)
+- **bill_length_mm** = bill length, quantitative variable
+- **bill_depth_mm** = bill depth, quantitative variable
+- **flipper_length_mm** = flipper length, quantitative variable
+- **body_mass_g** = body mass, quantitative variable
+
+We also have information about the year of measurement and the island where the individuals live.  We decide not to focus on these variables while studying the model.
+
+We will try to answer the following question :
+Which quantitative and qualitative variables can explain the variation in penguin body_mass?
+
+In this case, the response variable is body_mass, and the other variables are assumed to be explanatory variables. We want to model the variable Y as a function of several qualitative and quantitative variables, therefore we do an ANCOVA.
+
+The model can be build like this : model <- lm (body_mass_g ~ ..., data = penguins)
+
 # II) Data exploration
 
 ```{r data_importation, echo = F, include = F}
