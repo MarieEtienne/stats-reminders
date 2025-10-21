@@ -8,6 +8,10 @@ bibliography: references.bib
 
 # GENERAL INTRODUCTION
 
+We present here a reminder sheet on Generalized Linear Mixed Models (GLMMs) and its specific features. Its use will be illustrated through a study applied on badgers from @Walker2009 .
+
+Remark : the concepts covered are taken from our Master's courses and tutorials, written and taught by A. Masson and Y. Outreman.
+
 ### Generalities
 
 General Linear Models are used to describe the relationship between a continuous response $Y$ and one or more explanatory variables $X_{1}$,$X_{2}$...$X_{p}$. They rely on three main assumptions : *independence of residuals*, *normality of residuals* and *homogeneity of variances*. However, in many cases, the response variable $Y$ is **discrete** (for example, counts or binary outcomes).
@@ -173,6 +177,7 @@ hist(dataBadger$N_cattle,col='blue',xlab="Number of cattle",main="")
 qqnorm(dataBadger$N_cattle,pch=16,col='blue',xlab='')
 qqline(dataBadger$N_cattle,col='red')
 ```
+
 
 The exploratory plots show that all three quantitative variables (number of setts, number of buildings, and number of cattle) display right-skewed distributions, with most farms having relatively low values and a few having much higher ones. No extreme or abnormal outliers are clearly visible, although some high values are present, especially for the number of cattle. The Q-Q plots confirm that none of these variables follow a normal distribution.
 
