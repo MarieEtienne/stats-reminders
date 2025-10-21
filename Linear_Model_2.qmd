@@ -100,27 +100,48 @@ colSums(is.na(dataBadger))
 # There is no missing value.
 ```
 
-## DATA EXPLORATION
+## **DATA EXPLORATION**
 
-Before any statistical analysis, you need to explore the data in order to prevent any error. Here is the list of exploration to perform before modelling:
+Before carrying out any statistical modeling, it is essential to perform a thorough **data exploration**. This step helps identify potential issues such as outliers, collinearity, or imbalanced distributions that could bias the results or invalidate model assumptions.
 
-1.  Check presence of outliers in $Y$ and distribution of $Y$ values
-2.  If $X$ is a quantitative independent variable, check presence of outliers in X and distribution of X values\
-    2b. If $X$ is a qualitative independent variable, analyse the number of levels and the number of individuals per level
-3.  Analyse the potential relationships between $Y$ and the $X_{s}$
-4.  Check presence of interactions between $X_{s}$
-5.  Check presence of collinearity between $X_{s}$
+Below is a checklist of preliminary exploratory analyses to perform before modeling:
 
-### Outliers in $Y$ and distribution of $Y$
+1.  **Check for outliers and distribution of the dependent variable (\$Y\$).**
 
-As $Y$ is a binary variable, there is no distribution. However, we could inspect how many 0 and 1 we have.
+2.  **Check for outliers and distribution of the explicative variable (\$X\$). If \$X\$ is quantitative:** assess the distribution and presence of outliers. **If \$X\$ is qualitative:** analyze the number of levels and the number of observations per level.
+
+3.  **Explore the potential relationships between \$Y\$ and each \$X_i\$.**
+
+4.  **Check for potential interactions between explanatory variables (\$X_i\$).**
+
+5.  **Assess multicollinearity among the \$X_i\$ variables.**
+
+### **1. Outliers and Distribution in \$Y\$**
+
+Since \$Y\$ is a binary variable, it does not have a continuous distribution. Instead, we inspect the frequency of each category (0 and 1) to check for imbalance in the response variable.
 
 ```{r dataY, include=TRUE}
 # Number of 0 and 1 in Y
 table(dataBadger$Activity)
 ```
 
-### For the $Xs$ that are quantitative : check outliers and Xs distribution
+### **2. Outliers and Distributions of Quantitative Predictors (\$X\$)**
+
+For continuous independent variables, it is important to:
+
+-   Detect potential **outliers** (e.g., extreme or erroneous values)
+
+-   Visualize the **shape of the distribution** (e.g., normal, skewed, multimodal)
+
+-   Assess whether **transformations** (e.g., log, square root) might be needed before modeling
+
+The following visualizations help achieve this:
+
+-   **Cleveland dot plots**: to identify potential outliers
+
+-   **Histograms**: to visualize the overall distribution
+
+-   **Q-Q plots**: to assess normality assumptions
 
 ```{r dataCov, include=TRUE, fig.height=8, fig.width=8}
 par(mfrow=c(3,3))
@@ -152,11 +173,20 @@ hist(dataBadger$N_cattle,col='blue',xlab="Number of cattle",main="")
 qqnorm(dataBadger$N_cattle,pch=16,col='blue',xlab='')
 qqline(dataBadger$N_cattle,col='red')
 ```
-<<<<<<< HEAD
 
-For this $X$ continuous independent variable we don't see obvious outliers. And we can see the different distributions of the variables.
+The exploratory plots show that all three quantitative variables (number of setts, number of buildings, and number of cattle) display right-skewed distributions, with most farms having relatively low values and a few having much higher ones. No extreme or abnormal outliers are clearly visible, although some high values are present, especially for the number of cattle. The Q-Q plots confirm that none of these variables follow a normal distribution.
 
-### For $Xs$ that are categorical : number of levels and number of individuals per level
+### **2. Categorical Variables: Number of Levels and Individuals per Level**
+
+For categorical (factor) variables, it is important to examine the number of levels (categories) and the number of observations in each level. This helps identify potential issues such as:
+
+-   Levels with very few observations (which may cause estimation problems in statistical models)
+
+-   Highly unbalanced distributions between categories
+
+-   Unexpected or erroneous category labels
+
+The following code summarizes the distribution of individuals across levels for each categorical predictor:
 
 ```{r datafact, include=TRUE}
 # Factor season
@@ -181,15 +211,13 @@ summary(dataBadger$concen)
 summary(dataBadger$sugar)
 ```
 
-Make conclusion about these $X$ categorical independent variables
+The categorical variables show that most factors are **binary**, with varying levels of balance between categories. For example, variables such as feed_store, cattle_house, and feed display moderate imbalance, with one category being more frequent than the other. The season variable has four well-represented levels, each containing a similar number of observations, which ensures adequate variability for analysis. Overall, the categorical predictors appear suitable for modeling.
 
-### Analysis of the potential relationships Y vs Xs
+### **3. Analysis of the Potential Relationships Between \$Y\$ and the \$X\$s**
 
-To better understand the relationships between the response variable (*Activity*) and the predictors, both quantitative and categorical variables were explored graphically.\
+To gain preliminary insight into the relationships between the response variable (Activity) and the predictors, both quantitative and categorical variables were explored graphically.
 
-Scatterplots were used to visualize the relationship between *Activity* and continuous predictors, while mosaic plots were employed to examine associations between *Activity* and categorical predictors.\
-
-These visual analyses provide a first impression of potential patterns, dependencies, or nonlinear relationships that may influence badger activity on farms.
+Scatterplots were used to visualize how badger activity varies with continuous predictors such as the number of setts, number of buildings and number of cattle housed. These visual analyses provide a first impression of potential patterns, dependencies, or nonlinear relationships that may influence badger activity on farms.
 
 ```{r datagraph, include=TRUE, fig.height=5, fig.width=10}
 
@@ -249,15 +277,23 @@ mosaicplot(dataBadger$Activity~dataBadger$sugar
            ,main="Activity & Sugar Beet")
 ```
 
-Make conclusion about these graphics
+These visual analyses provide an initial understanding of how badger activity may relate to farm characteristics. The scatterplots show that no clear linear relationship exists between badger activity and the number of setts, buildings, or cattle, although activity tends to occur slightly more often on farms with more setts or larger cattle numbers. The mosaic plots complement this by revealing possible associations between activity and certain categorical management factors, such as the presence of feed stores, cattle housing, or specific feeding practices.
 
-### Analysis of possible interactions between both independent variables
+### 4. Analysis of possible interactions between both independent variables
 
 Here, given the large number of predictors, we will not include interactions in modelling
 
-### Check for colinearity between Xs
+### **5. Check for Collinearity Between Predictors (\$X\$s)**
 
-In order to prevent collinearity in the modelling, we will analyse how the predictor variables are related. First, we will check (1) correlation between the three quantitative independent variables, (2) how the factors are crossed and (3) then, we estimate whether these categorical predictors influence the both quantitative ones by using boxplot graphics. Given the large number of predictors, this analysis of collinearity is partially detail below.
+To avoid multicollinearity issues during modeling, the relationships among predictor variables were examined. This step includes:
+
+1.  Evaluating **correlations between the three quantitative variables**
+
+2.  Assessing **potential overlap between categorical factors**
+
+3.  Exploring whether **categorical predictors influence quantitative ones** through boxplots
+
+Given the large number of predictors, only key results are summarized below.
 
 ```{r datacolin, include=TRUE, fig.height=5, fig.width=5}
 
@@ -277,7 +313,7 @@ corrplot.mixed(M,upper="square",lower.col="black", tl.col="black",cl.cex = 0.8,t
 # for each quantitative independent variable, use boxplot graphics to check whether factors influence it - not detailed here
 ```
 
-A weak collinearity between both quantitative variables is possible (N buildings and N cattle housed). No other case of collinearity has been found (not developed here).
+The collinearity analysis indicates that the three quantitative variables are largely independent. A moderate positive correlation (r ≈ 0.52) is observed between the number of buildings and the number of cattle in the yard, suggesting a slight interdependence between these two variables. In contrast, the number of setts in fields shows almost no correlation with the others (r close to 0). Overall, no strong collinearity is detected, allowing these predictors to be retained for further modelling without major redundancy concerns.
 
 ## Generalized Linear Mixed Model (GLMM)
 
@@ -545,3 +581,4 @@ for (i in 1:NSim) {
 boxplot(diagZ[2,], col='dodgerblue4',ylab='#Rate of farms well-classified')
 mean(diagZ[2,])
 ```
+
