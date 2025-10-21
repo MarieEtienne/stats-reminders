@@ -23,25 +23,20 @@ To use it you'll need to pay attention to certain things :\
 - all values need to be **positive** (which shouldn't be a problem if it's a contingency table),\
 - if you have **rare species**, it may change the shape of your results significantly. It's not always a bad thing, just something you need to be aware of.
 
-Two R packages can be used to perform CA : *ade4* (@ade4_dray2007) and *FactoMineR* (@factominer_le2008). 
+Two R packages can be used to perform CA : *ade4* (@ade4_dray2007) and *FactoMineR* (@factominer_le2008).
 
 # Ecological exemple
-## Ecological context
 
+## Ecological context
 
 A study was conducted in 2022 on the permanent wetlands of the municipality of Grabels (34), as part of a Municipal Biodiversity Atlas (@ABC_macroinv2022). The aim was to characterize the state of these environments using bioindicator species : benthic macroinvertebrates (@fig-CA_macroinvertebrates). This taxon, which is sensitive to pollution, can be used to study water quality (ref).\
 
-In this study, two streams (the Rieu Querelle and the Verdanson), permanent ponds and an artificial water source (the retention basin) were sampled and the individuals identified. Each wetland was sampled at several randomly selected points, and three passes were made at each point.
-
-The purpose of this analysis is to study the species assemblages depending of the site. In this context, the CA is one of the right choices.
-
 #### Imports
-
 
 ```{r}
 #| echo: false
 #| label: fig-CA_macroinvertebrates
-#| fig-cap: "Family of benthic macroinvertebrates"
+#| fig-cap: "Example of two families of benthic macroinvertebrates"
 #| fig-subcap: 
 #| - "Libellulidae"
 #| - "Physidae"
@@ -53,7 +48,7 @@ knitr::include_graphics("./images/Physidae.jpg")
 ```
 
 In this study, the standardised **I2M2 protocol** of the Water Framework Directive (@DCE_2014) was adapted to a context of ponds and very shallow watercourses.\
-Two streams (the *Rieu Querelle* and the *Verdanson*), permanent ponds (*Ruche*, *Terrain de Foot* and *Foot2*) and an artificial water source (*Bassin*) were sampled and the macroinvertebrates collected were identified. Each wetland was sampled at several points randomly selected from the water body (*Zi*), and three replicas were made at each point (*Zi_j*).
+Two streams (the *Rieu Querelle* and the *Verdanson*), permanent ponds (*Ruche*, *Terrain de Foot* and *Foot2*) and an artificial water source (*Bassin*) were sampled and the macroinvertebrates collected were identified. Each wetland was sampled at several randomly selected points (*Zi*), and three replicas were made at each point (*Zi_j*).
 
 The purpose of this analysis is to study the species assemblages depending of the site. In this context, the CA is one of the right choices.
 
@@ -80,7 +75,6 @@ library(gridtext)
 library(ggtext)
 library(knitr)
 ```
-
 
 ## Data
 
@@ -114,7 +108,7 @@ classification <- classification %>%
   data.frame()
 ```
 
-In each sample (each row), macroinvertebrates have been identified at the family level (@tbl-CA_datamacroinv), and the CA analysis will be performed at this taxonomic level.
+In each sample (each row), macroinvertebrates have been identified at the family level (@tbl-CA_datamacroinv), and the CA analysis will be performed at the taxonomic level.
 
 ```{r}
 #| label: tbl-CA_datamacroinv
@@ -123,7 +117,7 @@ In each sample (each row), macroinvertebrates have been identified at the family
 kable(head(macroinv[,1:10]), "html")
 ```
 
-However, the taxonomic level of the order was also retained in most cases (Coleoptera, Odonata, etc.) in order to clearly group together the numerous families identified and enable an ecological interpretation of the results obtained (@tbl-CA_classifmacroinv). Other families were grouped at the class level (Bivalves, Gastropods, etc.) and the paraphyletic group of Crustaceans was retained.
+However, the taxonomic level of the order was also taken in most cases (Coleoptera, Odonata, etc.) in order to be able to group together the numerous identified families and allow an ecological interpretation (@tbl-CA_classifmacroinv). Other families were grouped at the class level (Bivalves, Gastropods, etc.) and the paraphyletic group of Crustaceans was kept.
 
 ```{r}
 #| label: tbl-CA_classifmacroinv
@@ -179,8 +173,8 @@ macroinv_red %>%
   ggplot(., aes(x = Echantillon, y = Abondance, fill = Familles)) +
   geom_bar(stat = "identity") +
   facet_wrap(~ ZH) + 
-  xlab("**Number of individuals by sample**") + 
-  ylab("**Sample**") +
+  xlab("**Sample**") + 
+  ylab("**Number of individuals by sample**") +
   theme_bw() + 
   labs(fill = "**Family**") + 
   theme(axis.text.x = element_markdown(angle = 90, vjust = 1, hjust = 1), 
@@ -195,12 +189,13 @@ macroinv_red %>%
   ggplot(., aes(x = Echantillon, y = Abondance, fill = X1)) +
   geom_bar(stat = "identity") +
   facet_wrap(~ ZH) + 
-  xlab("**Number of individuals by sample**") + 
-  ylab("**Sample**") +
+  xlab("**Sample**") + 
+  ylab("**Number of individuals by sample**") +
   theme_bw() + 
   labs(fill = "**Order**") + 
   theme(axis.text.x = element_markdown(angle = 90, vjust = 1, hjust = 1), 
         axis.text.y = element_markdown(size = 11),
+        axis.title = element_markdown(size = 13),
         plot.title = element_markdown(hjust = 0.5, size = 15),
         legend.title = element_markdown())
 ```
@@ -209,29 +204,25 @@ macroinv_red %>%
 
 ## CA with FactoMineR
 
-
-
 ```{r}
+#| label: fig_CA_FactoMineR
+#| fig-cap: CA with the FactoMineR package
+#| fig-height: 10
+
 #First CA with the reduced data set
 CA <- CA(macroinv_red[,-c(1,2)], axes = c(1,2))
-plot(CA$eig[,2], type = "h")
+#plot(CA$eig[,2], type = "h")
 ```
-
-
-```{r}
-#Contribution of each individual and site to the CA
-CA$col$contrib
-CA$row
-```
+Here we can see our first CA (@fig-CA-FactoMineR) using the FactoMineR package. The first two axes are displayed. These are the ones that explain the most inertia in the data set, 14,56% and 14,02 as we can see in the parenthesis. The position of the families and sites on the graph indicate how similar they are to each other and how the affect the axis. The more close together they are the more similar they are according to the axes displayed. If they are very far away from the center, they play a bigger role in the contribution to the axis. 
 
 CA allows to see species contribution to the main axis ( @tbl-CA_spcontrib , @fig-CA_plotspcontrib )
 
 ```{r}
 #| label: tbl-CA_spcontrib
-#| tbl-cap: "Species that contribute to Axis 1-2"
+#| tbl-cap: "Species that contribute significantly to Axis 1-2"
 #| tbl-subcap: 
-#| - "Species that contribute to axe 1"
-#| - "Species that contribute to axe 2"
+#| - "Species that contribute significantly to axe 1"
+#| - "Species that contribute significantly to axe 2"
 #| layout-nrow: 2
 #| layout-ncol: 1
 
@@ -243,7 +234,6 @@ kable(CA$col$contrib[which_contrib_high1, ], "html")
 
 kable(CA$col$contrib[which_contrib_high2, ], "html")
 ```
-
 
 ```{r}
 #| label: fig-CA_plotspcontrib
@@ -263,7 +253,7 @@ fviz_contrib(CA, choice = "col", axes = 2, top = Inf)  # contributions Axis 2
 
 ```{r}
 #| label: fig-CA_eig1
-#| fig-cap: "Eigen values associates to CA dimensions"
+#| fig-cap: "Eigen values associated to CA dimensions"
 #| fig-subcap: 
 #| - "With Bassin samples"
 #| - "Without Bassin samples, that drags the Axis 1"
@@ -314,18 +304,19 @@ scatter(CA_ade4, posieig = "none")
 
 s.label(CA_ade4$li, xax = 1, yax = 2, boxes = FALSE)
 s.label(CA_ade4$co, xax = 1, yax = 2, boxes = FALSE)
-
-
-scatter(CA_ade4_sansbassin)
-#we can see things more clearly when we remove the bassin
 ```
 
 The first two axes explain $28.58%$ of the total inertia, with approximately $14%$ for each axis (@tbl-CA_eigcumul). Although this is not a large proportion, such values are not uncommon in ecological datasets. Axis 1 represents essentially a Bivalve gradient, with Bivalve contributing $69%$, followed by *Thaumaleidae* ($12%$), *Culicidae* ($5.3%$), and *Asellidae* ($3.7%$) (@tbl-CA_spcontrib). Axis 2 is mainly explained by *Thaumaleidae* ($79%$), with smaller yet notable contributions from Bivalve ($8.8%$) and *Simuliidae* ($3.5%$), as we can see on @tbl-CA_spcontrib.
 
-The high contribution of *Bivalve* may be explained by the fact that, unlike the other taxa (at the family level), it refers to a class and therefore represents a much broader group. This could account for the prevalence of various Bivalve individuals across some sampling stations (e.g. between 62 and 700 individuals in "Ruche" samples), and consequently, its dominant role in shaping Axis 1.   
+The high contribution of *Bivalve* may be explained by the fact that, unlike the other taxa (at the family level), it refers to a class and therefore represents a much broader group. This could account for the prevalence of various Bivalve individuals across some sampling stations (e.g. between 62 and 700 individuals in "Ruche" samples), and consequently, its dominant role in shaping Axis 1.\
 The $79%$ contribution of *Thaumaleidae* likely reflects its high density in three stations ("Bassin"), a peculiar environment where only *Thaumaleidae* were found, while they were nearly absent from other sites. This group thus stretches Axis 2. "Bassin" environnement was a cemented artificial pound which is hard to colonize for most organisms other than *Thaumaleidae*. Indeed, this taxon belongs to the *Diptera* order, very tolerant to pollution (@vivier_macroinv1970) and ubiquitous (@faunefrance_macroin1927).
 
 Regarding the correspondances between stations and species, the analysis shows - as expected - a proximity between *Thaumaleidae* and stations 28, 27 and 29, which are the stations it was almost excusively sampled from. It could therefore be interesting to redo the analysis without those 3 stations to remove the high correlation between these "Bassin" samples and *Thaumaleidae*.
+
+```{r}
+scatter(CA_ade4_sansbassin)
+#we can see things more clearly when we remove the bassin
+```
 
 ```{r}
 CA_ade4_ligne_ZH <- merge(CA_ade4$li, macroinv_red$ZH, by=0)
@@ -389,7 +380,6 @@ table.value(macroinv_red[,-c(1,2)][order(CA_ade4_sansbassin$li[,1]),
 
 ### Species distribution
 
-
 ```{r}
 esp = 22 #esp dans le bassin isolé des autres données pour les données avec bassin
 esp = 23 #esp un peu partout pour les données avec bassin
@@ -398,7 +388,6 @@ s.distri(CA_ade4$li, macroinv_red[, esp], cell = 1.5,
 s.distri(CA_ade4_sansbassin$li, macroinv_red[-c(27,28,29),esp], cell = 1.5,
          sub = macroinv_red[1, esp], csub = 2)
 ```
-
 
 ### Sites distribution
 
