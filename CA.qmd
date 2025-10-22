@@ -126,8 +126,8 @@ However, the taxonomic level of the order was also taken in most cases (Coleopte
 kable(head(classification[,1:2]), "html", col.names = c("Order", "Family"))
 ```
 
-### Reduce the size of the data frame to remove rare species (\<1):
-
+### Remove species absent from the sampling
+Species absent from all surveys (empty columns) or present in only one samples were removed to prevent double absences from impacting the analysis.
 ```{r}
 #check each specie count
 species_sum <- colSums(macroinv[,-c(1,2)])
@@ -140,7 +140,6 @@ macroinv_red <- macroinv[, c(names(macroinv)[1:2], species_keep)]
 ```
 
 ## Data exploration
-
 ```{r}
 #| label: fig-CA_nbreplicates
 #| fig-cap: Number of replicates per wetland
@@ -158,6 +157,7 @@ macroinv_red %>%
         axis.title = element_markdown(size = 13),
         legend.position = "none")
 ```
+A different number of samples were taken in each wetland (see @fig-CA_nbreplicates), depending on their size. For some small wetlands (less than 20m²), such as Ruche or Foot2, it was decided to adjust the number of sampling points in order to limit the ecological impact on these environments. For watercourses such as the Rieu Querelle and the Verdanson, sampling points were distributed to cover the upstream-downstream gradient, with different habitats present.
 
 ```{r}
 #| label: fig-CA_abundFamily
@@ -199,11 +199,14 @@ macroinv_red %>%
         plot.title = element_markdown(hjust = 0.5, size = 15),
         legend.title = element_markdown())
 ```
+@fig-CA_abundFamily show the number of individuals sampled by family (@fig-CA_abundFamily-1) and by order (@fig-CA_abundFamily-2) for each sample from the wetlands. 
+
+Some taxa are present in large quantities (e.g., Bivalves in Ruche).  
+
+Some orders are very generalist and present in all wetlands (e.g., Diptera, Gastropoda, Bivalvia). Odonata are also represented at all sites, except in the Bassin. Other orders have more specific ecological preferences and are more sensitive to pollution, such as Trichoptera and Plecoptera. The low representation of the latter could be explained by their ecological preference for rocks in streams rather than ponds.
 
 # Analysis : Correspondance Analysis
-
 ## CA with FactoMineR
-
 ```{r}
 #| label: fig_CA_FactoMineR
 #| fig-cap: CA with the FactoMineR package
@@ -250,7 +253,7 @@ fviz_contrib(CA, choice = "col", axes = 2, top = Inf)  # contributions Axis 2
 ```
 
 ## CA with ade4
-
+*nf* defines the number of axes in the CA constructed : it is calculated by taking minimum(number of columns, number of rows) - 1 (here 38 - 1 = 37)
 ```{r}
 #| label: fig-CA_eig1
 #| fig-cap: "Eigen values associated to CA dimensions"
@@ -260,13 +263,13 @@ fviz_contrib(CA, choice = "col", axes = 2, top = Inf)  # contributions Axis 2
 #| layout-nrow: 2
 #| layout-ncol: 1
 
-CA_ade4 <- dudi.coa(macroinv_red[,-c(1,2)], scannf=FALSE,nf=60)
+CA_ade4 <- dudi.coa(macroinv_red[,-c(1,2)], scannf = FALSE, nf = 37)
 #CA_ade4
 
 barplot(CA_ade4$eig)
 
 CA_ade4_sansbassin <- dudi.coa(macroinv_red[-c(27,28,29), -c(1,2)], 
-                               scannf = FALSE, nf = 58)
+                               scannf = FALSE, nf = 37)
 barplot(CA_ade4_sansbassin$eig)
 ```
 
@@ -319,11 +322,19 @@ scatter(CA_ade4_sansbassin)
 ```
 
 ```{r}
+# Link samples position (CA$li = rows) on CA axis and the wetlands -------------
 CA_ade4_ligne_ZH <- merge(CA_ade4$li, macroinv_red$ZH, by=0)
+
 CA_ade4_sansbassin_ligne_ZH <- merge(CA_ade4_sansbassin$li, macroinv_red$ZH, by=0)
 
-#CA_ade4_col_ZH <- merge(CA_ade4$co,t(classification),by.x="row.names", by.y=t(classification)[,2]) 
-#ça marche pas encore, il y a un problème avec les by
+# Link species position (CA$co = columns) on CA axis and the family / order ----
+CA_ade4_col_ZH <- data.frame(CA_ade4$co) %>% 
+  mutate("Family" = rownames(.)) %>%
+  left_join(., classification, by = c("Family" = "X2"))
+
+CA_ade4_sansbassin_col_ZH <- data.frame(CA_ade4_sansbassin$co) %>% 
+  mutate("Family" = rownames(.)) %>%
+  left_join(., classification, by = c("Family" = "X2"))
 ```
 
 **Plot CA for the lines, dim 1 and 2, colour depends on the water source type :**
@@ -339,6 +350,8 @@ CA_ade4_sansbassin_ligne_ZH <- merge(CA_ade4_sansbassin$li, macroinv_red$ZH, by=
 ggplot(data = CA_ade4_ligne_ZH) +
   aes(x = Axis1, y = Axis2, color = y) +
   geom_point() +
+  geom_hline(yintercept = 0) +
+  geom_vline(xintercept = 0) +
   xlab("**CA Axis 1**") + 
   ylab("**CA Axis 2**") +
   labs(color = "**Wetland**") +
@@ -353,6 +366,8 @@ ggplot(data = CA_ade4_ligne_ZH) +
 ggplot(data = CA_ade4_sansbassin_ligne_ZH) +
   aes(x = Axis1, y = Axis2, color = y) +
   geom_point() +
+  geom_hline(yintercept = 0) +
+  geom_vline(xintercept = 0) +
   xlab("**CA Axis 1**") + 
   ylab("**CA Axis 2**") +
   theme_bw() + 
@@ -361,13 +376,50 @@ ggplot(data = CA_ade4_sansbassin_ligne_ZH) +
         axis.title = element_markdown(size = 13),
         legend.position = "none") 
 ```
+In @fig-CA_CAwetland_position, the points correspond to the projection of the samples onto the two axes of the PCA. The position of each sampling point corresponds to the barycenter (average) of the coordinates of the species present at that site. 
 
-### Trajectory diagramm
+**Plot CA for the lines, dim 1 and 2, colour depends on the order :**
 
 ```{r}
-s.traject(CA_ade4$li)
-s.traject(CA_ade4_sansbassin$li)
+#| label: fig-CA_CAspecies_position
+#| fig-cap: Species position on Axis 1 and 2 of the CA, depending on wetland
+#| fig-subcap: 
+#| - "CA with Bassin samples"
+#| - "CA without Bassin samples"
+#| layout-nrow: 2
+
+ggplot(data = CA_ade4_col_ZH) +
+  aes(x = Comp1, y = Comp2, color = X1) +
+  geom_point() +
+  geom_hline(yintercept = 0) +
+  geom_vline(xintercept = 0) +
+  xlab("**CA Axis 1**") + 
+  ylab("**CA Axis 2**") +
+  labs(color = "**Order**") +
+  theme_bw() + 
+  theme(axis.text.x = element_markdown(vjust = 1, hjust = 1, size = 11), 
+        axis.text.y = element_markdown(size = 11),
+        axis.title = element_markdown(size = 13),
+        legend.title = element_markdown(size = 13), 
+        legend.text = element_markdown(size = 13),
+        legend.position = "top")
+
+ggplot(data = CA_ade4_sansbassin_col_ZH) +
+  aes(x = Comp1, y = Comp2, color = X1) +
+  geom_point() +
+  geom_hline(yintercept = 0) +
+  geom_vline(xintercept = 0) +
+  xlab("**CA Axis 1**") + 
+  ylab("**CA Axis 2**") +
+  theme_bw() + 
+  theme(axis.text.x = element_markdown(vjust = 1, hjust = 1, size = 11), 
+        axis.text.y = element_markdown(size = 11),
+        axis.title = element_markdown(size = 13),
+        legend.position = "none") 
 ```
+In @fig-CA_CAspecies_position, the points correspond to the projection of the families onto the two axes of the PCA. The position of each family corresponds to the barycenter (average) of the coordinates of the sites where this species was present.
+
+### Table value
 
 ```{r}
 table.value(macroinv_red[,-c(1,2)][order(CA_ade4$li[,1]),
@@ -381,17 +433,36 @@ table.value(macroinv_red[,-c(1,2)][order(CA_ade4_sansbassin$li[,1]),
 ### Species distribution
 
 ```{r}
-esp = 22 #esp dans le bassin isolé des autres données pour les données avec bassin
-esp = 23 #esp un peu partout pour les données avec bassin
-s.distri(CA_ade4$li, macroinv_red[, esp], cell = 1.5, 
-         sub = macroinv_red[1, esp], csub = 2)
-s.distri(CA_ade4_sansbassin$li, macroinv_red[-c(27,28,29),esp], cell = 1.5,
-         sub = macroinv_red[1, esp], csub = 2)
+#| label: fig-CA_CAspecies_distrib
+#| fig-cap: Species distribution in samples on Axis 1 and 2 of the CA
+
+par(mfrow = c(2, 2))
+s.distri(CA_ade4_sansbassin$li, macroinv_red[-c(27,28,29), 26], cell = 1.5, 
+         sub = colnames(macroinv_red[26]), csub = 2) #family rare
+s.distri(CA_ade4_sansbassin$li, macroinv_red[-c(27,28,29), 36], cell = 1.5, 
+         sub = colnames(macroinv_red[36]), csub = 2) #family rare
+s.distri(CA_ade4$li, macroinv_red[, 22], cell = 1.5,
+         sub = colnames(macroinv_red[22]), csub = 2) #family commune
+s.distri(CA_ade4_sansbassin$li, macroinv_red[-c(27,28,29), 5], cell = 1.5, 
+         sub = colnames(macroinv_red[5]), csub = 2) #family very abundant in 1 station
 ```
+@fig-CA_CAspecies_distrib shows the distribution of the different families across the sites. Each point corresponds to the coordinates of a site. 
+The points connected to each other correspond to all the points where the family is present. Their **barycenter** (average of the site positions) corresponds to the position of the family on the CA projections in @fig-CA_CAspecies_position.
+
+The barycenter corresponds to the average of the sampled environmental conditions where the family is present (i.e. the central position of the ecological niche).   
+The **size of the ellipse** corresponds to the **width of the ecological niche**. A generalist family will tend to be present at the center of the CA with a large ellipse, while a more specialized family, present in a few site, will have a smaller ellipse (e.g., Thaunaleidae).  
+
+**However, for abundance data (as here), the barycenter is attracted to sites where the family is present in greater numbers (e.g., Bivalves in Ruche).**
 
 ### Sites distribution
 
 ```{r}
-site = 5
-#s.distri(CA_ade4$co, macroinv_red[site, -c(1, 2)], cell = 1.5, csub = 2)
+#| label: fig-CA_CAsites_distrib
+#| fig-cap: Site distribution in samples on Axis 1 and 2 of the CA
+
+# s.distri(CA_ade4_sansbassin$co, macroinv_red[5, -c(1, 2)],sub = "Site 5", csub = 2)
 ```
+Similarly, we can project the distribution of sites (@fig-CA_CAsites_distrib). Here, each point corresponds to the coordinates of a family. 
+For a given site, the families present on that site are connected, and the barycenter of these families' coordinates forms the site's position in the CA (@fig-CA_CAwetland_position)
+
+Here, the **size of the ellipses** can be interpreted as the **alpha diversity** (i.e., species richness) present at a site : the larger the ellipse, the more families it will contain. 
