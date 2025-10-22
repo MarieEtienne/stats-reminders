@@ -36,6 +36,10 @@ We don't want to analyze all species so we just keep the families. Also we keep 
 
 Description of the quantitative variables : - rAME : relative Anterior Median Eyes - rALE : relative Anterior Lateral Eyes - rPME : relative Posterior Median Eyes - rPLE : relative Posterior Lateral Eyes
 
+::: {style="text-align:center"}
+![Figure 1 — Typical arrangements of spider eyes and their modification across spider families](arrangements%20of%20spider%20eyes.jpg){width="50%"}
+:::
+
 ```{r}
 spiders <- read.delim("S2_WolffData-Curated.txt", header = TRUE, stringsAsFactors = TRUE)
 spiders <- spiders[c("Family","rAME","rALE","rPME","rPLE")] #data selection
@@ -90,10 +94,10 @@ fviz_pca_var(res.pca,
 Graph of individuals :
 
 ```{r}
-fviz_pca_ind(res.pca, geom.ind = "point", # points uniquement 
-             label = "none", # pas de texte sur les points 
-             habillage = spiders$Family, # couleurs par famille (optionnel)
-             legend = "none", # supprime complètement la légende 
+fviz_pca_ind(res.pca, geom.ind = "point",
+             label = "none",
+             habillage = spiders$Family,
+             legend = "none",
              repel = TRUE)
 ```
 
@@ -161,5 +165,5 @@ The individuals are mainly distributed along the first axis which can be interpr
 When we visualise families, it looks like individuals from the *Salticidae* are atypical individuals because they are far on the first axis. In fact, those individuals have the highest contributions.
 
 ::: {style="text-align:center"}
-![Figure 1 — Family *Salticidae* contributing the most to explained variance.](Salticidae.jpg){width="50%"}
+![Figure 2 — Family *Salticidae* contributing the most to explained variance.](Salticidae.jpg){width="50%"}
 :::
