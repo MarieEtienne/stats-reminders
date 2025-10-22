@@ -213,7 +213,8 @@ macroinv_red %>%
 CA <- CA(macroinv_red[,-c(1,2)], axes = c(1,2))
 #plot(CA$eig[,2], type = "h")
 ```
-Here we can see our first CA (@fig-CA-FactoMineR) using the FactoMineR package. The first two axes are displayed. These are the ones that explain the most inertia in the data set, 14,56% and 14,02 as we can see in the parenthesis. The position of the families and sites on the graph indicate how similar they are to each other and how the affect the axis. The more close together they are the more similar they are according to the axes displayed. If they are very far away from the center, they play a bigger role in the contribution to the axis. 
+
+Here we can see our first CA (@fig-CA-FactoMineR) using the FactoMineR package. The first two axes are displayed. These are the ones that explain the most inertia in the data set, 14,56% and 14,02 as we can see in the parenthesis. The position of the families and sites on the graph indicate how similar they are to each other and how the affect the axis. The more close together they are the more similar they are according to the axes displayed. If they are very far away from the center, they play a bigger role in the contribution to the axis.
 
 CA allows to see species contribution to the main axis ( @tbl-CA_spcontrib , @fig-CA_plotspcontrib )
 
