@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo = FALSE, cache = TRUE)
 library(tidyverse)
 ```
 
-
+a simple test to show rebase in PR
 
 This website is produced by the M2 MODE student during year 2025-2026 as part of their assignment in the Online Collaborative Resources course.
 
