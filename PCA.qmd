@@ -90,7 +90,7 @@ res.pca <- PCA(spiders,
 To visualize the results from the PCA, we can analyse the percentage of inertia explained by the principal components through the **graph of inertia.**
 
 ```{r}
-#| label: tbl_PCA_eig
+#| label: PCA_inertia
 #| fig-cap: "Percentage of inertia explained by axes"
 #| fig-subcap: 
 #| - "Table of eigenvalue and percentage of variance"
@@ -102,26 +102,47 @@ fviz_eig(res.pca, ylim = c(0, 100), geom='bar', main='Percentage of inertia expl
 
 The two first axis explain more than 86% of the total variance so only two main components are selected for the analysis. The first dimension explains 61.9% of the variance while the second dimension explains 24.2% of the variance.
 
-Graph of variables :
+We can also see how the variables contribute to the the two principal components.
 
 ```{r}
+#| label: var_contrib
+#| fig-cap: "Contribution of variables to the axes"
+#| fig-subcap: 
+#| - "Table of contribution of variables to the axes"
+#| - "PCA variable correlation plot" 
+
+res.pca$var$contrib
 fviz_pca_var(res.pca,
              col.var = "contrib",
              gradient.cols = c("blue", "yellow", "red"),
-             repel = TRUE) #show how relative eyed sizes are correlated
+             repel = TRUE,
+             title = "PCA variable correlation plot") #show how relative eyed sizes are correlated
 ```
 
-Graph of individuals :
+All variables are contributing a lot to the first axis. However, lateral eyes (rALE and rPLE ) explain the best the axis with contributions higher than 30%. On the other hand, medium eyes (rAME and rPME) explain the second axis with contributions respectively equal to 54% and 44%.
+
+We can also plot the individuals into principal component space.
 
 ```{r}
+#| label: indiviual_graph
+#| fig-cap: "Scatterplot of individuals on the two main axes"
+
 fviz_pca_ind(res.pca, geom.ind = "point",
              label = "none",
              habillage = spiders$Family,
              legend = "none",
-             repel = TRUE)
+             repel = TRUE,
+             pointshape = 19)
 ```
 
+The individuals are mainly distributed along the first axis which can be interpreted as a gradient of variation in eye size. Individuals are also concentrated around zero which means that a majority of spiders has similar eye proportions.
+
+Because there is 106 family of species we will concentrate only on the first height most frequent family in order to have a clearer vision.
+
 ```{r}
+#| label: indiviual_graph
+#| fig-cap: "Scatterplot of individuals of the first height most frequent family on the two main axes"
+
 top_families <- names(sort(table(spiders$Family), decreasing = TRUE))[1:8] #only frequent families to have a clearer graph
 spiders_sub <- subset(spiders, Family %in% top_families)
 res.pca2 <- PCA(spiders_sub, scale.unit = FALSE, quali.sup = 1, graph = FALSE)
@@ -131,12 +152,6 @@ fviz_pca_ind(res.pca2, habillage = spiders_sub$Family,
              select.ind = list(name = NULL, cos2 = NULL, contrib = NULL),
              label="none"
              )
-```
-
-Graph of contributions by variables :
-
-```{r}
-res.pca$var$contrib
 ```
 
 Graph of contributions by individuals :
@@ -176,11 +191,7 @@ head(sort(res.pca$ind$contrib[,2], decreasing = TRUE), 10)
 
 ## Interpretation of the analysis
 
-The two first axis explain more than 86% of the total variance so only two main components are selected for the analysis. The first dimension explains 61.9% of the variance while the second dimension explains 24.2% of the variance.
-
-All variables are contributing a lot to the first axis. However, rALE and rPLE explain the best the axis with contributions higher than 30%. rAME and rPME explain the second axis with contributions respectively equal to 54% and 44%.
-
-The individuals are mainly distributed along the first axis which can be interpreted as a gradient of variation in eye size. Individuals are also concentrated around zero which means that a majority of spiders has similar eye proportions.
+According to @var_contrib, we found that the first axe is positively correlated to the relative size of both anterior and posterior lateral eyes (red and green ones in @fig1). For the second axe, it seems that there is a antagonist relation between anterior and posterior.
 
 When we visualise families, it looks like individuals from the *Salticidae* are atypical individuals because they are far on the first axis. In fact, those individuals have the highest contributions.
 
