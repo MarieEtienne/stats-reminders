@@ -18,7 +18,9 @@ The PCA methodology begins by **standardizing the data** (center and scale varia
 
 We will be using the R package *FactoMineR* (@factominer_le2008).
 
-## Example's presentation : Eye size evolution in spider
+# Ecological Exemple 
+
+## Eye size evolution in spider
 
 Our example is based on the article @Chong2024. This study examines how eye size evolves in spiders, which possess up to four pairs of eyes of variable sizes. Researchers analyzed 1,098 individuals from 39 species and supplemented their data with approximately 474 additional species.
 
