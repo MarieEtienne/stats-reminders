@@ -6,15 +6,17 @@ editor: visual
 bibliography: references.bib
 ---
 
-## Introduction
+# **Introduction to the Principal Component Analysis**
 
-PCA (Principal Component Analysis) is a dimensionality reduction technique used in data analysis and machine learning. It helps you to reduce the number of features in a dataset while keeping the most important information (variance).
+**Principal Component Analysis** (PCA) is a dimension reduction technique widely used in data analysis and machine learning for simplifying complex datasets. It helps us understand high-dimensional data by reducing the number of variables we need to consider while keeping as much of the original information as possible.
 
-The main goals are to reduce the number of variables, to visualize high-dimensional data in 2D or 3D, to detect patterns, clusters and outliers, remove noise and redundant information.
+The main goals are to **reduce the number of variables** into a new set of uncorelated variables called **principal components**, to **visualize high-dimensional data** in 2D or 3D, to **detect patterns**, clusters and outliers, and to **remove noise and redundant information**. For example, if you get a data set with 10 correlated variables, PCA can reduce it to 2 or 3 principal components that explains 90% of the variance and makes it easier to visualize.
 
-For example, if you get a data set with 10 correlated variables, PCA can reduce it to 2 or 3 components that explains 90% of the variance and makes it easier to visualize.
+The PCA, values have to be **quantitative**, and organized in a *n x p* matrix with *p* observations and *n* variables
 
-To realize a PCA, you need first to standardize the data (center and scale variables), to show how the variables vary together with a covariance matrix, to calculate eigenvalues and eigenvectors, to sort the components by decreasing values (the first components explain the most variance) and to project the data on the new axes.
+The PCA methodology begins by **standardizing the data** (center and scale variables), then computing the **covariance or** **correlation matrix** to show how the variables vary together. Through eigenvalue decomposition, PCA identifies orthogonal directions in the data space—the principal components—ordered by the amount of variance they explain, with the first component capturing the maximum variance, the second capturing the next highest variance while being uncorrelated with the first, and so on.
+
+We will be using the R package *FactoMineR* (@factominer_le2008).
 
 ## Example's presentation : Eye size evolution in spider
 
@@ -46,7 +48,7 @@ spiders <- spiders[c("Family","rAME","rALE","rPME","rPLE")] #data selection
 spiders <- na.omit(spiders)
 ```
 
-Let's center reduce.
+The PCA methodology begins by **standardizing the data** (center and scale variables)
 
 ```{r}
 spiders$rALE <- (spiders$rALE-mean(spiders$rALE))/sd(spiders$rALE)
