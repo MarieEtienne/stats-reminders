@@ -34,11 +34,7 @@ The raw data set is composed of 473 observations of 24 variables.
 
 We don't want to analyze all species so we just keep the families. Also we keep relative variables instead of absolute ones in order to be able to compare spider families with different sizes. Data is not centered reduced yet.
 
-Description of the quantitative variables : 
-- rAME : relative Anterior Median Eyes 
-- rALE : relative Anterior Lateral Eyes 
-- rPME : relative Posterior Median Eyes 
-- rPLE : relative Posterior Lateral Eyes
+Description of the quantitative variables : - rAME : relative Anterior Median Eyes - rALE : relative Anterior Lateral Eyes - rPME : relative Posterior Median Eyes - rPLE : relative Posterior Lateral Eyes
 
 ::: {style="text-align:center"}
 ![Figure 1 — Typical arrangements of spider eyes and their modification across spider families](arrangements_of_spider_eyes.jpg){width="50%"}
