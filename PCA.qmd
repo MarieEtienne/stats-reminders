@@ -6,21 +6,23 @@ editor: visual
 bibliography: references.bib
 ---
 
-## Introduction
+# **Introduction to the Principal Component Analysis**
 
-PCA (Principal Component Analysis) is a dimensionality reduction technique used in data analysis and machine learning. It helps you to reduce the number of features in a dataset while keeping the most important information (variance).
+**Principal Component Analysis** (PCA) is a dimension reduction technique widely used in data analysis and machine learning for simplifying complex datasets. It helps us understand high-dimensional data by reducing the number of variables we need to consider while keeping as much of the original information as possible.
 
-The main goals are to reduce the number of variables, to visualize high-dimensional data in 2D or 3D, to detect patterns, clusters and outliers, remove noise and redundant information.
+The main goals are to **reduce the number of variables** into a new set of uncorelated variables called **principal components**, to **visualize high-dimensional data** in 2D or 3D, to **detect patterns**, clusters and outliers, and to **remove noise and redundant information**. For example, if you get a data set with 10 correlated variables, PCA can reduce it to 2 or 3 principal components that explains 90% of the variance and makes it easier to visualize.
 
-For example, if you get a data set with 10 correlated variables, PCA can reduce it to 2 or 3 components that explains 90% of the variance and makes it easier to visualize.
+The PCA, values have to be **quantitative**, and organized in a *n x p* matrix with *p* observations and *n* variables
 
-To realize a PCA, you need first to standardize the data (center and scale variables), to show how the variables vary together with a covariance matrix, to calculate eigenvalues and eigenvectors, to sort the components by decreasing values (the first components explain the most variance) and to project the data on the new axes.
+We will be using the R package *FactoMineR* (@factominer_le2008).
 
-## Example's presentation : Eye size evolution in spider
+# Ecological Exemple
+
+## Eye size evolution in spider
 
 Our example is based on the article @Chong2024. This study examines how eye size evolves in spiders, which possess up to four pairs of eyes of variable sizes. Researchers analyzed 1,098 individuals from 39 species and supplemented their data with approximately 474 additional species.
 
-The researchers measured four different eye pairs simultaneously. PCA reduces this 4-dimensional dataset into interpretable components, making it easier to visualize and understand patterns.
+The researchers measured four different eye pairs simultaneously. PCA reduces this 4-dimensional dataset into **interpretable components**, making it easier to visualize and understand patterns.
 
 ```{r}
 spiders <-read.delim("S2_WolffData-Curated.txt",header = TRUE, stringsAsFactors = TRUE) #data importation
@@ -28,15 +30,23 @@ summary(spiders)
 head(spiders)
 ```
 
-The raw data set is composed of 473 observations of 24 variables.
+The raw data set is composed of 473 observations of 24 variables .
 
 ## Data preprocessing
 
-We don't want to analyze all species so we just keep the families. Also we keep relative variables instead of absolute ones in order to be able to compare spider families with different sizes. Data is not centered reduced yet.
+We don't want to analyze all species so we just keep the families. Also we keep relative variables instead of absolute ones in order to be able to compare spider families with different sizes.
 
-Description of the quantitative variables : - rAME : relative Anterior Median Eyes - rALE : relative Anterior Lateral Eyes - rPME : relative Posterior Median Eyes - rPLE : relative Posterior Lateral Eyes
+Description of the quantitative variables :
 
-::: {style="text-align:center"}
+-   rAME : relative Anterior Median Eyes (colored in yellow in @fig1)
+
+-   rALE : relative Anterior Lateral Eyes (colored in red in @fig1)
+
+-   rPME : relative Posterior Median Eyes (colored in blue in @fig1)
+
+-   rPLE : relative Posterior Lateral Eyes (colored in green in @fig1)
+
+::: {#fig1 style="text-align:center"}
 ![Figure 1 — Typical arrangements of spider eyes and their modification across spider families](arrangements_of_spider_eyes.jpg){width="50%"}
 :::
 
@@ -46,7 +56,7 @@ spiders <- spiders[c("Family","rAME","rALE","rPME","rPLE")] #data selection
 spiders <- na.omit(spiders)
 ```
 
-Let's center reduce.
+The PCA methodology begins by **standardizing the data** (center and scale variables)
 
 ```{r}
 spiders$rALE <- (spiders$rALE-mean(spiders$rALE))/sd(spiders$rALE)
@@ -66,7 +76,7 @@ library(ggplot2)
 
 ## PCA Analysis
 
-PCA Analysis
+We use the PCA function from *FactoMineR* (@factominer_le2008). Through eigenvalue decomposition, PCA identifies orthogonal directions in the data space—**the principal components**—ordered by the amount of variance they explain, with the first component capturing the maximum variance, the second capturing the next highest variance while being uncorrelated with the first, and so on.
 
 ```{r}
 res.pca <- PCA(spiders,
@@ -75,35 +85,64 @@ res.pca <- PCA(spiders,
                graph = FALSE)
 ```
 
-Data visualisation
+## Data visualisation
 
-Graph of inertia :
+To visualize the results from the PCA, we can analyse the percentage of inertia explained by the principal components through the **graph of inertia.**
 
 ```{r}
+#| label: PCA_inertia
+#| fig-cap: "Percentage of inertia explained by axes"
+#| fig-subcap: 
+#| - "Table of eigenvalue and percentage of variance"
+#| - "Graph of inertia"
+
 res.pca$eig
 fviz_eig(res.pca, ylim = c(0, 100), geom='bar', main='Percentage of inertia explained by axes')
 ```
 
-Graph of variables :
+The two first axis explain more than 86% of the total variance so only two main components are selected for the analysis. The first dimension explains 61.9% of the variance while the second dimension explains 24.2% of the variance.
+
+We can also see how the variables contribute to the the two principal components.
 
 ```{r}
+#| label: var_contrib
+#| fig-cap: "Contribution of variables to the axes"
+#| fig-subcap: 
+#| - "Table of contribution of variables to the axes"
+#| - "PCA variable correlation plot" 
+
+res.pca$var$contrib
 fviz_pca_var(res.pca,
              col.var = "contrib",
              gradient.cols = c("blue", "yellow", "red"),
-             repel = TRUE) #show how relative eyed sizes are correlated
+             repel = TRUE,
+             title = "PCA variable correlation plot") #show how relative eyed sizes are correlated
 ```
 
-Graph of individuals :
+All variables are contributing a lot to the first axis. However, lateral eyes (rALE and rPLE ) explain the best the axis with contributions higher than 30%. On the other hand, medium eyes (rAME and rPME) explain the second axis with contributions respectively equal to 54% and 44%.
+
+We can also plot the individuals into principal component space.
 
 ```{r}
+#| label: indiviual_graph
+#| fig-cap: "Scatterplot of individuals on the two main axes"
+
 fviz_pca_ind(res.pca, geom.ind = "point",
              label = "none",
              habillage = spiders$Family,
              legend = "none",
-             repel = TRUE)
+             repel = TRUE,
+             pointshape = 19)
 ```
 
+The individuals are mainly distributed along the first axis which can be interpreted as a gradient of variation in eye size. Individuals are also concentrated around zero which means that a majority of spiders has similar eye proportions.
+
+Because there is 106 family of species we will concentrate only on the first height most frequent family in order to have a clearer vision.
+
 ```{r}
+#| label: indiviual_graph
+#| fig-cap: "Scatterplot of individuals of the first height most frequent family on the two main axes"
+
 top_families <- names(sort(table(spiders$Family), decreasing = TRUE))[1:8] #only frequent families to have a clearer graph
 spiders_sub <- subset(spiders, Family %in% top_families)
 res.pca2 <- PCA(spiders_sub, scale.unit = FALSE, quali.sup = 1, graph = FALSE)
@@ -113,12 +152,6 @@ fviz_pca_ind(res.pca2, habillage = spiders_sub$Family,
              select.ind = list(name = NULL, cos2 = NULL, contrib = NULL),
              label="none"
              )
-```
-
-Graph of contributions by variables :
-
-```{r}
-res.pca$var$contrib
 ```
 
 Graph of contributions by individuals :
@@ -158,11 +191,7 @@ head(sort(res.pca$ind$contrib[,2], decreasing = TRUE), 10)
 
 ## Interpretation of the analysis
 
-The two first axis explain more than 86% of the total variance so only two main components are selected for the analysis. The first dimension explains 61.9% of the variance while the second dimension explains 24.2% of the variance.
-
-All variables are contributing a lot to the first axis. However, rALE and rPLE explain the best the axis with contributions higher than 30%. rAME and rPME explain the second axis with contributions respectively equal to 54% and 44%.
-
-The individuals are mainly distributed along the first axis which can be interpreted as a gradient of variation in eye size. Individuals are also concentrated around zero which means that a majority of spiders has similar eye proportions.
+According to @var_contrib, we found that the first axe is positively correlated to the relative size of both anterior and posterior lateral eyes (red and green ones in @fig1). For the second axe, it seems that there is a antagonist relation between anterior and posterior.
 
 When we visualise families, it looks like individuals from the *Salticidae* are atypical individuals because they are far on the first axis. In fact, those individuals have the highest contributions.
 
