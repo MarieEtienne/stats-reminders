@@ -14,11 +14,11 @@ We first simulate the data on which we will illustrate two estimation methods. T
 \frac{dN}{dt} = rN(1-\frac{N}{K})
 $$ where N is the size of a population, r is the growth rate and K is the carrying capacity. Thankfully, there is an explicit solution of the Verhulst model that allows us to simulate the data easily. For each x (the time), we calculate the deterministic solution and add a noise, a centered, normally distributed deviation from the deterministic model.
 
-```{r}
+```{r, fig.width = 6, fig.height = 6}
 # Parameters
 r <- 0.5
 K <- 100
-error <- 5
+error <- 15
 y0 <- 5
 
 # Define a logistic growth function with noise
@@ -104,7 +104,7 @@ library(deSolve)
 ```
 
 ```{r}
-logistic=function(t,N,parametre){
+logistic_ODE =function(t,N,parametre){
   r=parametre[1]
   K=parametre[2]
   dNdt = r*(1-N/K)*N
@@ -119,7 +119,7 @@ MMV <- function(theta){
   r1 <- theta[1]
   K1 <- theta[2]
   N0 <- theta[3]
-  sol = ode(y = N0, times = time, func = logistic, parms = c(r1, K1))
+  sol = ode(y = N0, times = time, func = logistic_ODE, parms = c(r1, K1))
   mod_pred <- sol[, 2]
   loglik = dnorm(sim_data, mean = mod_pred, sd = error, log = TRUE)
   return(sum(loglik))
@@ -127,9 +127,20 @@ MMV <- function(theta){
 ```
 
 ```{r warning=FALSE, error=FALSE, message=FALSE, results='hide'}
-ig_r <- 1
-ig_K <- 75
-ig_y0 <- 2
+ig_r <- 0.1
+ig_K <- 100
+ig_y0 <- 1
 fitted_params_MMV <- optim(c(ig_r, ig_K, ig_y0), MMV, control=list(fnscale=-1))$par
 print(fitted_params_MMV)
+```
+## Data vizualization : simulated dynamics with estimated trends
+```{r, echo = FALSE, fig.width = 6, fig.height = 6}
+# estimation LS
+mod_pred_LS <- sapply(time, logistic, r = fitted_params_SSE[1], K = fitted_params_SSE[2], y0 = fitted_params_SSE[3])
+# estimation ML
+mod_pred_ML <- sapply(time, logistic, r = fitted_params_MMV[1], K = fitted_params_MMV[2], y0 = fitted_params_MMV[3])
+# plot
+plot(time, sim_data)
+lines(time, mod_pred_LS, col='blue')
+lines(time, mod_pred_ML, col = 'red', lty='dashed')
 ```
