@@ -88,6 +88,7 @@ SSE <- function(theta) {
 ```
 
 We now have to find a way to modify the parameters iteratively to find the best ones : the set of parameters $\theta$ that minimize the sum of squared errors. Thankfully, there are several functions implemented in R to do so. We'll use optim(), based on a gradient descent algorithm. We need to specify initial guess on the parameters to initialize the gradient descent algorithm. We'll take biologically meaningful parameters as initial guess.
+
 ```{r}
 ig_r <- 1
 ig_K <- 75
@@ -96,7 +97,7 @@ fitted_params_SSE <- optim(c(ig_r, ig_K, ig_y0), SSE)$par
 print(fitted_params_SSE)
 ```
 
-For practicality, or for some EDO models that are not explicitly solvable (i. e. we can't find a unique solution to the Cauchy problem), we can locally and numerically solve in the same time we calculate the likelihood. This alternative is used in the next part.
+For practicality, or for some EDO models that are not explicitly solvable (i. e. we can't find a unique solution to the Cauchy problem), we can locally and numerically solve in the same time we calculate the likelihood. This alternative is used in the next part. We use the function ode() from the package deSolve to do so.
 
 ```{r}
 library(deSolve)
