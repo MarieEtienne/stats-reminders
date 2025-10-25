@@ -48,7 +48,7 @@ Between autumn 2003 and summer 2005, a survey was conducted on 36 different farm
 
 The response variable (presence or absence of signs of badger activity) is binary: it takes the value 1 when signs of activity were detected, and 0 otherwise. Signs of activity include the presence of feces, setts, or feeding traces.
 
-The data are available in the file `BadgersFarmSurveysNoNA.txt`. The variables are:
+The data are available in the file `Badger.txt`. The variables are:
 
 -   `Year` : studied year
 -   `Season` : 1 = spring, 2 = summer, 3 = autumn, 4 = winter
@@ -179,7 +179,6 @@ hist(dataBadger$N_cattle,col='blue',xlab="Number of cattle",main="")
 qqnorm(dataBadger$N_cattle,pch=16,col='blue',xlab='')
 qqline(dataBadger$N_cattle,col='red')
 ```
-
 
 The exploratory plots show that all three quantitative variables (number of setts, number of buildings, and number of cattle) display right-skewed distributions, with most farms having relatively low values and a few having much higher ones. No extreme or abnormal outliers are clearly visible, although some high values are present, especially for the number of cattle. The Q-Q plots confirm that none of these variables follow a normal distribution.
 
@@ -324,7 +323,11 @@ The collinearity analysis indicates that the three quantitative variables are la
 
 ## Generalized Linear Mixed Model (GLMM)
 
+Because the response variable is binary, we will use a **Generalized Linear Mixed Model (GLMM)** to examine how the different predictors influence badger activity. We assume that badger activity follows a **binomial distribution**, and we will therefore use a **logit link function**. The farm code is included as a **random effect**, to take into account the temporal autocorrelation between observations.
+
 ### Building the model
+
+The best model is identified using a **backward selection procedure**. This model selection method is based on the **Akaike Information Criterion (AIC)**, which allows to take into account both the goodness of fit and the simplicity of the model. Starting with the full model, the function `drop1` is used to evaluate each predictor's contribution to the AIC. The predictor whose removal leads to the smallest AIC is then removed and the model is refitted without this variable. The selection stops when the candidate model has the lowest AIC.
 
 ```{r fullmodel, include = TRUE}
 mod<-glmer(Activity~N_setts
@@ -488,66 +491,81 @@ mod12<-glmer(Activity~N_setts
 drop1(mod12,test="Chi") # mod12 is the best model
 ```
 
+There are convergence issues with the first few models, which may be due to their complexity. The best model only retains the number of setts as a fixed effect.
+
 ### Model coefficients
 
 ```{r coefficients, include = TRUE}
 summary(mod12)
 ```
 
+The model summary details both the fixed and the random effects. The model can be written as: $$  logit(presence\:of\:badger\:activity) = -5.07 + 0.38 \times number\:of\:setts$$ The variance associated with the random effect (which corresponds to the variance between farms) is 4.87.
+
 ### Significance of the random effect
 
-```{r boot random, echo=TRUE,fig.height=4, fig.width=4, warning=FALSE}
-nBoot <- 1000
-lrStat <- rep(NA, nBoot)
-ft.null <-glm(Activity~N_setts,data=dataBadger,family=binomial(link=logit)) # null model
-ft.alt <- glmer(Activity~N_setts+(1|farm_code),data=dataBadger,family=binomial) # alternate model
-lrObs <- 2 * logLik(ft.alt) - 2 * logLik(ft.null) # observed test stat
+The significance of the random effect is tested via a **bootstrap** method: the likelihood of the model including the random effect is compared to the likelihood of 1000 models without the random effect.
 
-for (iBoot in 1:nBoot)
+```{r boot random, echo=TRUE,fig.height=4, fig.width=4, warning=FALSE}
+nBoot <- 1000 # number of simulations
+lrStat <- rep(NA, nBoot) # initializes a vector of size 1000 to store the likelihood ratio statistic
+ft.null <-glm(Activity~N_setts,data=dataBadger,family=binomial(link=logit)) # fits the null model (without the random effect)
+ft.alt <- glmer(Activity~N_setts+(1|farm_code),data=dataBadger,family=binomial) # fits the alternate model (with the random effect)
+lrObs <- 2 * logLik(ft.alt) - 2 * logLik(ft.null) # computes the observed likelihood ratio statistic 
+
+for (iBoot in 1:nBoot) # for each simulation
 {
-  dataBadger$ActivitySim <- unlist(simulate(ft.null)) # resampled data
+  dataBadger$ActivitySim <- unlist(simulate(ft.null)) # badger activity is simulated from the distribution corresponding to the null model
   tryCatch(
-    { # sometimes the glmer code doesn't converge
-      bNull <-glm(ActivitySim ~ N_setts,data=dataBadger,family=binomial(link=logit)) # null model
-      bAlt <- glmer(ActivitySim ~ N_setts+(1|farm_code),data=dataBadger,family=binomial)# alternate model
-      lrStat[iBoot] <- 2 * logLik(bAlt) - 2 * logLik(bNull) # resampled test stat
+    { # in case the glmm does not converge
+      bNull <-glm(ActivitySim ~ N_setts,data=dataBadger,family=binomial(link=logit)) # fits the null model to the simulated data
+      bAlt <- glmer(ActivitySim ~ N_setts+(1|farm_code),data=dataBadger,family=binomial) # fits the alternate model to the simulated data
+      lrStat[iBoot] <- 2 * logLik(bAlt) - 2 * logLik(bNull) # computes the likelihood ratio statistic for the resampled data
     },
-    warning = function(war) {
+    warning = function(war) { # if there is a warning or an error, the likelihood ratio statistic is NA (to ensure the loop does not stop)
       lrStat[iBoot] <- NA
     },
     error = function(err) {
       lrStat[iBoot] <- NA
     }
-  ) # if code doesn't converge skip sim
+  )
 }
 
-mean(lrStat > lrObs) # P-value for test of the random effect
+mean(lrStat > lrObs, na.rm = TRUE) # Proportion of bootstrap likelihood ratio statistic superior to the observed statistic
+# It corresponds to the p value
 
-hist(lrStat,xlim = c(0,40), col='blue') # Histogram of the 1000 values of likelihood of the simulated model
-abline(v = lrObs, col="red", lwd=3, lty=2) # Vertical red line representing the likelihood of the observed model including the random factor
+hist(lrStat,xlim = c(0,40), col='blue', main = "Histogram of the likelihood ratio statistic", xlab = "Likelihood ratio statistic") # Histogram of the 1000 values of likelihood of the simulated model
+abline(v = lrObs, col="red", lwd=3, lty=2) # Vertical red line representing the likelihood of the model including the random factor
 ```
 
+All simulations lead to a likelihood ratio statistic lower than the observed statistic, which suggests that the random effect is highly significant.
+
 ### Part of the variance explained by the model
+
+The function `rsq` from the package `rsq` computes three pseudo $R^2$, allowing us to separate the variance explained by the fixed effect from the variance explained by the random effect.
 
 ```{r devianceGLMM, include=TRUE}
 # Estimates of deviance explained (library 'rsq')
 rsq(mod12)
 ```
 
+The model explains about 59% of the variance of the data, with 21% due to the fixed effect (the number of setts) and 38% due to the random effect (each individual farm).
+
 ### Residual analysis
+
+A GLMM does not require normality of residuals or homogeneity of variance, and the dependance in the data has already been taken into account with the random effect. However, analyzing the residuals allows us to detect an eventual trend which could indicate a problem with the modelization. Pearson residuals are used because they take into account variance heterogeneity.
 
 ```{r ResidNB, include=TRUE, fig.height=4, fig.width=5}
 
 resid<-residuals(mod12, type="pearson")
 
 par(mfrow=c(1,2))
-# residuals vs fitted
-plot(resid~fitted(mod2)
+# Plotting the residuals against the fitted data
+plot(resid~fitted(mod12)
       , col='dodgerblue4'
       , pch=16)
 abline(h = 0)
 
-# residuals against Number of mites
+# Plotting the residuals against the number of setts
 plot(resid~ dataBadger$N_setts, 
          pch=16,
          col="dodgerblue4",
@@ -557,35 +575,47 @@ plot(resid~ dataBadger$N_setts,
 abline(h = 0)
 ```
 
+In a binomial GLMM, residuals are often difficult to interpret. No defined trend can be identified here.
+
 ### Model predictions
 
-```{r Simul, include=TRUE, fig.height=4, fig.width=4}
+We can check if the model is able to accurately predict the presence / absence of activity signs based on the number of setts.
 
-# We could do a simulation
-N    <- nrow(dataBadger)
-Pi   <- fitted(mod2)
-dataBadger$Ysim <- rbinom(N, size = 1, Pi)
-# Classification table
+```{r predictions, include=TRUE, fig.height=4, fig.width=4}
+set.seed(9)
+N    <- nrow(dataBadger) # number of observations in the dataset
+Pi   <- fitted(mod12) # predicted probabilities that activity = 1
+dataBadger$Ysim <- rbinom(N, size = 1, Pi) # generates a binary outcome for badger activity, drawn from a binomial distribution with Pi as a success probability
+
+# Confusion matrix
 Z <- table(dataBadger$Activity, dataBadger$Ysim) / N
 rownames(Z) <- c("Observed 0", "Observed 1")
 colnames(Z) <- c("Predicted 0", "Predicted 1")
 Z
-#Correctly classified:
+# Accuracy = proportion of correctly classified observations
 sum(diag(Z))
 
-# And repeat this 1000 times, store the results and calculate an average classification table
-
-Pi   <- fitted(mod2)
-N    <- nrow(dataBadger)					
+# To get an average confusion matrix over mutliple predictions, we can repeat for 1000 simulations
 NSim <- 1000                           
-diagZ<- matrix(nrow = N, ncol = NSim)
-for (i in 1:NSim) {
-  Ysim <- rbinom(N, size = 1, Pi)
-  Z<- table(dataBadger$Activity, Ysim) / N
-  diagZ[,i]<-sum(diag(Z))
+diagZ <- numeric(NSim) # we store one accuracy value per simulation
+for (i in 1:NSim) { # for each simulation
+  Ysim <- rbinom(N, size = 1, Pi) # a new simulated response is generated
+  Z<- table(dataBadger$Activity, Ysim) / N # creates the confusion matrix for this simulation
+  diagZ[i]<-sum(diag(Z)) # computes and stores the accuracy
   }
-#Average rate of individuals well-classified by the model
-boxplot(diagZ[2,], col='dodgerblue4',ylab='#Rate of farms well-classified')
-mean(diagZ[2,])
+# Boxplot of the accuracy and average accuracy
+boxplot(diagZ, col='dodgerblue4',ylab='#Rate of farms well-classified')
+mean(diagZ)
 ```
 
+Each cell of the **confusion matrix** represents a proportion of the total observations.
+
+-   The **true negative** rate is 77%: it corresponds to farms without badger activity where no activity was predicted
+
+-   The **false positive** rate is 6.5%: it corresponds to farms without badger activity where activity was incorrectly predicted
+
+-   The **true positive** rate is 8.6%: it corresponds to farms with badger activity where activity was predicted
+
+-   The **false negative** rate is 7.6%: it corresponds to farms with badger activity where no activity was predicted
+
+For this prediction, the overall accuracy was 0.86, which means that 86% of predictions were correct. The average accuracy over 1000 simulations is 0.88.
