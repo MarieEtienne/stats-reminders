@@ -12,7 +12,9 @@ This document aims to be a roadmap to estimate the parameters of a logistic grow
 
 We first simulate the data on which we will illustrate two estimation methods. The simulation is based on the logistic growth (Verhulst model). The ordinary differential equation describing the logistic growth is defined as $$
 \frac{dN}{dt} = rN(1-\frac{N}{K})
-$$ where N is the size of a population, r is the growth rate and K is the carrying capacity. Thankfully, there is an explicit solution of the Verhulst model that allows us to simulate the data easily. For each x (the time), we calculate the deterministic solution and add a noise, a centered, normally distributed deviation from the deterministic model.
+$$ where N is the size of a population, r is the growth rate and K is the carrying capacity. In logistic growth, the growth rate of a population declines as the size of the population approaches the carrying capacity. This carrying capacity represents the maximum number of individuals in the population that can be sustained by the available environmental resources.
+
+Thankfully, there is an explicit solution of the Verhulst model that allows us to simulate the data easily. For each x (the time), we calculate the deterministic solution and add a noise, a centered, normally distributed deviation from the deterministic model.
 
 ```{r, fig.width = 6, fig.height = 6}
 # Parameters
