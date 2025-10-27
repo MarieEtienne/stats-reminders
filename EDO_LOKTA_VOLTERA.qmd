@@ -190,8 +190,72 @@ In particular,
 -   ($N1^{*}$, $N2^{*}$) is **repulsor** if Trace \> 0 and Det \>0.
 -   ($N1^{*}$, $N2^{*}$) is **saddle point** if Det \< 0 (whatever the Trace).
 
+Let's apply the analytic approach to the logistic Prey-Predator Model, shall we ?
+
+Our system admits 3 fixed points : (${0}$,${0}$), (${K}$,${0}$) and ($N^{*}$, $P^{*}$) where : $$
+(N^*, P^*) = 
+\left( 
+\frac{r_2}{b_2},\;
+\frac{r_1}{b_1} \left( 1 - \frac{r_2}{b_2 K} \right)
+\right)
+$$
+
+After calculating the partial derivatives in the Jacobian Matrix :
+
+$$
+\begin{equation}
+Jac(N,P) =
+\begin{pmatrix}
+(r_1(1 - \frac{N}{K})-b_1P)-r_1\frac{N}{K}  & -b_1N \\
+b_2P & -r_2 + b_2N
+\end{pmatrix}
+\end{equation}
+$$
+
+Now we can obtain a Jacobian Matrix for each fixed point :
+
+$$
+\begin{equation}
+Jac(0,0) =
+\begin{pmatrix}
+r_1 & 0 \\
+0 & -r_2
+\end{pmatrix}
+\end{equation}
+$$
+
+For the first one, we can easily determine the eigenvalues because it is a diagonal matrix, so the eigenvalues are on the diagonal. ${r_1}$ \> 0 and ${-r_2}$ \<0, so (${0}$,${0}$) is a saddle point.
+
+$$
+\begin{equation}
+Jac(K,0) =
+\begin{pmatrix}
+-r_1 & -b_1K \\
+0 & -r_2 + b_2K
+\end{pmatrix}
+\end{equation}
+$$
+
+Here, we have a triangular matrix, so the eigenvalues are also on the diagonal. ${-r_1}$ \< 0 and ${-r_2 + b_2K}$ \< 0 if ${r_2}$ \> ${b_2K}$ which makes (${K}$,${0}$) a LAS and a saddle point otherwise.
+
+For the last fixed point ($N^{*}$, $P^{*}$), $r_1(1 - \frac{N^{*}}{K})-b_1P^{*}$ = 0 (see the definition of the isocline $N$ : $\frac{dN}{dt} = 0$ ) because ${N^{*}}$ is different from 0.
+
+Thus, the last Jacobian matrix is written as :
+
+$$
+\begin{equation}
+Jac(N^{*},P^{*}) =
+\begin{pmatrix}
+-r_1\frac{N^{*}}{K} & -b_1N^{*} \\
+b_2P & 0
+\end{pmatrix}
+\end{equation}
+$$
+
+Finally, when calculating the trace and the determinant (see the definitions above), we find a negative trace and a positive determinant for $N^{*}$ and $P^{*}$ positive. So, ($N^{*}$, $P^{*}$) is a LAS when it interests us.
+
 **CONCLUSION :**
 
-Through this work, we presented a way to qualitatively analyse the dynamics of a Logistic Prey-Predator Model. Depending on the values of the parameters of the ODE, the nature of the fixed points changes and so the trajectories of the size of the populations do. We identified 3 main situations : the total extinction of both populations (unstable because the lower presence of prey allows the population to grow), survival of prey only at their capacity limit $${K}$$ (stable or unstable depending on the capacity of the predators to persist thanks to the potential gains) and the stable coexistence of the 2 species that only exists if predators can maintain themselves. To summarize, the dynamics of the model illustrate both the mutual dependence and ecological regulation between prey and predator.
+Through this work, we presented a way to qualitatively analyse the dynamics of a Logistic Prey-Predator Model. Depending on the values of the parameters of the ODE, the nature of the fixed points changes and so the trajectories of the size of the populations do. We identified 3 main situations : the total extinction of both populations (unstable because the lower presence of prey allows the population to grow), survival of prey only at their capacity limit K (stable or unstable depending on the capacity of the predators to persist thanks to the potential gains) and the stable coexistence of the 2 species that only exists if predators can maintain themselves. To summarize, the dynamics of the model illustrate both the mutual dependence and ecological regulation between prey and predator.
 
 As a doorway, we could also be interested in qualitatively predicting the solution of a system of more than 2 equations that could model more complex phenomenon (like epidemiological models SIR or SEIR). The definitions of LAS and unstable (repulsor and saddle points) would remain valid but the calculations would be more complicated. Also, we would look at the Routh-Hurwitz criteria in addition of the trace and the determinant and the representation of isoclines and field portraits would be less obvious.
