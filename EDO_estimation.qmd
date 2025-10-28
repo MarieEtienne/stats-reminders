@@ -48,6 +48,21 @@ We have p parameters $\theta = (\theta_1,\theta_2,...,\theta_p)$. Several method
 ## General theory
 
 ### Least squares
+#### Definition
+
+One of the most used methods to assess the quality of a model is the least squares method, also known as mean square error method (MSE). It quantifies how the simulated data match with the real ones by measuring the gap between the simulated and the real points. This gap is estimated with the following formula:
+
+$$
+\text{MSE} = \sum_{i}^{}(Y_{i}-\hat{Y})^{2}\\\hat{Y} = \text{mean value of the data set}\\Y_{i} = \text{value of the individual i}
+$$
+
+A good model minimizes the MSE. Graphically, this means that the vertical distance between each simulated point and its corresponding observed value is as small as possible.
+
+#### Specific aspects
+
+The MSE is one of the most common method to assess the quality of a model. However, it has some limitations that may call its use into question.
+First, as it compares the simulated data and the observed ones point by point, the presence of outliers can strongly deviate the MSE estimation. 
+Moreover, this estimation method assumes a linear relation between the variables. Therefore, if the relation between the variables is not linear, the MSE may not reflect the true performance of the model.
 
 ### Maximum likelihood
 
@@ -60,7 +75,6 @@ $$ In this function, $x_i$ corresponds to the observations and $f(x_i,\theta)$ c
 The maximum likelihood method consists in determining the estimated parameters $\hat\theta$ that maximize the likelihood function: $$
 \hat\theta = \arg\max_\theta L(\theta)
 $$
-Maximizing $L(\theta)$ means finding the parameter values that make the data most plausible under the chosen model.
 
 #### Specific aspects
 
@@ -68,14 +82,14 @@ If the errors of the data are independent and identically distributed, this meth
 
 $$
 \hat{\theta} = \arg\max_{\theta} L(\theta) = \arg\min_{\theta} SCE(\theta)
-$$
-We prefer to work with the logarithm of the likelihood function $L(\theta)$, as it converts products into sums:
-$$
+$$ We prefer to work on the logarithm of the product $L(\theta)$ as it converts products into sums : $$
 LL(\theta) = ln(L(\theta)) = \sum_{i=1}^n lnf(x_i,\theta)
 $$
+
 ## Implementation of the two methods
 
 We first need to redefine a function of the model we want to fit (without noise this time).
+
 ```{r}
 logistic <- function(t, r, K, y0) {
   K / (1 + ((K - y0) / y0) * exp(-r * t))
@@ -85,6 +99,7 @@ logistic <- function(t, r, K, y0) {
 ### Least squares
 
 We need a function that compute the sum of the squared errors between the data and the model prediction y given a x.
+
 ```{r}
 # NB : theta is a vector of parameters
 SSE <- function(theta) {
@@ -142,7 +157,9 @@ ig_y0 <- 1
 fitted_params_MMV <- optim(c(ig_r, ig_K, ig_y0), MMV, control=list(fnscale=-1))$par
 print(fitted_params_MMV)
 ```
-## Data vizualization : simulated dynamics with estimated trends
+
+## Data visualization : simulated dynamics with estimated trends
+
 ```{r, echo = FALSE, fig.width = 6, fig.height = 6}
 # estimation LS
 mod_pred_LS <- sapply(time, logistic, r = fitted_params_SSE[1], K = fitted_params_SSE[2], y0 = fitted_params_SSE[3])
@@ -153,3 +170,7 @@ plot(time, sim_data)
 lines(time, mod_pred_LS, col='blue')
 lines(time, mod_pred_ML, col = 'red', lty='dashed')
 ```
+
+# Conclusion
+
+Estimating model parameters is one of the main tasks of a modelor in ecology. We have explained and illustrated two methods to estimate the parameters of a logistic growth, which is a common approach in population dynamics.
