@@ -76,7 +76,7 @@ library(ggplot2)
 
 ## PCA Analysis
 
-We use the PCA function from *FactoMineR* (@factominer_le2008). Through eigenvalue decomposition, PCA identifies orthogonal directions in the data space—**the principal components**—ordered by the amount of variance they explain, with the first component capturing the maximum variance, the second capturing the next highest variance while being uncorrelated with the first, and so on.
+We use the **PCA** function from *FactoMineR* (@factominer_le2008). Through a linear algebra decomposition called the **singular value decomposition** (SVD), PCA identifies orthogonal directions in the data space—**the principal components**—ordered by the amount of variance they explain, with the first component capturing the maximum variance, the second capturing the next highest variance while being uncorrelated with the first, and so on.
 
 ```{r}
 res.pca <- PCA(spiders,
@@ -84,6 +84,60 @@ res.pca <- PCA(spiders,
                quali.sup = 1, # "Family" is qualitative and illustrative
                graph = FALSE)
 ```
+
+The output of the `PCA()` is a list of several components :
+
+-   `$eig` (**Eigenvalues)**
+
+    -   A matrix containing eigenvalues, percentage of variance, and cumulative percentage of variance for each principal component
+
+-   `$var` **(Results for Variables)**
+
+    -   `$var$coord`: Coordinates (correlations) of variables with principal components
+
+    -   `$var$cor`: Correlations between variables and dimensions (same as coord for standardized PCA)
+
+    -   `$var$cos2`: Quality of representation - squared cosine values showing how well variables are represented on each dimension
+
+    -   `$var$contrib`: Contributions of variables to each dimension (in percentage)
+
+-   `$ind` (Results for Individuals/Observations)
+
+    -   `$ind$coord`: Coordinates of individuals on the principal components
+
+    -   `$ind$cos2`: Quality of representation of individuals on each dimension
+
+    -   `$ind$contrib`: Contributions of individuals to each dimension
+
+    -   `$ind$dist`: Squared distance of individuals to the origin
+
+-   `$call` (Call Information)
+
+    -   Contains information about the function call
+
+-   `$svd` (Singular Value Decomposition)
+
+    -   Contains the raw SVD components (if you want to have a deeper mathematical understanding of PCA)
+
+### Interpretation tips :
+
+-   **Coordinates** indicate **the position** of a variable or individual on a dimension.
+
+    -   For Variables :
+
+        -   Coordinates = **correlation** between the variable and the principal component, it measures the strength and direction of the relationship
+
+    -   For Individuals :
+
+        -   Coordinates = position of the individual on the axis (score), it measures the relative position of the individual
+
+-   **Contributions** indicate **the weight** of a variable or individual in the construction of the dimension.
+
+    -   For variables it measures the relative importance in constructing the axes
+
+    -   For individuals it measures the individual's influence
+
+-   **Cos²** values range from 0 to 1 and measures **how much information about an element is preserved** when we project it onto the principal components. When close to 1, it's a good representation. **Only well projected variables can be interpreted !**
 
 ## Data visualisation
 
@@ -102,12 +156,28 @@ fviz_eig(res.pca, ylim = c(0, 100), geom='bar', main='Percentage of inertia expl
 
 The two first axis explain more than 86% of the total variance so only two main components are selected for the analysis. The first dimension explains 61.9% of the variance while the second dimension explains 24.2% of the variance.
 
+Only well projected variables and individuals can be interpreted. The sum of cos2 on Dim.1 and Dim.2 should be around 1.
+
+```{r}
+#| label: var_contrib
+#| fig-cap: "Projection quality of variables and individuals"
+#| fig-subcap: 
+#| - "Table of cos2 for each variables"
+#| - "Table of cos2 for individuals"
+
+res.pca$var$cos2
+head(res.pca$ind$cos2)
+```
+
+The variables and individuals are well projected and can be interpreted.
+
 We can also see how the variables contribute to the the two principal components.
 
 ```{r}
 #| label: var_contrib
 #| fig-cap: "Contribution of variables to the axes"
 #| fig-subcap: 
+#| - "Table of cos2 for each variables"
 #| - "Table of contribution of variables to the axes"
 #| - "PCA variable correlation plot" 
 
@@ -119,6 +189,8 @@ fviz_pca_var(res.pca,
              title = "PCA variable correlation plot") #show how relative eyed sizes are correlated
 ```
 
+The cos2 indicates the representation of the variables on the dimension. rAME (cos2 = 0.36) and rPME (cos2 = 0.47) are moderately represented on Dim.1 whereas rALE (cos2 = 0.76) and rPLE (cos2 = 0.88) are very well reprensented on this dimension
+
 All variables are contributing a lot to the first axis. However, lateral eyes (rALE and rPLE ) explain the best the axis with contributions higher than 30%. On the other hand, medium eyes (rAME and rPME) explain the second axis with contributions respectively equal to 54% and 44%.
 
 We can also plot the individuals into principal component space.
@@ -127,7 +199,9 @@ We can also plot the individuals into principal component space.
 #| label: indiviual_graph
 #| fig-cap: "Scatterplot of individuals on the two main axes"
 
-fviz_pca_ind(res.pca, geom.ind = "point",
+fviz_pca_ind(res.pca,
+             select.var = list(name = selected_ind),
+             geom.ind = "point",
              label = "none",
              habillage = spiders$Family,
              legend = "none",
