@@ -189,8 +189,6 @@ fviz_pca_var(res.pca,
              title = "PCA variable correlation plot") #show how relative eyed sizes are correlated
 ```
 
-The cos2 indicates the representation of the variables on the dimension. rAME (cos2 = 0.36) and rPME (cos2 = 0.47) are moderately represented on Dim.1 whereas rALE (cos2 = 0.76) and rPLE (cos2 = 0.88) are very well reprensented on this dimension
-
 All variables are contributing a lot to the first axis. However, lateral eyes (rALE and rPLE ) explain the best the axis with contributions higher than 30%. On the other hand, medium eyes (rAME and rPME) explain the second axis with contributions respectively equal to 54% and 44%.
 
 We can also plot the individuals into principal component space.
@@ -209,7 +207,7 @@ fviz_pca_ind(res.pca,
              pointshape = 19)
 ```
 
-The individuals are mainly distributed along the first axis which can be interpreted as a gradient of variation in eye size. Individuals are also concentrated around zero which means that a majority of spiders has similar eye proportions.
+The individuals are mainly distributed along the first axis which can be interpreted as a gradient of variation in lateral eye size. Individuals are also concentrated around zero which means that a majority of spiders has similar eye proportions.
 
 Because there is 106 family of species we will concentrate only on the first height most frequent family in order to have a clearer vision.
 
