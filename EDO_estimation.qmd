@@ -75,6 +75,7 @@ $$ In this function, $x_i$ corresponds to the observations and $f(x_i,\theta)$ c
 The maximum likelihood method consists in determining the estimated parameters $\hat\theta$ that maximize the likelihood function: $$
 \hat\theta = \arg\max_\theta L(\theta)
 $$
+Maximizing $L(\theta)$ means finding the parameter values that make the data most plausible under the chosen model.
 
 #### Specific aspects
 
