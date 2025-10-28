@@ -72,7 +72,7 @@ Likelihood corresponds to the probability of observing the data, knowing the par
 L(\theta) = \prod_{i=1}^n f(x_i , \theta)
 $$ In this function, $x_i$ corresponds to the observations and $f(x_i,\theta)$ corresponds to the probability density function of the random variable $X$.
 
-The maximum likelihood method consists of determining the $\hat\theta$ which allows obtaining the highest possible likelihood value : $$
+The maximum likelihood method consists of determining the estimated parameters $\hat\theta$ which allows obtaining the highest possible likelihood value : $$
 \hat\theta = \arg\max_\theta L(\theta)
 $$
 
