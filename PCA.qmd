@@ -10,7 +10,7 @@ bibliography: references.bib
 
 **Principal Component Analysis** (PCA) is a dimension reduction technique widely used in data analysis and machine learning for simplifying complex datasets. It helps us understand high-dimensional data by reducing the number of variables we need to consider while keeping as much of the original information as possible.
 
-The main goals are to **reduce the number of variables** into a new set of uncorelated variables called **principal components**, to **visualize high-dimensional data** in 2D or 3D, to **detect patterns**, clusters and outliers, and to **remove noise and redundant information**. For example, if you get a data set with 10 correlated variables, PCA can reduce it to 2 or 3 principal components that explains 90% of the variance and makes it easier to visualize.
+The main goals are to **reduce the number of variables** into a new set of uncorrelated variables called **principal components**, to **visualize high-dimensional data** in 2D or 3D, to **detect patterns**, clusters and outliers, and to **remove noise and redundant information**. For example, if you get a data set with 10 correlated variables, PCA can reduce it to 2 or 3 principal components that explains 90% of the variance and makes it easier to visualize.
 
 The PCA, values have to be **quantitative**, and organized in a *n x p* matrix with *p* observations and *n* variables
 
@@ -52,7 +52,7 @@ Description of the quantitative variables :
 
 ```{r}
 spiders <- read.delim("S2_WolffData-Curated.txt", header = TRUE, stringsAsFactors = TRUE)
-spiders <- spiders[c("Family","rAME","rALE","rPME","rPLE")] #data selection
+spiders <- spiders[c("Family","rAME","rALE","rPME","rPLE")] #selection of variables
 spiders <- na.omit(spiders)
 ```
 
@@ -69,9 +69,9 @@ summary(spiders) #all means are equal to 0
 ## Packages
 
 ```{r}
-library(FactoMineR)
-library(factoextra)
-library(ggplot2)
+library(FactoMineR) #to realize the PCA
+library(factoextra) #to visualize data
+library(ggplot2) #to plot the results
 ```
 
 ## PCA Analysis
@@ -139,7 +139,7 @@ The output of the `PCA()` is a list of several components :
 
 -   **Cos²** values range from 0 to 1 and measures **how much information about an element is preserved** when we project it onto the principal components. When close to 1, it's a good representation. **Only well projected variables can be interpreted !**
 
-## Data visualisation
+## Data visualisation and interpretation
 
 To visualize the results from the PCA, we can analyse the percentage of inertia explained by the principal components through the **graph of inertia.**
 
@@ -197,11 +197,10 @@ We can also plot the individuals into principal component space.
 #| label: indiviual_graph
 #| fig-cap: "Scatterplot of individuals on the two main axes"
 
-fviz_pca_ind(res.pca,
-             select.var = list(name = selected_ind),
+fviz_pca_ind(res.pca,,
              geom.ind = "point",
              label = "none",
-             habillage = spiders$Family,
+             habillage = spiders$Family, #to see if a family looks to contribute more to the axis
              legend = "none",
              repel = TRUE,
              pointshape = 19)
@@ -209,7 +208,7 @@ fviz_pca_ind(res.pca,
 
 The individuals are mainly distributed along the first axis which can be interpreted as a gradient of variation in lateral eye size. Individuals are also concentrated around zero which means that a majority of spiders has similar eye proportions.
 
-Because there is 106 family of species we will concentrate only on the first height most frequent family in order to have a clearer vision.
+Because there are 106 families of species, we will concentrate only on the first height most frequent family in order to have a clearer vision.
 
 ```{r}
 #| label: indiviual_graph
@@ -261,12 +260,16 @@ head(sort(res.pca$ind$contrib[,1], decreasing = TRUE), 10)
 head(sort(res.pca$ind$contrib[,2], decreasing = TRUE), 10)
 ```
 
-## Interpretation of the analysis
-
-According to @var_contrib, we found that the first axe is positively correlated to the relative size of both anterior and posterior lateral eyes (red and green ones in @fig1). For the second axe, it seems that there is a antagonist relation between anterior and posterior.
-
-When we visualise families, it looks like individuals from the *Salticidae* are atypical individuals because they are far on the first axis. In fact, those individuals have the highest contributions.
+When we visualise families, it looks like individuals from the *Salticidae* are atypical individuals because they are far on the first axis. In fact, looking at the contributions just above, those individuals have the highest contributions. For the first and the second axis, 7 out of 10 individuals are in the family *Salticidae*.
 
 ::: {style="text-align:center"}
 ![Figure 2 — Family *Salticidae* contributing the most to explained variance.](Salticidae.jpg){width="50%"}
 :::
+
+## Conclusion
+
+According to @var_contrib, the first axis is positively correlated with the relative size of both the anterior and posterior lateral eyes (the red and green ones in @fig1). For the second axis, there seems to be an antagonistic relationship between the anterior and posterior eyes.
+
+This provides information about how eye sizes evolve together. However, from an ecological perspective, it would be interesting to study whether body size or spider activity is linked to eye size, as done in the original article @Chong2024. For example, we could test whether nocturnal spider species have larger eyes than diurnal ones.
+
+We performed a PCA to visualize the relationships between variables. The goal was also to reduce the dimensionality of the dataset. However, since our dataset includes only four variables, it is not the most suitable example to demonstrate the advantages of factorial analysis.
