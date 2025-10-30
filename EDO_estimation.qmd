@@ -159,7 +159,7 @@ print(fitted_params_MMV)
 
 ## Data visualization : simulated dynamics with estimated trends
 
-As we could expect on this kind of data, the estimated parameters are almost the same with the two methods, it is thus complicated to observe any difference in the estimated trends we show on the following graph.
+As we could expect on this kind of data, the estimated parameters are almost the same with the two methods, The two estimated trends we show on the following graph are even indistinguishable.
 
 ```{r, echo = FALSE, fig.width = 6, fig.height = 6}
 # estimation LS
@@ -168,8 +168,15 @@ mod_pred_LS <- sapply(time, logistic, r = fitted_params_SSE[1], K = fitted_param
 mod_pred_ML <- sapply(time, logistic, r = fitted_params_MMV[1], K = fitted_params_MMV[2], y0 = fitted_params_MMV[3])
 # plot
 plot(time, sim_data)
-lines(time, mod_pred_LS, col='blue')
-lines(time, mod_pred_ML, col = 'red', lty='dashed')
+lines(time, mod_pred_LS, col='blue', lwd=2)
+lines(time, mod_pred_ML, col = 'red', lty='dashed', lwd=2)
+legend("topleft",
+       legend=c("Least Sq","Max Lik"), # Vector with the name of each group
+       col = c('blue','red'), # Color of lines or symbols
+       border = "black", # Fill box border color
+       lty=c('solid','dashed'), 
+       lwd=c(2,2)
+       )
 ```
 
 # Conclusion
