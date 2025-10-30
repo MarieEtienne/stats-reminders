@@ -252,7 +252,7 @@ kable(CA$col$contrib[which_contrib_high1, ], "html")
 kable(CA$col$contrib[which_contrib_high2, ], "html")
 ```
 
-To check if they contribute significantly to the axis we look at their contribution. If it is greater than the sum of all contributions divided by the number of species we consider that the contribution is significant. Here (@tbl-CA_spcontrib) we can see that four families contribute significantly to the construction of the first axis and three families for the second one. Without surprise *Thaunaleidae* contributes to both of them, *Bivalve* also appears in both. Then *Culicidae* and *Asellidae* contribute significantly to the first axis and *Simulidae* to the second axis.
+To check if they contribute significantly to the axis we look at their contribution. If it is greater than the sum of all contributions divided by the number of species we consider that the contribution is significant. Here (@tbl-CA_spcontrib) we can see that four families contribute significantly to the construction of the first axis and three families for the second one. Without surprise, *Thaunaleidae* contributes to both of them, *Bivalve* also appears in both. Then *Culicidae* and *Asellidae* contribute significantly to the first axis and *Simulidae* to the second axis.
 
 ```{r}
 #| label: fig-CA_plotspcontrib
@@ -268,11 +268,15 @@ fviz_contrib(CA, choice = "col", axes = 1, top = Inf)  # contributions Axis 1
 fviz_contrib(CA, choice = "col", axes = 2, top = Inf)  # contributions Axis 2
 ```
 
-Here (@fig-CA_plotspcontrib) is another way of presenting the contributions. The red line represents the threshold for the signicance of the contributio.
+Here (@fig-CA_plotspcontrib) is another way of presenting the contributions. The red line represents the threshold for the signicance of the contribution.
+
+FactoMineR is not the only package that can be used for a CA. Here are a few examples of functions that can be useful in the ade4 package.
+
+We noticed that *Thaunaleidae* are only present in one of the sites, a bassin, and it is dragging the CA. In this next section we will also look at the CA without the odd bassin.
 
 ## CA with ade4
 
-*nf* defines the number of axes in the CA constructed : it is calculated by taking minimum(number of columns, number of rows) - 1 (here 38 - 1 = 37)
+When using the ade4 package we need to specify *nf*, it defines the number of axes in the CA constructed : it is calculated by taking minimum(number of columns, number of rows) - 1 (here 38 - 1 = 37)
 
 ```{r}
 CA_ade4 <- dudi.coa(macroinv_red[,-c(1,2)], scannf = FALSE, nf = 37)
@@ -281,6 +285,8 @@ CA_ade4 <- dudi.coa(macroinv_red[,-c(1,2)], scannf = FALSE, nf = 37)
 CA_ade4_sansbassin <- dudi.coa(macroinv_red[-c(27,28,29), -c(1,2)], 
                                scannf = FALSE, nf = 37)
 ```
+
+After studying the contribution to each axis we can look at how much information is contained in each axis : the inertia.
 
 ### Inertia explained
 
@@ -303,7 +309,7 @@ pourcentage_sansbassin <- CA_ade4_sansbassin$eig/sum(CA_ade4_sansbassin$eig)*100
 kable(round(pourcentage_sansbassin[1:10],2),'html',col.names = "Without bassin")
 ```
 
-The inertia can be explained as the amount of information explained by the axis. Here we only show the first ten axes. We can see that the first axis explains more inertia when we remove the bassin, 16.75% versus 14.56% (@tbl-CA_interiabyaxis).
+Here we only show the first ten axes. We can see that the first axis explains more inertia when we remove the bassin, 16.75% versus 14.56% (@tbl-CA_interiabyaxis).
 
 **Cumulative inertia :**
 
@@ -335,7 +341,7 @@ It is interesting to look at the cumulative inertia to choose how many axis are 
 
 Here we can see that when we remove the bassin the axis cumulatively explain more inertia (@fig-CA_eigcumul).
 
-## Some plot
+## Exploration of the CA
 
 ```{r, message = FALSE, warning = FALSE}
 #| label: fig-CA_ade4
@@ -356,7 +362,7 @@ The first two axes explain $28.58%$ of the total inertia, with approximately $14
 The high contribution of *Bivalve* may be explained by the fact that, unlike the other taxa (at the family level), it refers to a class and therefore represents a much broader group. This could account for the prevalence of various Bivalve individuals across some sampling stations (e.g. between 62 and 700 individuals in "Ruche" samples), and consequently, its dominant role in shaping Axis 1.\
 The $79%$ contribution of *Thaumaleidae* likely reflects its high density in three stations ("Bassin"), a peculiar environment where only *Thaumaleidae* were found, while they were nearly absent from other sites. This group thus stretches Axis 2. "Bassin" environnement was a cemented artificial pound which is hard to colonize for most organisms other than *Thaumaleidae*. Indeed, this taxon belongs to the *Diptera* order, very tolerant to pollution (@vivier_macroinv1970) and ubiquitous (@faunefrance_macroin1927).
 
-Regarding the correspondances between stations and species, the analysis shows - as expected - a proximity between *Thaumaleidae* and stations 28, 27 and 29, which are the stations it was almost excusively sampled from. It could therefore be interesting to redo the analysis without those 3 stations to remove the high correlation between these "Bassin" samples and *Thaumaleidae*.
+Regarding the correspondances between stations and species, the analysis shows - as expected - a proximity between *Thaumaleidae* and stations 28, 27 and 29, which are the stations it was almost exclusively sampled from. It could therefore be interesting to redo the analysis without those 3 stations to remove the high correlation between these "Bassin" samples and *Thaumaleidae*.
 
 ```{r}
 scatter(CA_ade4_sansbassin)
@@ -419,7 +425,9 @@ ggplot(data = CA_ade4_sansbassin_ligne_ZH) +
         legend.position = "none") 
 ```
 
-In @fig-CA_CAwetland_position, the points correspond to the projection of the samples onto the two axes of the CA. The position of each sampling point corresponds to the barycenter (average) of the coordinates of the species present at that site. (je crois que je comprends pas bien cette phrase) We can see that the sites coming from the same wetland are more or less grouped together meaning that the groups of families present in each of them are similar. It is not surprising because the ecological conditions are usually similar in one type of wetland.
+To help us interpret the graph, it can be useful to colour the points depending on an ecological variable.
+
+In @fig-CA_CAwetland_position, the points correspond to the projection of the samples onto the two axes of the CA. The position of each sampling point corresponds to the barycenter (average) of the coordinates of the species present at that site. We can see that the sites coming from the same wetland are more or less grouped together meaning that the groups of families present in each of them are similar. It is not surprising because the ecological conditions are usually similar in one type of wetland.
 
 **Plot CA for the lines, dim 1 and 2, colour depends on the order :**
 
@@ -482,6 +490,8 @@ table.value(macroinv_red[,-c(1,2)][order(CA_ade4_sansbassin$li[,1]),
 ```
 
 ### Species distribution
+
+We can look at how each species is distributed on the CA in the first two axis. It can help us visualize how much influence they have on the axis.
 
 ```{r}
 #| label: fig-CA_CAspecies_distrib
