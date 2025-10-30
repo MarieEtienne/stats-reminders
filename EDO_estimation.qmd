@@ -167,7 +167,7 @@ mod_pred_LS <- sapply(time, logistic, r = fitted_params_SSE[1], K = fitted_param
 # estimation ML
 mod_pred_ML <- sapply(time, logistic, r = fitted_params_MMV[1], K = fitted_params_MMV[2], y0 = fitted_params_MMV[3])
 # plot
-plot(time, sim_data, ylab = "Population size", xlab = "Time")
+plot(time, sim_data, ylab = "Population size", xlab = "Time", main = "Logistic Growth with random noise and fitted models")
 lines(time, mod_pred_LS, col='blue', lwd=2)
 lines(time, mod_pred_ML, col = 'red', lty='dashed', lwd=2)
 legend("topleft",
