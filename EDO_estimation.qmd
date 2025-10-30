@@ -38,7 +38,7 @@ time <- seq(0, 25, 0.25)
 sim_data <- sapply(time, logistic_noised, r = r, K = K, y0 = y0, error = error)
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.align = 'center'}
 # Store in a dataframe for the plot
 data <- data.frame(time = time, sim_data = sim_data)
 
@@ -183,7 +183,7 @@ mod_pred_ML <- sapply(time, logistic, r = fitted_params_MMV[1], K = fitted_param
 
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.align = 'center'}
 # Store in a dataframe for the plot
 data_and_models <- data.frame(time = time,
                               sim_data = sim_data,
