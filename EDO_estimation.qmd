@@ -36,7 +36,9 @@ time <- seq(0, 25, 0.25)
 
 # Apply the logistic function over the time vector
 sim_data <- sapply(time, logistic_noised, r = r, K = K, y0 = y0, error = error)
+```
 
+```{r, echo=FALSE}
 # Store in a dataframe for the plot
 data <- data.frame(time = time, sim_data = sim_data)
 
@@ -179,11 +181,15 @@ mod_pred_LS <- sapply(time, logistic, r = fitted_params_SSE[1], K = fitted_param
 # estimation ML
 mod_pred_ML <- sapply(time, logistic, r = fitted_params_MMV[1], K = fitted_params_MMV[2], y0 = fitted_params_MMV[3])
 
+```
+
+```{r, echo=FALSE}
 # Store in a dataframe for the plot
 data_and_models <- data.frame(time = time,
                               sim_data = sim_data,
                               mod_pred_LS = mod_pred_LS,
                               mod_pred_ML = mod_pred_ML)
+
 # plot
 ggplot(data_and_models, aes(x = time)) +
   geom_point(aes(y = sim_data, color = "Simulated data"), shape = 1, size = 2) + 
