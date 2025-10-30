@@ -11,7 +11,9 @@ bibliography: references.bib
 
 We present here, a reminder sheet on the General Linear Model (GLM) and its specific features. Its use will be illustrated with an example applied to ecological data on penguins from @Gorman2014.
 
-Note : The concepts covered in this reminder sheet are taken from our Master's lectures, written by Y.Outreman and then taught by A. Masson. During these courses, we learned how to explore data and then analyze it using this type of model.
+::: {.callout-note appearance="simple"}
+Note : The concepts covered in this reminder sheet are taken from our Master's lectures, written by Y. Outreman and then taught by A. Masson. During these courses, we learned how to explore data and then analyze it using this type of model.
+:::
 
 The objective of the GLM is to explain a dependent variable as a function of independent explanatory variables measured on statistical units from a sample of a population. This type of model is generally constructed as follows:
 
@@ -33,10 +35,7 @@ ANOVA is used when the explanatory variables X are qualitative (then called fact
 
 ANCOVA is used when we want to model the variable Y as a function of several X variables, which can be qualitative and quantitative.
 
-Another important aspect to consider is that for this type of model to be valid, three conditions must be met:
--   the model residuals must follow a normal distribution
--   homoscedasticity (homogeneity of the variance of the residuals) must be respected
--   the residuals are independent
+Another important aspect to consider is that for this type of model to be valid, three conditions must be met: - the model residuals must follow a normal distribution - homoscedasticity (homogeneity of the variance of the residuals) must be respected - the residuals are independent
 
 These conditions are systematically verified after modeling : the verification will be illustrated in the following example.
 
@@ -44,28 +43,26 @@ These conditions are systematically verified after modeling : the verification w
 
 In this application example, we will use data from a study conducted by Dr. Kristen Gorman, who studied the physical characteristics of three species of penguins in the Palmer Archipelago in Antarctica. The data was collected on three islands of the archipelago in 2007, 2008, and 2009.
 
-The researcher noted the following characteristics in the individuals studied: 
+The researcher noted the following characteristics in the individuals studied:
 
-- **species** = species of individuals, qualitative variables, 3 levels (Adelie, Gentoo, Chinstrap)
-- **sex** = sex of individuals, qualitative variables, 2 levels (male, female)
-- **bill_length_mm** = bill length, quantitative variable
-- **bill_depth_mm** = bill depth, quantitative variable
-- **flipper_length_mm** = flipper length, quantitative variable
-- **body_mass_g** = body mass, quantitative variable
+-   **species** = species of individuals, qualitative variables, 3 levels (Adelie, Gentoo, Chinstrap)
+-   **sex** = sex of individuals, qualitative variables, 2 levels (male, female)
+-   **bill_length_mm** = bill length, quantitative variable
+-   **bill_depth_mm** = bill depth, quantitative variable
+-   **flipper_length_mm** = flipper length, quantitative variable
+-   **body_mass_g** = body mass, quantitative variable
 
-We also have information about the year of measurement and the island where the individuals live.  We decide not to focus on these variables while studying the model.
+We also have information about the year of measurement and the island where the individuals live. We decide not to focus on these variables while studying the model.
 
-We will try to answer the following question :
-Which quantitative and qualitative variables can explain the variation in penguin body_mass?
+We will try to answer the following question : Which quantitative and qualitative variables can explain the variation in penguin body_mass?
 
 In this case, the response variable is body_mass, and the other variables are assumed to be explanatory variables. We want to model the variable Y as a function of several qualitative and quantitative variables, therefore we do an ANCOVA.
 
-The model can be build like this : model <- lm (body_mass_g ~ ..., data = penguins)
+The model can be build like this : model \<- lm (body_mass_g \~ ..., data = penguins)
 
 # II) Data exploration
 
-Firstly, we need to import the data, explore it, and see if there are any NA values, outliers, and so on.
-The data is accessible via the package palmerpenguins (indicate source).
+Firstly, we need to import the data, explore it, and see if there are any NA values, outliers, and so on. The data is accessible via the package palmerpenguins by \@Holst2020.
 
 ```{r data_importation, echo = F, include = F}
 #Data importation 
@@ -82,8 +79,7 @@ str(penguins)
 colSums(is.na(penguins))
 ```
 
-There are NA values in the dataset.
-We decide to remove them but there are different options for handling the presence of NA values.
+There are NA values in the dataset. We decide to remove them but there are different options for handling the presence of NA values.
 
 ## i) Check the response variable values
 
