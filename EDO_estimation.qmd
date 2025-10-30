@@ -48,6 +48,7 @@ We have p parameters $\theta = (\theta_1,\theta_2,...,\theta_p)$. Several method
 ## General theory
 
 ### Least squares
+
 #### Definition
 
 One of the most used methods to assess the quality of a model is the least squares method, also known as mean square error method (MSE). It quantifies how the simulated data match with the real ones by measuring the gap between the simulated and the real points. This gap is estimated with the following formula:
@@ -60,9 +61,7 @@ A good model minimizes the MSE. Graphically, this means that the vertical distan
 
 #### Specific aspects
 
-The MSE is one of the most common method to assess the quality of a model. However, it has some limitations that may call its use into question.
-First, as it compares the simulated data and the observed ones point by point, the presence of outliers can strongly deviate the MSE estimation. 
-Moreover, this estimation method assumes a linear relation between the variables. Therefore, if the relation between the variables is not linear, the MSE may not reflect the true performance of the model.
+The MSE is one of the most common method to assess the quality of a model. However, it has some limitations that may call its use into question. First, as it compares the simulated data and the observed ones point by point, the presence of outliers can strongly deviate the MSE estimation. Moreover, this estimation method assumes a linear relation between the variables. Therefore, if the relation between the variables is not linear, the MSE may not reflect the true performance of the model.
 
 ### Maximum likelihood
 
@@ -74,8 +73,7 @@ $$ In this function, $x_i$ corresponds to the observations and $f(x_i,\theta)$ c
 
 The maximum likelihood method consists in determining the estimated parameters $\hat\theta$ that maximize the likelihood function: $$
 \hat\theta = \arg\max_\theta L(\theta)
-$$
-Maximizing $L(\theta)$ means finding the parameter values that make the data most plausible under the chosen model.
+$$ Maximizing $L(\theta)$ means finding the parameter values that make the data most plausible under the chosen model.
 
 #### Specific aspects
 
@@ -83,9 +81,7 @@ If the errors of the data are independent and identically distributed, this meth
 
 $$
 \hat{\theta} = \arg\max_{\theta} L(\theta) = \arg\min_{\theta} SCE(\theta)
-$$
-We prefer to work with the logarithm of the likelihood function $L(\theta)$, as it converts products into sums:
-$$
+$$ We prefer to work with the logarithm of the likelihood function $L(\theta)$, as it converts products into sums: $$
 LL(\theta) = ln(L(\theta)) = \sum_{i=1}^n lnf(x_i,\theta)
 $$
 
@@ -162,6 +158,8 @@ print(fitted_params_MMV)
 ```
 
 ## Data visualization : simulated dynamics with estimated trends
+
+As we could expect on this kind of data, the estimated parameters are almost the same with the two methods, it is thus complicated to observe any difference in the estimated trends we show on the following graph.
 
 ```{r, echo = FALSE, fig.width = 6, fig.height = 6}
 # estimation LS
