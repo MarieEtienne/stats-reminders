@@ -38,7 +38,7 @@ time <- seq(0, 25, 0.25)
 sim_data <- sapply(time, logistic_noised, r = r, K = K, y0 = y0, error = error)
 
 # Plot the result
-plot(time, sim_data, col = "blue", xlab = "Time", ylab = "Population", main = "Logistic Growth with random noise")
+plot(time, sim_data, xlab = "Time", ylab = "Population", main = "Logistic Growth with random noise")
 ```
 
 # Estimation of the parameters
