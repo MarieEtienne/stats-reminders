@@ -178,17 +178,35 @@ As we could expect on this kind of data, the estimated parameters are almost the
 mod_pred_LS <- sapply(time, logistic, r = fitted_params_SSE[1], K = fitted_params_SSE[2], y0 = fitted_params_SSE[3])
 # estimation ML
 mod_pred_ML <- sapply(time, logistic, r = fitted_params_MMV[1], K = fitted_params_MMV[2], y0 = fitted_params_MMV[3])
+
+# Store in a dataframe for the plot
+data_and_models <- data.frame(time = time,
+                              sim_data = sim_data,
+                              mod_pred_LS = mod_pred_LS,
+                              mod_pred_ML = mod_pred_ML)
 # plot
-plot(time, sim_data, ylab = "Population size", xlab = "Time", main = "Logistic Growth with random noise and fitted models")
-lines(time, mod_pred_LS, col='blue', lwd=2)
-lines(time, mod_pred_ML, col = 'red', lty='dashed', lwd=2)
-legend("topleft",
-       legend=c("Least Sq","Max Lik"), # Vector with the name of each group
-       col = c('blue','red'), # Color of lines or symbols
-       border = "black", # Fill box border color
-       lty=c('solid','dashed'), 
-       lwd=c(2,2)
-       )
+ggplot(data_and_models, aes(x = time)) +
+  geom_point(aes(y = sim_data, color = "Simulated data"), shape = 1, size = 2) + 
+  geom_line(aes(y = mod_pred_LS, color = "Least Squares"), linewidth = 0.8) +
+  geom_line(aes(y = mod_pred_ML, color = "Maximum Likelihood"), linetype = 'dashed', linewidth = 0.8) +
+    scale_color_manual(
+    values = c(
+      "Simulated data" = "black",
+      "Least Squares" = "blue",
+      "Maximum Likelihood" = "red"
+      )
+    ) +
+  labs(title = "Logistic Growth with random noise and fitted models",
+       x = "Time",
+       y = "Population size") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    legend.position.inside = c(0.05, 0.95),
+    legend.justification = c(0.5, 0.5),
+    legend.box.background = element_rect(fill="white"),
+    legend.title = element_blank()
+    )
 ```
 
 # Conclusion
