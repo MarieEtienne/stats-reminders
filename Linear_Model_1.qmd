@@ -9,15 +9,15 @@ bibliography: references.bib
 
 # i) General Linear Model
 
-We present here, a reminder sheet on the General Linear Model (GLM) and its specific features. Its use will be illustrated with an example applied to ecological data on penguins from @Gorman2014.
+We present here, a reminder sheet on the General Linear Model (GLM) and its specific features. Its use will be illustrated with an example applied to ecological data on penguins from @Gorman2014 .
 
 ::: {.callout-note appearance="simple"}
-Note : The concepts covered in this reminder sheet are taken from our Master's lectures, written by Y. Outreman and then taught by A. Masson. During these courses, we learned how to explore data and then analyze it using this type of model.
+Note : The concepts covered in this reminder sheet are taken from our Master's lectures, written by @Y.Outreman and then taught by @A.Masson . During these courses, we learned how to explore data and then analyze it using this type of model.
 :::
 
 The objective of the GLM is to explain a dependent variable as a function of independent explanatory variables measured on statistical units from a sample of a population. This type of model is generally constructed as follows:
 
-Y = β\*X + ε
+$$Y = β*X + ε$$
 
 Y is the response (dependent) variable to be explained. X is an explanatory (independent) variable that can explain Y. There can be several in the model. βi represents a coefficient, placed in front of the X variables, to measure their effect on the response variable. ε represents the errors in the model, i.e. what the model cannot explain.
 
