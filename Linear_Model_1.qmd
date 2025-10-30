@@ -12,7 +12,7 @@ bibliography: references.bib
 We present here, a reminder sheet on the General Linear Model (GLM) and its specific features. Its use will be illustrated with an example applied to ecological data on penguins from @Gorman2014 .
 
 ::: {.callout-note appearance="simple"}
-Note : The concepts covered in this reminder sheet are taken from our Master's lectures, written by @Y.Outreman and then taught by @A.Masson . During these courses, we learned how to explore data and then analyze it using this type of model.
+Note : The concepts covered in this reminder sheet are taken from our Master's lectures, written by @Y_Outreman and then taught by @A_Masson . During these courses, we learned how to explore data and then analyze it using this type of model.
 :::
 
 The objective of the GLM is to explain a dependent variable as a function of independent explanatory variables measured on statistical units from a sample of a population. This type of model is generally constructed as follows:
@@ -35,7 +35,13 @@ ANOVA is used when the explanatory variables X are qualitative (then called fact
 
 ANCOVA is used when we want to model the variable Y as a function of several X variables, which can be qualitative and quantitative.
 
-Another important aspect to consider is that for this type of model to be valid, three conditions must be met: - the model residuals must follow a normal distribution - homoscedasticity (homogeneity of the variance of the residuals) must be respected - the residuals are independent
+Another important aspect to consider is that for this type of model to be valid, three conditions must be met:
+
+-   the model residuals must follow a normal distribution
+
+-   homoscedasticity (homogeneity of the variance of the residuals) must be respected
+
+-   the residuals are independent
 
 These conditions are systematically verified after modeling : the verification will be illustrated in the following example.
 
