@@ -58,7 +58,7 @@ The researcher noted the following characteristics in the individuals studied:
 -   **flipper_length_mm** = flipper length, quantitative variable
 -   **body_mass_g** = body mass, quantitative variable
 
-We also have information about the year of measurement and the island where the individuals live. We decide not to focus on these variables while studying the model.
+We also have information about the year of measurement and the island where the individuals live. We decide not to focus on these variables while studying the model. Indeed, we choose to focus our study on biological and morphological characteristics.
 
 We will try to answer the following question : Which quantitative and qualitative variables can explain the variation in penguin body_mass?
 
