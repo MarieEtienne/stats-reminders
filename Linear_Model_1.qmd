@@ -333,4 +333,42 @@ Flipper length and species : there appears to be no interaction between flipper 
 
 These are only observations. For the moment, we don't know which interactions are significant. This will be tested afterwards.
 
+# v) Check for possible collinearity between Xs variables
 
+Collinearity must be avoided in modeling. Indeed, collinearity can affect the modeling and significance of variables in the model, therefore the conclusions of the study are affected.
+Let's check how the explanatory variables are related.
+
+```{r data_collinearity, echo=F}
+#Import library
+library(corrplot)
+
+# Checking collinearity between continuous independent variables
+plot(penguins[,3:5],pch=16,col='darkolivegreen4')
+M<-cor(penguins[,3:5])
+corrplot.mixed(M,upper="square",lower.col="black", tl.col="black",cl.cex = 0.8,tl.cex = 0.7,number.cex =0.8)
+
+# Checking collinearity between categorical and continuous independent variables
+par(mfrow=c(2,3))
+#Bill Length and Sex
+boxplot(penguins$bill_length_mm~penguins$sex, varwidth = TRUE, ylab = "Bill Length", xlab = "Sex", col='grey', main = "")
+#Bill Depth and Sex
+boxplot(penguins$bill_depth_mm~penguins$sex, varwidth = TRUE, ylab = "Bill Depth", xlab = "Sex", col='grey', main = "")
+#Flipper Length and Sex
+boxplot(penguins$flipper_length_mm~penguins$sex, varwidth = TRUE, ylab = "Flipper Length", xlab = "Sex", col='grey', main = "")
+#Bill Length and Species
+boxplot(penguins$bill_length_mm~penguins$species, varwidth = TRUE, ylab = "Bill Length", xlab = "Species", col='grey', main = "")
+#Bill Depth and Species
+boxplot(penguins$bill_depth_mm~penguins$species, varwidth = TRUE, ylab = "Bill Depth", xlab = "Species", col='grey', main = "")
+#Flipper Length and Species
+boxplot(penguins$flipper_length_mm~penguins$species, varwidth = TRUE, ylab = "Flipper Length", xlab = "Species", col='grey', main = "")
+
+```
+
+This verification of collinearity between $Xs$ revealed a positive correlation between Flipper Length and Bill Length. The coefficient is below the threshold of 0.7, so we will not exclude either of these variables.
+
+Note : In some cases, there may be a strong correlation between a specific variable and some other variables, with a high correlation coefficient (greater than 0.7, which is the threshold set in most cases). This situation can lead you to exclude this specific variable but you always need to justify your choice.
+
+Concerning the other variables :
+For bill length, bill depth and flipper length, we observe a small difference between males and females.
+It looks like Adelie penguins have a shorter bill length than to the two other species.
+It appears Gentoo penguins have a smaller bill depth and bigger flipper length than the other species.
