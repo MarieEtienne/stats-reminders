@@ -75,17 +75,27 @@ Firstly, we need to import the data, explore it, and see if there are any NA val
 library(palmerpenguins) 
 data("penguins") 
 penguins$sex<-as.factor(penguins$sex) 
-penguins$species<-as.factor(penguins$species) 
-penguins$island<-as.factor(penguins$island) 
+penguins$species<-as.factor(penguins$species)
 str(penguins)
 ```
 
 ```{r data_NA, echo = F}
 #Is NA?  
 colSums(is.na(penguins))
+summary(penguins$sex)
 ```
 
-There are NA values in the dataset. We decide to remove them but there are different options for handling the presence of NA values.
+There are NA values in the dataset. 2 rows of the dataset contain missing values for all the studied variables, except **species**. Values are missing for the variable **sex** in 9 other rows.
+There are different ways to process NA values. In our case, we decide to delete the two rows with almost complete missing information.
+Then, an option would be to replace the other missing values for the **sex** variable by "unknown" to specify that we don't know if the individual is a male or a female and to create a new level for this variable. However, with this option, the group in which the sex is unknown would be under-represented compared to male and female group. As it seems interesting to test if being a female or a male has an influence on the body mass of penguins, having rows where the sex of individuals is unknown is not really useful and could add noise to the analysis. Therefore, we finally decide to delete all rows with NA values in the dataset. 
+Moreover, the rows that include NA values only represented around 3% of the dataset.
+
+```{r process_NA_values, echo = F}
+penguins<-na.omit(penguins)
+colSums(is.na(penguins))
+```
+
+We now have handled NA values and we can continue to explore the data before implementing the model to answer our question.
 
 ## i) Check the response variable values
 
