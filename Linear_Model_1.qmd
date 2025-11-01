@@ -372,3 +372,33 @@ Concerning the other variables :
 For bill length, bill depth and flipper length, we observe a small difference between males and females.
 It looks like Adelie penguins have a shorter bill length than to the two other species.
 It appears Gentoo penguins have a smaller bill depth and bigger flipper length than the other species.
+
+# III) Model and statistical analysis
+
+Once the data exploration is done, we can focus on finding the model that is adapted to our study.
+First, we write a full model including all variables presented before and possible interactions between them.
+Then, the goal is to obtain a fitted model (candidate model) that we can analyze in order to identify the main effects on our response variable **body_mass_g**.
+This candidate model can be obtained thanks to a selection based on AIC. 
+After selection, the conditions of the linear model (i.e. independence of residuals, normality of residuals and homoscedasticity ) must be validated before making interpretations and conclusions.
+
+Firstly, let's write the full model, including all variables and possible interactions.
+
+```{r fullmodel,include=TRUE}
+mod_penguins<-lm(body_mass_g ~ bill_length_mm
+        + bill_depth_mm
+        + flipper_length_mm
+        + species
+        + sex
+        + sex : species
+        + sex : bill_length_mm
+        + sex : bill_depth_mm
+        + sex : flipper_length_mm
+        + species : bill_length_mm
+        + species : bill_depth_mm
+        + species : flipper_length_mm
+        , data=penguins)
+
+#We check for significance
+drop1(mod_penguins,test="F")
+```
+
