@@ -97,7 +97,7 @@ colSums(is.na(penguins))
 
 We now have handled NA values and we can continue to explore the data before implementing the model to answer our question.
 
-## i) Check the response variable values
+# i) Check the response variable values : check outliers and distribution.
 
 ```{r data_response_variable, echo = F}
 #Don't show the code 
@@ -111,32 +111,31 @@ par(mfrow=c(2,2),
     cex.lab=1) 
 col_transp <- adjustcolor("aquamarine3", alpha.f=0.5) 
 # Boxplot 
-boxplot(penguins$bill_depth_mm,         
+boxplot(penguins$body_mass_g,         
         col=col_transp, border="gray30",         
-        ylab='Bill depth (mm)',         
+        ylab='Body Mass (g)',         
         main = 'Boxplot',         
         notch=TRUE) 
 # Cleveland plot 
-dotchart(penguins$bill_depth_mm,          
+dotchart(penguins$body_mass_g,          
          pch=16, col=col_transp,          
-         xlab='Bill depth (mm)',          
+         xlab='Body Mass (g)',          
          main = 'Cleveland plot',          
          cex=0.8) 
 # Histogram 
-hist(penguins$bill_depth_mm,      
+hist(penguins$body_mass_g,      
      col=col_transp, 
      border="white",      
-     xlab="Bill depth (mm)",      
+     xlab="Body Mass (g)",      
      main = 'Histogram',      
      breaks=20)
 # Quantile-Quantile plot 
-qqnorm(penguins$bill_depth_mm, pch=16, col=col_transp, xlab='', ylab='',main="QQ plot") 
-qqline(penguins$bill_depth_mm, col='red', lwd=2)
+qqnorm(penguins$body_mass_g, pch=16, col=col_transp, xlab='', ylab='',main="QQ plot") 
+qqline(penguins$body_mass_g, col='red', lwd=2)
 ```
+Based on the 3 first graphs (Boxplot, Cleveland plot and Histogram), it seems that there are no outliers in the Y variable **body_mass_g**. With the Q-Q plot, the data appears to follow a Gaussian distribution. However, Y normality is not a required assumption for our model. Keep in mind that we will need to check something about normality later on : the model residuals must follow a normal distribution in the case of a linear model.
 
-It seems that there are no outliers in the Y variable or its distribution. From the Cleveland plot, we can observe three distinct clusters of points, likely corresponding to the three different penguin species. The histogram shows two main peaks in the range of bill lengths, but no clear outliers. Overall, the data appear to follow a Gaussian distribution, which is consistent with species-specific traits. However, Y normality is not a required assumption for our model.
-
-## ii) Check the explain variables values
+# ii) Check the explanatory variables values
 
 ```{r data_quantitative_explain_variables, echo = F}
 #Don't show the code 
@@ -152,7 +151,7 @@ col_transp <- adjustcolor("darkgreen", alpha.f=0.5)
 
 # Bill lenght  
 # Boxplot 
-boxplot(penguins$bill_depth_mm,         
+boxplot(penguins$bill_length_mm,         
         col=col_transp, border="gray30",         
         ylab='Bill Length',         
         main = 'Boxplot',         
@@ -172,11 +171,36 @@ hist(penguins$bill_length_mm,
 qqnorm(penguins$bill_length_mm,        
        pch=16,col=col_transp,xlab='',         
        main = 'QQ plot') 
-qqline(penguins$bill_length_mm,col='red',lwd=2)  
+qqline(penguins$bill_length_mm,col='red',lwd=2)
+
+# Bill depth
+# Boxplot 
+boxplot(penguins$bill_depth_mm,         
+        col=col_transp, border="gray30",         
+        ylab='Bill Depth',         
+        main = 'Boxplot',         
+        notch=TRUE) 
+# Cleveland plot 
+dotchart(penguins$bill_depth_mm,          
+         pch=16,          
+         col=col_transp,          
+         xlab='Bill Depth',          
+         main = 'Cleveland plot') 
+# Histogram 
+hist(penguins$bill_depth_mm,      
+     col=col_transp,     
+     xlab="Bill Depth",      
+     main="Histogram") 
+# Quantile-Quantile plot 
+qqnorm(penguins$bill_depth_mm,        
+       pch=16,        
+       col=col_transp,xlab='',        
+       main = 'QQ plot') 
+qqline(penguins$bill_depth_mm,col='red',lwd=2)
 
 # Flipper lenght  
 # Boxplot 
-boxplot(penguins$bill_depth_mm,         
+boxplot(penguins$flipper_length_mm,         
         col=col_transp, border="gray30",         
         ylab='Flipper Length',         
         main = 'Boxplot',         
@@ -197,116 +221,116 @@ qqnorm(penguins$flipper_length_mm,
        pch=16,        
        col=col_transp,xlab='',        
        main = 'QQ plot') 
-qqline(penguins$flipper_length_mm,col='red',lwd=2)  
+qqline(penguins$flipper_length_mm,col='red',lwd=2)
 
-# Body mass 
-# Boxplot 
-boxplot(penguins$bill_depth_mm,         
-        col=col_transp, border="gray30",         
-        ylab='Body Mass',         
-        main = 'Boxplot',         
-        notch=TRUE) 
-# Cleveland plot 
-dotchart(penguins$body_mass_g,          
-         pch=16,          
-         col=col_transp,          
-         xlab='Body Mass',          
-         main = 'Cleveland plot') 
-# Histogram 
-hist(penguins$body_mass_g,      
-     col=col_transp,     
-     xlab="Body Mass",      
-     main="Histogram") 
-# Quantile-Quantile plot 
-qqnorm(penguins$body_mass_g,        
-       pch=16,        
-       col=col_transp,xlab='',        
-       main = 'QQ plot') 
-qqline(penguins$body_mass_g,col='red',lwd=2)
 ```
 
-There appear to be no outliers for any of the quantitative variables. From the Cleveland plot, we can observe two distinct clusters for the bill length variable, which may be related to sexual dimorphism. This distinct distribution is also visible in the corresponding histogram. For flipper length, two main peaks are observed, but the Cleveland plot reveals three distinct clusters. Similarly, the body mass variable shows three clusters, even though the histogram displays only a single peak. All variables seem to follow a Gaussian distribution, although this assumption is not required for the Y variable in our model. Nevertheless, visualizing the distributions of the quantitative X variables allows us to formulate hypotheses regarding species differences and sexual dimorphism.
+There appear to be no outliers for any of the quantitative variables.
+
+Let's describe what we observe.
+From the Cleveland plot, for the bill length variable, we can observe two distinct clusters which might be related to sexual dimorphism. For the bill depth, 3 clusters are observed on the Cleveland Plot : this variable might be related to the difference of bill depth between species. For flipper length, the Cleveland plot also reveals three distinct clusters.
+All these variables seem to follow a Gaussian distribution, although this assumption is not required for our model.
+Nevertheless, visualizing the distributions of the quantitative X variables allows us to make first observations regarding species differences and sexual dimorphism.
 
 ```{r data_qualitative_explain_variables, echo = F}
 summary(penguins$species) 
-summary(penguins$island) 
 summary(penguins$sex)
 ```
 
-Some groups are under-represented, particularly within the island and species categories. We will exclude island from the model due to this imbalance. However, we will retain species, as it may capture important differences between groups.
+For the **species** variable, Chinstrap is a bit under-represented in comparison to other species. We will keep the variable for the model as it may capture important differences between groups.
+For the **sex** variable, the number of observations is almost equivalent for the male and female groups. 
 
-## iii) Analyse the potential relation between Y and Xs
+# iii) Analyse the potential relation between Y and Xs
+
+Now, we can explore the potential relationship between the response variable Y (**body_mass**) and the Xs variables.
+Keep in mind that this part of the analysis is based on graphs and doesn't tell us if the relationships between variables are significant or not. 
 
 ```{r data_exploration_relation, echo = F, fig.height=8, fig.width=6}
 par(mfrow=c(3,2)) 
 # Bill Length 
-plot(penguins$bill_depth_mm~penguins$bill_length_mm,pch=16,col='olivedrab4',xlab='Bill Length',ylab='Bill Depth') 
+plot(penguins$body_mass_g~penguins$bill_length_mm,pch=16,col='olivedrab4',xlab='Bill Length',ylab='Body Mass')
+# Bill Depth 
+plot(penguins$body_mass_g~penguins$bill_depth_mm,pch=16,col='olivedrab4',xlab='Bill Depth',ylab='Body Mass')
 # Flipper Length 
-plot(penguins$bill_depth_mm~penguins$flipper_length_mm,pch=16,col='olivedrab4',xlab='Flipper Length',ylab='Bill Depth') 
-# Body Mass 
-plot(penguins$bill_depth_mm~penguins$body_mass_g,pch=16,col='olivedrab4',xlab='Body Mass',ylab='Bill Depth') 
+plot(penguins$body_mass_g~penguins$flipper_length_mm,pch=16,col='olivedrab4',xlab='Flipper Length',ylab='Body Mass') 
 # Sex 
-boxplot(penguins$bill_depth_mm~penguins$sex, varwidth = TRUE, ylab = "Bill Depth", xlab = "Sex", col='darkgrey', main = "") 
+boxplot(penguins$body_mass_g~penguins$sex, varwidth = TRUE, ylab = "Body Mass", xlab = "Sex", col='olivedrab4', main = "") 
 # Species 
-boxplot(penguins$bill_depth_mm~penguins$species, varwidth = TRUE, ylab = "Bill Depth", xlab = "Species", col='brown', main = "") 
+boxplot(penguins$body_mass_g~penguins$species, varwidth = TRUE, ylab = "Body Mass", xlab = "Species", col='olivedrab4', main = "") 
 ```
 
-There appears to be a positive linear relationship between bill depth and all other quantitative variables, with at least two distinct trends visible in each case. A sexual dimorphism seems observed: females tending to have shorter bill depths than males. Additionally, there may be species differences : Gentoo penguins seem to have smaller bill depths compared to Adelie and Chinstrap penguins, which show similar bill depth measurements.
+There appears to be a positive linear relationship between body mass and other quantitative variables. 
+A sexual dimorphism is observed : females tend to have a lower body mass than males. 
+In addition, there may be species differences : Gentoo penguins appear to have higher body mass compared to Adelie and Chinstrap penguins, which have similar body mass measurements.
 
-## iv) Analyse the eventual interactions between Xs qualitative variables
+# iv) Analyse the eventual interactions between Xs qualitative variables
 
 This section aims to check for potential interaction effects between the two qualitative variables. To do so, all combinations of their categories must be present in the data.
 
 ```{r data_cross_qualitative_exploration, echo = F}
 table(penguins$species, penguins$sex) 
-table(penguins$species, penguins$island)
 ```
 
-All categories are present and well balanced across the factors, allowing us to test for potential interactions between them. However, some information related to the island variable is missing across certain categories, so this variable will be excluded from the model.
+All categories are present and well balanced across the factors, allowing us to test for potential interactions between them.
 
-```{r data_qualitative_interaction, echo = F}
-par(mfrow=c(1,1)) 
-boxplot(penguins$bill_depth_mm~penguins$sex*penguins$species, varwidth = TRUE, ylab = "Bill Depth", col='brown1', main = "",cex.axis=0.7)
+```{r data_interaction_qualitative, echo = F}
+boxplot(penguins$body_mass_g~penguins$sex*penguins$species, varwidth = TRUE, ylab = "Body Mass", col='green4', main = "",cex.axis=0.7)
 ```
+Males appear to have a higher body mass than females for the three species. The difference between males and females may vary a little depending on the species. There may be a small interaction between the tow factors **sex** and **species**.
 
-Both factors species and sex seems to interact.
+
+Then, we also check for potential interactions between explanatory quantitative variables and explanatory qualitative variables, using the following graphs. 
 
 ```{r data_interaction_qualitative_quantitative, echo = F}
-par(mfrow=c(2,1)) 
+par(mfrow=c(3,2)) 
 # Interactions between Bill Length & Sex 
-plot(penguins$bill_depth_mm~penguins$bill_length_mm,type='n',ylab = "Bill Depth",xlab="Bill Length") 
-points(penguins$bill_depth_mm[penguins$sex=="male"]~penguins$bill_depth_mm[penguins$sex=="male"],pch=16,col='darkolivegreen4') 
-points(penguins$bill_depth_mm[penguins$sex=="female"]~penguins$bill_length_mm[penguins$sex=="female"],pch=17,col='darkorchid')  
+plot(penguins$body_mass_g~penguins$bill_length_mm,type='n',ylab = "Body Mass",xlab="Bill Length") 
+points(penguins$body_mass_g[penguins$sex=="male"]~penguins$bill_length_mm[penguins$sex=="male"],pch=16,col='darkolivegreen4') 
+points(penguins$body_mass_g[penguins$sex=="female"]~penguins$bill_length_mm[penguins$sex=="female"],pch=17,col='darkorchid')  
 
 # Interactions between Bill Length & Species 
-plot(penguins$bill_depth_mm~penguins$bill_length_mm,type='n',ylab = "Bill depth",xlab="Bill Length") 
-points(penguins$bill_depth_mm[penguins$species=="Adelie"]~penguins$bill_length_mm[penguins$species=="Adelie"],pch=16,col='olivedrab') 
-points(penguins$bill_depth_mm[penguins$species=="Chinstrap"]~penguins$bill_length_mm[penguins$species=="Chinstrap"],pch=17,col='lightsalmon3') 
-points(penguins$bill_depth_mm[penguins$species=="Gentoo"]~penguins$bill_length_mm[penguins$species=="Gentoo"],pch=17,col='orange3')
+plot(penguins$body_mass_g~penguins$bill_length_mm,type='n',ylab = "Body Mass",xlab="Bill Length") 
+points(penguins$body_mass_g[penguins$species=="Adelie"]~penguins$bill_length_mm[penguins$species=="Adelie"],pch=16,col='olivedrab') 
+points(penguins$body_mass_g[penguins$species=="Chinstrap"]~penguins$bill_length_mm[penguins$species=="Chinstrap"],pch=17,col='lightsalmon3') 
+points(penguins$body_mass_g[penguins$species=="Gentoo"]~penguins$bill_length_mm[penguins$species=="Gentoo"],pch=17,col='orange3')
 
-par(mfrow=c(2,1)) 
+# Interactions between Bill Depth & Sex 
+plot(penguins$body_mass_g~penguins$bill_depth_mm,type='n',ylab = "Body Mass",xlab="Bill Depth")
+points(penguins$body_mass_g[penguins$sex=="male"]~penguins$bill_depth_mm[penguins$sex=="male"],pch=16,col='darkolivegreen4') 
+points(penguins$body_mass_g[penguins$sex=="female"]~penguins$bill_depth_mm[penguins$sex=="female"],pch=17,col='darkorchid')  
+
+# Interactions between Bill Depth & Species 
+plot(penguins$body_mass_g~penguins$bill_depth_mm,type='n',ylab = "Body Mass",xlab="Bill Depth") 
+points(penguins$body_mass_g[penguins$species=="Adelie"]~penguins$bill_depth_mm[penguins$species=="Adelie"],pch=16,col='olivedrab') 
+points(penguins$body_mass_g[penguins$species=="Chinstrap"]~penguins$bill_depth_mm[penguins$species=="Chinstrap"],pch=17,col='lightsalmon3') 
+points(penguins$body_mass_g[penguins$species=="Gentoo"]~penguins$bill_depth_mm[penguins$species=="Gentoo"],pch=17,col='orange3')
 
 # Interactions between Flipper Length & Sex 
-plot(penguins$bill_depth_mm~penguins$flipper_length_mm,type='n',ylab = "Bill Depth",xlab="Flipper Length") 
-points(penguins$bill_depth_mm[penguins$sex =="male"]~penguins$flipper_length_mm[penguins$sex=="male"],pch=16,col='darkolivegreen4') 
-points(penguins$bill_depth_mm[penguins$sex=="female"]~penguins$flipper_length_mm[penguins$sex=="female"],pch=17,col='darkorchid')  
+plot(penguins$body_mass_g~penguins$flipper_length_mm,type='n',ylab = "Body Mass",xlab="Flipper Length") 
+points(penguins$body_mass_g[penguins$sex =="male"]~penguins$flipper_length_mm[penguins$sex=="male"],pch=16,col='darkolivegreen4') 
+points(penguins$body_mass_g[penguins$sex=="female"]~penguins$flipper_length_mm[penguins$sex=="female"],pch=17,col='darkorchid')  
 
 # Interactions between Flipper Length & Species 
-plot(penguins$bill_depth_mm~penguins$flipper_length_mm,type='n',ylab = "Bill Length",xlab="Flipper Length") 
-points(penguins$bill_depth_mm[penguins$species=="Adelie"]~penguins$flipper_length_mm[penguins$species=="Adelie"],pch=16,col='olivedrab') 
-points(penguins$bill_depth_mm[penguins$species=="Chinstrap"]~penguins$flipper_length_mm[penguins$species=="Chinstrap"],pch=17,col='lightsalmon3') 
-points(penguins$bill_depth_mm[penguins$species=="Gentoo"]~penguins$flipper_length_mm[penguins$species=="Gentoo"],pch=17,col='orange3')
-
-par(mfrow=c(2,1)) 
-
-# Interactions between Body Mass & Sex 
-plot(penguins$bill_depth_mm~penguins$body_mass_g,type='n',ylab = "Bill Depth",xlab="Body Mass")
-points(penguins$bill_depth_mm[penguins$sex=="male"]~penguins$body_mass_g[penguins$sex=="male"],pch=16,col='darkolivegreen4') 
-points(penguins$bill_depth_mm[penguins$sex=="female"]~penguins$body_mass_g[penguins$sex=="female"],pch=17,col='darkorchid')  
-
-# Interactions between Body Mass & Species 
-plot(penguins$bill_depth_mm~penguins$body_mass_g,type='n',ylab = "Bill Length",xlab="Body Mass") 
-points(penguins$bill_depth_mm[penguins$species=="Adelie"]~penguins$body_mass_g[penguins$species=="Adelie"],pch=16,col='olivedrab') 
-points(penguins$bill_depth_mm[penguins$species=="Chinstrap"]~penguins$body_mass_g[penguins$species=="Chinstrap"],pch=17,col='lightsalmon3') 
-points(penguins$bill_depth_mm[penguins$species=="Gentoo"]~penguins$body_mass_g[penguins$species=="Gentoo"],pch=17,col='orange3')
+plot(penguins$body_mass_g~penguins$flipper_length_mm,type='n',ylab = "Bill Length",xlab="Flipper Length") 
+points(penguins$body_mass_g[penguins$species=="Adelie"]~penguins$flipper_length_mm[penguins$species=="Adelie"],pch=16,col='olivedrab') 
+points(penguins$body_mass_g[penguins$species=="Chinstrap"]~penguins$flipper_length_mm[penguins$species=="Chinstrap"],pch=17,col='lightsalmon3') 
+points(penguins$body_mass_g[penguins$species=="Gentoo"]~penguins$flipper_length_mm[penguins$species=="Gentoo"],pch=17,col='orange3')
 ```
+
+Observations regarding possible interactions :
+
+Bill length and sex : there is a possible interaction. For some values of bill length, body mass is higher for males than females but for some values the opposite is true and females have a higher body mass than males.
+
+Bill length and species : there are three color clusters that do not appear to mix on the graph. Individuals of the Gentoo species appear to have a higher body mass than the other species, but sometimes slightly lower depending on bill length values. A small interaction is possible. 
+
+Bill depth and sex : there appears to be no interaction between bill depth and sex. The relation between body mass and bill depth is the same for males and females and males body mass is higher than females body mass.
+
+Bill depth and species : there appears to be no interaction between bill depth and species. The relation between body mass and bill depth observed previously during the data exploration is the same and the Gentoo species still stands out in terms of body mass : individuals of the Gentoo species still appear to have a higher body mass than the other species.
+
+Flipper length and sex : there is a possible interaction. Body mass appears to increase with flipper length but for some values of flipper length, females can have a higher body mass than males.
+
+Flipper length and species : there appears to be no interaction between flipper length and species. The relation between body mass and bill length observed previously during the data exploration is the same regardless the species and the Gentoo species still stands out in terms of body mass, which remains higher than the body of the other species on the graph.
+
+These are only observations. For the moment, we don't know which interactions are significant. This will be tested afterwards.
+
+
