@@ -1,13 +1,12 @@
 ---
-title: "Penguins"
+title: "GENERAL LINEAR MODEL"
+subtitle: "PENGUINS EXAMPLE"
 format: html
 editor: visual
 bibliography: references.bib
 ---
 
-# I) Introduction
-
-# i) General Linear Model
+# GENERAL INTRODUCTION
 
 We present here, a reminder sheet on the General Linear Model (GLM) and its specific features. Its use will be illustrated with an example applied to ecological data on penguins from @Gorman2014 .
 
@@ -15,11 +14,15 @@ We present here, a reminder sheet on the General Linear Model (GLM) and its spec
 Note : The concepts covered in this reminder sheet are taken from our Master's lectures, written by @Y_Outreman and then taught by @A_Masson . During these courses, we learned how to explore data and then analyze it using this type of model.
 :::
 
+### Generalities
+
 The objective of the GLM is to explain a dependent variable as a function of independent explanatory variables measured on statistical units from a sample of a population. This type of model is generally constructed as follows:
 
 $$Y = β*X + ε$$
 
 Y is the response (dependent) variable to be explained. X is an explanatory (independent) variable that can explain Y. There can be several in the model. βi represents a coefficient, placed in front of the X variables, to measure their effect on the response variable. ε represents the errors in the model, i.e. what the model cannot explain.
+
+### Type of General Linear Model
 
 There are three general types of linear models:
 
@@ -45,35 +48,39 @@ Another important aspect to consider is that for this type of model to be valid,
 
 These conditions are systematically verified after modeling : the verification will be illustrated in the following example.
 
-# ii) Presentation of data and objectives of the analysis
+### Data presentation and objectives 
 
-In this application example, we will use data from a study conducted by Dr. Kristen Gorman, who studied the physical characteristics of three species of penguins in the Palmer Archipelago in Antarctica. The data was collected on three islands of the archipelago in 2007, 2008, and 2009.
+![Adelie Penguins from Petrel Island - Adelie Land - C. Cornec (IPEV/CNRS/CSM)](Adelie_Penguins.jpg)
+
+In this application example, we use data from a study conducted by Dr. Kristen Gorman, who studied the physical characteristics of three species of penguins in the Palmer Archipelago in Antarctica. The data was collected on three islands of the archipelago in 2007, 2008, and 2009.
 
 The researcher noted the following characteristics in the individuals studied:
 
--   **species** = species of individuals, qualitative variables, 3 levels (Adelie, Gentoo, Chinstrap)
--   **sex** = sex of individuals, qualitative variables, 2 levels (male, female)
--   **bill_length_mm** = bill length, quantitative variable
--   **bill_depth_mm** = bill depth, quantitative variable
--   **flipper_length_mm** = flipper length, quantitative variable
--   **body_mass_g** = body mass, quantitative variable
+-   `species` = species of individuals, qualitative variables, 3 levels (Adelie, Gentoo, Chinstrap)
+-   `sex` = sex of individuals, qualitative variables, 2 levels (male, female)
+-   `bill_length_mm` = bill length, quantitative variable
+-   `bill_depth_mm` = bill depth, quantitative variable
+-   `flipper_length_mm` = flipper length, quantitative variable
+-   `body_mass_g` = body mass, quantitative variable
 
 We also have information about the year of measurement and the island where the individuals live. We decide not to focus on these variables while studying the model.
 
-We will try to answer the following question : Which quantitative and qualitative variables can explain the variation in penguin body_mass?
+We will try to answer the following question : Which quantitative and qualitative variables can explain the variation in penguin `body_mass`?
 
-In this case, the response variable is body_mass, and the other variables are assumed to be explanatory variables. We want to model the variable Y as a function of several qualitative and quantitative variables, therefore we do an ANCOVA.
+In this case, the response variable is `body_mass`, and the other variables are assumed to be explanatory variables. We want to model the variable Y as a function of several qualitative and quantitative variables, therefore we do an ANCOVA.
 
-The model can be build like this : model \<- lm (body_mass_g \~ ..., data = penguins)
+The model can be build like this : model \<- lm (`body_mass` \~ `...`, data = `penguins`)
 
-# II) Data exploration
+# DATA IMPORTATION
 
 Firstly, we need to import the data, explore it, and see if there are any NA values, outliers, and so on. The data is accessible via the package *palmerpenguins* by @Horst2020.
 
-```{r data_importation, echo = F, include = F}
-#Data importation 
+```{r data_importation}
+# Data importation 
 library(palmerpenguins) 
 data("penguins") 
+
+# Change categorical variables as factor
 penguins$sex<-as.factor(penguins$sex) 
 penguins$species<-as.factor(penguins$species) 
 penguins$island<-as.factor(penguins$island) 
@@ -81,13 +88,17 @@ str(penguins)
 ```
 
 ```{r data_NA, echo = F}
-#Is NA?  
+# Check for presence of missing values 
 colSums(is.na(penguins))
 ```
 
 There are NA values in the dataset. We decide to remove them but there are different options for handling the presence of NA values.
 
-## i) Check the response variable values
+# DATA EXPLORATION
+
+Exploring the dataset is always the first step before analysis and model creation. This step is essential for identifying the structure of the variables and checking for outliers, correlations, or unbalanced distributions, mainly for qualitative variable categories, and assumptions.
+
+### 1. Outliers and distribution of the dependent variable (\$Y\$)
 
 ```{r data_response_variable, echo = F}
 #Don't show the code 
@@ -101,32 +112,32 @@ par(mfrow=c(2,2),
     cex.lab=1) 
 col_transp <- adjustcolor("aquamarine3", alpha.f=0.5) 
 # Boxplot 
-boxplot(penguins$bill_depth_mm,         
+boxplot(penguins$body_mass_g,         
         col=col_transp, border="gray30",         
-        ylab='Bill depth (mm)',         
+        ylab='Body Mass (g)',         
         main = 'Boxplot',         
         notch=TRUE) 
 # Cleveland plot 
-dotchart(penguins$bill_depth_mm,          
+dotchart(penguins$body_mass_g,          
          pch=16, col=col_transp,          
-         xlab='Bill depth (mm)',          
+         xlab='Body Mass (g)',          
          main = 'Cleveland plot',          
          cex=0.8) 
 # Histogram 
-hist(penguins$bill_depth_mm,      
+hist(penguins$body_mass_g,      
      col=col_transp, 
      border="white",      
-     xlab="Bill depth (mm)",      
+     xlab="Body Mass (g)",      
      main = 'Histogram',      
      breaks=20)
 # Quantile-Quantile plot 
-qqnorm(penguins$bill_depth_mm, pch=16, col=col_transp, xlab='', ylab='',main="QQ plot") 
-qqline(penguins$bill_depth_mm, col='red', lwd=2)
+qqnorm(penguins$body_mass_g, pch=16, col=col_transp, xlab='', ylab='',main="QQ plot") 
+qqline(penguins$body_mass_g, col='red', lwd=2)
 ```
 
-It seems that there are no outliers in the Y variable or its distribution. From the Cleveland plot, we can observe three distinct clusters of points, likely corresponding to the three different penguin species. The histogram shows two main peaks in the range of bill lengths, but no clear outliers. Overall, the data appear to follow a Gaussian distribution, which is consistent with species-specific traits. However, Y normality is not a required assumption for our model.
+It seems that there are no outliers in the $Y$ variable or its distribution. From the Cleveland plot, we can observe three distinct clusters of points, likely corresponding to the three different penguin species. Overall, the data appear to follow a Gaussian distribution, which is consistent with species-specific traits.
 
-## ii) Check the explain variables values
+### 2. **Outliers and Distributions of Quantitative Predictors (\$X\$)**
 
 ```{r data_quantitative_explain_variables, echo = F}
 #Don't show the code 
@@ -142,7 +153,7 @@ col_transp <- adjustcolor("darkgreen", alpha.f=0.5)
 
 # Bill lenght  
 # Boxplot 
-boxplot(penguins$bill_depth_mm,         
+boxplot(penguins$bill_length_mm,         
         col=col_transp, border="gray30",         
         ylab='Bill Length',         
         main = 'Boxplot',         
@@ -166,7 +177,7 @@ qqline(penguins$bill_length_mm,col='red',lwd=2)
 
 # Flipper lenght  
 # Boxplot 
-boxplot(penguins$bill_depth_mm,         
+boxplot(penguins$flipper_length_mm,         
         col=col_transp, border="gray30",         
         ylab='Flipper Length',         
         main = 'Boxplot',         
@@ -189,33 +200,35 @@ qqnorm(penguins$flipper_length_mm,
        main = 'QQ plot') 
 qqline(penguins$flipper_length_mm,col='red',lwd=2)  
 
-# Body mass 
+# Bill depth 
 # Boxplot 
 boxplot(penguins$bill_depth_mm,         
         col=col_transp, border="gray30",         
-        ylab='Body Mass',         
+        ylab='Bill Depth',         
         main = 'Boxplot',         
         notch=TRUE) 
 # Cleveland plot 
-dotchart(penguins$body_mass_g,          
+dotchart(penguins$bill_depth_mm,          
          pch=16,          
          col=col_transp,          
-         xlab='Body Mass',          
+         xlab='Bill Depth',          
          main = 'Cleveland plot') 
 # Histogram 
-hist(penguins$body_mass_g,      
+hist(penguins$bill_depth_mm,      
      col=col_transp,     
-     xlab="Body Mass",      
+     xlab="Bill Depth",      
      main="Histogram") 
 # Quantile-Quantile plot 
-qqnorm(penguins$body_mass_g,        
+qqnorm(penguins$bill_depth_mm,        
        pch=16,        
        col=col_transp,xlab='',        
        main = 'QQ plot') 
-qqline(penguins$body_mass_g,col='red',lwd=2)
+qqline(penguins$bill_depth_mm,col='red',lwd=2)
 ```
 
-There appear to be no outliers for any of the quantitative variables. From the Cleveland plot, we can observe two distinct clusters for the bill length variable, which may be related to sexual dimorphism. This distinct distribution is also visible in the corresponding histogram. For flipper length, two main peaks are observed, but the Cleveland plot reveals three distinct clusters. Similarly, the body mass variable shows three clusters, even though the histogram displays only a single peak. All variables seem to follow a Gaussian distribution, although this assumption is not required for the Y variable in our model. Nevertheless, visualizing the distributions of the quantitative X variables allows us to formulate hypotheses regarding species differences and sexual dimorphism.
+There appear to be no outliers for any of the quantitative variables. From the Cleveland plot, we can observe two distinct clusters for the bill length variable, which may be related to sexual dimorphism. This distinct distribution is also visible in the corresponding histogram. For flipper length, two main peaks are observed, but the Cleveland plot reveals three distinct clusters. Similarly, the bill depth variable shows three clusters, even though the histogram displays only a single peak. All variables seem to follow a Gaussian distribution. Visualizing the distributions of the quantitative $X$ variables allows us to formulate hypotheses regarding species differences and sexual dimorphism.
+
+### 3. **Number of Levels and Individuals per Level of Qualitative Predictors (\$X\$)**
 
 ```{r data_qualitative_explain_variables, echo = F}
 summary(penguins$species) 
@@ -225,7 +238,7 @@ summary(penguins$sex)
 
 Some groups are under-represented, particularly within the island and species categories. We will exclude island from the model due to this imbalance. However, we will retain species, as it may capture important differences between groups.
 
-## iii) Analyse the potential relation between Y and Xs
+### **4. Analysis of the Potential Relationships Between \$Y\$ and the \$X\$s**
 
 ```{r data_exploration_relation, echo = F, fig.height=8, fig.width=6}
 par(mfrow=c(3,2)) 
