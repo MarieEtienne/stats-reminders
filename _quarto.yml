@@ -32,7 +32,7 @@ website:
       - text: "Differential Equation"
         menu:
         - ode.qmd
-        - pde.qmd 
+        - EDO_LOTKA_VOLTERRA.qmd 
 
 
 format:
