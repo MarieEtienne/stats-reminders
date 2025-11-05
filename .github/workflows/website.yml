@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Install R packages
         run: |
-          Rscript -e "install.packages(c('RefManageR', 'wesanderson', 'palmerpenguins'))"
+          Rscript -e "install.packages(c('RefManageR', 'wesanderson', 'palmerpenguins','dplyr','readr', 'stringi', 'ggplot2', 'vegan', 'tidyr', 'gridtext', 'ggtext','FactoMineR','ade4','factoextra','knitr'))"
       - name: Generate slides
         run: "quarto render"
       - name: GitHub Pages action
