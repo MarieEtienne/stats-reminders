@@ -173,7 +173,9 @@ Now that the function is defined, we can use the package '**phaseR**' to draw a 
 #| fig-show: 'asis'  
 #| results: 'hide'
 #| warning: false
+# Loading the library
 library(phaseR)
+# Defining the limit for the studied window by flowField
 xlim <- c(0, 50)
 ylim <- c(0, 50)  
 ```
@@ -183,6 +185,7 @@ ylim <- c(0, 50)
 #| fig-show: 'asis'  
 #| results: 'hide'
 #| warning: false
+# Generating a phase plan for our equation 
 flowField(
   deriv = Proiepred,
   xlim = xlim,
@@ -192,6 +195,7 @@ flowField(
   add=FALSE,
   tend=100
   )
+# Generating the isoclines for our equation
 nullclines(Proiepred,xlim=c(-10,100),ylim=c(-10,100),parameters = parameters1, points = 500,add.legend = FALSE,add = TRUE)
 ```
 
