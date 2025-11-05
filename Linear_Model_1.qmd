@@ -48,7 +48,7 @@ Another important aspect to consider is that for this type of model to be valid,
 
 These conditions are systematically verified after modeling : the verification will be illustrated in the following example.
 
-### Data presentation and objectives 
+### Data presentation and objectives
 
 ![Adelie Penguins from Petrel Island - Adelie Land - C. Cornec (IPEV/CNRS/CSM)](Adelie_Penguins.jpg)
 
@@ -397,3 +397,28 @@ mod_penguins<-lm(body_mass_g ~ bill_length_mm
 #We check for significance
 drop1(mod_penguins,test="F")
 ```
+
+Now, we have to select the significant terms of the model, based on the AIC, with a forward-backward selection method.
+
+```{r}
+library(MASS)
+mod_final <- stepAIC(mod_penguins, direction = "both")
+```
+
+We can then use the coefficient given by the model :
+
+```{r}
+summary(mod_final)
+```
+
+We can write the full model :
+
+$$ Body\:mass = -2357,33 \:+\: 19,67.Bill\:length\:+\: 105,46.Bill\:depth\\ \:+\: 16,69.Flipper\:length \:-\: 87,13.Species\:Chinstrap \:+\: 1088,53.Species\:Gentoo\\ \:+\: 1605,64.Sex\:male \:-\: 360,63.Species\:Chinstrap:Sex\:male\\ \:-\: 173,40.Species\:Gentoo:Sex\:male \:-\: 63,11.Bill\:depth:Sex\:male$$
+
+We can explain the part of the variance explained by the model, by using the adjusted R\^2\^.
+
+```{r}
+summary(mod_final)
+```
+
+The value of the adjusted R\^2\^ is equal to 0.88. It means that 88% of the variance of the body mass of penguins is explained by the relation given by mod_final.
