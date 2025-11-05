@@ -145,18 +145,24 @@ The first step to numerical approximation of equilibrium point and drawing a pha
 #| fig-show: 'hide'  
 #| results: 'hide'
 Proiepred<- function(t, y, parameters) {
+  # Here we define the initial condition from the vector
+  # The order of initial condition must be the following : y=c(prey,predator)
   N <- y[1]
   P <- y[2]
+  # Here we define the parameter from the vector
+  # The order must be the following : parameters=c(r1,r2,b1,b2,K)
   r1 <- parameters[1]
   r2 <- parameters[2]
   b1 <- parameters[3]
   b2 <- parameters[4]
   K <- parameters[5]
+  # On implémente nos équations différentielles
   dPop <- numeric(2)
   dPop[1] <- r1*N*(1-N/K) - b1*N*P
   dPop[2] <- - r2*P + b2*N*P
   list(dPop)
 }
+#On définit nos paramètres
 parameters1 <- c(r1 = 0.5, r2 = 0.3, b1 = 0.02, b2 = 0.01,K=50)
 ```
 
