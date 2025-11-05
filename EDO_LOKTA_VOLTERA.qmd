@@ -67,11 +67,13 @@ simul_traj <- function(N_0,P_0,t_end,pas,r1,b1,r2,b2,K){
 }
 ```
 
+**MAIN QUESTION :** How can we model the evolution of the dynamics between lynxes and hares ?
+
 **INTRODUCTION** :
 
 When having a dynamic system modeled by an ODE, we usually can't find a mathematical solution. Thus, we have 2 options : a numerical approach and a qualitative one. Here, we will focus on the latter, that is to say qualitatively predict the evolution (in terms of behavior) of N(t) (the number of the population at time t), in particular asymptotically.
 
-Looking at lynx and hare pelts from the Hudson's Bay Company's (fur-collecting) trappers' hunts over a 90-year period, we see that the number of hare and lynx pelts is correlated. If we assume that the number of pelts collected is proportional to the total population, then we arrive at the conclusion that the hare and lynx population is correlated with a phase shift of a few years for the lynx (Elton & Nicholson).
+Looking at lynx and hare pelts from the Hudson's Bay Company's (fur-collecting) trappers' hunts over a 90-year period, we see that the number of hare and lynx pelts is correlated. If we assume that the number of pelts collected is proportional to the total population, then we arrive at the conclusion that the hare and lynx population is correlated with a phase shift of a few years for the lynx (Elton & Nicholson, 1942).
 
 What is the intuition behind this? Lynxes need hares to survive, and so the lynx population can only grow if the hare population grows. There's a time lag: when the lynx population is low, the hare population begins to grow. The lynxes then begin to have food again, and will then grow again and begin to massacre a large part of the hare population, only to run out of food. Then the cycle begins again.
 
@@ -110,19 +112,23 @@ The parameters are the following ones (they are all positive :) ) :
 | $b_{2}$    | predation yield                     |
 | ${K}$      | biotic capacity                     |
 
-In such conditions, we expect the populations dynamics to evolve in different ways according to parameters value and initials conditions (the size of both population). We can relatively easily assume that a big predator's population paired with a high predation efficiency would lead prey's population to go extinct and, shortly after, predator's population is expected to follow the same dynamic. The question we may now ask ourselves is the following : how would the system evolve according to parameters and initials conditions variation? This is where qualitative analysis steps in. But first let's do a little bit of math.
+In such conditions, we expect the populations dynamics to evolve in different ways according to parameters value and initials conditions (the size of both population). We can relatively easily assume that a big predator's population paired with a high predation efficiency would lead prey's population to go extinct and, shortly after, predator's population is expected to follow the same dynamic. The question we may now ask ourselves is the following :
+
+How would the system evolve according to parameters and initials conditions variation?
+
+This is where qualitative analysis steps in. But first let's do a little bit of math.
 
 **Equilibrium points and isoclines**
 
-Let's start with a bit of vocabulary, in qualitative analysis we call equilibrium points all value of N for which the derivative is 0. Mathematicaly it's expressed as following : $$
+Let's start with a bit of vocabulary, in qualitative analysis we call equilibrium points all values of N for which the derivative is 0. Mathematically it's expressed as following : $$
 \frac{dN}{dt}=0\;\Longleftrightarrow\;f(N^{*})=0 \\
 \text{with}\;\ \frac{dN}{dt}=f(N)
-$$ For equation system such as Lokta-Voltera it would be as following : $$
+$$ For equation system such as Lotka-Volterra it would be as following : $$
 \begin{cases} \frac{dN_{1}}{dt}=0 \\ \frac{dN_{2}}{dt}=0 \end{cases} \;\Longleftrightarrow\; \begin{cases} f_{1}(N1^{*},N2^{*})=0 \\ f_{2}(N1^{*},N2^{*})=0 \end{cases}\\
 \text{with}\;\ \begin{cases} \frac{dN_{1}}{dt}=f_{1}(N1,N2) \\ \frac{dN_{2}}{dt}=f_{2}(N1,N2) \end{cases}
 $$ Those equilibrium points carry the information about the population sizes at which the system does not change. They can be either stable (LAS) unstable (repeller) and in the case the system has more than one differential equation, saddle points may appear. Around LAS points, system will go towards the equilibrium, around repeller points, system will tend to move away from equilibrium. As for saddle points, depending on the area the system will go toward or away the equilibrium points.
 
-In contrast to equilibrium points, where all derivative must be equal to zero, isoclines correspond to lines for which an equation of the system is individually equal to zero. Mathematicaly it's expressed as following :
+In contrast to equilibrium points, where all derivative must be equal to zero, isoclines correspond to lines for which an equation of the system is individually equal to zero. Mathematically it's expressed as following :
 
 $$
 \text{Isoclines $N_{1}$ :} \\
@@ -138,25 +144,31 @@ All of that is analytically calculable for some systems of differential equation
 
 **Numerical approximation of equilibrium points and phase plane**
 
-The first step to numerical approximation of equilibrium point and drawing a phase plan is to define the function, following the syntaxe below. We also define some parameter value for our function.
+The first step to numerical approximation of equilibrium points and drawing a phase plan is to define the function, following the syntaxe below. We also define some parameter values for our function.
 
 ```{r}
 #| echo: true   
 #| fig-show: 'hide'  
 #| results: 'hide'
 Proiepred<- function(t, y, parameters) {
+  # Here we define the initial condition from the vector
+  # The order of initial condition must be the following : y=c(prey,predator)
   N <- y[1]
   P <- y[2]
+  # Here we define the parameter from the vector
+  # The order must be the following : parameters=c(r1,r2,b1,b2,K)
   r1 <- parameters[1]
   r2 <- parameters[2]
   b1 <- parameters[3]
   b2 <- parameters[4]
   K <- parameters[5]
+  # On implémente nos équations différentielles
   dPop <- numeric(2)
   dPop[1] <- r1*N*(1-N/K) - b1*N*P
   dPop[2] <- - r2*P + b2*N*P
   list(dPop)
 }
+#On définit nos paramètres
 parameters1 <- c(r1 = 0.5, r2 = 0.3, b1 = 0.02, b2 = 0.01,K=50)
 ```
 
@@ -167,7 +179,9 @@ Now that the function is defined, we can use the package '**phaseR**' to draw a 
 #| fig-show: 'asis'  
 #| results: 'hide'
 #| warning: false
+# Loading the library
 library(phaseR)
+# Defining the limit for the studied window by flowField
 xlim <- c(0, 50)
 ylim <- c(0, 50)  
 ```
@@ -177,6 +191,7 @@ ylim <- c(0, 50)
 #| fig-show: 'asis'  
 #| results: 'hide'
 #| warning: false
+# Generating a phase plan for our equation 
 flowField(
   deriv = Proiepred,
   xlim = xlim,
@@ -186,19 +201,22 @@ flowField(
   add=FALSE,
   tend=100
   )
+# Generating the isoclines for our equation
 nullclines(Proiepred,xlim=c(-10,100),ylim=c(-10,100),parameters = parameters1, points = 500,add.legend = FALSE,add = TRUE)
 ```
 
-From this graphic we could already interpret about the isoclines and the equilibrium point. We can also use the function *findEquilibrium* to discuss those equilibrium points. We can approximate the equilibrium points from the graphic, looking at the intersect of isoclines
+From this graphic we could already interpret the isoclines and the equilibrium point. We can also use the function *findEquilibrium* to discuss those equilibrium points. We can approximate the equilibrium points from the graphic, looking at the intersect of isoclines.
 
 ```{r}
 #| echo: true   
 #| fig-show: 'hide'  
 #| results: 'asis'
 #| warning: false
-
+# Approximating the equilibrium point around the isocline intersection at (0,0)
 eq0 <- findEquilibrium(Proiepred, y0 = c(N=0, P=0), parameters = parameters1)
+# Approximating the equilibrium point around the isocline intersection at (30,15)
 eq1 <- findEquilibrium(Proiepred, y0 = c(N=30, P=15), parameters = parameters1)
+# Approximating the equilibrium point around the isocline intersection at (50,0)
 eq2 <- findEquilibrium(Proiepred, y0 = c(N=50, P=0), parameters = parameters1)
 ```
 
@@ -207,16 +225,17 @@ eq2 <- findEquilibrium(Proiepred, y0 = c(N=50, P=0), parameters = parameters1)
 #| fig-show: 'hide'  
 #| results: 'markup'
 #| warning: false
+# Showing the classification result
 list(eq0_classification = eq0$classification,
      eq1_classification = eq1$classification,
      eq2_classification = eq2$classification)
 ```
 
-We can now see that there is three equilibrium points for the Lotka-Voltera logistic function, two of them are saddle : (0,0) , (50, 0). The equilibrium points at (30,10) is a stable point, both population will tend to stabilize around the third equlibrium point as time goes on.
+We can now see that there is three equilibrium points for the Lotka-Volterra logistic function, two of them are saddle : (0,0) , (50, 0). The equilibrium points at (30,10) is a stable point, both population will tend to stabilize around the third equlibrium point as time goes on.
 
 We may now question ourselves, what is the impact of initial parameters for our system?
 
-Let's repeat the process but with different parameters value :)
+Let's repeat the process but with different parameters values :)
 
 ```{r}
 #| echo: true   
@@ -238,7 +257,7 @@ flowField(
 nullclines(Proiepred,xlim=c(-10,100),ylim=c(-10,100),parameters = parameters2, points = 500,add.legend = FALSE,add = TRUE)
 ```
 
-After changing the parameter value, it now appears that there is only two equilibrium points! But what about their stability?
+After changing the parameter values, it now appears that there is only two equilibrium points! But what about their stability?
 
 ```{r}
 #| warning: false
@@ -259,9 +278,9 @@ The equilibrium point at (0,0) is still a saddle point, both population aren't s
 
 What truly change here?
 
-When going from the first set of parameters to the second we changed a ratio, we went from r2 \< K\*b2 to r2\>K\*b2. Phrased differently, we went from a situation where the natural loss in predator population was less than what is gained if the prey population is at the maximum of environmental capacity to a situation where the natural loss exceed the gain.
+When going from the first set of parameters to the second we changed a ratio, we went from r2 \< K\*b2 to r2\>K\*b2. Phrased differently, we went from a situation where the natural loss in predator population was less than what is gained if the prey population is at the maximum of environmental capacity to a situation where the natural loss exceeds the gain.
 
-When doing numerical approximation of a system, it is important to consider the variation induced by the parameters value. In order to do so, the best way remain the analytic approach.
+When doing numerical approximation of a system, it is important to consider the variation induced by the parameters values. In order to do so, the best way remain the analytic approach.
 
 ***Bonus :*** We lied !! In the end, for those who are interested, we are going to describe the analytic approach.
 
