@@ -206,9 +206,11 @@ From this graphic we could already interpret about the isoclines and the equilib
 #| fig-show: 'hide'  
 #| results: 'asis'
 #| warning: false
-
+# Approximating the equilibrium point around the isocline intersection at (0,0)
 eq0 <- findEquilibrium(Proiepred, y0 = c(N=0, P=0), parameters = parameters1)
+# Approximating the equilibrium point around the isocline intersection at (30,15)
 eq1 <- findEquilibrium(Proiepred, y0 = c(N=30, P=15), parameters = parameters1)
+# Approximating the equilibrium point around the isocline intersection at (50,0)
 eq2 <- findEquilibrium(Proiepred, y0 = c(N=50, P=0), parameters = parameters1)
 ```
 
@@ -217,6 +219,7 @@ eq2 <- findEquilibrium(Proiepred, y0 = c(N=50, P=0), parameters = parameters1)
 #| fig-show: 'hide'  
 #| results: 'markup'
 #| warning: false
+# Showing the classification result
 list(eq0_classification = eq0$classification,
      eq1_classification = eq1$classification,
      eq2_classification = eq2$classification)
