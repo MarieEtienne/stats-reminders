@@ -47,7 +47,7 @@ Description of the quantitative variables :
 -   rPLE : relative Posterior Lateral Eyes (colored in green in @fig1)
 
 ::: {#fig1 style="text-align:center"}
-![Figure 1 — Typical arrangements of spider eyes and their modification across spider families](arrangements_of_spider_eyes.jpg){width="50%"}
+![Figure 1 --- Typical arrangements of spider eyes and their modification across spider families](arrangements_of_spider_eyes.jpg){width="50%"}
 :::
 
 ```{r}
@@ -76,7 +76,7 @@ library(ggplot2) #to plot the results
 
 ## PCA Analysis
 
-We use the **PCA** function from *FactoMineR* (@factominer_le2008). Through a linear algebra decomposition called the **singular value decomposition** (SVD), PCA identifies orthogonal directions in the data space—**the principal components**—ordered by the amount of variance they explain, with the first component capturing the maximum variance, the second capturing the next highest variance while being uncorrelated with the first, and so on.
+We use the **PCA** function from *FactoMineR* (@factominer_le2008). Through a linear algebra decomposition called the **singular value decomposition** (SVD), PCA identifies orthogonal directions in the data space---**the principal components**---ordered by the amount of variance they explain, with the first component capturing the maximum variance, the second capturing the next highest variance while being uncorrelated with the first, and so on.
 
 ```{r}
 res.pca <- PCA(spiders,
@@ -159,7 +159,7 @@ The two first axis explain more than 86% of the total variance so only two main 
 Only well projected variables and individuals can be interpreted. The sum of cos2 on Dim.1 and Dim.2 should be around 1.
 
 ```{r}
-#| label: var_contrib
+#| label: tabl_cos
 #| fig-cap: "Projection quality of variables and individuals"
 #| fig-subcap: 
 #| - "Table of cos2 for each variables"
@@ -177,7 +177,6 @@ We can also see how the variables contribute to the the two principal components
 #| label: var_contrib
 #| fig-cap: "Contribution of variables to the axes"
 #| fig-subcap: 
-#| - "Table of cos2 for each variables"
 #| - "Table of contribution of variables to the axes"
 #| - "PCA variable correlation plot" 
 
@@ -189,7 +188,7 @@ fviz_pca_var(res.pca,
              title = "PCA variable correlation plot") #show how relative eyed sizes are correlated
 ```
 
-All variables are contributing a lot to the first axis. However, lateral eyes (rALE and rPLE ) explain the best the axis with contributions higher than 30%. On the other hand, medium eyes (rAME and rPME) explain the second axis with contributions respectively equal to 54% and 44%.
+All variables are contributing a lot to the first axis. However, lateral eyes (rALE and rPLE) explain the best the axis with contributions higher than 30%. On the other hand, medium eyes (rAME and rPME) explain the second axis with contributions respectively equal to 54% and 44%.
 
 We can also plot the individuals into principal component space.
 
@@ -197,7 +196,7 @@ We can also plot the individuals into principal component space.
 #| label: indiviual_graph
 #| fig-cap: "Scatterplot of individuals on the two main axes"
 
-fviz_pca_ind(res.pca,,
+fviz_pca_ind(res.pca,
              geom.ind = "point",
              label = "none",
              habillage = spiders$Family, #to see if a family looks to contribute more to the axis
@@ -211,7 +210,7 @@ The individuals are mainly distributed along the first axis which can be interpr
 Because there are 106 families of species, we will concentrate only on the first height most frequent family in order to have a clearer vision.
 
 ```{r}
-#| label: indiviual_graph
+#| label: indiviual_graph_selectind
 #| fig-cap: "Scatterplot of individuals of the first height most frequent family on the two main axes"
 
 top_families <- names(sort(table(spiders$Family), decreasing = TRUE))[1:8] #only frequent families to have a clearer graph
@@ -263,7 +262,7 @@ head(sort(res.pca$ind$contrib[,2], decreasing = TRUE), 10)
 When we visualise families, it looks like individuals from the *Salticidae* are atypical individuals because they are far on the first axis. In fact, looking at the contributions just above, those individuals have the highest contributions. For the first and the second axis, 7 out of 10 individuals are in the family *Salticidae*.
 
 ::: {style="text-align:center"}
-![Figure 2 — Family *Salticidae* contributing the most to explained variance.](Salticidae.jpg){width="50%"}
+![Figure 2 --- Family *Salticidae* contributing the most to explained variance.](Salticidae.jpg){width="50%"}
 :::
 
 ## Conclusion
