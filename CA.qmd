@@ -34,7 +34,7 @@ Two R packages can be used to perform CA : *ade4* (@ade4_dray2007) and *FactoMin
 
 ## Ecological context
 
-A study was conducted in 2022 on the permanent wetlands of the municipality of Grabels (34), as part of a Municipal Biodiversity Atlas (@ABC_macroinv2022). The aim was to characterize the state of these environments using bioindicator species : benthic macroinvertebrates (@fig-CA_macroinvertebrates). This taxon, which is sensitive to pollution, can be used to study water quality (ref).\
+A study was conducted in 2022 on the permanent wetlands of the municipality of Grabels (34), as part of a Municipal Biodiversity Atlas (@ABC_macroinv2022). The aim was to characterize the state of these environments using bioindicator species : benthic macroinvertebrates (@fig-CA_macroinvertebrates). This taxon, which is sensitive to pollution, can be used to study water quality.
 
 #### Imports
 
@@ -488,6 +488,10 @@ table.value(macroinv_red[,-c(1,2)][order(CA_ade4_sansbassin$li[,1]),
                                    order(CA_ade4_sansbassin$co[,1])], 
             grid = T, csize = 0.5, clabel.col = 0.6)
 ```
+
+This table value shows predation events, each square representing the detection of prey DNA in a predator. square size varies with abondance of the prey. On the first table (@fig-CA_tablevalues-1) - which includes the 3 bassin stations - we can see that the predation profils are highly impacted by the peculiar macroinvertebrate composition of said stations. Indeed,
+
+When we get rid of these stations (@fig-CA_tablevalues-2), it reveals predation dynamics that couldn't be seen. The most obvious is the bivalve predation in the first sations, which is likely due to their prevalence in "Ruche" stations. The graph also shows that predation pressure on *Culicidae* is similar in all stations. For *Physidae*, we observe the same tendency although there is no predation on the station "Rieu_Querelle". Some species are only predated in a few, or even a single station. Tha is the case for *Hydrobiidae* which are only predated in one sample of "Foot_2". Finally, predation on *Baetidae* is really high on the "Verdanson" Stations.
 
 ### Species distribution
 
