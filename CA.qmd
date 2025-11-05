@@ -517,16 +517,8 @@ The **size of the ellipse** corresponds to the **width of the ecological niche**
 
 ### Sites distribution
 
-```{r}
-#| label: fig-CA_CAsites_distrib
-#| fig-cap: Site distribution in samples on Axis 1 and 2 of the CA
+Similarly, we can project the distribution of sites. Each point corresponds to the coordinates of a family. For a given site, the families present on that site are connected, and the barycenter of these families' coordinates form the site's position in the CA (@fig-CA_CAwetland_position)
 
-#macroinv_red_sansbassin <- macroinv_red[-c(27,28,29),-c(1, 2)]
-#s.distri(CA_ade4_sansbassin$co, macroinv_red_sansbassin[5],sub = "Site 5", csub = 2)
-```
-
-Similarly, we can project the distribution of sites (\@fig-CA_CAsites_distrib). Here, each point corresponds to the coordinates of a family. For a given site, the families present on that site are connected, and the barycenter of these families' coordinates forms the site's position in the CA (@fig-CA_CAwetland_position)
-
-Here, the **size of the ellipses** can be interpreted as the **alpha diversity** (i.e., species richness) present at a site : the larger the ellipse, the more families it will contain.
+The **size of the ellipses** can be interpreted as the **alpha diversity** (i.e., species richness) present at a site : the larger the ellipse, the more families it will contain.
 
 # Conclusion
