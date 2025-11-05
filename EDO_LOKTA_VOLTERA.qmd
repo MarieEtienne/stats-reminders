@@ -62,7 +62,7 @@ simul_traj <- function(N_0,P_0,t_end,pas,r1,b1,r2,b2,K){
   
   ##plot
   plot <- ggplot(data,aes(x=time,y=number,color=specie,group=specie)) +
-    geom_line()
+    geom_line() + labs(title="Evolution of prey and predator populations through time")
   plot
 }
 ```
