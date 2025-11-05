@@ -5,13 +5,21 @@ editor: visual
 ---
 
 ```{r}
+#| echo: true   # ne montre pas le code
+#| fig-show: 'hide'  # affiche les graphiques
+#| results: 'hide'   # cache les sorties texte
 ## Packages
-library(ggplot2)
-library(dplyr)
-library(tidyr)
+suppressPackageStartupMessages({
+  library(ggplot2)
+  library(dplyr)
+  library(tidyr)
+})
 ```
 
 ```{r}
+#| echo: false   
+#| fig-show: 'hide'  
+#| results: 'hide'   
 ##Trajectory simulation function using the Lotka-Volterra equation.
 prey_equation <- function(N,P,r1,b1,K){
   return(r1*N*(1-(N/K))-b1*N*P)
@@ -68,6 +76,9 @@ Looking at lynx and hare pelts from the Hudson's Bay Company's (fur-collecting) 
 What is the intuition behind this? Lynxes need hares to survive, and so the lynx population can only grow if the hare population grows. There's a time lag: when the lynx population is low, the hare population begins to grow. The lynxes then begin to have food again, and will then grow again and begin to massacre a large part of the hare population, only to run out of food. Then the cycle begins again.
 
 ```{r}
+#| echo: false   
+#| fig-show: 'asis'  
+#| results: 'hide'
 ##An exemple of a prey-predator dynamic
 simul_traj(N_0= 50,
            P_0= 5,
@@ -127,7 +138,12 @@ All of that is analytically calculable for some systems of differential equation
 
 **Numerical approximation of equilibrium points and phase plane**
 
+The first step to numerical approximation of equilibrium point and drawing a phase plan is to define the function, following the syntaxe below. We also define some parameter value for our function.
+
 ```{r}
+#| echo: true   
+#| fig-show: 'hide'  
+#| results: 'hide'
 Proiepred<- function(t, y, parameters) {
   N <- y[1]
   P <- y[2]
@@ -135,12 +151,117 @@ Proiepred<- function(t, y, parameters) {
   r2 <- parameters[2]
   b1 <- parameters[3]
   b2 <- parameters[4]
+  K <- parameters[5]
   dPop <- numeric(2)
-  dPop[1] <- r1*N - b1*N*P
+  dPop[1] <- r1*N*(1-N/K) - b1*N*P
   dPop[2] <- - r2*P + b2*N*P
   list(dPop)
 }
+parameters1 <- c(r1 = 0.5, r2 = 0.3, b1 = 0.02, b2 = 0.01,K=50)
 ```
+
+Now that the function is defined, we can use the package '**phaseR**' to draw a phase plan and draw the isocline using function *flowField* and *nullclines*.
+
+```{r}
+#| echo: true   
+#| fig-show: 'asis'  
+#| results: 'hide'
+#| warning: false
+library(phaseR)
+xlim <- c(0, 50)
+ylim <- c(0, 50)  
+```
+
+```{r}
+#| echo: true   
+#| fig-show: 'asis'  
+#| results: 'hide'
+#| warning: false
+flowField(
+  deriv = Proiepred,
+  xlim = xlim,
+  ylim = ylim,
+  parameters = parameters1,
+  system="two.dim",
+  add=FALSE,
+  tend=100
+  )
+nullclines(Proiepred,xlim=c(-10,100),ylim=c(-10,100),parameters = parameters1, points = 500,add.legend = FALSE,add = TRUE)
+```
+
+From this graphic we could already interpret about the isoclines and the equilibrium point. We can also use the function *findEquilibrium* to discuss those equilibrium points. We can approximate the equilibrium points from the graphic, looking at the intersect of isoclines
+
+```{r}
+#| echo: true   
+#| fig-show: 'hide'  
+#| results: 'asis'
+#| warning: false
+
+eq0 <- findEquilibrium(Proiepred, y0 = c(N=0, P=0), parameters = parameters1)
+eq1 <- findEquilibrium(Proiepred, y0 = c(N=30, P=15), parameters = parameters1)
+eq2 <- findEquilibrium(Proiepred, y0 = c(N=50, P=0), parameters = parameters1)
+```
+
+```{r}
+#| echo: false   
+#| fig-show: 'hide'  
+#| results: 'markup'
+#| warning: false
+list(eq0_classification = eq0$classification,
+     eq1_classification = eq1$classification,
+     eq2_classification = eq2$classification)
+```
+
+We can now see that there is three equilibrium points for the Lotka-Voltera logistic function, two of them are saddle : (0,0) , (50, 0). The equilibrium points at (30,10) is a stable point, both population will tend to stabilize around the third equlibrium point as time goes on.
+
+We may now question ourselves, what is the impact of initial parameters for our system?
+
+Let's repeat the process but with different parameters value :)
+
+```{r}
+#| echo: true   
+#| fig-show: 'asis'  
+#| results: 'hide'
+#| warning: false
+parameters2 <- parameters1 <- c(r1 = 0.5, r2 = 0.3, b1 = 0.02, b2 = 0.01,K=25)
+xlim <- c(0, 50)  # N
+ylim <- c(0, 50)  # P
+flowField(
+  deriv = Proiepred,
+  xlim = xlim,
+  ylim = ylim,
+  parameters = parameters2,
+  system="two.dim",
+  add=FALSE,
+  tend=100
+  )
+nullclines(Proiepred,xlim=c(-10,100),ylim=c(-10,100),parameters = parameters2, points = 500,add.legend = FALSE,add = TRUE)
+```
+
+After changing the parameter value, it now appears that there is only two equilibrium points! But what about their stability?
+
+```{r}
+#| warning: false
+eq0 <- findEquilibrium(Proiepred, y0 = c(N=0, P=0), parameters = parameters2)
+eq1 <- findEquilibrium(Proiepred, y0 = c(N=25, P=0), parameters = parameters2)
+```
+
+```{r}
+#| echo: false   
+#| fig-show: 'hide'  
+#| results: 'markup'
+#| warning: false
+list(eq0_classification = eq0$classification,
+     eq1_classification = eq1$classification)
+```
+
+The equilibrium point at (0,0) is still a saddle point, both population aren't supposed to go extinct. But the second equilibrium point changed a lot, it is a saddle point, with predator going towards extinction.
+
+What truly change here?
+
+When going from the first set of parameters to the second we changed a ratio, we went from r2 \< K\*b2 to r2\>K\*b2. Phrased differently, we went from a situation where the natural loss in predator population was less than what is gained if the prey population is at the maximum of environmental capacity to a situation where the natural loss exceed the gain.
+
+When doing numerical approximation of a system, it is important to consider the variation induced by the parameters value. In order to do so, the best way remain the analytic approach.
 
 ***Bonus :*** We lied !! In the end, for those who are interested, we are going to describe the analytic approach.
 
