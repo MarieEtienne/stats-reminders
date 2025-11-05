@@ -337,7 +337,7 @@ ggplot(inertie_cumulee_sansbassin) +
 
 ```
 
-It is interesting to look at the cumulative inertia to choose how many axis are interesting to keep. It is common to keep the first one to three or the ones that explain up to ????% of the inertia.
+It is interesting to look at the cumulative inertia to choose how many axis are interesting to keep. It is common to keep the first one to three or the ones that explain up to 50% of the inertia. But in ecology it can be hard to get to that percentage so it's okay if the inertia is not that high.
 
 Here we can see that when we remove the bassin the axis cumulatively explain more inertia (@fig-CA_eigcumul).
 
