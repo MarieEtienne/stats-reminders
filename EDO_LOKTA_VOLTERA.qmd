@@ -120,15 +120,15 @@ This is where qualitative analysis steps in. But first let's do a little bit of 
 
 **Equilibrium points and isoclines**
 
-Let's start with a bit of vocabulary, in qualitative analysis we call equilibrium points all value of N for which the derivative is 0. Mathematicaly it's expressed as following : $$
+Let's start with a bit of vocabulary, in qualitative analysis we call equilibrium points all values of N for which the derivative is 0. Mathematically it's expressed as following : $$
 \frac{dN}{dt}=0\;\Longleftrightarrow\;f(N^{*})=0 \\
 \text{with}\;\ \frac{dN}{dt}=f(N)
-$$ For equation system such as Lokta-Voltera it would be as following : $$
+$$ For equation system such as Lotka-Volterra it would be as following : $$
 \begin{cases} \frac{dN_{1}}{dt}=0 \\ \frac{dN_{2}}{dt}=0 \end{cases} \;\Longleftrightarrow\; \begin{cases} f_{1}(N1^{*},N2^{*})=0 \\ f_{2}(N1^{*},N2^{*})=0 \end{cases}\\
 \text{with}\;\ \begin{cases} \frac{dN_{1}}{dt}=f_{1}(N1,N2) \\ \frac{dN_{2}}{dt}=f_{2}(N1,N2) \end{cases}
 $$ Those equilibrium points carry the information about the population sizes at which the system does not change. They can be either stable (LAS) unstable (repeller) and in the case the system has more than one differential equation, saddle points may appear. Around LAS points, system will go towards the equilibrium, around repeller points, system will tend to move away from equilibrium. As for saddle points, depending on the area the system will go toward or away the equilibrium points.
 
-In contrast to equilibrium points, where all derivative must be equal to zero, isoclines correspond to lines for which an equation of the system is individually equal to zero. Mathematicaly it's expressed as following :
+In contrast to equilibrium points, where all derivative must be equal to zero, isoclines correspond to lines for which an equation of the system is individually equal to zero. Mathematically it's expressed as following :
 
 $$
 \text{Isoclines $N_{1}$ :} \\
