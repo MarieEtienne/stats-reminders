@@ -144,7 +144,7 @@ All of that is analytically calculable for some systems of differential equation
 
 **Numerical approximation of equilibrium points and phase plane**
 
-The first step to numerical approximation of equilibrium point and drawing a phase plan is to define the function, following the syntaxe below. We also define some parameter value for our function.
+The first step to numerical approximation of equilibrium points and drawing a phase plan is to define the function, following the syntaxe below. We also define some parameter values for our function.
 
 ```{r}
 #| echo: true   
@@ -205,7 +205,7 @@ flowField(
 nullclines(Proiepred,xlim=c(-10,100),ylim=c(-10,100),parameters = parameters1, points = 500,add.legend = FALSE,add = TRUE)
 ```
 
-From this graphic we could already interpret about the isoclines and the equilibrium point. We can also use the function *findEquilibrium* to discuss those equilibrium points. We can approximate the equilibrium points from the graphic, looking at the intersect of isoclines
+From this graphic we could already interpret the isoclines and the equilibrium point. We can also use the function *findEquilibrium* to discuss those equilibrium points. We can approximate the equilibrium points from the graphic, looking at the intersect of isoclines.
 
 ```{r}
 #| echo: true   
@@ -231,11 +231,11 @@ list(eq0_classification = eq0$classification,
      eq2_classification = eq2$classification)
 ```
 
-We can now see that there is three equilibrium points for the Lotka-Voltera logistic function, two of them are saddle : (0,0) , (50, 0). The equilibrium points at (30,10) is a stable point, both population will tend to stabilize around the third equlibrium point as time goes on.
+We can now see that there is three equilibrium points for the Lotka-Volterra logistic function, two of them are saddle : (0,0) , (50, 0). The equilibrium points at (30,10) is a stable point, both population will tend to stabilize around the third equlibrium point as time goes on.
 
 We may now question ourselves, what is the impact of initial parameters for our system?
 
-Let's repeat the process but with different parameters value :)
+Let's repeat the process but with different parameters values :)
 
 ```{r}
 #| echo: true   
@@ -257,7 +257,7 @@ flowField(
 nullclines(Proiepred,xlim=c(-10,100),ylim=c(-10,100),parameters = parameters2, points = 500,add.legend = FALSE,add = TRUE)
 ```
 
-After changing the parameter value, it now appears that there is only two equilibrium points! But what about their stability?
+After changing the parameter values, it now appears that there is only two equilibrium points! But what about their stability?
 
 ```{r}
 #| warning: false
@@ -278,9 +278,9 @@ The equilibrium point at (0,0) is still a saddle point, both population aren't s
 
 What truly change here?
 
-When going from the first set of parameters to the second we changed a ratio, we went from r2 \< K\*b2 to r2\>K\*b2. Phrased differently, we went from a situation where the natural loss in predator population was less than what is gained if the prey population is at the maximum of environmental capacity to a situation where the natural loss exceed the gain.
+When going from the first set of parameters to the second we changed a ratio, we went from r2 \< K\*b2 to r2\>K\*b2. Phrased differently, we went from a situation where the natural loss in predator population was less than what is gained if the prey population is at the maximum of environmental capacity to a situation where the natural loss exceeds the gain.
 
-When doing numerical approximation of a system, it is important to consider the variation induced by the parameters value. In order to do so, the best way remain the analytic approach.
+When doing numerical approximation of a system, it is important to consider the variation induced by the parameters values. In order to do so, the best way remain the analytic approach.
 
 ***Bonus :*** We lied !! In the end, for those who are interested, we are going to describe the analytic approach.
 
