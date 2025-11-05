@@ -217,4 +217,4 @@ ggplot(data_and_models, aes(x = time)) +
 
 # Conclusion
 
-Estimating model parameters is one of the main tasks of a modelor in ecology. We have explained and illustrated two methods to estimate the parameters of a logistic growth, which is a common approach in population dynamics.
+Estimating model parameters is one of the main tasks of a modelor in ecology. We have explained and illustrated two methods to estimate the parameters of a logistic growth, which is a common approach in population dynamics. There are other methods including Bayesian statistics we didn't developed in this document.
