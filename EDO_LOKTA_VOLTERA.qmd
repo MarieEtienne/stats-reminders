@@ -243,6 +243,7 @@ Let's repeat the process but with different parameters values :)
 #| results: 'hide'
 #| warning: false
 parameters2 <- parameters1 <- c(r1 = 0.5, r2 = 0.3, b1 = 0.02, b2 = 0.01,K=25)
+# Defining the limit for the studied window by flowField
 xlim <- c(0, 50)  # N
 ylim <- c(0, 50)  # P
 flowField(
