@@ -1,0 +1,2339 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>GENERALIZED LINEAR MIXED MODEL</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-169b6d0432b1a799c6e7691d07d1a7fb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="theme.scss">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/MarieEtienne/stats-reminders"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./instructions.html"> 
+<span class="menu-text">Instructions</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-two-examples" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Two examples</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-two-examples">    
+        <li>
+    <a class="dropdown-item" href="./r_chapter.html">
+ <span class="dropdown-text">Basic quarto cross ref example</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Penguins_chapter.html">
+ <span class="dropdown-text">Penguins example</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-linear-model" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Linear Model</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-linear-model">    
+        <li>
+    <a class="dropdown-item" href="./Linear_Model_1.html">
+ <span class="dropdown-text">Penguins</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Linear_Model_2.html">
+ <span class="dropdown-text">Badgers</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-factorial-analysis" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Factorial Analysis</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-factorial-analysis">    
+        <li class="dropdown-header">pca.qmd</li>
+        <li class="dropdown-header">cca.qmd</li>
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-differential-equation" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Differential Equation</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-differential-equation">    
+        <li class="dropdown-header">ode.qmd</li>
+        <li class="dropdown-header">pde.qmd</li>
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#general-introduction" id="toc-general-introduction" class="nav-link active" data-scroll-target="#general-introduction">GENERAL INTRODUCTION</a>
+  <ul class="collapse">
+  <li><a href="#generalities" id="toc-generalities" class="nav-link" data-scroll-target="#generalities">Generalities</a></li>
+  <li><a href="#structure-of-a-generalized-linear-model" id="toc-structure-of-a-generalized-linear-model" class="nav-link" data-scroll-target="#structure-of-a-generalized-linear-model">Structure of a Generalized Linear Model</a></li>
+  <li><a href="#from-glm-to-glmm" id="toc-from-glm-to-glmm" class="nav-link" data-scroll-target="#from-glm-to-glmm">From GLM to GLMM</a></li>
+  <li><a href="#data-presentation" id="toc-data-presentation" class="nav-link" data-scroll-target="#data-presentation">Data presentation</a></li>
+  <li><a href="#dataset-import" id="toc-dataset-import" class="nav-link" data-scroll-target="#dataset-import">DATASET IMPORT</a></li>
+  <li><a href="#data-exploration" id="toc-data-exploration" class="nav-link" data-scroll-target="#data-exploration"><strong>DATA EXPLORATION</strong></a>
+  <ul class="collapse">
+  <li><a href="#outliers-and-distribution-in-y" id="toc-outliers-and-distribution-in-y" class="nav-link" data-scroll-target="#outliers-and-distribution-in-y"><strong>1. Outliers and Distribution in $Y$</strong></a></li>
+  <li><a href="#outliers-and-distributions-of-quantitative-predictors-x" id="toc-outliers-and-distributions-of-quantitative-predictors-x" class="nav-link" data-scroll-target="#outliers-and-distributions-of-quantitative-predictors-x"><strong>2. Outliers and Distributions of Quantitative Predictors ($X$)</strong></a></li>
+  <li><a href="#categorical-variables-number-of-levels-and-individuals-per-level" id="toc-categorical-variables-number-of-levels-and-individuals-per-level" class="nav-link" data-scroll-target="#categorical-variables-number-of-levels-and-individuals-per-level"><strong>2. Categorical Variables: Number of Levels and Individuals per Level</strong></a></li>
+  <li><a href="#analysis-of-the-potential-relationships-between-y-and-the-xs" id="toc-analysis-of-the-potential-relationships-between-y-and-the-xs" class="nav-link" data-scroll-target="#analysis-of-the-potential-relationships-between-y-and-the-xs"><strong>3. Analysis of the Potential Relationships Between $Y$ and the $X$s</strong></a></li>
+  <li><a href="#analysis-of-possible-interactions-between-both-independent-variables" id="toc-analysis-of-possible-interactions-between-both-independent-variables" class="nav-link" data-scroll-target="#analysis-of-possible-interactions-between-both-independent-variables">4. Analysis of possible interactions between both independent variables</a></li>
+  <li><a href="#check-for-collinearity-between-predictors-xs" id="toc-check-for-collinearity-between-predictors-xs" class="nav-link" data-scroll-target="#check-for-collinearity-between-predictors-xs"><strong>5. Check for Collinearity Between Predictors ($X$s)</strong></a></li>
+  </ul></li>
+  <li><a href="#generalized-linear-mixed-model-glmm" id="toc-generalized-linear-mixed-model-glmm" class="nav-link" data-scroll-target="#generalized-linear-mixed-model-glmm">Generalized Linear Mixed Model (GLMM)</a>
+  <ul class="collapse">
+  <li><a href="#building-the-model" id="toc-building-the-model" class="nav-link" data-scroll-target="#building-the-model">Building the model</a></li>
+  <li><a href="#model-coefficients" id="toc-model-coefficients" class="nav-link" data-scroll-target="#model-coefficients">Model coefficients</a></li>
+  <li><a href="#significance-of-the-random-effect" id="toc-significance-of-the-random-effect" class="nav-link" data-scroll-target="#significance-of-the-random-effect">Significance of the random effect</a></li>
+  <li><a href="#part-of-the-variance-explained-by-the-model" id="toc-part-of-the-variance-explained-by-the-model" class="nav-link" data-scroll-target="#part-of-the-variance-explained-by-the-model">Part of the variance explained by the model</a></li>
+  <li><a href="#residual-analysis" id="toc-residual-analysis" class="nav-link" data-scroll-target="#residual-analysis">Residual analysis</a></li>
+  <li><a href="#model-predictions" id="toc-model-predictions" class="nav-link" data-scroll-target="#model-predictions">Model predictions</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">GENERALIZED LINEAR MIXED MODEL</h1>
+<p class="subtitle lead">BADGER EXAMPLE</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="general-introduction" class="level1">
+<h1>GENERAL INTRODUCTION</h1>
+<p>We present here a reminder sheet on Generalized Linear Mixed Models (GLMMs) and its specific features. Its use will be illustrated through a study applied on badgers from <span class="citation" data-cites="Walker2009">Walker et al. (<a href="#ref-Walker2009" role="doc-biblioref">2009</a>)</span> .</p>
+<p>Remark : the concepts covered are taken from our Master’s courses and tutorials, written and taught by <span class="citation" data-cites="A_Masson">AbelMasson (<a href="#ref-A_Masson" role="doc-biblioref">n.d.</a>)</span> and <span class="citation" data-cites="Y_Outreman">Outreman (<a href="#ref-Y_Outreman" role="doc-biblioref">n.d.</a>)</span> .</p>
+<section id="generalities" class="level3">
+<h3 class="anchored" data-anchor-id="generalities">Generalities</h3>
+<p>General Linear Models are used to describe the relationship between a continuous response <span class="math inline">\(Y\)</span> and one or more explanatory variables <span class="math inline">\(X_{1}\)</span>,<span class="math inline">\(X_{2}\)</span>…<span class="math inline">\(X_{p}\)</span>. They rely on three main assumptions : <em>independence of residuals</em>, <em>normality of residuals</em> and <em>homogeneity of variances</em>. However, in many cases, the response variable <span class="math inline">\(Y\)</span> is <strong>discrete</strong> (for example, counts or binary outcomes).</p>
+<p>For discrete responses, the variance of <span class="math inline">\(Y\)</span> typically depends on its mean-variance relationship. As a result, the variance is not constant across observations, invalidating the assumption of homogeneity required by linear models. Moreover, fitting a General Linear Model to count data can lead to negative predicted values and non-normal residuals. In shorts, General Linear Models are not well-suited for discrete responses. Hence, we need specific tools to analyse discrete response data. These are <strong>Generalized Linear Models (GLMs)</strong>.</p>
+</section>
+<section id="structure-of-a-generalized-linear-model" class="level3">
+<h3 class="anchored" data-anchor-id="structure-of-a-generalized-linear-model">Structure of a Generalized Linear Model</h3>
+<p>A GLM extends the classical linear model through three steps :</p>
+<ol type="1">
+<li><p>Assumption of the distribution of the response variable <span class="math inline">\(Y_{i}\)</span></p></li>
+<li><p>The specification of the systematic part; this is the linear function of the explanatory variables (the linear predictor called <span class="math inline">\(\eta\)</span>)</p></li>
+<li><p>The relationship between the mean value of <span class="math inline">\(Y_{i}\)</span> and the systematic part. This is also called the link between the mean and the systematic part: <strong>the link function noted</strong> <span class="math inline">\(g\)</span> .</p></li>
+</ol>
+<p>A Generalized Linear Model can be written as : <span class="math display">\[g(\mu_{y})= \alpha+ \beta_{1}.X{i1}+ \beta_{2}.X{i2}+\beta_{3}.X{i3}+...\beta_{p}.X{ip} = \eta \]</span></p>
+<p>The linear predictor <span class="math inline">\(\eta\)</span>, emerges from the linear model as a sum of the terms for each of the <span class="math inline">\(p\)</span> parameters. This is not a value of <span class="math inline">\(Y\)</span>. The value of <span class="math inline">\(\eta\)</span> is obtained by transforming the value of <span class="math inline">\(Y\)</span> by the link function, and the predicted value of <span class="math inline">\(Y\)</span> is obtained by applying the inverse link function to <span class="math inline">\(\eta\)</span>.</p>
+</section>
+<section id="from-glm-to-glmm" class="level3">
+<h3 class="anchored" data-anchor-id="from-glm-to-glmm">From GLM to GLMM</h3>
+<p>Depending on the sampling design or the experimental set-up, independence of residuals is often not respected : some statistical units are related. To account for this dependence structure, we can include <strong>random effects</strong> in the model.</p>
+<p>The resulting model, called Generalized Linear Mixed Model (GLMM) extends the GLM by adding these random effects alongside the fixed effects. Therefore, GLMMs allow us to model both the relationship between predictors and responses and the non-independence among observations.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.scottishspca.org/advice/badger/badger-sett/"><img src="images/Badger-wild-sett-2.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img"></a></p>
+</figure>
+</div>
+<figcaption>Badger picture from Scottish SPCA</figcaption>
+</figure>
+</div>
+</section>
+<section id="data-presentation" class="level2">
+<h2 class="anchored" data-anchor-id="data-presentation">Data presentation</h2>
+<p>The data used come from <span class="citation" data-cites="Walker2009a">(<a href="#ref-Walker2009a" role="doc-biblioref"><strong>Walker2009a?</strong></a>)</span> and consist of signs of badger (<em>Meles meles</em>) activity around farms located in the southwest of England, where badger density is high. This study was carried out in the context of bovine tuberculosis and its possible transmission to cattle through badgers. Reducing the number of farm visits by badgers — especially in places where they might come into contact with livestock — could help limit the spread of the disease. Thus, the aim of this study is to predict the occurrence of badger activity signs on farms.</p>
+<p>Between autumn 2003 and summer 2005, a survey was conducted on 36 different farms; the data are therefore longitudinal, since each farm was monitored over eight consecutive seasons. Within the same farm, observations may be temporally autocorrelated.</p>
+<p>The response variable (presence or absence of signs of badger activity) is binary: it takes the value 1 when signs of activity were detected, and 0 otherwise. Signs of activity include the presence of feces, setts, or feeding traces.</p>
+<p>The data are available in the file <code>Badger.txt</code>. The variables are:</p>
+<ul>
+<li><code>Year</code> : studied year</li>
+<li><code>Season</code> : 1 = spring, 2 = summer, 3 = autumn, 4 = winter</li>
+<li><code>farm_code_numeric</code> : farm identifier</li>
+<li><code>Survey</code> : survey identifier (time indicator)</li>
+<li><code>Signs_in_yard</code> : binary indicator of badger activity (response variable)</li>
+<li><code>No_setts_in_fields</code> : number of setts</li>
+<li><code>No_active_setts_in_fields</code> : number of actively occupied setts</li>
+<li><code>No_buildings</code> : number of buildings in the farm</li>
+<li><code>No_cattle_in_buildings_yard</code> : number of cattle in building yards</li>
+<li><code>Accessible_feed_store_present</code> : presence / absence of an accessible feed store</li>
+<li><code>Accessible_cattle_house_present</code> : presence / absence of a direct access to the cattle house</li>
+<li><code>Accessible_feed_present</code> : presence / absence of accessible feed in the farm</li>
+<li><code>Grass_silage</code> : presence / absence of grass silage</li>
+<li><code>Cereal_silage</code> : presence / absence of cereal silage</li>
+<li><code>HayStraw</code> : presence / absence of hay and / or straw</li>
+<li><code>Cereal_grains</code> : presence / absence of cereal grains</li>
+<li><code>Concentrates</code> : presence / absence of concentrates</li>
+<li><code>Proteinblocks</code> : presence / absence of protein blocks</li>
+<li><code>Sugarbeet</code> : presence / absence of sugar beet</li>
+<li><code>Vegetables</code> : presence / absence of vegetables</li>
+<li><code>Molasses</code> : presence / absence of molasses :::</li>
+</ul>
+</section>
+<section id="dataset-import" class="level2">
+<h2 class="anchored" data-anchor-id="dataset-import">DATASET IMPORT</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># library import</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>corrplot 0.95 loaded</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lme4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: Matrix</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rsq)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Dataset import</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>dataBadger <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"Badger.txt"</span>, <span class="at">dec=</span><span class="st">"."</span>, <span class="at">header =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Reduce name and change categorical variables as factor</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>dataBadger<span class="sc">$</span>Activity<span class="ot">&lt;-</span> dataBadger<span class="sc">$</span>signs_in_yard</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>dataBadger<span class="sc">$</span>N_setts<span class="ot">&lt;-</span>dataBadger<span class="sc">$</span>N_setts_in_fields</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>dataBadger<span class="sc">$</span>N_cattle<span class="ot">&lt;-</span>dataBadger<span class="sc">$</span>N_cattle_in_buildings_yard</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>dataBadger<span class="sc">$</span>season<span class="ot">&lt;-</span><span class="fu">as.factor</span>(dataBadger<span class="sc">$</span>season)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>dataBadger<span class="sc">$</span>feed_store<span class="ot">&lt;-</span><span class="fu">as.factor</span>(dataBadger<span class="sc">$</span>accessible_feed_store_present)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>dataBadger<span class="sc">$</span>cattle_house<span class="ot">&lt;-</span><span class="fu">as.factor</span>(dataBadger<span class="sc">$</span>accessible_cattle_house_present)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>dataBadger<span class="sc">$</span>feed<span class="ot">&lt;-</span><span class="fu">as.factor</span>(dataBadger<span class="sc">$</span>accessible_feed_present)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>dataBadger<span class="sc">$</span>grass<span class="ot">&lt;-</span><span class="fu">as.factor</span>(dataBadger<span class="sc">$</span>grass_silage)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>dataBadger<span class="sc">$</span>cereal<span class="ot">&lt;-</span><span class="fu">as.factor</span>(dataBadger<span class="sc">$</span>cereal_silage)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>dataBadger<span class="sc">$</span>straw<span class="ot">&lt;-</span><span class="fu">as.factor</span>(dataBadger<span class="sc">$</span>hay_straw)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>dataBadger<span class="sc">$</span>grains<span class="ot">&lt;-</span><span class="fu">as.factor</span>(dataBadger<span class="sc">$</span>cereal_grains)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>dataBadger<span class="sc">$</span>concen<span class="ot">&lt;-</span><span class="fu">as.factor</span>(dataBadger<span class="sc">$</span>concentrates)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>dataBadger<span class="sc">$</span>sugar<span class="ot">&lt;-</span><span class="fu">as.factor</span>(dataBadger<span class="sc">$</span>sugar_beet)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>dataBadger<span class="sc">$</span>molasses<span class="ot">&lt;-</span><span class="fu">as.factor</span>(dataBadger<span class="sc">$</span>molasses)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for presence of missing values</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(dataBadger))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                             ID                            year 
+                              0                               0 
+                         season                       farm_code 
+                              0                               0 
+                         survey                   signs_in_yard 
+                              0                               0 
+              N_setts_in_fields                     N_buildings 
+                              0                               0 
+     N_cattle_in_buildings_yard   accessible_feed_store_present 
+                              0                               0 
+accessible_cattle_house_present         accessible_feed_present 
+                              0                               0 
+                   grass_silage                   cereal_silage 
+                              0                               0 
+                      hay_straw                   cereal_grains 
+                              0                               0 
+                   concentrates                      sugar_beet 
+                              0                               0 
+                       molasses                        Activity 
+                              0                               0 
+                        N_setts                        N_cattle 
+                              0                               0 
+                     feed_store                    cattle_house 
+                              0                               0 
+                           feed                           grass 
+                              0                               0 
+                         cereal                           straw 
+                              0                               0 
+                         grains                          concen 
+                              0                               0 
+                          sugar 
+                              0 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># There is no missing value.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data-exploration" class="level2">
+<h2 class="anchored" data-anchor-id="data-exploration"><strong>DATA EXPLORATION</strong></h2>
+<p>Before carrying out any statistical modeling, it is essential to perform a thorough <strong>data exploration</strong>. This step helps identify potential issues such as outliers, collinearity, or imbalanced distributions that could bias the results or invalidate model assumptions.</p>
+<p>Below is a checklist of preliminary exploratory analyses to perform before modeling:</p>
+<ol type="1">
+<li><p><strong>Check for outliers and distribution of the dependent variable ($Y$).</strong></p></li>
+<li><p><strong>Check for outliers and distribution of the explicative variable ($X$). If $X$ is quantitative:</strong> assess the distribution and presence of outliers. <strong>If $X$ is qualitative:</strong> analyze the number of levels and the number of observations per level.</p></li>
+<li><p><strong>Explore the potential relationships between $Y$ and each $X_i$.</strong></p></li>
+<li><p><strong>Check for potential interactions between explanatory variables ($X_i$).</strong></p></li>
+<li><p><strong>Assess multicollinearity among the $X_i$ variables.</strong></p></li>
+</ol>
+<section id="outliers-and-distribution-in-y" class="level3">
+<h3 class="anchored" data-anchor-id="outliers-and-distribution-in-y"><strong>1. Outliers and Distribution in $Y$</strong></h3>
+<p>Since $Y$ is a binary variable, it does not have a continuous distribution. Instead, we inspect the frequency of each category (0 and 1) to check for imbalance in the response variable.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of 0 and 1 in Y</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(dataBadger<span class="sc">$</span>Activity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  0   1 
+233  45 </code></pre>
+</div>
+</div>
+</section>
+<section id="outliers-and-distributions-of-quantitative-predictors-x" class="level3">
+<h3 class="anchored" data-anchor-id="outliers-and-distributions-of-quantitative-predictors-x"><strong>2. Outliers and Distributions of Quantitative Predictors ($X$)</strong></h3>
+<p>For continuous independent variables, it is important to:</p>
+<ul>
+<li><p>Detect potential <strong>outliers</strong> (e.g., extreme or erroneous values)</p></li>
+<li><p>Visualize the <strong>shape of the distribution</strong> (e.g., normal, skewed, multimodal)</p></li>
+<li><p>Assess whether <strong>transformations</strong> (e.g., log, square root) might be needed before modeling</p></li>
+</ul>
+<p>The following visualizations help achieve this:</p>
+<ul>
+<li><p><strong>Cleveland dot plots</strong>: to identify potential outliers</p></li>
+<li><p><strong>Histograms</strong>: to visualize the overall distribution</p></li>
+<li><p><strong>Q-Q plots</strong>: to assess normality assumptions</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">3</span>))</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of badger setts on farm</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Cleveland plot</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dotchart</span>(dataBadger<span class="sc">$</span>N_setts,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'blue'</span>,<span class="at">xlab=</span><span class="st">'Number of setts'</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogram</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(dataBadger<span class="sc">$</span>N_setts,<span class="at">col=</span><span class="st">'blue'</span>,<span class="at">xlab=</span><span class="st">"Number of setts"</span>,<span class="at">main=</span><span class="st">""</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Quantile-Quantile plot</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(dataBadger<span class="sc">$</span>N_setts,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'blue'</span>,<span class="at">xlab=</span><span class="st">''</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="fu">qqline</span>(dataBadger<span class="sc">$</span>N_setts,<span class="at">col=</span><span class="st">'red'</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of buildings on farm</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Cleveland plot</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="fu">dotchart</span>(dataBadger<span class="sc">$</span>N_buildings,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'blue'</span>,<span class="at">xlab=</span><span class="st">'Number of buildings'</span>)</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogram</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(dataBadger<span class="sc">$</span>N_buildings,<span class="at">col=</span><span class="st">'blue'</span>,<span class="at">xlab=</span><span class="st">"Number of buildings"</span>,<span class="at">main=</span><span class="st">""</span>)</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Quantile-Quantile plot</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(dataBadger<span class="sc">$</span>N_buildings,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'blue'</span>,<span class="at">xlab=</span><span class="st">''</span>)</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="fu">qqline</span>(dataBadger<span class="sc">$</span>N_buildings,<span class="at">col=</span><span class="st">'red'</span>)</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of cattle housed in buildings on farm</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Cleveland plot</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="fu">dotchart</span>(dataBadger<span class="sc">$</span>N_cattle,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'blue'</span>,<span class="at">xlab=</span><span class="st">'Number of cattle'</span>)</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogram</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(dataBadger<span class="sc">$</span>N_cattle,<span class="at">col=</span><span class="st">'blue'</span>,<span class="at">xlab=</span><span class="st">"Number of cattle"</span>,<span class="at">main=</span><span class="st">""</span>)</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Quantile-Quantile plot</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(dataBadger<span class="sc">$</span>N_cattle,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'blue'</span>,<span class="at">xlab=</span><span class="st">''</span>)</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="fu">qqline</span>(dataBadger<span class="sc">$</span>N_cattle,<span class="at">col=</span><span class="st">'red'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Linear_Model_2_files/figure-html/dataCov-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The exploratory plots show that all three quantitative variables (number of setts, number of buildings, and number of cattle) display right-skewed distributions, with most farms having relatively low values and a few having much higher ones. No extreme or abnormal outliers are clearly visible, although some high values are present, especially for the number of cattle. The Q-Q plots confirm that none of these variables follow a normal distribution.</p>
+</section>
+<section id="categorical-variables-number-of-levels-and-individuals-per-level" class="level3">
+<h3 class="anchored" data-anchor-id="categorical-variables-number-of-levels-and-individuals-per-level"><strong>2. Categorical Variables: Number of Levels and Individuals per Level</strong></h3>
+<p>For categorical (factor) variables, it is important to examine the number of levels (categories) and the number of observations in each level. This helps identify potential issues such as:</p>
+<ul>
+<li><p>Levels with very few observations (which may cause estimation problems in statistical models)</p></li>
+<li><p>Highly unbalanced distributions between categories</p></li>
+<li><p>Unexpected or erroneous category labels</p></li>
+</ul>
+<p>The following code summarizes the distribution of individuals across levels for each categorical predictor:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Factor season</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(dataBadger<span class="sc">$</span>season)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> 1  2  3  4 
+70 67 69 72 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Factor feed_store</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(dataBadger<span class="sc">$</span>feed_store)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  0   1 
+ 49 229 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Factor cattle_house </span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(dataBadger<span class="sc">$</span>cattle_house )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  0   1 
+ 91 187 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Factor feed</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(dataBadger<span class="sc">$</span>feed)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  0   1 
+ 47 231 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Factor grass</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(dataBadger<span class="sc">$</span>grass)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  0   1 
+171 107 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Factor cereal</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(dataBadger<span class="sc">$</span>cereal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  0   1 
+199  79 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Factor straw</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(dataBadger<span class="sc">$</span>straw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  0   1 
+107 171 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Factor grains</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(dataBadger<span class="sc">$</span>grains)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  0   1 
+165 113 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Factor concen</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(dataBadger<span class="sc">$</span>concen)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  0   1 
+142 136 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Factor sugar</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(dataBadger<span class="sc">$</span>sugar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  0   1 
+255  23 </code></pre>
+</div>
+</div>
+<p>The categorical variables show that most factors are <strong>binary</strong>, with varying levels of balance between categories. For example, variables such as feed_store, cattle_house, and feed display moderate imbalance, with one category being more frequent than the other. The season variable has four well-represented levels, each containing a similar number of observations, which ensures adequate variability for analysis. Overall, the categorical predictors appear suitable for modeling.</p>
+</section>
+<section id="analysis-of-the-potential-relationships-between-y-and-the-xs" class="level3">
+<h3 class="anchored" data-anchor-id="analysis-of-the-potential-relationships-between-y-and-the-xs"><strong>3. Analysis of the Potential Relationships Between $Y$ and the $X$s</strong></h3>
+<p>To gain preliminary insight into the relationships between the response variable (Activity) and the predictors, both quantitative and categorical variables were explored graphically.</p>
+<p>Scatterplots were used to visualize how badger activity varies with continuous predictors such as the number of setts, number of buildings and number of cattle housed. These visual analyses provide a first impression of potential patterns, dependencies, or nonlinear relationships that may influence badger activity on farms.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of setts</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dataBadger<span class="sc">$</span>Activity<span class="sc">~</span>dataBadger<span class="sc">$</span>N_setts,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'blue'</span>,<span class="at">xlab=</span><span class="st">'Number of setts'</span>,<span class="at">ylab=</span><span class="st">'Presence of a sign of badger activity'</span>)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of buildings</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dataBadger<span class="sc">$</span>Activity<span class="sc">~</span>dataBadger<span class="sc">$</span>N_buildings,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'blue'</span>,<span class="at">xlab=</span><span class="st">'Number of buildings'</span>,<span class="at">ylab=</span><span class="st">'Presence of a sign of badger activity'</span>)</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of cattle housed in buildings</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dataBadger<span class="sc">$</span>Activity<span class="sc">~</span>dataBadger<span class="sc">$</span>N_cattle,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'blue'</span>,<span class="at">xlab=</span><span class="st">'Number of cattle'</span>,<span class="at">ylab=</span><span class="st">'Presence of a sign of badger activity'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Linear_Model_2_files/figure-html/datagraph-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">5</span>))</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Factor season</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mosaicplot</span>(dataBadger<span class="sc">$</span>Activity<span class="sc">~</span>dataBadger<span class="sc">$</span>season</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>           ,<span class="at">color=</span><span class="fu">c</span>(<span class="st">'blue3'</span>,<span class="st">'red2'</span>)</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>           ,<span class="at">main=</span><span class="st">"Activity &amp; Season"</span>)</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Factor feed store</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="fu">mosaicplot</span>(dataBadger<span class="sc">$</span>Activity<span class="sc">~</span>dataBadger<span class="sc">$</span>feed_store</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>           ,<span class="at">color=</span><span class="fu">c</span>(<span class="st">'blue3'</span>,<span class="st">'red2'</span>)</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>           ,<span class="at">main=</span><span class="st">"Activity &amp; Feed store"</span>)</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Factor cattle_house </span></span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a><span class="fu">mosaicplot</span>(dataBadger<span class="sc">$</span>Activity<span class="sc">~</span>dataBadger<span class="sc">$</span>cattle_house</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>           ,<span class="at">color=</span><span class="fu">c</span>(<span class="st">'blue3'</span>,<span class="st">'red2'</span>)</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>           ,<span class="at">main=</span><span class="st">"Activity &amp; cattle house"</span>)</span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Factor feed</span></span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a><span class="fu">mosaicplot</span>(dataBadger<span class="sc">$</span>Activity<span class="sc">~</span>dataBadger<span class="sc">$</span>feed</span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>           ,<span class="at">color=</span><span class="fu">c</span>(<span class="st">'blue3'</span>,<span class="st">'red2'</span>)</span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>           ,<span class="at">main=</span><span class="st">"Activity &amp; feed"</span>)</span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Factor grass</span></span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a><span class="fu">mosaicplot</span>(dataBadger<span class="sc">$</span>Activity<span class="sc">~</span>dataBadger<span class="sc">$</span>grass</span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>           ,<span class="at">color=</span><span class="fu">c</span>(<span class="st">'blue3'</span>,<span class="st">'red2'</span>)</span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a>           ,<span class="at">main=</span><span class="st">"Activity &amp; Grass"</span>)</span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Factor cereal</span></span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a><span class="fu">mosaicplot</span>(dataBadger<span class="sc">$</span>Activity<span class="sc">~</span>dataBadger<span class="sc">$</span>cereal</span>
+<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a>           ,<span class="at">color=</span><span class="fu">c</span>(<span class="st">'blue3'</span>,<span class="st">'red2'</span>)</span>
+<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a>           ,<span class="at">main=</span><span class="st">"Activity &amp; Cereal"</span>)</span>
+<span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Factor straw</span></span>
+<span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a><span class="fu">mosaicplot</span>(dataBadger<span class="sc">$</span>Activity<span class="sc">~</span>dataBadger<span class="sc">$</span>straw</span>
+<span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a>           ,<span class="at">color=</span><span class="fu">c</span>(<span class="st">'blue3'</span>,<span class="st">'red2'</span>)</span>
+<span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a>           ,<span class="at">main=</span><span class="st">"Activity &amp; Straw"</span>)</span>
+<span id="cb33-33"><a href="#cb33-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Factor grains</span></span>
+<span id="cb33-34"><a href="#cb33-34" aria-hidden="true" tabindex="-1"></a><span class="fu">mosaicplot</span>(dataBadger<span class="sc">$</span>Activity<span class="sc">~</span>dataBadger<span class="sc">$</span>grains</span>
+<span id="cb33-35"><a href="#cb33-35" aria-hidden="true" tabindex="-1"></a>           ,<span class="at">color=</span><span class="fu">c</span>(<span class="st">'blue3'</span>,<span class="st">'red2'</span>)</span>
+<span id="cb33-36"><a href="#cb33-36" aria-hidden="true" tabindex="-1"></a>           ,<span class="at">main=</span><span class="st">"Activity &amp; Grains"</span>)</span>
+<span id="cb33-37"><a href="#cb33-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Factor concen</span></span>
+<span id="cb33-38"><a href="#cb33-38" aria-hidden="true" tabindex="-1"></a><span class="fu">mosaicplot</span>(dataBadger<span class="sc">$</span>Activity<span class="sc">~</span>dataBadger<span class="sc">$</span>concen</span>
+<span id="cb33-39"><a href="#cb33-39" aria-hidden="true" tabindex="-1"></a>           ,<span class="at">color=</span><span class="fu">c</span>(<span class="st">'blue3'</span>,<span class="st">'red2'</span>)</span>
+<span id="cb33-40"><a href="#cb33-40" aria-hidden="true" tabindex="-1"></a>           ,<span class="at">main=</span><span class="st">"Activity &amp; Concentrates"</span>)</span>
+<span id="cb33-41"><a href="#cb33-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Factor sugar</span></span>
+<span id="cb33-42"><a href="#cb33-42" aria-hidden="true" tabindex="-1"></a><span class="fu">mosaicplot</span>(dataBadger<span class="sc">$</span>Activity<span class="sc">~</span>dataBadger<span class="sc">$</span>sugar</span>
+<span id="cb33-43"><a href="#cb33-43" aria-hidden="true" tabindex="-1"></a>           ,<span class="at">color=</span><span class="fu">c</span>(<span class="st">'blue3'</span>,<span class="st">'red2'</span>)</span>
+<span id="cb33-44"><a href="#cb33-44" aria-hidden="true" tabindex="-1"></a>           ,<span class="at">main=</span><span class="st">"Activity &amp; Sugar Beet"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Linear_Model_2_files/figure-html/datagraph-2.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>These visual analyses provide an initial understanding of how badger activity may relate to farm characteristics. The scatterplots show that no clear linear relationship exists between badger activity and the number of setts, buildings, or cattle, although activity tends to occur slightly more often on farms with more setts or larger cattle numbers. The mosaic plots complement this by revealing possible associations between activity and certain categorical management factors, such as the presence of feed stores, cattle housing, or specific feeding practices.</p>
+</section>
+<section id="analysis-of-possible-interactions-between-both-independent-variables" class="level3">
+<h3 class="anchored" data-anchor-id="analysis-of-possible-interactions-between-both-independent-variables">4. Analysis of possible interactions between both independent variables</h3>
+<p>Here, given the large number of predictors, we will not include interactions in modelling</p>
+</section>
+<section id="check-for-collinearity-between-predictors-xs" class="level3">
+<h3 class="anchored" data-anchor-id="check-for-collinearity-between-predictors-xs"><strong>5. Check for Collinearity Between Predictors ($X$s)</strong></h3>
+<p>To avoid multicollinearity issues during modeling, the relationships among predictor variables were examined. This step includes:</p>
+<ol type="1">
+<li><p>Evaluating <strong>correlations between the three quantitative variables</strong></p></li>
+<li><p>Assessing <strong>potential overlap between categorical factors</strong></p></li>
+<li><p>Exploring whether <strong>categorical predictors influence quantitative ones</strong> through boxplots</p></li>
+</ol>
+<p>Given the large number of predictors, only key results are summarized below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking collinearity between the 3 quantitative independent variables</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="co"># We represent plot for each X continuous covariate pairs</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dataBadger[<span class="dv">7</span><span class="sc">:</span><span class="dv">9</span>],<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'blue'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Linear_Model_2_files/figure-html/datacolin-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co">#We calculate correlation between each pair of X covariate</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>M<span class="ot">&lt;-</span><span class="fu">cor</span>(dataBadger[<span class="dv">7</span><span class="sc">:</span><span class="dv">9</span>])</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot.mixed</span>(M,<span class="at">upper=</span><span class="st">"square"</span>,<span class="at">lower.col=</span><span class="st">"black"</span>, <span class="at">tl.col=</span><span class="st">"black"</span>,<span class="at">cl.cex =</span> <span class="fl">0.8</span>,<span class="at">tl.cex =</span> <span class="fl">0.7</span>,<span class="at">number.cex =</span><span class="fl">0.8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Linear_Model_2_files/figure-html/datacolin-2.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking collinearity between  categorical independent variables</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="co"># produce all crossed tables between pairs of factors - not detailed here</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking collinearity between categorical and quantitative independent variables</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="co"># for each quantitative independent variable, use boxplot graphics to check whether factors influence it - not detailed here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The collinearity analysis indicates that the three quantitative variables are largely independent. A moderate positive correlation (r ≈ 0.52) is observed between the number of buildings and the number of cattle in the yard, suggesting a slight interdependence between these two variables. In contrast, the number of setts in fields shows almost no correlation with the others (r close to 0). Overall, no strong collinearity is detected, allowing these predictors to be retained for further modelling without major redundancy concerns.</p>
+</section>
+</section>
+<section id="generalized-linear-mixed-model-glmm" class="level2">
+<h2 class="anchored" data-anchor-id="generalized-linear-mixed-model-glmm">Generalized Linear Mixed Model (GLMM)</h2>
+<p>Because the response variable is binary, we will use a <strong>Generalized Linear Mixed Model (GLMM)</strong> to examine how the different predictors influence badger activity. We assume that badger activity follows a <strong>binomial distribution</strong>, and we will therefore use a <strong>logit link function</strong>. The farm code is included as a <strong>random effect</strong>, to take into account the temporal autocorrelation between observations.</p>
+<section id="building-the-model" class="level3">
+<h3 class="anchored" data-anchor-id="building-the-model">Building the model</h3>
+<p>The best model is identified using a <strong>backward selection procedure</strong>. This model selection method is based on the <strong>Akaike Information Criterion (AIC)</strong>, which allows to take into account both the goodness of fit and the simplicity of the model. Starting with the full model, the function <code>drop1</code> is used to evaluate each predictor’s contribution to the AIC. The predictor whose removal leads to the smallest AIC is then removed and the model is refitted without this variable. The selection stops when the candidate model has the lowest AIC.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>mod<span class="ot">&lt;-</span><span class="fu">glmer</span>(Activity<span class="sc">~</span>N_setts</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> N_buildings</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> N_cattle</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> season</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> feed_store</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> cattle_house</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> feed</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> grass</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> cereal</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> straw</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> grains</span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> concen</span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> sugar</span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>farm_code)</span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>              ,<span class="at">data=</span>dataBadger</span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>              ,<span class="at">family=</span>binomial)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, :
+Model failed to converge with max|grad| = 0.63965 (tol = 0.002, component 1)</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Backward selection procedure based on AIC</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">drop1</span>(mod,<span class="at">test=</span><span class="st">"Chi"</span>) <span class="co"># We remove season</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Single term deletions
+
+Model:
+Activity ~ N_setts + N_buildings + N_cattle + season + feed_store + 
+    cattle_house + feed + grass + cereal + straw + grains + concen + 
+    sugar + (1 | farm_code)
+             npar    AIC     LRT  Pr(Chi)   
+&lt;none&gt;            183.86                    
+N_setts         1 191.63  9.7760 0.001768 **
+N_buildings     1 182.97  1.1161 0.290759   
+N_cattle        1 182.21  0.3496 0.554326   
+season          3 179.14  1.2815 0.733535   
+feed_store      1 182.62  0.7571 0.384246   
+cattle_house    1 182.06  0.2058 0.650093   
+feed            1 181.84 -0.0124 1.000000   
+grass           1 181.83 -0.0232 1.000000   
+cereal          1 182.29  0.4289 0.512509   
+straw           1 183.04  1.1869 0.275951   
+grains          1 182.28  0.4252 0.514352   
+concen          1 181.98  0.1249 0.723745   
+sugar           1 183.06  1.2054 0.272248   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>mod1<span class="ot">&lt;-</span><span class="fu">glmer</span>(Activity<span class="sc">~</span>N_setts</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> N_buildings</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> N_cattle</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> feed_store</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> cattle_house</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> feed</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> grass</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> cereal</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> straw</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> grains</span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> concen</span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> sugar</span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>farm_code)</span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>              ,<span class="at">data=</span>dataBadger</span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>              ,<span class="at">family=</span>binomial)</span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a><span class="fu">drop1</span>(mod1,<span class="at">test=</span><span class="st">"Chi"</span>) <span class="co"># We remove concentration</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Single term deletions
+
+Model:
+Activity ~ N_setts + N_buildings + N_cattle + feed_store + cattle_house + 
+    feed + grass + cereal + straw + grains + concen + sugar + 
+    (1 | farm_code)
+             npar    AIC     LRT  Pr(Chi)   
+&lt;none&gt;            179.14                    
+N_setts         1 187.01  9.8762 0.001674 **
+N_buildings     1 178.18  1.0424 0.307266   
+N_cattle        1 177.59  0.4509 0.501920   
+feed_store      1 177.71  0.5744 0.448513   
+cattle_house    1 177.17  0.0291 0.864544   
+feed            1 177.16  0.0228 0.879894   
+grass           1 177.15  0.0057 0.940075   
+cereal          1 177.65  0.5057 0.477006   
+straw           1 178.56  1.4247 0.232635   
+grains          1 177.38  0.2417 0.622987   
+concen          1 177.14 -0.0003 1.000000   
+sugar           1 178.32  1.1765 0.278070   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>mod2<span class="ot">&lt;-</span><span class="fu">glmer</span>(Activity<span class="sc">~</span>N_setts</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> N_buildings</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> N_cattle</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> feed_store</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> cattle_house</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> feed</span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> grass</span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> cereal</span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> straw</span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> grains</span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> sugar</span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>farm_code)</span>
+<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>              ,<span class="at">data=</span>dataBadger</span>
+<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a>              ,<span class="at">family=</span>binomial)</span>
+<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a><span class="fu">drop1</span>(mod2,<span class="at">test=</span><span class="st">"Chi"</span>) <span class="co"># We remove feed</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Single term deletions
+
+Model:
+Activity ~ N_setts + N_buildings + N_cattle + feed_store + cattle_house + 
+    feed + grass + cereal + straw + grains + sugar + (1 | farm_code)
+             npar    AIC    LRT Pr(Chi)   
+&lt;none&gt;            177.14                  
+N_setts         1 185.06 9.9260 0.00163 **
+N_buildings     1 176.23 1.0887 0.29677   
+N_cattle        1 175.68 0.5408 0.46209   
+feed_store      1 175.73 0.5926 0.44143   
+cattle_house    1 175.34 0.2050 0.65075   
+feed            1 175.19 0.0564 0.81231   
+grass           1 175.24 0.0960 0.75669   
+cereal          1 175.67 0.5270 0.46789   
+straw           1 176.57 1.4362 0.23075   
+grains          1 175.45 0.3088 0.57844   
+sugar           1 176.47 1.3289 0.24900   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>mod3<span class="ot">&lt;-</span><span class="fu">glmer</span>(Activity<span class="sc">~</span>N_setts</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> N_buildings</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> N_cattle</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> feed_store</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> cattle_house</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> grass</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> cereal</span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> straw</span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> grains</span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> sugar</span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>farm_code)</span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a>              ,<span class="at">data=</span>dataBadger</span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a>              ,<span class="at">family=</span>binomial)</span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a><span class="fu">drop1</span>(mod3,<span class="at">test=</span><span class="st">"Chi"</span>) <span class="co"># We remove grass</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Single term deletions
+
+Model:
+Activity ~ N_setts + N_buildings + N_cattle + feed_store + cattle_house + 
+    grass + cereal + straw + grains + sugar + (1 | farm_code)
+             npar    AIC    LRT  Pr(Chi)   
+&lt;none&gt;            175.19                   
+N_setts         1 182.95 9.7543 0.001789 **
+N_buildings     1 174.16 0.9674 0.325328   
+N_cattle        1 173.54 0.3478 0.555348   
+feed_store      1 174.31 1.1196 0.290000   
+cattle_house    1 173.33 0.1325 0.715902   
+grass           1 173.30 0.1044 0.746582   
+cereal          1 173.70 0.5039 0.477772   
+straw           1 174.69 1.4910 0.222067   
+grains          1 173.37 0.1773 0.673699   
+sugar           1 174.34 1.1420 0.285240   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>mod4<span class="ot">&lt;-</span><span class="fu">glmer</span>(Activity<span class="sc">~</span>N_setts</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> N_buildings</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> N_cattle</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> feed_store</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> cattle_house</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> cereal</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> straw</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> grains</span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> sugar</span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>farm_code)</span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>              ,<span class="at">data=</span>dataBadger</span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>              ,<span class="at">family=</span>binomial)</span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a><span class="fu">drop1</span>(mod4,<span class="at">test=</span><span class="st">"Chi"</span>) <span class="co"># We remove cattle house</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Single term deletions
+
+Model:
+Activity ~ N_setts + N_buildings + N_cattle + feed_store + cattle_house + 
+    cereal + straw + grains + sugar + (1 | farm_code)
+             npar    AIC     LRT  Pr(Chi)   
+&lt;none&gt;            173.30                    
+N_setts         1 181.04  9.7457 0.001797 **
+N_buildings     1 172.29  0.9936 0.318860   
+N_cattle        1 171.72  0.4227 0.515570   
+feed_store      1 172.31  1.0085 0.315266   
+cattle_house    1 171.24 -0.0602 1.000000   
+cereal          1 171.66  0.3578 0.549755   
+straw           1 172.71  1.4087 0.235273   
+grains          1 171.38  0.0761 0.782711   
+sugar           1 172.43  1.1252 0.288803   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>mod5<span class="ot">&lt;-</span><span class="fu">glmer</span>(Activity<span class="sc">~</span>N_setts</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> N_buildings</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> N_cattle</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> feed_store</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> cereal</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> straw</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> grains</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> sugar</span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>farm_code)</span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>              ,<span class="at">data=</span>dataBadger</span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>              ,<span class="at">family=</span>binomial)</span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a><span class="fu">drop1</span>(mod5,<span class="at">test=</span><span class="st">"Chi"</span>) <span class="co"># We remove grains</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Single term deletions
+
+Model:
+Activity ~ N_setts + N_buildings + N_cattle + feed_store + cereal + 
+    straw + grains + sugar + (1 | farm_code)
+            npar    AIC     LRT   Pr(Chi)    
+&lt;none&gt;           171.24                      
+N_setts        1 180.22 10.9805 0.0009207 ***
+N_buildings    1 170.49  1.2509 0.2633739    
+N_cattle       1 169.74  0.5023 0.4784721    
+feed_store     1 170.34  1.1036 0.2934846    
+cereal         1 169.82  0.5805 0.4461350    
+straw          1 170.70  1.4594 0.2270195    
+grains         1 169.55  0.3147 0.5747814    
+sugar          1 170.58  1.3400 0.2470283    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>mod6<span class="ot">&lt;-</span><span class="fu">glmer</span>(Activity<span class="sc">~</span>N_setts</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> N_buildings</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> N_cattle</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> feed_store</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> cereal</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> straw</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> sugar</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>farm_code)</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>              ,<span class="at">data=</span>dataBadger</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>              ,<span class="at">family=</span>binomial)</span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a><span class="fu">drop1</span>(mod6,<span class="at">test=</span><span class="st">"Chi"</span>) <span class="co"># We remove cereal</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Single term deletions
+
+Model:
+Activity ~ N_setts + N_buildings + N_cattle + feed_store + cereal + 
+    straw + sugar + (1 | farm_code)
+            npar    AIC     LRT   Pr(Chi)    
+&lt;none&gt;           169.55                      
+N_setts        1 178.56 11.0067 0.0009078 ***
+N_buildings    1 168.98  1.4289 0.2319453    
+N_cattle       1 168.25  0.6961 0.4040841    
+feed_store     1 168.67  1.1201 0.2898895    
+cereal         1 168.16  0.6100 0.4347724    
+straw          1 168.92  1.3646 0.2427384    
+sugar          1 168.66  1.1102 0.2920361    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>mod7<span class="ot">&lt;-</span><span class="fu">glmer</span>(Activity<span class="sc">~</span>N_setts</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> N_buildings</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> N_cattle</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> feed_store</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> straw</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> sugar</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>farm_code)</span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>              ,<span class="at">data=</span>dataBadger</span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>              ,<span class="at">family=</span>binomial)</span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a><span class="fu">drop1</span>(mod7,<span class="at">test=</span><span class="st">"Chi"</span>) <span class="co"># We remove N_cattle</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Single term deletions
+
+Model:
+Activity ~ N_setts + N_buildings + N_cattle + feed_store + straw + 
+    sugar + (1 | farm_code)
+            npar    AIC     LRT  Pr(Chi)   
+&lt;none&gt;           168.16                    
+N_setts        1 176.90 10.7317 0.001053 **
+N_buildings    1 167.30  1.1334 0.287048   
+N_cattle       1 166.72  0.5593 0.454547   
+feed_store     1 167.22  1.0613 0.302921   
+straw          1 167.35  1.1842 0.276493   
+sugar          1 167.58  1.4143 0.234341   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>mod8<span class="ot">&lt;-</span><span class="fu">glmer</span>(Activity<span class="sc">~</span>N_setts</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> N_buildings</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> feed_store</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> straw</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> sugar</span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>farm_code)</span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>              ,<span class="at">data=</span>dataBadger</span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>              ,<span class="at">family=</span>binomial)</span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a><span class="fu">drop1</span>(mod8,<span class="at">test=</span><span class="st">"Chi"</span>) <span class="co"># We remove feed_store (same AIC as straw, but higher p value)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Single term deletions
+
+Model:
+Activity ~ N_setts + N_buildings + feed_store + straw + sugar + 
+    (1 | farm_code)
+            npar    AIC     LRT   Pr(Chi)    
+&lt;none&gt;           166.72                      
+N_setts        1 175.95 11.2267 0.0008063 ***
+N_buildings    1 166.85  2.1303 0.1444105    
+feed_store     1 165.75  1.0249 0.3113523    
+straw          1 165.75  1.0319 0.3097180    
+sugar          1 166.00  1.2738 0.2590508    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>mod9<span class="ot">&lt;-</span><span class="fu">glmer</span>(Activity<span class="sc">~</span>N_setts</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> N_buildings</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> straw</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> sugar</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>farm_code)</span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>              ,<span class="at">data=</span>dataBadger</span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>              ,<span class="at">family=</span>binomial)</span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a><span class="fu">drop1</span>(mod9,<span class="at">test=</span><span class="st">"Chi"</span>) <span class="co"># We remove straw</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Single term deletions
+
+Model:
+Activity ~ N_setts + N_buildings + straw + sugar + (1 | farm_code)
+            npar    AIC     LRT   Pr(Chi)    
+&lt;none&gt;           165.75                      
+N_setts        1 176.27 12.5238 0.0004018 ***
+N_buildings    1 166.38  2.6306 0.1048194    
+straw          1 164.11  0.3589 0.5490935    
+sugar          1 164.94  1.1864 0.2760633    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>mod10<span class="ot">&lt;-</span><span class="fu">glmer</span>(Activity<span class="sc">~</span>N_setts</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> N_buildings</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> sugar</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>farm_code)</span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>              ,<span class="at">data=</span>dataBadger</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>              ,<span class="at">family=</span>binomial)</span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a><span class="fu">drop1</span>(mod10,<span class="at">test=</span><span class="st">"Chi"</span>) <span class="co"># We remove sugar</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Single term deletions
+
+Model:
+Activity ~ N_setts + N_buildings + sugar + (1 | farm_code)
+            npar    AIC     LRT   Pr(Chi)    
+&lt;none&gt;           164.11                      
+N_setts        1 174.41 12.3001 0.0004529 ***
+N_buildings    1 164.63  2.5277 0.1118629    
+sugar          1 163.44  1.3299 0.2488179    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>mod11<span class="ot">&lt;-</span><span class="fu">glmer</span>(Activity<span class="sc">~</span>N_setts</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> N_buildings</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>farm_code)</span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>              ,<span class="at">data=</span>dataBadger</span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>              ,<span class="at">family=</span>binomial)</span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a><span class="fu">drop1</span>(mod11,<span class="at">test=</span><span class="st">"Chi"</span>) <span class="co"># We remove N_buildings</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Single term deletions
+
+Model:
+Activity ~ N_setts + N_buildings + (1 | farm_code)
+            npar    AIC     LRT   Pr(Chi)    
+&lt;none&gt;           163.44                      
+N_setts        1 174.13 12.6888 0.0003679 ***
+N_buildings    1 163.38  1.9409 0.1635723    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>mod12<span class="ot">&lt;-</span><span class="fu">glmer</span>(Activity<span class="sc">~</span>N_setts</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>              <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>farm_code)</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>              ,<span class="at">data=</span>dataBadger</span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>              ,<span class="at">family=</span>binomial)</span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a><span class="fu">drop1</span>(mod12,<span class="at">test=</span><span class="st">"Chi"</span>) <span class="co"># mod12 is the best model</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Single term deletions
+
+Model:
+Activity ~ N_setts + (1 | farm_code)
+        npar    AIC    LRT   Pr(Chi)    
+&lt;none&gt;       163.38                     
+N_setts    1 174.57 13.197 0.0002804 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>There are convergence issues with the first few models, which may be due to their complexity. The best model only retains the number of setts as a fixed effect.</p>
+</section>
+<section id="model-coefficients" class="level3">
+<h3 class="anchored" data-anchor-id="model-coefficients">Model coefficients</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod12)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Generalized linear mixed model fit by maximum likelihood (Laplace
+  Approximation) [glmerMod]
+ Family: binomial  ( logit )
+Formula: Activity ~ N_setts + (1 | farm_code)
+   Data: dataBadger
+
+      AIC       BIC    logLik -2*log(L)  df.resid 
+    163.4     174.3     -78.7     157.4       275 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-2.0216 -0.2384 -0.1102 -0.0841  6.4681 
+
+Random effects:
+ Groups    Name        Variance Std.Dev.
+ farm_code (Intercept) 4.868    2.206   
+Number of obs: 278, groups:  farm_code, 36
+
+Fixed effects:
+            Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)  -5.0705     0.9509  -5.332  9.7e-08 ***
+N_setts       0.3809     0.1077   3.537 0.000405 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Correlation of Fixed Effects:
+        (Intr)
+N_setts -0.766</code></pre>
+</div>
+</div>
+<p>The model summary details both the fixed and the random effects. The model can be written as: <span class="math display">\[  logit(presence\:of\:badger\:activity) = -5.07 + 0.38 \times number\:of\:setts\]</span> The variance associated with the random effect (which corresponds to the variance between farms) is 4.87.</p>
+</section>
+<section id="significance-of-the-random-effect" class="level3">
+<h3 class="anchored" data-anchor-id="significance-of-the-random-effect">Significance of the random effect</h3>
+<p>The significance of the random effect is tested via a <strong>bootstrap</strong> method: the likelihood of the model including the random effect is compared to the likelihood of 1000 models without the random effect.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>nBoot <span class="ot">&lt;-</span> <span class="dv">1000</span> <span class="co"># number of simulations</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>lrStat <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, nBoot) <span class="co"># initializes a vector of size 1000 to store the likelihood ratio statistic</span></span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>ft.null <span class="ot">&lt;-</span><span class="fu">glm</span>(Activity<span class="sc">~</span>N_setts,<span class="at">data=</span>dataBadger,<span class="at">family=</span><span class="fu">binomial</span>(<span class="at">link=</span>logit)) <span class="co"># fits the null model (without the random effect)</span></span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>ft.alt <span class="ot">&lt;-</span> <span class="fu">glmer</span>(Activity<span class="sc">~</span>N_setts<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>farm_code),<span class="at">data=</span>dataBadger,<span class="at">family=</span>binomial) <span class="co"># fits the alternate model (with the random effect)</span></span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>lrObs <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">logLik</span>(ft.alt) <span class="sc">-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">logLik</span>(ft.null) <span class="co"># computes the observed likelihood ratio statistic </span></span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (iBoot <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nBoot) <span class="co"># for each simulation</span></span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a>  dataBadger<span class="sc">$</span>ActivitySim <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">simulate</span>(ft.null)) <span class="co"># badger activity is simulated from the distribution corresponding to the null model</span></span>
+<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>(</span>
+<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a>    { <span class="co"># in case the glmm does not converge</span></span>
+<span id="cb67-12"><a href="#cb67-12" aria-hidden="true" tabindex="-1"></a>      bNull <span class="ot">&lt;-</span><span class="fu">glm</span>(ActivitySim <span class="sc">~</span> N_setts,<span class="at">data=</span>dataBadger,<span class="at">family=</span><span class="fu">binomial</span>(<span class="at">link=</span>logit)) <span class="co"># fits the null model to the simulated data</span></span>
+<span id="cb67-13"><a href="#cb67-13" aria-hidden="true" tabindex="-1"></a>      bAlt <span class="ot">&lt;-</span> <span class="fu">glmer</span>(ActivitySim <span class="sc">~</span> N_setts<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>farm_code),<span class="at">data=</span>dataBadger,<span class="at">family=</span>binomial) <span class="co"># fits the alternate model to the simulated data</span></span>
+<span id="cb67-14"><a href="#cb67-14" aria-hidden="true" tabindex="-1"></a>      lrStat[iBoot] <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">logLik</span>(bAlt) <span class="sc">-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">logLik</span>(bNull) <span class="co"># computes the likelihood ratio statistic for the resampled data</span></span>
+<span id="cb67-15"><a href="#cb67-15" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb67-16"><a href="#cb67-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">warning =</span> <span class="cf">function</span>(war) { <span class="co"># if there is a warning or an error, the likelihood ratio statistic is NA (to ensure the loop does not stop)</span></span>
+<span id="cb67-17"><a href="#cb67-17" aria-hidden="true" tabindex="-1"></a>      lrStat[iBoot] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb67-18"><a href="#cb67-18" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb67-19"><a href="#cb67-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">error =</span> <span class="cf">function</span>(err) {</span>
+<span id="cb67-20"><a href="#cb67-20" aria-hidden="true" tabindex="-1"></a>      lrStat[iBoot] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb67-21"><a href="#cb67-21" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb67-22"><a href="#cb67-22" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb67-23"><a href="#cb67-23" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')
+boundary (singular) fit: see help('isSingular')</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(lrStat <span class="sc">&gt;</span> lrObs, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="co"># Proportion of bootstrap likelihood ratio statistic superior to the observed statistic</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="co"># It corresponds to the p value</span></span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(lrStat,<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">40</span>), <span class="at">col=</span><span class="st">'blue'</span>, <span class="at">main =</span> <span class="st">"Histogram of the likelihood ratio statistic"</span>, <span class="at">xlab =</span> <span class="st">"Likelihood ratio statistic"</span>) <span class="co"># Histogram of the 1000 values of likelihood of the simulated model</span></span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> lrObs, <span class="at">col=</span><span class="st">"red"</span>, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">lty=</span><span class="dv">2</span>) <span class="co"># Vertical red line representing the likelihood of the model including the random factor</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Linear_Model_2_files/figure-html/boot random-1.png" class="img-fluid figure-img" width="384"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>All simulations lead to a likelihood ratio statistic lower than the observed statistic, which suggests that the random effect is highly significant.</p>
+</section>
+<section id="part-of-the-variance-explained-by-the-model" class="level3">
+<h3 class="anchored" data-anchor-id="part-of-the-variance-explained-by-the-model">Part of the variance explained by the model</h3>
+<p>The function <code>rsq</code> from the package <code>rsq</code> computes three pseudo <span class="math inline">\(R^2\)</span>, allowing us to separate the variance explained by the fixed effect from the variance explained by the random effect.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimates of deviance explained (library 'rsq')</span></span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rsq</span>(mod12)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$model
+[1] 0.5939386
+
+$fixed
+[1] 0.2102993
+
+$random
+[1] 0.3836392</code></pre>
+</div>
+</div>
+<p>The model explains about 59% of the variance of the data, with 21% due to the fixed effect (the number of setts) and 38% due to the random effect (each individual farm).</p>
+</section>
+<section id="residual-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="residual-analysis">Residual analysis</h3>
+<p>A GLMM does not require normality of residuals or homogeneity of variance, and the dependance in the data has already been taken into account with the random effect. However, analyzing the residuals allows us to detect an eventual trend which could indicate a problem with the modelization. Pearson residuals are used because they take into account variance heterogeneity.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>resid<span class="ot">&lt;-</span><span class="fu">residuals</span>(mod12, <span class="at">type=</span><span class="st">"pearson"</span>)</span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting the residuals against the fitted data</span></span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(resid<span class="sc">~</span><span class="fu">fitted</span>(mod12)</span>
+<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a>      , <span class="at">col=</span><span class="st">'dodgerblue4'</span></span>
+<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a>      , <span class="at">pch=</span><span class="dv">16</span>)</span>
+<span id="cb74-8"><a href="#cb74-8" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>)</span>
+<span id="cb74-9"><a href="#cb74-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-10"><a href="#cb74-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting the residuals against the number of setts</span></span>
+<span id="cb74-11"><a href="#cb74-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(resid<span class="sc">~</span> dataBadger<span class="sc">$</span>N_setts, </span>
+<span id="cb74-12"><a href="#cb74-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">pch=</span><span class="dv">16</span>,</span>
+<span id="cb74-13"><a href="#cb74-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">col=</span><span class="st">"dodgerblue4"</span>,</span>
+<span id="cb74-14"><a href="#cb74-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">ylab =</span> <span class="st">"Residuals"</span>,</span>
+<span id="cb74-15"><a href="#cb74-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">xlab =</span> <span class="st">"Number of Setts"</span>,</span>
+<span id="cb74-16"><a href="#cb74-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb74-17"><a href="#cb74-17" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Linear_Model_2_files/figure-html/ResidNB-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In a binomial GLMM, residuals are often difficult to interpret. No defined trend can be identified here.</p>
+</section>
+<section id="model-predictions" class="level3">
+<h3 class="anchored" data-anchor-id="model-predictions">Model predictions</h3>
+<p>We can check if the model is able to accurately predict the presence / absence of activity signs based on the number of setts.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">9</span>)</span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>N    <span class="ot">&lt;-</span> <span class="fu">nrow</span>(dataBadger) <span class="co"># number of observations in the dataset</span></span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>Pi   <span class="ot">&lt;-</span> <span class="fu">fitted</span>(mod12) <span class="co"># predicted probabilities that activity = 1</span></span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a>dataBadger<span class="sc">$</span>Ysim <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(N, <span class="at">size =</span> <span class="dv">1</span>, Pi) <span class="co"># generates a binary outcome for badger activity, drawn from a binomial distribution with Pi as a success probability</span></span>
+<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-6"><a href="#cb75-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion matrix</span></span>
+<span id="cb75-7"><a href="#cb75-7" aria-hidden="true" tabindex="-1"></a>Z <span class="ot">&lt;-</span> <span class="fu">table</span>(dataBadger<span class="sc">$</span>Activity, dataBadger<span class="sc">$</span>Ysim) <span class="sc">/</span> N</span>
+<span id="cb75-8"><a href="#cb75-8" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(Z) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Observed 0"</span>, <span class="st">"Observed 1"</span>)</span>
+<span id="cb75-9"><a href="#cb75-9" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(Z) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Predicted 0"</span>, <span class="st">"Predicted 1"</span>)</span>
+<span id="cb75-10"><a href="#cb75-10" aria-hidden="true" tabindex="-1"></a>Z</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            
+             Predicted 0 Predicted 1
+  Observed 0  0.77338129  0.06474820
+  Observed 1  0.07553957  0.08633094</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Accuracy = proportion of correctly classified observations</span></span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">diag</span>(Z))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8597122</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="co"># To get an average confusion matrix over mutliple predictions, we can repeat for 1000 simulations</span></span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>NSim <span class="ot">&lt;-</span> <span class="dv">1000</span>                           </span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>diagZ <span class="ot">&lt;-</span> <span class="fu">numeric</span>(NSim) <span class="co"># we store one accuracy value per simulation</span></span>
+<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>NSim) { <span class="co"># for each simulation</span></span>
+<span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a>  Ysim <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(N, <span class="at">size =</span> <span class="dv">1</span>, Pi) <span class="co"># a new simulated response is generated</span></span>
+<span id="cb79-6"><a href="#cb79-6" aria-hidden="true" tabindex="-1"></a>  Z<span class="ot">&lt;-</span> <span class="fu">table</span>(dataBadger<span class="sc">$</span>Activity, Ysim) <span class="sc">/</span> N <span class="co"># creates the confusion matrix for this simulation</span></span>
+<span id="cb79-7"><a href="#cb79-7" aria-hidden="true" tabindex="-1"></a>  diagZ[i]<span class="ot">&lt;-</span><span class="fu">sum</span>(<span class="fu">diag</span>(Z)) <span class="co"># computes and stores the accuracy</span></span>
+<span id="cb79-8"><a href="#cb79-8" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb79-9"><a href="#cb79-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Boxplot of the accuracy and average accuracy</span></span>
+<span id="cb79-10"><a href="#cb79-10" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(diagZ, <span class="at">col=</span><span class="st">'dodgerblue4'</span>,<span class="at">ylab=</span><span class="st">'#Rate of farms well-classified'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Linear_Model_2_files/figure-html/predictions-1.png" class="img-fluid figure-img" width="384"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(diagZ)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8821763</code></pre>
+</div>
+</div>
+<p>Each cell of the <strong>confusion matrix</strong> represents a proportion of the total observations.</p>
+<ul>
+<li><p>The <strong>true negative</strong> rate is 77%: it corresponds to farms without badger activity where no activity was predicted</p></li>
+<li><p>The <strong>false positive</strong> rate is 6.5%: it corresponds to farms without badger activity where activity was incorrectly predicted</p></li>
+<li><p>The <strong>true positive</strong> rate is 8.6%: it corresponds to farms with badger activity where activity was predicted</p></li>
+<li><p>The <strong>false negative</strong> rate is 7.6%: it corresponds to farms with badger activity where no activity was predicted</p></li>
+</ul>
+<p>For this prediction, the overall accuracy was 0.86, which means that 86% of predictions were correct. The average accuracy over 1000 simulations is 0.88.</p>
+
+
+
+</section>
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-A_Masson" class="csl-entry" role="listitem">
+AbelMasson. n.d. <a href="https://github.com/AbelMasson" class="uri">https://github.com/AbelMasson</a>.
+</div>
+<div id="ref-Y_Outreman" class="csl-entry" role="listitem">
+Outreman, Yannick. n.d. <a href="https://sites.google.com/site/yannickoutreman/home" class="uri">https://sites.google.com/site/yannickoutreman/home</a>.
+</div>
+<div id="ref-Walker2009" class="csl-entry" role="listitem">
+Walker, N. J., A. F. Zuur, A. Ward, A. A. Saveliev, E. N. Ieno, and G. M. Smith. 2009. <span>“A Comparison of GLM, GEE, and GLMM Applied to Badger Activity Data.”</span> In <em>Mixed Effects Models and Extensions in Ecology with r</em>, 493–502. Springer New York. <a href="https://doi.org/10.1007/978-0-387-87458-6_22">https://doi.org/10.1007/978-0-387-87458-6_22</a>.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
