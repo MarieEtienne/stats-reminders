@@ -1,0 +1,424 @@
+---
+title: "GENERAL LINEAR MODEL"
+subtitle: "PENGUINS EXAMPLE"
+format: html
+editor: visual
+bibliography: references.bib
+---
+
+# GENERAL INTRODUCTION
+
+We present here, a reminder sheet on the **General Linear Model** **(GLM)** and its specific features. Its use will be illustrated with an example applied to ecological data on penguins from @Gorman2014 .
+
+::: {.callout-note appearance="simple"}
+Note : The concepts covered in this reminder sheet are taken from our Master's lectures, written by @Y_Outreman and then taught by @A_Masson . During these courses, we learned how to explore data and then analyze it using this type of model.
+:::
+
+### Generalities
+
+The objective of the GLM is to explain a dependent variable as a function of independent explanatory variables measured on statistical units from a sample of a population. This type of model is generally constructed as follows:
+
+$$Y = β*X + ε$$
+
+$Y$ is the response (dependent) variable to be explained. $X$ is an explanatory (independent) variable that can explain $Y$. There can be several in the model. βi represents a coefficient, placed in front of the $X$ variables, to measure their effect on the response variable. ε represents the errors in the model, i.e. what the model cannot explain.
+
+### Type of General Linear Model
+
+There are three general types of linear models:
+
+-   **Linear regression**
+-   **Analysis of variance (ANOVA)**
+-   **Analysis of variance-covariance (ANCOVA)**
+
+They each have their own specific characteristics and depend on the nature of the independent variables $X$, which can be quantitative or qualitative. The response variable $Y$ is always quantitative.
+
+Linear regression is used when we want to determine whether a linear relationship exists between the response variable $Y$ and one or more quantitative $X$ variables (then called covariates).
+
+ANOVA is used when the explanatory variables $X$ are qualitative (then called factors). These qualitative $X$ variables often have multiple categories (levels).
+
+ANCOVA is used when we want to model the variable $Y$ as a function of several $X$ variables, which can be qualitative and quantitative.
+
+Another important aspect to consider is that for this type of model to be valid, three conditions must be met:
+
+-   the model residuals must follow a **normal distribution**
+
+-   **homoscedasticity** (homogeneity of the variance of the residuals) must be respected
+
+-   the residuals are **independent**
+
+These conditions are systematically verified after modeling : the verification will be illustrated in the following example.
+
+### Data presentation and objectives
+
+![Adelie Penguins from Petrel Island - Adelie Land - C. Cornec (IPEV/CNRS/CSM)](Adelie_Penguins.jpg)
+
+In this application example, we will use data from a study conducted by Dr. Kristen Gorman, who studied the **physical characteristics** **of three species of penguins** in the Palmer Archipelago in Antarctica. The data was collected on three islands of the archipelago in 2007, 2008, and 2009.
+
+The researcher noted the following characteristics in the individuals studied:
+
+-   `species` = species of individuals, qualitative variables, 3 levels (Adelie, Gentoo, Chinstrap)
+-   `sex` = sex of individuals, qualitative variables, 2 levels (male, female)
+-   `bill_length_mm` = bill length, quantitative variable
+-   `bill_depth_mm` = bill depth, quantitative variable
+-   `flipper_length_mm` = flipper length, quantitative variable
+-   `body_mass_g` = body mass, quantitative variable
+
+We also have information about the year of measurement and the island where the individuals live. We decide not to focus on these variables while studying the model. Indeed, we choose to focus our study on biological and morphological characteristics.
+
+We will try to answer the following question : **Which quantitative and qualitative variables can explain the variation in penguin `body_mass_g`?**
+
+In this case, the response variable is `body_mass_g`, and the other variables are assumed to be explanatory variables. We want to model the variable $Y$ as a function of several qualitative and quantitative variables, therefore we do an ANCOVA.
+
+The model can be build like this : model \<- **lm (`body_mass_g` \~ `...`, data = `penguins`)**
+
+# DATA IMPORTATION
+
+Firstly, we need to import the data, explore it, and see if there are any NA values, outliers, and so on. The data is accessible via the package *palmerpenguins* by @Horst2020.
+
+```{r data_importation}
+# Data importation 
+library(palmerpenguins) 
+data("penguins") 
+
+# Change categorical variables as factor 
+penguins$sex<-as.factor(penguins$sex) 
+penguins$species<-as.factor(penguins$species)
+str(penguins)
+```
+
+```{r data_NA, echo = F}
+# Check for presence of missing values 
+colSums(is.na(penguins))
+summary(penguins$sex)
+```
+
+There are NA values in the dataset. 2 rows of the dataset contain missing values for all the studied variables, except `species`. Values are missing for the variable `sex` in 9 other rows. There are different ways to process NA values. In our case, we decide to delete the two rows with almost complete missing information. Then, an option would be to replace the other missing values for the `sex` variable by "`unknown`" to specify that we don't know if the individual is a male or a female and to create a new level for this variable. However, with this option, the group in which the sex is unknown would be under-represented compared to male and female group. As it seems interesting to test if being a female or a male has an influence on the body mass of penguins, having rows where the sex of individuals is unknown is not really useful and could add noise to the analysis. Therefore, we finally decide to delete all rows with NA values in the dataset. Moreover, the rows that include NA values only represented around 3% of the dataset.
+
+```{r process_NA_values, echo = F}
+penguins<-na.omit(penguins)
+colSums(is.na(penguins))
+```
+
+We now have handled NA values and we can continue to explore the data before implementing the model to answer our question.
+
+# DATA EXPLORATION
+
+Exploring the dataset is always the first step before analysis and model creation. This step is essential for identifying the structure of the variables and checking for outliers, correlations, or unbalanced distributions, mainly for qualitative variable categories, and assumptions.
+
+### 1. Outliers and distribution of the dependent variable ($Y$)
+
+```{r data_response_variable, echo = F}
+#Don't show the code 
+par(mfrow=c(2,2),      
+    mar=c(4,4,2,1),           
+    bg="gray95",              
+    col.axis="gray20",      
+    col.lab="gray20",     
+    col.main="gray20",     
+    cex.axis=0.9,      
+    cex.lab=1) 
+col_transp <- adjustcolor("aquamarine3", alpha.f=0.5) 
+# Boxplot 
+boxplot(penguins$body_mass_g,         
+        col=col_transp, border="gray30",         
+        ylab='Body Mass (g)',         
+        main = 'Boxplot',         
+        notch=TRUE) 
+# Cleveland plot 
+dotchart(penguins$body_mass_g,          
+         pch=16, col=col_transp,          
+         xlab='Body Mass (g)',          
+         main = 'Cleveland plot',          
+         cex=0.8) 
+# Histogram 
+hist(penguins$body_mass_g,      
+     col=col_transp, 
+     border="white",      
+     xlab="Body Mass (g)",      
+     main = 'Histogram',      
+     breaks=20)
+# Quantile-Quantile plot 
+qqnorm(penguins$body_mass_g, pch=16, col=col_transp, xlab='', ylab='',main="QQ plot") 
+qqline(penguins$body_mass_g, col='red', lwd=2)
+```
+
+Based on the 3 first graphs (Boxplot, Cleveland plot and Histogram), it seems that there are no outliers in the $Y$ variable `body_mass_g`. With the Q-Q plot, the data appears to follow a Gaussian distribution. However, $Y$ normality is not a required assumption for our model. Keep in mind that we will need to check something about normality later on : the model residuals must follow a normal distribution in the case of a linear model.
+
+### 2. **Outliers and Distributions of Quantitative Predictors (**$X$**)**
+
+```{r data_quantitative_explain_variables, echo = F}
+#Don't show the code 
+par(mfrow=c(2,2),      
+    mar=c(4,4,2,1),           
+    bg="gray95",              
+    col.axis="gray20",      
+    col.lab="gray20",      
+    col.main="gray20",      
+    cex.axis=0.9,      
+    cex.lab=1) 
+col_transp <- adjustcolor("darkgreen", alpha.f=0.5)  
+
+# Bill lenght  
+# Boxplot 
+boxplot(penguins$bill_length_mm,         
+        col=col_transp, border="gray30",         
+        ylab='Bill Length',         
+        main = 'Boxplot',         
+        notch=TRUE) 
+# Cleveland plot 
+dotchart(penguins$bill_length_mm,          
+         pch=16,          
+         col=col_transp,          
+         xlab='Bill Length',          
+         main = 'Cleveland plot') 
+# Histogram 
+hist(penguins$bill_length_mm,      
+     col=col_transp,      
+     xlab="Bill Length",      
+     main="Histogram") 
+# Quantile-Quantile plot 
+qqnorm(penguins$bill_length_mm,        
+       pch=16,col=col_transp,xlab='',         
+       main = 'QQ plot') 
+qqline(penguins$bill_length_mm,col='red',lwd=2)
+
+# Bill depth
+# Boxplot 
+boxplot(penguins$bill_depth_mm,         
+        col=col_transp, border="gray30",         
+        ylab='Bill Depth',         
+        main = 'Boxplot',         
+        notch=TRUE) 
+# Cleveland plot 
+dotchart(penguins$bill_depth_mm,          
+         pch=16,          
+         col=col_transp,          
+         xlab='Bill Depth',          
+         main = 'Cleveland plot') 
+# Histogram 
+hist(penguins$bill_depth_mm,      
+     col=col_transp,     
+     xlab="Bill Depth",      
+     main="Histogram") 
+# Quantile-Quantile plot 
+qqnorm(penguins$bill_depth_mm,        
+       pch=16,        
+       col=col_transp,xlab='',        
+       main = 'QQ plot') 
+qqline(penguins$bill_depth_mm,col='red',lwd=2)
+
+# Flipper lenght  
+# Boxplot 
+boxplot(penguins$flipper_length_mm,         
+        col=col_transp, border="gray30",         
+        ylab='Flipper Length',         
+        main = 'Boxplot',         
+        notch=TRUE) 
+# Cleveland plot 
+dotchart(penguins$flipper_length_mm,          
+         pch=16,          
+         col=col_transp,          
+         xlab='Flipper Length',          
+         main = 'Cleveland plot') 
+# Histogram 
+hist(penguins$flipper_length_mm,      
+     col=col_transp,      
+     xlab="Flipper Length",      
+     main="Histogram") 
+# Quantile-Quantile plot 
+qqnorm(penguins$flipper_length_mm,        
+       pch=16,        
+       col=col_transp,xlab='',        
+       main = 'QQ plot') 
+qqline(penguins$flipper_length_mm,col='red',lwd=2)
+
+```
+
+There appear to be no outliers for any of the quantitative variables.
+
+Let's describe what we observe. From the Cleveland plot, for the bill length variable, we can observe two distinct clusters which might be related to sexual dimorphism. For the bill depth, 3 clusters are observed on the Cleveland Plot : this variable might be related to the difference of bill depth between species. For flipper length, the Cleveland plot also reveals three distinct clusters. All these variables seem to follow a Gaussian distribution. Visualizing the distributions of the quantitative $X$ variables allows us to formulate hypotheses regarding species differences and sexual dimorphism.
+
+### 3. **Number of Levels and Individuals per Level of Qualitative Predictors (**$X$**)**
+
+```{r data_qualitative_explain_variables, echo = F}
+summary(penguins$species) 
+summary(penguins$sex)
+```
+
+For the `species` variable, Chinstrap is a bit under-represented in comparison to other species. We will keep the variable for the model as it may capture important differences between groups. For the `sex` variable, the number of observations is almost equivalent for the male and female groups.
+
+### **4. Analysis of the Potential Relationships Between** $Y$ **and the** $Xs$
+
+Now, we can explore the potential relationship between the response variable $Y$ (`body_mass_g`) and the $Xs$ variables. Keep in mind that this part of the analysis is based on graphs and doesn't tell us if the relationships between variables are significant or not.
+
+```{r data_exploration_relation, echo = F, fig.height=8, fig.width=6}
+par(mfrow=c(3,2)) 
+# Bill Length 
+plot(penguins$body_mass_g~penguins$bill_length_mm,pch=16,col='olivedrab4',xlab='Bill Length',ylab='Body Mass')
+# Bill Depth 
+plot(penguins$body_mass_g~penguins$bill_depth_mm,pch=16,col='olivedrab4',xlab='Bill Depth',ylab='Body Mass')
+# Flipper Length 
+plot(penguins$body_mass_g~penguins$flipper_length_mm,pch=16,col='olivedrab4',xlab='Flipper Length',ylab='Body Mass') 
+# Sex 
+boxplot(penguins$body_mass_g~penguins$sex, varwidth = TRUE, ylab = "Body Mass", xlab = "Sex", col='olivedrab4', main = "") 
+# Species 
+boxplot(penguins$body_mass_g~penguins$species, varwidth = TRUE, ylab = "Body Mass", xlab = "Species", col='olivedrab4', main = "") 
+```
+
+There appears to be a positive linear relationship between body mass and other quantitative variables. A sexual dimorphism is observed : females tend to have a lower body mass than males. In addition, there may be species differences : Gentoo penguins appear to have higher body mass compared to Adelie and Chinstrap penguins, which have similar body mass measurements.
+
+### 5. Analysis of possible interactions between both independent variables
+
+This section aims to check for potential interaction effects between the two qualitative variables. To do so, all combinations of their categories must be present in the data.
+
+```{r data_cross_qualitative_exploration, echo = F}
+table(penguins$species, penguins$sex) 
+```
+
+All categories are present and well balanced across the factors, allowing us to test for potential interactions between them.
+
+```{r data_interaction_qualitative, echo = F}
+boxplot(penguins$body_mass_g~penguins$sex*penguins$species, varwidth = TRUE, ylab = "Body Mass", col='green4', main = "",cex.axis=0.7)
+```
+
+Males appear to have a higher body mass than females for the three species. The difference between males and females may vary a little depending on the species. There may be a small interaction between the tow factors `sex` and `species`.
+
+Then, we also check for potential interactions between explanatory quantitative variables and explanatory qualitative variables, using the following graphs.
+
+```{r data_interaction_qualitative_quantitative, echo = F}
+par(mfrow=c(3,2)) 
+# Interactions between Bill Length & Sex 
+plot(penguins$body_mass_g~penguins$bill_length_mm,type='n',ylab = "Body Mass",xlab="Bill Length") 
+points(penguins$body_mass_g[penguins$sex=="male"]~penguins$bill_length_mm[penguins$sex=="male"],pch=16,col='#E69F00') 
+points(penguins$body_mass_g[penguins$sex=="female"]~penguins$bill_length_mm[penguins$sex=="female"],pch=17,col='#CC79A7')  
+
+# Interactions between Bill Length & Species 
+plot(penguins$body_mass_g~penguins$bill_length_mm,type='n',ylab = "Body Mass",xlab="Bill Length") 
+points(penguins$body_mass_g[penguins$species=="Adelie"]~penguins$bill_length_mm[penguins$species=="Adelie"],pch=15,col='#FDE725') 
+points(penguins$body_mass_g[penguins$species=="Chinstrap"]~penguins$bill_length_mm[penguins$species=="Chinstrap"],pch=16,col='#35B779') 
+points(penguins$body_mass_g[penguins$species=="Gentoo"]~penguins$bill_length_mm[penguins$species=="Gentoo"],pch=17,col='#31688E')
+
+# Interactions between Bill Depth & Sex 
+plot(penguins$body_mass_g~penguins$bill_depth_mm,type='n',ylab = "Body Mass",xlab="Bill Depth")
+points(penguins$body_mass_g[penguins$sex=="male"]~penguins$bill_depth_mm[penguins$sex=="male"],pch=16,col='#E69F00') 
+points(penguins$body_mass_g[penguins$sex=="female"]~penguins$bill_depth_mm[penguins$sex=="female"],pch=17,col='#CC79A7')  
+
+# Interactions between Bill Depth & Species 
+plot(penguins$body_mass_g~penguins$bill_depth_mm,type='n',ylab = "Body Mass",xlab="Bill Depth") 
+points(penguins$body_mass_g[penguins$species=="Adelie"]~penguins$bill_depth_mm[penguins$species=="Adelie"],pch=15,col='#FDE725') 
+points(penguins$body_mass_g[penguins$species=="Chinstrap"]~penguins$bill_depth_mm[penguins$species=="Chinstrap"],pch=16,col='#35B779') 
+points(penguins$body_mass_g[penguins$species=="Gentoo"]~penguins$bill_depth_mm[penguins$species=="Gentoo"],pch=17,col='#31688E')
+
+# Interactions between Flipper Length & Sex 
+plot(penguins$body_mass_g~penguins$flipper_length_mm,type='n',ylab = "Body Mass",xlab="Flipper Length") 
+points(penguins$body_mass_g[penguins$sex =="male"]~penguins$flipper_length_mm[penguins$sex=="male"],pch=16,col='#E69F00') 
+points(penguins$body_mass_g[penguins$sex=="female"]~penguins$flipper_length_mm[penguins$sex=="female"],pch=17,col='#CC79A7')  
+
+# Interactions between Flipper Length & Species 
+plot(penguins$body_mass_g~penguins$flipper_length_mm,type='n',ylab = "Body Mass",xlab="Flipper Length") 
+points(penguins$body_mass_g[penguins$species=="Adelie"]~penguins$flipper_length_mm[penguins$species=="Adelie"],pch=15,col='#FDE725') 
+points(penguins$body_mass_g[penguins$species=="Chinstrap"]~penguins$flipper_length_mm[penguins$species=="Chinstrap"],pch=16,col='#35B779') 
+points(penguins$body_mass_g[penguins$species=="Gentoo"]~penguins$flipper_length_mm[penguins$species=="Gentoo"],pch=17,col='#31688E')
+```
+
+Observations regarding possible interactions :
+
+Bill length and sex : there is a possible interaction. For some values of bill length, body mass is higher for males than females but for some values the opposite is true and females have a higher body mass than males.
+
+Bill length and species : there are three color clusters that do not appear to mix on the graph. Individuals of the Gentoo species appear to have a higher body mass than the other species, but sometimes slightly lower depending on bill length values. A small interaction is possible.
+
+Bill depth and sex : there appears to be no interaction between bill depth and sex. The relation between body mass and bill depth is the same for males and females and males body mass is higher than females body mass.
+
+Bill depth and species : there appears to be no interaction between bill depth and species. The relation between body mass and bill depth observed previously during the data exploration is the same and the Gentoo species still stands out in terms of body mass : individuals of the Gentoo species still appear to have a higher body mass than the other species.
+
+Flipper length and sex : there is a possible interaction. Body mass appears to increase with flipper length but for some values of flipper length, females can have a higher body mass than males.
+
+Flipper length and species : there appears to be no interaction between flipper length and species. The relation between body mass and bill length observed previously during the data exploration is the same regardless the species and the Gentoo species still stands out in terms of body mass, which remains higher than the body of the other species on the graph.
+
+These are only observations. For the moment, we don't know which interactions are significant. This will be tested afterwards.
+
+### **6. Check for Collinearity Between Predictors (**$Xs$**)**
+
+Collinearity must be avoided in modeling. Indeed, collinearity can affect the modeling and significance of variables in the model, therefore the conclusions of the study are affected. Let's check how the explanatory variables are related.
+
+```{r data_collinearity, echo=F}
+#Import library
+library(corrplot)
+
+# Checking collinearity between continuous independent variables
+plot(penguins[,3:5],pch=16,col='darkolivegreen4')
+M<-cor(penguins[,3:5])
+corrplot.mixed(M,upper="square",lower.col="black", tl.col="black",cl.cex = 0.8,tl.cex = 0.7,number.cex =0.8)
+
+# Checking collinearity between categorical and continuous independent variables
+par(mfrow=c(2,3))
+#Bill Length and Sex
+boxplot(penguins$bill_length_mm~penguins$sex, varwidth = TRUE, ylab = "Bill Length", xlab = "Sex", col='grey', main = "")
+#Bill Depth and Sex
+boxplot(penguins$bill_depth_mm~penguins$sex, varwidth = TRUE, ylab = "Bill Depth", xlab = "Sex", col='grey', main = "")
+#Flipper Length and Sex
+boxplot(penguins$flipper_length_mm~penguins$sex, varwidth = TRUE, ylab = "Flipper Length", xlab = "Sex", col='grey', main = "")
+#Bill Length and Species
+boxplot(penguins$bill_length_mm~penguins$species, varwidth = TRUE, ylab = "Bill Length", xlab = "Species", col='grey', main = "")
+#Bill Depth and Species
+boxplot(penguins$bill_depth_mm~penguins$species, varwidth = TRUE, ylab = "Bill Depth", xlab = "Species", col='grey', main = "")
+#Flipper Length and Species
+boxplot(penguins$flipper_length_mm~penguins$species, varwidth = TRUE, ylab = "Flipper Length", xlab = "Species", col='grey', main = "")
+
+```
+
+This verification of collinearity between $Xs$ revealed a positive correlation between Flipper Length and Bill Length. The coefficient is below the threshold of 0.7, so we will not exclude either of these variables.
+
+Note : In some cases, there may be a strong correlation between a specific variable and some other variables, with a high correlation coefficient (greater than 0.7, which is the threshold set in most cases). This situation can lead you to exclude this specific variable but you always need to justify your choice.
+
+Concerning the other variables : For bill length, bill depth and flipper length, we observe a small difference between males and females. It looks like Adelie penguins have a shorter bill length than to the two other species. It appears Gentoo penguins have a smaller bill depth and bigger flipper length than the other species.
+
+# MODEL AND STATSTICAL ANALYSIS
+
+Once the data exploration is done, we can focus on finding the model that is adapted to our study. First, we write a full model including all variables presented before and possible interactions between them. Then, the goal is to obtain a fitted model (candidate model) that we can analyze in order to identify the main effects on our response variable `body_mass_g`. This candidate model can be obtained thanks to a selection based on **Akaike Information Criterion (AIC)**. After selection, the conditions of the linear model (i.e. **independence of residuals**, **normality of residuals** and **homoscedasticity** ) must be validated before making interpretations and conclusions.
+
+Firstly, let's write the full model, including all variables and possible interactions.
+
+```{r fullmodel,include=TRUE}
+mod_penguins<-lm(body_mass_g ~ bill_length_mm
+        + bill_depth_mm
+        + flipper_length_mm
+        + species
+        + sex
+        + sex : species
+        + sex : bill_length_mm
+        + sex : bill_depth_mm
+        + sex : flipper_length_mm
+        + species : bill_length_mm
+        + species : bill_depth_mm
+        + species : flipper_length_mm
+        , data=penguins)
+
+#We check for significance
+drop1(mod_penguins,test="F")
+```
+
+Now, we have to select the significant terms of the model, based on the AIC, with a forward-backward selection method.
+
+```{r}
+library(MASS)
+mod_final <- stepAIC(mod_penguins, direction = "both")
+```
+
+We can then use the coefficient given by the model :
+
+```{r}
+summary(mod_final)
+```
+
+We can write the full model :
+
+$$ Body\:mass = -2357,33 \:+\: 19,67.Bill\:length\:+\: 105,46.Bill\:depth\\ \:+\: 16,69.Flipper\:length \:-\: 87,13.Species\:Chinstrap \:+\: 1088,53.Species\:Gentoo\\ \:+\: 1605,64.Sex\:male \:-\: 360,63.Species\:Chinstrap:Sex\:male\\ \:-\: 173,40.Species\:Gentoo:Sex\:male \:-\: 63,11.Bill\:depth:Sex\:male$$
+
+We can explain the part of the variance explained by the model, by using the adjusted R\^2\^.
+
+```{r}
+summary(mod_final)
+```
+
+The value of the adjusted R\^2\^ is equal to 0.88. It means that 88% of the variance of the body mass of penguins is explained by the relation given by mod_final.

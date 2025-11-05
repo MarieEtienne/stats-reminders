@@ -23,8 +23,10 @@ website:
     right:
       - text: "Linear Model"
         menu:
-        - lm1.qmd
-        - lm2.qmd 
+        - text : "Penguins"
+          href : Linear_Model_1.qmd
+        - text : "Badgers"
+          href : Linear_Model_2.qmd 
       - text: "Factorial Analysis"
         menu:
         - pca.qmd

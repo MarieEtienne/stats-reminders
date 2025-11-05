@@ -1,0 +1,621 @@
+---
+title: "GENERALIZED LINEAR MIXED MODEL"
+subtitle: "BADGER EXAMPLE"
+format: html
+editor: visual
+bibliography: references.bib
+---
+
+# GENERAL INTRODUCTION
+
+We present here a reminder sheet on Generalized Linear Mixed Models (GLMMs) and its specific features. Its use will be illustrated through a study applied on badgers from @Walker2009 .
+
+Remark : the concepts covered are taken from our Master's courses and tutorials, written and taught by @A_Masson and @Y_Outreman .
+
+### Generalities
+
+General Linear Models are used to describe the relationship between a continuous response $Y$ and one or more explanatory variables $X_{1}$,$X_{2}$...$X_{p}$. They rely on three main assumptions : *independence of residuals*, *normality of residuals* and *homogeneity of variances*. However, in many cases, the response variable $Y$ is **discrete** (for example, counts or binary outcomes).
+
+For discrete responses, the variance of $Y$ typically depends on its mean-variance relationship. As a result, the variance is not constant across observations, invalidating the assumption of homogeneity required by linear models. Moreover, fitting a General Linear Model to count data can lead to negative predicted values and non-normal residuals. In shorts, General Linear Models are not well-suited for discrete responses. Hence, we need specific tools to analyse discrete response data. These are **Generalized Linear Models (GLMs)**.
+
+### Structure of a Generalized Linear Model
+
+A GLM extends the classical linear model through three steps :
+
+1.  Assumption of the distribution of the response variable $Y_{i}$
+
+2.  The specification of the systematic part; this is the linear function of the explanatory variables (the linear predictor called $\eta$)
+
+3.  The relationship between the mean value of $Y_{i}$ and the systematic part. This is also called the link between the mean and the systematic part: **the link function noted** $g$ .
+
+A Generalized Linear Model can be written as : $$g(\mu_{y})= \alpha+ \beta_{1}.X{i1}+ \beta_{2}.X{i2}+\beta_{3}.X{i3}+...\beta_{p}.X{ip} = \eta $$
+
+The linear predictor $\eta$, emerges from the linear model as a sum of the terms for each of the $p$ parameters. This is not a value of $Y$. The value of $\eta$ is obtained by transforming the value of $Y$ by the link function, and the predicted value of $Y$ is obtained by applying the inverse link function to $\eta$.
+
+### From GLM to GLMM
+
+Depending on the sampling design or the experimental set-up, independence of residuals is often not respected : some statistical units are related. To account for this dependence structure, we can include **random effects** in the model.
+
+The resulting model, called Generalized Linear Mixed Model (GLMM) extends the GLM by adding these random effects alongside the fixed effects. Therefore, GLMMs allow us to model both the relationship between predictors and responses and the non-independence among observations.
+
+[![Badger picture from Scottish SPCA](images/Badger-wild-sett-2.jpg){fig-align="center"}](https://www.scottishspca.org/advice/badger/badger-sett/)
+
+## Data presentation
+
+The data used come from @Walker2009a and consist of signs of badger (*Meles meles*) activity around farms located in the southwest of England, where badger density is high. This study was carried out in the context of bovine tuberculosis and its possible transmission to cattle through badgers. Reducing the number of farm visits by badgers — especially in places where they might come into contact with livestock — could help limit the spread of the disease. Thus, the aim of this study is to predict the occurrence of badger activity signs on farms.
+
+Between autumn 2003 and summer 2005, a survey was conducted on 36 different farms; the data are therefore longitudinal, since each farm was monitored over eight consecutive seasons. Within the same farm, observations may be temporally autocorrelated.
+
+The response variable (presence or absence of signs of badger activity) is binary: it takes the value 1 when signs of activity were detected, and 0 otherwise. Signs of activity include the presence of feces, setts, or feeding traces.
+
+The data are available in the file `Badger.txt`. The variables are:
+
+-   `Year` : studied year
+-   `Season` : 1 = spring, 2 = summer, 3 = autumn, 4 = winter
+-   `farm_code_numeric` : farm identifier
+-   `Survey` : survey identifier (time indicator)
+-   `Signs_in_yard` : binary indicator of badger activity (response variable)
+-   `No_setts_in_fields` : number of setts
+-   `No_active_setts_in_fields` : number of actively occupied setts
+-   `No_buildings` : number of buildings in the farm
+-   `No_cattle_in_buildings_yard` : number of cattle in building yards
+-   `Accessible_feed_store_present` : presence / absence of an accessible feed store
+-   `Accessible_cattle_house_present` : presence / absence of a direct access to the cattle house
+-   `Accessible_feed_present` : presence / absence of accessible feed in the farm
+-   `Grass_silage` : presence / absence of grass silage
+-   `Cereal_silage` : presence / absence of cereal silage
+-   `HayStraw` : presence / absence of hay and / or straw
+-   `Cereal_grains` : presence / absence of cereal grains
+-   `Concentrates` : presence / absence of concentrates
+-   `Proteinblocks` : presence / absence of protein blocks
+-   `Sugarbeet` : presence / absence of sugar beet
+-   `Vegetables` : presence / absence of vegetables
+-   `Molasses` : presence / absence of molasses :::
+
+## DATASET IMPORT
+
+```{r}
+# library import
+library(corrplot)
+library(lme4)
+library(rsq)
+```
+
+```{r global data, include=TRUE,echo=TRUE}
+# Dataset import
+dataBadger <- read.table("Badger.txt", dec=".", header = TRUE)
+
+# Reduce name and change categorical variables as factor
+dataBadger$Activity<- dataBadger$signs_in_yard
+dataBadger$N_setts<-dataBadger$N_setts_in_fields
+dataBadger$N_cattle<-dataBadger$N_cattle_in_buildings_yard
+dataBadger$season<-as.factor(dataBadger$season)
+dataBadger$feed_store<-as.factor(dataBadger$accessible_feed_store_present)
+dataBadger$cattle_house<-as.factor(dataBadger$accessible_cattle_house_present)
+dataBadger$feed<-as.factor(dataBadger$accessible_feed_present)
+dataBadger$grass<-as.factor(dataBadger$grass_silage)
+dataBadger$cereal<-as.factor(dataBadger$cereal_silage)
+dataBadger$straw<-as.factor(dataBadger$hay_straw)
+dataBadger$grains<-as.factor(dataBadger$cereal_grains)
+dataBadger$concen<-as.factor(dataBadger$concentrates)
+dataBadger$sugar<-as.factor(dataBadger$sugar_beet)
+dataBadger$molasses<-as.factor(dataBadger$molasses)
+
+# Check for presence of missing values
+colSums(is.na(dataBadger))
+# There is no missing value.
+```
+
+## **DATA EXPLORATION**
+
+Before carrying out any statistical modeling, it is essential to perform a thorough **data exploration**. This step helps identify potential issues such as outliers, collinearity, or imbalanced distributions that could bias the results or invalidate model assumptions.
+
+Below is a checklist of preliminary exploratory analyses to perform before modeling:
+
+1.  **Check for outliers and distribution of the dependent variable (\$Y\$).**
+
+2.  **Check for outliers and distribution of the explicative variable (\$X\$). If \$X\$ is quantitative:** assess the distribution and presence of outliers. **If \$X\$ is qualitative:** analyze the number of levels and the number of observations per level.
+
+3.  **Explore the potential relationships between \$Y\$ and each \$X_i\$.**
+
+4.  **Check for potential interactions between explanatory variables (\$X_i\$).**
+
+5.  **Assess multicollinearity among the \$X_i\$ variables.**
+
+### **1. Outliers and Distribution in \$Y\$**
+
+Since \$Y\$ is a binary variable, it does not have a continuous distribution. Instead, we inspect the frequency of each category (0 and 1) to check for imbalance in the response variable.
+
+```{r dataY, include=TRUE}
+# Number of 0 and 1 in Y
+table(dataBadger$Activity)
+```
+
+### **2. Outliers and Distributions of Quantitative Predictors (\$X\$)**
+
+For continuous independent variables, it is important to:
+
+-   Detect potential **outliers** (e.g., extreme or erroneous values)
+
+-   Visualize the **shape of the distribution** (e.g., normal, skewed, multimodal)
+
+-   Assess whether **transformations** (e.g., log, square root) might be needed before modeling
+
+The following visualizations help achieve this:
+
+-   **Cleveland dot plots**: to identify potential outliers
+
+-   **Histograms**: to visualize the overall distribution
+
+-   **Q-Q plots**: to assess normality assumptions
+
+```{r dataCov, include=TRUE, fig.height=8, fig.width=8}
+par(mfrow=c(3,3))
+
+# Number of badger setts on farm
+# Cleveland plot
+dotchart(dataBadger$N_setts,pch=16,col='blue',xlab='Number of setts')
+# Histogram
+hist(dataBadger$N_setts,col='blue',xlab="Number of setts",main="")
+# Quantile-Quantile plot
+qqnorm(dataBadger$N_setts,pch=16,col='blue',xlab='')
+qqline(dataBadger$N_setts,col='red')
+
+# Number of buildings on farm
+# Cleveland plot
+dotchart(dataBadger$N_buildings,pch=16,col='blue',xlab='Number of buildings')
+# Histogram
+hist(dataBadger$N_buildings,col='blue',xlab="Number of buildings",main="")
+# Quantile-Quantile plot
+qqnorm(dataBadger$N_buildings,pch=16,col='blue',xlab='')
+qqline(dataBadger$N_buildings,col='red')
+
+# Number of cattle housed in buildings on farm
+# Cleveland plot
+dotchart(dataBadger$N_cattle,pch=16,col='blue',xlab='Number of cattle')
+# Histogram
+hist(dataBadger$N_cattle,col='blue',xlab="Number of cattle",main="")
+# Quantile-Quantile plot
+qqnorm(dataBadger$N_cattle,pch=16,col='blue',xlab='')
+qqline(dataBadger$N_cattle,col='red')
+```
+
+The exploratory plots show that all three quantitative variables (number of setts, number of buildings, and number of cattle) display right-skewed distributions, with most farms having relatively low values and a few having much higher ones. No extreme or abnormal outliers are clearly visible, although some high values are present, especially for the number of cattle. The Q-Q plots confirm that none of these variables follow a normal distribution.
+
+### **2. Categorical Variables: Number of Levels and Individuals per Level**
+
+For categorical (factor) variables, it is important to examine the number of levels (categories) and the number of observations in each level. This helps identify potential issues such as:
+
+-   Levels with very few observations (which may cause estimation problems in statistical models)
+
+-   Highly unbalanced distributions between categories
+
+-   Unexpected or erroneous category labels
+
+The following code summarizes the distribution of individuals across levels for each categorical predictor:
+
+```{r datafact, include=TRUE}
+# Factor season
+summary(dataBadger$season)
+# Factor feed_store
+summary(dataBadger$feed_store)
+# Factor cattle_house 
+summary(dataBadger$cattle_house )
+# Factor feed
+summary(dataBadger$feed)
+# Factor grass
+summary(dataBadger$grass)
+# Factor cereal
+summary(dataBadger$cereal)
+# Factor straw
+summary(dataBadger$straw)
+# Factor grains
+summary(dataBadger$grains)
+# Factor concen
+summary(dataBadger$concen)
+# Factor sugar
+summary(dataBadger$sugar)
+```
+
+The categorical variables show that most factors are **binary**, with varying levels of balance between categories. For example, variables such as feed_store, cattle_house, and feed display moderate imbalance, with one category being more frequent than the other. The season variable has four well-represented levels, each containing a similar number of observations, which ensures adequate variability for analysis. Overall, the categorical predictors appear suitable for modeling.
+
+### **3. Analysis of the Potential Relationships Between \$Y\$ and the \$X\$s**
+
+To gain preliminary insight into the relationships between the response variable (Activity) and the predictors, both quantitative and categorical variables were explored graphically.
+
+Scatterplots were used to visualize how badger activity varies with continuous predictors such as the number of setts, number of buildings and number of cattle housed. These visual analyses provide a first impression of potential patterns, dependencies, or nonlinear relationships that may influence badger activity on farms.
+
+```{r datagraph, include=TRUE, fig.height=5, fig.width=10}
+
+par(mfrow=c(1,3))
+# Number of setts
+plot(dataBadger$Activity~dataBadger$N_setts,pch=16,col='blue',xlab='Number of setts',ylab='Presence of a sign of badger activity')
+
+# Number of buildings
+plot(dataBadger$Activity~dataBadger$N_buildings,pch=16,col='blue',xlab='Number of buildings',ylab='Presence of a sign of badger activity')
+
+# Number of cattle housed in buildings
+plot(dataBadger$Activity~dataBadger$N_cattle,pch=16,col='blue',xlab='Number of cattle',ylab='Presence of a sign of badger activity')
+
+par(mfrow=c(2,5))
+# Factor season
+mosaicplot(dataBadger$Activity~dataBadger$season
+           ,color=c('blue3','red2')
+           ,main="Activity & Season")
+
+# Factor feed store
+mosaicplot(dataBadger$Activity~dataBadger$feed_store
+           ,color=c('blue3','red2')
+           ,main="Activity & Feed store")
+
+# Factor cattle_house 
+mosaicplot(dataBadger$Activity~dataBadger$cattle_house
+           ,color=c('blue3','red2')
+           ,main="Activity & cattle house")
+
+# Factor feed
+mosaicplot(dataBadger$Activity~dataBadger$feed
+           ,color=c('blue3','red2')
+           ,main="Activity & feed")
+# Factor grass
+mosaicplot(dataBadger$Activity~dataBadger$grass
+           ,color=c('blue3','red2')
+           ,main="Activity & Grass")
+# Factor cereal
+mosaicplot(dataBadger$Activity~dataBadger$cereal
+           ,color=c('blue3','red2')
+           ,main="Activity & Cereal")
+# Factor straw
+mosaicplot(dataBadger$Activity~dataBadger$straw
+           ,color=c('blue3','red2')
+           ,main="Activity & Straw")
+# Factor grains
+mosaicplot(dataBadger$Activity~dataBadger$grains
+           ,color=c('blue3','red2')
+           ,main="Activity & Grains")
+# Factor concen
+mosaicplot(dataBadger$Activity~dataBadger$concen
+           ,color=c('blue3','red2')
+           ,main="Activity & Concentrates")
+# Factor sugar
+mosaicplot(dataBadger$Activity~dataBadger$sugar
+           ,color=c('blue3','red2')
+           ,main="Activity & Sugar Beet")
+```
+
+These visual analyses provide an initial understanding of how badger activity may relate to farm characteristics. The scatterplots show that no clear linear relationship exists between badger activity and the number of setts, buildings, or cattle, although activity tends to occur slightly more often on farms with more setts or larger cattle numbers. The mosaic plots complement this by revealing possible associations between activity and certain categorical management factors, such as the presence of feed stores, cattle housing, or specific feeding practices.
+
+### 4. Analysis of possible interactions between both independent variables
+
+Here, given the large number of predictors, we will not include interactions in modelling
+
+### **5. Check for Collinearity Between Predictors (\$X\$s)**
+
+To avoid multicollinearity issues during modeling, the relationships among predictor variables were examined. This step includes:
+
+1.  Evaluating **correlations between the three quantitative variables**
+
+2.  Assessing **potential overlap between categorical factors**
+
+3.  Exploring whether **categorical predictors influence quantitative ones** through boxplots
+
+Given the large number of predictors, only key results are summarized below.
+
+```{r datacolin, include=TRUE, fig.height=5, fig.width=5}
+
+# Checking collinearity between the 3 quantitative independent variables
+
+# We represent plot for each X continuous covariate pairs
+plot(dataBadger[7:9],pch=16,col='blue')
+
+#We calculate correlation between each pair of X covariate
+M<-cor(dataBadger[7:9])
+corrplot.mixed(M,upper="square",lower.col="black", tl.col="black",cl.cex = 0.8,tl.cex = 0.7,number.cex =0.8)
+
+# Checking collinearity between  categorical independent variables
+# produce all crossed tables between pairs of factors - not detailed here
+
+# Checking collinearity between categorical and quantitative independent variables
+# for each quantitative independent variable, use boxplot graphics to check whether factors influence it - not detailed here
+```
+
+The collinearity analysis indicates that the three quantitative variables are largely independent. A moderate positive correlation (r ≈ 0.52) is observed between the number of buildings and the number of cattle in the yard, suggesting a slight interdependence between these two variables. In contrast, the number of setts in fields shows almost no correlation with the others (r close to 0). Overall, no strong collinearity is detected, allowing these predictors to be retained for further modelling without major redundancy concerns.
+
+## Generalized Linear Mixed Model (GLMM)
+
+Because the response variable is binary, we will use a **Generalized Linear Mixed Model (GLMM)** to examine how the different predictors influence badger activity. We assume that badger activity follows a **binomial distribution**, and we will therefore use a **logit link function**. The farm code is included as a **random effect**, to take into account the temporal autocorrelation between observations.
+
+### Building the model
+
+The best model is identified using a **backward selection procedure**. This model selection method is based on the **Akaike Information Criterion (AIC)**, which allows to take into account both the goodness of fit and the simplicity of the model. Starting with the full model, the function `drop1` is used to evaluate each predictor's contribution to the AIC. The predictor whose removal leads to the smallest AIC is then removed and the model is refitted without this variable. The selection stops when the candidate model has the lowest AIC.
+
+```{r fullmodel, include = TRUE}
+mod<-glmer(Activity~N_setts
+              + N_buildings
+              + N_cattle
+              + season
+              + feed_store
+              + cattle_house
+              + feed
+              + grass
+              + cereal
+              + straw
+              + grains
+              + concen
+              + sugar
+              + (1|farm_code)
+              ,data=dataBadger
+              ,family=binomial)
+```
+
+```{r backwardselection, include = TRUE, warning = FALSE}
+# Backward selection procedure based on AIC
+drop1(mod,test="Chi") # We remove season
+mod1<-glmer(Activity~N_setts
+              + N_buildings
+              + N_cattle
+              + feed_store
+              + cattle_house
+              + feed
+              + grass
+              + cereal
+              + straw
+              + grains
+              + concen
+              + sugar
+              + (1|farm_code)
+              ,data=dataBadger
+              ,family=binomial)
+
+drop1(mod1,test="Chi") # We remove concentration
+mod2<-glmer(Activity~N_setts
+              + N_buildings
+              + N_cattle
+              + feed_store
+              + cattle_house
+              + feed
+              + grass
+              + cereal
+              + straw
+              + grains
+              + sugar
+              + (1|farm_code)
+              ,data=dataBadger
+              ,family=binomial)
+
+drop1(mod2,test="Chi") # We remove feed
+mod3<-glmer(Activity~N_setts
+              + N_buildings
+              + N_cattle
+              + feed_store
+              + cattle_house
+              + grass
+              + cereal
+              + straw
+              + grains
+              + sugar
+              + (1|farm_code)
+              ,data=dataBadger
+              ,family=binomial)
+
+drop1(mod3,test="Chi") # We remove grass
+mod4<-glmer(Activity~N_setts
+              + N_buildings
+              + N_cattle
+              + feed_store
+              + cattle_house
+              + cereal
+              + straw
+              + grains
+              + sugar
+              + (1|farm_code)
+              ,data=dataBadger
+              ,family=binomial)
+
+drop1(mod4,test="Chi") # We remove cattle house
+mod5<-glmer(Activity~N_setts
+              + N_buildings
+              + N_cattle
+              + feed_store
+              + cereal
+              + straw
+              + grains
+              + sugar
+              + (1|farm_code)
+              ,data=dataBadger
+              ,family=binomial)
+
+drop1(mod5,test="Chi") # We remove grains
+mod6<-glmer(Activity~N_setts
+              + N_buildings
+              + N_cattle
+              + feed_store
+              + cereal
+              + straw
+              + sugar
+              + (1|farm_code)
+              ,data=dataBadger
+              ,family=binomial)
+
+drop1(mod6,test="Chi") # We remove cereal
+mod7<-glmer(Activity~N_setts
+              + N_buildings
+              + N_cattle
+              + feed_store
+              + straw
+              + sugar
+              + (1|farm_code)
+              ,data=dataBadger
+              ,family=binomial)
+
+drop1(mod7,test="Chi") # We remove N_cattle
+mod8<-glmer(Activity~N_setts
+              + N_buildings
+              + feed_store
+              + straw
+              + sugar
+              + (1|farm_code)
+              ,data=dataBadger
+              ,family=binomial)
+
+drop1(mod8,test="Chi") # We remove feed_store (same AIC as straw, but higher p value)
+mod9<-glmer(Activity~N_setts
+              + N_buildings
+              + straw
+              + sugar
+              + (1|farm_code)
+              ,data=dataBadger
+              ,family=binomial)
+
+drop1(mod9,test="Chi") # We remove straw
+mod10<-glmer(Activity~N_setts
+              + N_buildings
+              + sugar
+              + (1|farm_code)
+              ,data=dataBadger
+              ,family=binomial)
+
+drop1(mod10,test="Chi") # We remove sugar
+mod11<-glmer(Activity~N_setts
+              + N_buildings
+              + (1|farm_code)
+              ,data=dataBadger
+              ,family=binomial)
+
+drop1(mod11,test="Chi") # We remove N_buildings
+mod12<-glmer(Activity~N_setts
+              + (1|farm_code)
+              ,data=dataBadger
+              ,family=binomial)
+
+drop1(mod12,test="Chi") # mod12 is the best model
+```
+
+There are convergence issues with the first few models, which may be due to their complexity. The best model only retains the number of setts as a fixed effect.
+
+### Model coefficients
+
+```{r coefficients, include = TRUE}
+summary(mod12)
+```
+
+The model summary details both the fixed and the random effects. The model can be written as: $$  logit(presence\:of\:badger\:activity) = -5.07 + 0.38 \times number\:of\:setts$$ The variance associated with the random effect (which corresponds to the variance between farms) is 4.87.
+
+### Significance of the random effect
+
+The significance of the random effect is tested via a **bootstrap** method: the likelihood of the model including the random effect is compared to the likelihood of 1000 models without the random effect.
+
+```{r boot random, echo=TRUE,fig.height=4, fig.width=4, warning=FALSE}
+nBoot <- 1000 # number of simulations
+lrStat <- rep(NA, nBoot) # initializes a vector of size 1000 to store the likelihood ratio statistic
+ft.null <-glm(Activity~N_setts,data=dataBadger,family=binomial(link=logit)) # fits the null model (without the random effect)
+ft.alt <- glmer(Activity~N_setts+(1|farm_code),data=dataBadger,family=binomial) # fits the alternate model (with the random effect)
+lrObs <- 2 * logLik(ft.alt) - 2 * logLik(ft.null) # computes the observed likelihood ratio statistic 
+
+for (iBoot in 1:nBoot) # for each simulation
+{
+  dataBadger$ActivitySim <- unlist(simulate(ft.null)) # badger activity is simulated from the distribution corresponding to the null model
+  tryCatch(
+    { # in case the glmm does not converge
+      bNull <-glm(ActivitySim ~ N_setts,data=dataBadger,family=binomial(link=logit)) # fits the null model to the simulated data
+      bAlt <- glmer(ActivitySim ~ N_setts+(1|farm_code),data=dataBadger,family=binomial) # fits the alternate model to the simulated data
+      lrStat[iBoot] <- 2 * logLik(bAlt) - 2 * logLik(bNull) # computes the likelihood ratio statistic for the resampled data
+    },
+    warning = function(war) { # if there is a warning or an error, the likelihood ratio statistic is NA (to ensure the loop does not stop)
+      lrStat[iBoot] <- NA
+    },
+    error = function(err) {
+      lrStat[iBoot] <- NA
+    }
+  )
+}
+
+mean(lrStat > lrObs, na.rm = TRUE) # Proportion of bootstrap likelihood ratio statistic superior to the observed statistic
+# It corresponds to the p value
+
+hist(lrStat,xlim = c(0,40), col='blue', main = "Histogram of the likelihood ratio statistic", xlab = "Likelihood ratio statistic") # Histogram of the 1000 values of likelihood of the simulated model
+abline(v = lrObs, col="red", lwd=3, lty=2) # Vertical red line representing the likelihood of the model including the random factor
+```
+
+All simulations lead to a likelihood ratio statistic lower than the observed statistic, which suggests that the random effect is highly significant.
+
+### Part of the variance explained by the model
+
+The function `rsq` from the package `rsq` computes three pseudo $R^2$, allowing us to separate the variance explained by the fixed effect from the variance explained by the random effect.
+
+```{r devianceGLMM, include=TRUE}
+# Estimates of deviance explained (library 'rsq')
+rsq(mod12)
+```
+
+The model explains about 59% of the variance of the data, with 21% due to the fixed effect (the number of setts) and 38% due to the random effect (each individual farm).
+
+### Residual analysis
+
+A GLMM does not require normality of residuals or homogeneity of variance, and the dependance in the data has already been taken into account with the random effect. However, analyzing the residuals allows us to detect an eventual trend which could indicate a problem with the modelization. Pearson residuals are used because they take into account variance heterogeneity.
+
+```{r ResidNB, include=TRUE, fig.height=4, fig.width=5}
+
+resid<-residuals(mod12, type="pearson")
+
+par(mfrow=c(1,2))
+# Plotting the residuals against the fitted data
+plot(resid~fitted(mod12)
+      , col='dodgerblue4'
+      , pch=16)
+abline(h = 0)
+
+# Plotting the residuals against the number of setts
+plot(resid~ dataBadger$N_setts, 
+         pch=16,
+         col="dodgerblue4",
+         ylab = "Residuals",
+         xlab = "Number of Setts",
+         main = "")
+abline(h = 0)
+```
+
+In a binomial GLMM, residuals are often difficult to interpret. No defined trend can be identified here.
+
+### Model predictions
+
+We can check if the model is able to accurately predict the presence / absence of activity signs based on the number of setts.
+
+```{r predictions, include=TRUE, fig.height=4, fig.width=4}
+set.seed(9)
+N    <- nrow(dataBadger) # number of observations in the dataset
+Pi   <- fitted(mod12) # predicted probabilities that activity = 1
+dataBadger$Ysim <- rbinom(N, size = 1, Pi) # generates a binary outcome for badger activity, drawn from a binomial distribution with Pi as a success probability
+
+# Confusion matrix
+Z <- table(dataBadger$Activity, dataBadger$Ysim) / N
+rownames(Z) <- c("Observed 0", "Observed 1")
+colnames(Z) <- c("Predicted 0", "Predicted 1")
+Z
+# Accuracy = proportion of correctly classified observations
+sum(diag(Z))
+
+# To get an average confusion matrix over mutliple predictions, we can repeat for 1000 simulations
+NSim <- 1000                           
+diagZ <- numeric(NSim) # we store one accuracy value per simulation
+for (i in 1:NSim) { # for each simulation
+  Ysim <- rbinom(N, size = 1, Pi) # a new simulated response is generated
+  Z<- table(dataBadger$Activity, Ysim) / N # creates the confusion matrix for this simulation
+  diagZ[i]<-sum(diag(Z)) # computes and stores the accuracy
+  }
+# Boxplot of the accuracy and average accuracy
+boxplot(diagZ, col='dodgerblue4',ylab='#Rate of farms well-classified')
+mean(diagZ)
+```
+
+Each cell of the **confusion matrix** represents a proportion of the total observations.
+
+-   The **true negative** rate is 77%: it corresponds to farms without badger activity where no activity was predicted
+
+-   The **false positive** rate is 6.5%: it corresponds to farms without badger activity where activity was incorrectly predicted
+
+-   The **true positive** rate is 8.6%: it corresponds to farms with badger activity where activity was predicted
+
+-   The **false negative** rate is 7.6%: it corresponds to farms with badger activity where no activity was predicted
+
+For this prediction, the overall accuracy was 0.86, which means that 86% of predictions were correct. The average accuracy over 1000 simulations is 0.88.

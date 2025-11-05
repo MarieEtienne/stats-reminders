@@ -6,3 +6,5 @@
 *.html
 
 /.quarto/
+_site/
+_freeze/
