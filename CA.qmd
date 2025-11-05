@@ -534,3 +534,5 @@ Similarly, we can project the distribution of sites (\@fig-CA_CAsites_distrib). 
 Here, the **size of the ellipses** can be interpreted as the **alpha diversity** (i.e., species richness) present at a site : the larger the ellipse, the more families it will contain.
 
 # Conclusion
+
+Certain stations having very specific physico-chemical caracteristics, their macro-invertebrate composition is very peculiar and influence greatly the CA results. However, after removing them from the analysis, we can highlight macro invertebrate compositions and predation dynamics for our different stations.
