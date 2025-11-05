@@ -199,7 +199,7 @@ flowField(
   parameters = parameters1,
   system="two.dim",
   add=FALSE,
-  tend=100
+  tend=100, xlab="Prey", ylab="Predator"
   )
 # Generating the isoclines for our equation
 nullclines(Proiepred,xlim=c(-10,100),ylim=c(-10,100),parameters = parameters1, points = 500,add.legend = FALSE,add = TRUE)
@@ -253,7 +253,7 @@ flowField(
   parameters = parameters2,
   system="two.dim",
   add=FALSE,
-  tend=100
+  tend=100, xlab="Prey", ylab="Predator"
   )
 nullclines(Proiepred,xlim=c(-10,100),ylim=c(-10,100),parameters = parameters2, points = 500,add.legend = FALSE,add = TRUE)
 ```
