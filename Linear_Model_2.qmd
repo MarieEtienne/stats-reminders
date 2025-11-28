@@ -6,19 +6,19 @@ editor: visual
 bibliography: references.bib
 ---
 
-# GENERAL INTRODUCTION
+# **GENERAL INTRODUCTION**
 
 We present here a reminder sheet on Generalized Linear Mixed Models (GLMMs) and its specific features. Its use will be illustrated through a study applied on badgers from @Walker2009 .
 
 Remark : the concepts covered are taken from our Master's courses and tutorials, written and taught by @A_Masson and @Y_Outreman .
 
-### Generalities
+## **Generalities**
 
 General Linear Models are used to describe the relationship between a continuous response $Y$ and one or more explanatory variables $X_{1}$,$X_{2}$...$X_{p}$. They rely on three main assumptions : *independence of residuals*, *normality of residuals* and *homogeneity of variances*. However, in many cases, the response variable $Y$ is **discrete** (for example, counts or binary outcomes).
 
 For discrete responses, the variance of $Y$ typically depends on its mean-variance relationship. As a result, the variance is not constant across observations, invalidating the assumption of homogeneity required by linear models. Moreover, fitting a General Linear Model to count data can lead to negative predicted values and non-normal residuals. In shorts, General Linear Models are not well-suited for discrete responses. Hence, we need specific tools to analyse discrete response data. These are **Generalized Linear Models (GLMs)**.
 
-### Structure of a Generalized Linear Model
+## **Structure of a Generalized Linear Model**
 
 A GLM extends the classical linear model through three steps :
 
@@ -32,7 +32,7 @@ A Generalized Linear Model can be written as : $$g(\mu_{y})= \alpha+ \beta_{1}.X
 
 The linear predictor $\eta$, emerges from the linear model as a sum of the terms for each of the $p$ parameters. This is not a value of $Y$. The value of $\eta$ is obtained by transforming the value of $Y$ by the link function, and the predicted value of $Y$ is obtained by applying the inverse link function to $\eta$.
 
-### From GLM to GLMM
+## **From GLM to GLMM**
 
 Depending on the sampling design or the experimental set-up, independence of residuals is often not respected : some statistical units are related. To account for this dependence structure, we can include **random effects** in the model.
 
@@ -40,7 +40,7 @@ The resulting model, called Generalized Linear Mixed Model (GLMM) extends the GL
 
 [![Badger picture from Scottish SPCA](images/Badger-wild-sett-2.jpg){fig-align="center"}](https://www.scottishspca.org/advice/badger/badger-sett/)
 
-## Data presentation
+# **DATA PRESENTATION**
 
 The data used come from @Walker2009a and consist of signs of badger (*Meles meles*) activity around farms located in the southwest of England, where badger density is high. This study was carried out in the context of bovine tuberculosis and its possible transmission to cattle through badgers. Reducing the number of farm visits by badgers — especially in places where they might come into contact with livestock — could help limit the spread of the disease. Thus, the aim of this study is to predict the occurrence of badger activity signs on farms.
 
@@ -72,7 +72,7 @@ The data are available in the file `Badger.txt`. The variables are:
 -   `Vegetables` : presence / absence of vegetables
 -   `Molasses` : presence / absence of molasses :::
 
-## DATASET IMPORT
+## **Dataset import**
 
 ```{r}
 # library import
@@ -106,7 +106,7 @@ colSums(is.na(dataBadger))
 # There is no missing value.
 ```
 
-## **DATA EXPLORATION**
+## **Data exploration**
 
 Before carrying out any statistical modeling, it is essential to perform a thorough **data exploration**. This step helps identify potential issues such as outliers, collinearity, or imbalanced distributions that could bias the results or invalidate model assumptions.
 
@@ -285,13 +285,13 @@ mosaicplot(dataBadger$Activity~dataBadger$sugar
 
 These visual analyses provide an initial understanding of how badger activity may relate to farm characteristics. The scatterplots show that no clear linear relationship exists between badger activity and the number of setts, buildings, or cattle, although activity tends to occur slightly more often on farms with more setts or larger cattle numbers. The mosaic plots complement this by revealing possible associations between activity and certain categorical management factors, such as the presence of feed stores, cattle housing, or specific feeding practices.
 
-### 4. Analysis of possible interactions between both independent variables
+### **4. Analysis of possible interactions between both independent variables**
 
 Here, given the large number of predictors, we will not include interactions in modelling
 
-### **5. Check for Collinearity Between Predictors (\$X\$s)**
+### **5. Check for Colinearity Between Predictors (\$X\$s)**
 
-To avoid multicollinearity issues during modeling, the relationships among predictor variables were examined. This step includes:
+To avoid multicolinearity issues during modeling, the relationships among predictor variables were examined. This step includes:
 
 1.  Evaluating **correlations between the three quantitative variables**
 
@@ -321,11 +321,11 @@ corrplot.mixed(M,upper="square",lower.col="black", tl.col="black",cl.cex = 0.8,t
 
 The collinearity analysis indicates that the three quantitative variables are largely independent. A moderate positive correlation (r ≈ 0.52) is observed between the number of buildings and the number of cattle in the yard, suggesting a slight interdependence between these two variables. In contrast, the number of setts in fields shows almost no correlation with the others (r close to 0). Overall, no strong collinearity is detected, allowing these predictors to be retained for further modelling without major redundancy concerns.
 
-## Generalized Linear Mixed Model (GLMM)
+# **GENERALIZED LINEAR MIXED MODEL (GLMM)**
 
 Because the response variable is binary, we will use a **Generalized Linear Mixed Model (GLMM)** to examine how the different predictors influence badger activity. We assume that badger activity follows a **binomial distribution**, and we will therefore use a **logit link function**. The farm code is included as a **random effect**, to take into account the temporal autocorrelation between observations.
 
-### Building the model
+## **Building the model**
 
 The best model is identified using a **backward selection procedure**. This model selection method is based on the **Akaike Information Criterion (AIC)**, which allows to take into account both the goodness of fit and the simplicity of the model. Starting with the full model, the function `drop1` is used to evaluate each predictor's contribution to the AIC. The predictor whose removal leads to the smallest AIC is then removed and the model is refitted without this variable. The selection stops when the candidate model has the lowest AIC.
 
@@ -493,7 +493,7 @@ drop1(mod12,test="Chi") # mod12 is the best model
 
 There are convergence issues with the first few models, which may be due to their complexity. The best model only retains the number of setts as a fixed effect.
 
-### Model coefficients
+## **Model coefficients**
 
 ```{r coefficients, include = TRUE}
 summary(mod12)
@@ -501,7 +501,7 @@ summary(mod12)
 
 The model summary details both the fixed and the random effects. The model can be written as: $$  logit(presence\:of\:badger\:activity) = -5.07 + 0.38 \times number\:of\:setts$$ The variance associated with the random effect (which corresponds to the variance between farms) is 4.87.
 
-### Significance of the random effect
+## **Significance of the random effect**
 
 The significance of the random effect is tested via a **bootstrap** method: the likelihood of the model including the random effect is compared to the likelihood of 1000 models without the random effect.
 
@@ -539,7 +539,7 @@ abline(v = lrObs, col="red", lwd=3, lty=2) # Vertical red line representing the 
 
 All simulations lead to a likelihood ratio statistic lower than the observed statistic, which suggests that the random effect is highly significant.
 
-### Part of the variance explained by the model
+## **Part of the variance explained by the model**
 
 The function `rsq` from the package `rsq` computes three pseudo $R^2$, allowing us to separate the variance explained by the fixed effect from the variance explained by the random effect.
 
@@ -550,7 +550,7 @@ rsq(mod12)
 
 The model explains about 59% of the variance of the data, with 21% due to the fixed effect (the number of setts) and 38% due to the random effect (each individual farm).
 
-### Residual analysis
+## **Residual analysis**
 
 A GLMM does not require normality of residuals or homogeneity of variance, and the dependance in the data has already been taken into account with the random effect. However, analyzing the residuals allows us to detect an eventual trend which could indicate a problem with the modelization. Pearson residuals are used because they take into account variance heterogeneity.
 
@@ -577,7 +577,7 @@ abline(h = 0)
 
 In a binomial GLMM, residuals are often difficult to interpret. No defined trend can be identified here.
 
-### Model predictions
+## **Model predictions**
 
 We can check if the model is able to accurately predict the presence / absence of activity signs based on the number of setts.
 
@@ -619,3 +619,7 @@ Each cell of the **confusion matrix** represents a proportion of the total obser
 -   The **false negative** rate is 7.6%: it corresponds to farms with badger activity where no activity was predicted
 
 For this prediction, the overall accuracy was 0.86, which means that 86% of predictions were correct. The average accuracy over 1000 simulations is 0.88.
+
+# **DISCUSSION**
+
+# **CONCLUSION**
