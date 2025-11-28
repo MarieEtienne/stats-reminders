@@ -12,7 +12,8 @@ jobs:
     name: Build website with quarto
     runs-on: ubuntu-latest
     container: mpetienne/mode2025:0.1
-
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
