@@ -1,0 +1,274 @@
+---
+title: "Principal Component Analysis"
+authors: "Kilian Rocher, Océane Picot, Alexia Orhan"
+format: html
+editor: visual
+bibliography: references.bib
+---
+
+# **Introduction to the Principal Component Analysis**
+
+**Principal Component Analysis** (PCA) is a dimension reduction technique widely used in data analysis and machine learning for simplifying complex datasets. It helps us understand high-dimensional data by reducing the number of variables we need to consider while keeping as much of the original information as possible.
+
+The main goals are to **reduce the number of variables** into a new set of uncorrelated variables called **principal components**, to **visualize high-dimensional data** in 2D or 3D, to **detect patterns**, clusters and outliers, and to **remove noise and redundant information**. For example, if you get a data set with 10 correlated variables, PCA can reduce it to 2 or 3 principal components that explains 90% of the variance and makes it easier to visualize.
+
+The PCA, values have to be **quantitative**, and organized in a *n x p* matrix with *p* observations and *n* variables
+
+We will be using the R package *FactoMineR* (@factominer_le2008).
+
+# Ecological Exemple
+
+## Eye size evolution in spider
+
+Our example is based on the article @Chong2024. This study examines how eye size evolves in spiders, which possess up to four pairs of eyes of variable sizes. Researchers analyzed 1,098 individuals from 39 species and supplemented their data with approximately 474 additional species.
+
+The researchers measured four different eye pairs simultaneously. PCA reduces this 4-dimensional dataset into **interpretable components**, making it easier to visualize and understand patterns.
+
+```{r}
+spiders <-read.delim("S2_WolffData-Curated.txt",header = TRUE, stringsAsFactors = TRUE) #data importation
+summary(spiders)
+head(spiders)
+```
+
+The raw data set is composed of 473 observations of 24 variables .
+
+## Data preprocessing
+
+We don't want to analyze all species so we just keep the families. Also we keep relative variables instead of absolute ones in order to be able to compare spider families with different sizes.
+
+Description of the quantitative variables :
+
+-   rAME : relative Anterior Median Eyes (colored in yellow in @fig1)
+
+-   rALE : relative Anterior Lateral Eyes (colored in red in @fig1)
+
+-   rPME : relative Posterior Median Eyes (colored in blue in @fig1)
+
+-   rPLE : relative Posterior Lateral Eyes (colored in green in @fig1)
+
+::: {#fig1 style="text-align:center"}
+![Figure 1 --- Typical arrangements of spider eyes and their modification across spider families](arrangements_of_spider_eyes.jpg){width="50%"}
+:::
+
+```{r}
+spiders <- read.delim("S2_WolffData-Curated.txt", header = TRUE, stringsAsFactors = TRUE)
+spiders <- spiders[c("Family","rAME","rALE","rPME","rPLE")] #selection of variables
+spiders <- na.omit(spiders)
+```
+
+The PCA methodology begins by **standardizing the data** (center and scale variables)
+
+```{r}
+spiders$rALE <- (spiders$rALE-mean(spiders$rALE))/sd(spiders$rALE)
+spiders$rAME <- (spiders$rAME-mean(spiders$rAME))/sd(spiders$rAME)
+spiders$rPLE <- (spiders$rPLE-mean(spiders$rPLE))/sd(spiders$rPLE)
+spiders$rPME <- (spiders$rPME-mean(spiders$rPME))/sd(spiders$rPME)
+summary(spiders) #all means are equal to 0
+```
+
+## Packages
+
+```{r}
+library(FactoMineR) #to realize the PCA
+library(factoextra) #to visualize data
+library(ggplot2) #to plot the results
+```
+
+## PCA Analysis
+
+We use the **PCA** function from *FactoMineR* (@factominer_le2008). Through a linear algebra decomposition called the **singular value decomposition** (SVD), PCA identifies orthogonal directions in the data space---**the principal components**---ordered by the amount of variance they explain, with the first component capturing the maximum variance, the second capturing the next highest variance while being uncorrelated with the first, and so on.
+
+```{r}
+res.pca <- PCA(spiders,
+               scale.unit = FALSE,    # already centered-reduced
+               quali.sup = 1, # "Family" is qualitative and illustrative
+               graph = FALSE)
+```
+
+The output of the `PCA()` is a list of several components :
+
+-   `$eig` (**Eigenvalues)**
+
+    -   A matrix containing eigenvalues, percentage of variance, and cumulative percentage of variance for each principal component
+
+-   `$var` **(Results for Variables)**
+
+    -   `$var$coord`: Coordinates (correlations) of variables with principal components
+
+    -   `$var$cor`: Correlations between variables and dimensions (same as coord for standardized PCA)
+
+    -   `$var$cos2`: Quality of representation - squared cosine values showing how well variables are represented on each dimension
+
+    -   `$var$contrib`: Contributions of variables to each dimension (in percentage)
+
+-   `$ind` (Results for Individuals/Observations)
+
+    -   `$ind$coord`: Coordinates of individuals on the principal components
+
+    -   `$ind$cos2`: Quality of representation of individuals on each dimension
+
+    -   `$ind$contrib`: Contributions of individuals to each dimension
+
+    -   `$ind$dist`: Squared distance of individuals to the origin
+
+-   `$call` (Call Information)
+
+    -   Contains information about the function call
+
+-   `$svd` (Singular Value Decomposition)
+
+    -   Contains the raw SVD components (if you want to have a deeper mathematical understanding of PCA)
+
+### Interpretation tips :
+
+-   **Coordinates** indicate **the position** of a variable or individual on a dimension.
+
+    -   For Variables :
+
+        -   Coordinates = **correlation** between the variable and the principal component, it measures the strength and direction of the relationship
+
+    -   For Individuals :
+
+        -   Coordinates = position of the individual on the axis (score), it measures the relative position of the individual
+
+-   **Contributions** indicate **the weight** of a variable or individual in the construction of the dimension.
+
+    -   For variables it measures the relative importance in constructing the axes
+
+    -   For individuals it measures the individual's influence
+
+-   **Cos²** values range from 0 to 1 and measures **how much information about an element is preserved** when we project it onto the principal components. When close to 1, it's a good representation. **Only well projected variables can be interpreted !**
+
+## Data visualisation and interpretation
+
+To visualize the results from the PCA, we can analyse the percentage of inertia explained by the principal components through the **graph of inertia.**
+
+```{r}
+#| label: PCA_inertia
+#| fig-cap: "Percentage of inertia explained by axes"
+#| fig-subcap: 
+#| - "Table of eigenvalue and percentage of variance"
+#| - "Graph of inertia"
+
+res.pca$eig
+fviz_eig(res.pca, ylim = c(0, 100), geom='bar', main='Percentage of inertia explained by axes')
+```
+
+The two first axis explain more than 86% of the total variance so only two main components are selected for the analysis. The first dimension explains 61.9% of the variance while the second dimension explains 24.2% of the variance.
+
+Only well projected variables and individuals can be interpreted. The sum of cos2 on Dim.1 and Dim.2 should be around 1.
+
+```{r}
+#| label: tabl_cos
+#| fig-cap: "Projection quality of variables and individuals"
+#| fig-subcap: 
+#| - "Table of cos2 for each variables"
+#| - "Table of cos2 for individuals"
+
+res.pca$var$cos2
+head(res.pca$ind$cos2)
+```
+
+The variables and individuals are well projected and can be interpreted.
+
+We can also see how the variables contribute to the the two principal components.
+
+```{r}
+#| label: var_contrib
+#| fig-cap: "Contribution of variables to the axes"
+#| fig-subcap: 
+#| - "Table of contribution of variables to the axes"
+#| - "PCA variable correlation plot" 
+
+res.pca$var$contrib
+fviz_pca_var(res.pca,
+             col.var = "contrib",
+             gradient.cols = c("blue", "yellow", "red"),
+             repel = TRUE,
+             title = "PCA variable correlation plot") #show how relative eyed sizes are correlated
+```
+
+All variables are contributing a lot to the first axis. However, lateral eyes (rALE and rPLE) explain the best the axis with contributions higher than 30%. On the other hand, medium eyes (rAME and rPME) explain the second axis with contributions respectively equal to 54% and 44%.
+
+We can also plot the individuals into principal component space.
+
+```{r}
+#| label: indiviual_graph
+#| fig-cap: "Scatterplot of individuals on the two main axes"
+
+fviz_pca_ind(res.pca,
+             geom.ind = "point",
+             label = "none",
+             habillage = spiders$Family, #to see if a family looks to contribute more to the axis
+             legend = "none",
+             repel = TRUE,
+             pointshape = 19)
+```
+
+The individuals are mainly distributed along the first axis which can be interpreted as a gradient of variation in lateral eye size. Individuals are also concentrated around zero which means that a majority of spiders has similar eye proportions.
+
+Because there are 106 families of species, we will concentrate only on the first height most frequent family in order to have a clearer vision.
+
+```{r}
+#| label: indiviual_graph_selectind
+#| fig-cap: "Scatterplot of individuals of the first height most frequent family on the two main axes"
+
+top_families <- names(sort(table(spiders$Family), decreasing = TRUE))[1:8] #only frequent families to have a clearer graph
+spiders_sub <- subset(spiders, Family %in% top_families)
+res.pca2 <- PCA(spiders_sub, scale.unit = FALSE, quali.sup = 1, graph = FALSE)
+fviz_pca_ind(res.pca2, habillage = spiders_sub$Family, 
+             #palette = "Dark2", 
+             #repel = TRUE,
+             select.ind = list(name = NULL, cos2 = NULL, contrib = NULL),
+             label="none"
+             )
+```
+
+Graph of contributions by individuals :
+
+```{r}
+#res.pca$ind$contrib
+
+#Axis 1
+
+top10_ind <- order(res.pca$ind$contrib[,1], decreasing = TRUE)[1:10] #the 10 individuals contributing the most to the first axis
+
+top10_ind_fam <- data.frame(
+  Individual = rownames(spiders)[top10_ind],
+  Family = spiders$Family[top10_ind],
+  Contribution = res.pca$ind$contrib[top10_ind, 1]
+) #families associated to the individuals contributing the most
+
+top10_ind_fam
+
+#Axis 2
+top10_ind_2 <- order(res.pca$ind$contrib[,2], decreasing = TRUE)[1:10] #the 10 individuals contributing the most to the first axis
+
+top10_ind_fam_2 <- data.frame(
+  Individual = rownames(spiders)[top10_ind_2],
+  Family = spiders$Family[top10_ind_2],
+  Contribution = res.pca$ind$contrib[top10_ind_2, 2]
+) #families associated to the individuals contributing the most
+
+top10_ind_fam_2
+
+# Axis 1
+head(sort(res.pca$ind$contrib[,1], decreasing = TRUE), 10)
+
+# Axis 2
+head(sort(res.pca$ind$contrib[,2], decreasing = TRUE), 10)
+```
+
+When we visualise families, it looks like individuals from the *Salticidae* are atypical individuals because they are far on the first axis. In fact, looking at the contributions just above, those individuals have the highest contributions. For the first and the second axis, 7 out of 10 individuals are in the family *Salticidae*.
+
+::: {style="text-align:center"}
+![Figure 2 --- Family *Salticidae* contributing the most to explained variance.](Salticidae.jpg){width="50%"}
+:::
+
+## Conclusion
+
+According to @var_contrib, the first axis is positively correlated with the relative size of both the anterior and posterior lateral eyes (the red and green ones in @fig1). For the second axis, there seems to be an antagonistic relationship between the anterior and posterior eyes.
+
+This provides information about how eye sizes evolve together. However, from an ecological perspective, it would be interesting to study whether body size or spider activity is linked to eye size, as done in the original article @Chong2024. For example, we could test whether nocturnal spider species have larger eyes than diurnal ones.
+
+We performed a PCA to visualize the relationships between variables. The goal was also to reduce the dimensionality of the dataset. However, since our dataset includes only four variables, it is not the most suitable example to demonstrate the advantages of factorial analysis.

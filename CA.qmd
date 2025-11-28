@@ -1,0 +1,530 @@
+---
+title: "What is a CA and how to use it ?"
+author: "Capucine, Marion et Maite"
+editor: visual
+bibliography: references.bib
+format:
+  html:
+    toc: true
+    toc-floating: true
+    code-fold: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message = FALSE, cash=TRUE)
+```
+
+# Introduction to the Correspondence Analysis
+
+A **Correspondence Analysis** (CA), or **Analyse Factorielle de Correspondance** (AFC) in French, is a multivariate statistical method used to measure the distance between different profiles in your data, or the discrepancy between the data and the chi-square $\chi²$ independence hypothesis. This hypothesis (also called the null hypothesis H0) implies that the 2 variables studied are independent.
+
+The values can be **quantitative, qualitative or semi-qualitative**. It is usually applied to **contingency tables** or when you have a table with data about species abundance in different places and another one with data about the ecology of those same places.
+
+Just like in the PCA, we will be looking at the orthogonal axes that maximize the inertia. The parameter used is the $\chi²$ distance : this distance is calculated between 2 rows or 2 columns. The CA gives a weight to each profile, proportional to the abundance of the profile.
+
+The columns and lines have a symmetrical role, so you'll have the same results in both directions.
+
+To use it you'll need to pay attention to certain things :\
+- all values need to be **positive** (which shouldn't be a problem if it's a contingency table),\
+- if you have **rare species**, it may change the shape of your results significantly. It's not always a bad thing, just something you need to be aware of.
+
+Two R packages can be used to perform CA : *ade4* (@ade4_dray2007) and *FactoMineR* (@factominer_le2008).
+
+# Ecological exemple
+
+## Ecological context
+
+A study was conducted in 2022 on the permanent wetlands of the municipality of Grabels (34), as part of a Municipal Biodiversity Atlas (@ABC_macroinv2022). The aim was to characterize the state of these environments using bioindicator species : benthic macroinvertebrates (@fig-CA_macroinvertebrates). This taxon, which is sensitive to pollution, can be used to study water quality.
+
+#### Imports
+
+```{r}
+#| echo: false
+#| label: fig-CA_macroinvertebrates
+#| fig-cap: "Example of two families of benthic macroinvertebrates"
+#| fig-subcap: 
+#| - "Libellulidae"
+#| - "Physidae"
+#| layout-nrow: 1
+#| layout-ncol: 2
+
+knitr::include_graphics("./images/Libellulidae.jpg")
+knitr::include_graphics("./images/Physidae.jpg")
+```
+
+In this study, the standardised **I2M2 protocol** of the Water Framework Directive (@DCE_2014) was adapted to a context of ponds and very shallow watercourses.\
+Two streams (the *Rieu Querelle* and the *Verdanson*), permanent ponds (*Ruche*, *Terrain de Foot* and *Foot2*) and an artificial water source (*Bassin*) were sampled and the macroinvertebrates collected were identified. Each wetland was sampled at several randomly selected points (*Zi*), and three replicas were made at each point (*Zi_j*).
+
+The purpose of this analysis is to study the species assemblages depending of the site. In this context, the CA is one of the right choices.
+
+## Packages
+
+```{r, message = FALSE, warning = FALSE}
+rm(list = ls())
+requiredPackages <- c("dplyr","readr", "stringi", "ggplot2", "vegan", 
+                      "tidyr", "gridtext", "ggtext")
+for(package in requiredPackages){ #Installs packages if not yet installed
+  if(!requireNamespace(package, quietly = TRUE))
+    install.packages(package)
+}
+library(dplyr)
+library(readr)
+library(stringi)
+library(FactoMineR)
+library(ade4)
+library(ggplot2)
+library(vegan)
+library(tidyr)
+library(factoextra)
+library(gridtext)
+library(ggtext)
+library(knitr)
+```
+
+## Data
+
+```{r, message = FALSE, warning = FALSE}
+# Import data
+macroinv <- read.csv("ABC_macroinv.csv", header = TRUE, 
+                     fileEncoding = "latin1", 
+                     sep = ";")
+
+classification <- read_delim("classif_macroinv.csv", delim = ";", 
+                             col_names = FALSE, 
+                             locale = locale(encoding = "latin1"),
+                             name_repair = "minimal")
+
+# Replace colnames in both dataframes
+colnames(macroinv) <- colnames(macroinv) %>%
+                  stri_trans_general("Latin-ASCII") %>% 
+                  gsub("\\.", "_", .) %>%
+                  gsub("[^A-Za-z0-9_]", "", .)
+
+classification <- classification %>%
+  mutate(across(everything(), \(x)
+                x %>%
+                  stri_trans_general("Latin-ASCII") %>% 
+                  gsub(" ", "_", .) %>%
+                  gsub("[^A-Za-z0-9_]", "", .)))
+
+# Rotate classification tabs
+classification <- classification %>% 
+  t() %>% 
+  data.frame()
+```
+
+In each sample (each row), macroinvertebrates have been identified at the family level (@tbl-CA_datamacroinv), and the CA analysis will be performed at the taxonomic level.
+
+```{r}
+#| label: tbl-CA_datamacroinv
+#| tbl-cap: Overview of the dataset
+
+kable(head(macroinv[,1:10]), "html")
+```
+
+However, the taxonomic level of the order was also taken in most cases (Coleoptera, Odonata, etc.) in order to be able to group together the numerous identified families and allow an ecological interpretation (@tbl-CA_classifmacroinv). Other families were grouped at the class level (Bivalves, Gastropods, etc.) and the paraphyletic group of Crustaceans was kept.
+
+```{r}
+#| label: tbl-CA_classifmacroinv
+#| tbl-cap: Correspondence between taxonomic levels of macroinvertebrates families and orders
+
+kable(head(classification[,1:2]), "html", col.names = c("Order", "Family"))
+```
+
+### Remove species absent from the sampling
+
+Species absent from all surveys (empty columns) or present in only one sample were removed to prevent double absences from impacting the analysis.
+
+```{r}
+#check each specie count
+species_sum <- colSums(macroinv[,-c(1,2)])
+
+#keep only names of species with <1 occurences
+species_keep <- names(species_sum[species_sum > 1])
+
+#create reduced dataframe
+macroinv_red <- macroinv[, c(names(macroinv)[1:2], species_keep)]
+```
+
+## Data exploration
+
+```{r}
+#| label: fig-CA_nbreplicates
+#| fig-cap: Number of replicates per wetland
+
+macroinv_red %>% 
+  group_by(ZH, Echantillon) %>% 
+  ggplot(., aes(x = ZH, fill = ZH)) +  
+  geom_bar() + 
+  theme_bw() +
+  xlab("**Wetland**") + 
+  ylab("**Number of replicates**") +
+  theme(axis.text.x = element_markdown(angle = 45, vjust = 1, 
+                                       hjust = 1, size = 11), 
+        axis.text.y = element_markdown(size = 11),
+        axis.title = element_markdown(size = 13),
+        legend.position = "none")
+```
+
+A different number of samples was taken in each wetland (see @fig-CA_nbreplicates), depending on their size. For small wetlands (less than 20m²), such as Ruche or Foot2, it was decided to adjust the number of sampling points in order to limit the ecological impact on these environments. For watercourses such as the Rieu Querelle and the Verdanson, sampling points were distributed to cover the upstream-downstream gradient, with different habitats present.
+
+```{r}
+#| label: fig-CA_abundFamily
+#| fig-cap: Abundance of individuals per macroinvertebrate taxonomic level for each sample per wetland
+#| fig-subcap: 
+#| - "Family level"
+#| - "Order level"
+#| layout-nrow: 2
+
+macroinv_red %>% 
+  group_by(ZH) %>% 
+  pivot_longer(cols = c(3:40), names_to = "Familles", values_to = "Abondance") %>%
+  ggplot(., aes(x = Echantillon, y = Abondance, fill = Familles)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~ ZH) + 
+  xlab("**Sample**") + 
+  ylab("**Number of individuals by sample**") +
+  theme_bw() + 
+  labs(fill = "**Family**") + 
+  theme(axis.text.x = element_markdown(angle = 90, vjust = 1, hjust = 1), 
+        axis.text.y = element_markdown(size = 11),
+        axis.title = element_markdown(size = 13),
+        legend.title = element_markdown())
+
+macroinv_red %>% 
+  group_by(ZH) %>% 
+  pivot_longer(cols = c(3:40), names_to = "Family", values_to = "Abondance") %>%
+  left_join(., classification, by = c("Family" = "X2")) %>%
+  ggplot(., aes(x = Echantillon, y = Abondance, fill = X1)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~ ZH) + 
+  xlab("**Sample**") + 
+  ylab("**Number of individuals by sample**") +
+  theme_bw() + 
+  labs(fill = "**Order**") + 
+  theme(axis.text.x = element_markdown(angle = 90, vjust = 1, hjust = 1), 
+        axis.text.y = element_markdown(size = 11),
+        axis.title = element_markdown(size = 13),
+        plot.title = element_markdown(hjust = 0.5, size = 15),
+        legend.title = element_markdown())
+```
+
+@fig-CA_abundFamily shows the number of individuals sampled by family (@fig-CA_abundFamily-1) and by order (@fig-CA_abundFamily-2) for each sample.
+
+Some taxa are present in large quantities (e.g., Bivalves in Ruche).
+
+Some orders are very generalist and present in all wetlands (e.g., Diptera, Gastropoda, Bivalvia). Odonata are also represented in all sites, except in the Bassin. Other orders have more specific ecological preferences and are more sensitive to pollution, such as Trichoptera and Plecoptera. The low representation of the latter could be explained by their ecological preference for rocks in streams rather than ponds.
+
+# Analysis : Correspondance Analysis
+
+## CA with FactoMineR
+
+```{r}
+#| label: fig-CA_FactoMineR
+#| fig-cap: CA with the FactoMineR package
+#| fig-height: 10
+
+#First CA with the reduced data set
+CA <- CA(macroinv_red[,-c(1,2)], axes = c(1,2))
+#plot(CA$eig[,2], type = "h")
+```
+
+Here we can see our first CA (@fig-CA_FactoMineR) using the *FactoMineR* package. The first two axes are displayed. These are the ones that explain the most inertia in the data set, 14,56% and 14,02 as we can see in the parenthesis.\
+The position of the families and sites on the graph indicate how similar they are to each other and how the affect the axis. The more close together they are the more similar they are according to the axes displayed. If they are very far away from the center, they play a bigger role in the contribution to the axis.
+
+CA allows to see species and sites contribution to the main axis (@tbl-CA_spcontrib, @fig-CA_plotspcontrib). Here we only show the species contribution and which ones contribute significantly.
+
+```{r}
+#| label: tbl-CA_spcontrib
+#| tbl-cap: "Species that contribute significantly to Axis 1-2"
+#| tbl-subcap: 
+#| - "Species that contribute significantly to axe 1"
+#| - "Species that contribute significantly to axe 2"
+#| layout-nrow: 2
+#| layout-ncol: 1
+
+#Selection of the species that contribute significantly to axes one and two
+which_contrib_high1 <- which(CA$col$contrib[,1] >= 100/nrow(CA$col$contrib))
+which_contrib_high2 <- which(CA$col$contrib[,2] >= 100/nrow(CA$col$contrib))
+
+kable(CA$col$contrib[which_contrib_high1, ], "html")
+
+kable(CA$col$contrib[which_contrib_high2, ], "html")
+```
+
+To check if they contribute significantly to the axis we look at their contribution. If it is greater than the sum of all contributions divided by the number of species we consider that the contribution is significant. Here (@tbl-CA_spcontrib) we can see that four families contribute significantly to the construction of the first axis and three families for the second one. Without surprise, *Thaunaleidae* contributes to both of them, *Bivalve* also appears in both. Then *Culicidae* and *Asellidae* contribute significantly to the first axis and *Simulidae* to the second axis.
+
+```{r}
+#| label: fig-CA_plotspcontrib
+#| fig-cap: "Species contribution to Axis 1-2"
+#| fig-subcap: 
+#| - "Species contribution to axe 1"
+#| - "Species contribution to axe 2"
+#| layout-nrow: 2
+
+# BONUS : visualize axis contribution
+
+fviz_contrib(CA, choice = "col", axes = 1, top = Inf)  # contributions Axis 1
+fviz_contrib(CA, choice = "col", axes = 2, top = Inf)  # contributions Axis 2
+```
+
+Here (@fig-CA_plotspcontrib) is another way of presenting the contributions. The red line represents the threshold for the signicance of the contribution.
+
+FactoMineR is not the only package that can be used for a CA. Here are a few examples of functions that can be useful in the ade4 package.
+
+We noticed that *Thaunaleidae* are only present in one of the sites, a bassin, and it is dragging the CA. In this next section we will also look at the CA without the odd bassin.
+
+## CA with ade4
+
+When using the ade4 package we need to specify *nf*, it defines the number of axes in the CA constructed : it is calculated by taking minimum(number of columns, number of rows) - 1 (here 38 - 1 = 37)
+
+```{r}
+CA_ade4 <- dudi.coa(macroinv_red[,-c(1,2)], scannf = FALSE, nf = 37)
+
+
+CA_ade4_sansbassin <- dudi.coa(macroinv_red[-c(27,28,29), -c(1,2)], 
+                               scannf = FALSE, nf = 37)
+```
+
+After studying the contribution to each axis we can look at how much information is contained in each axis : the inertia.
+
+### Inertia explained
+
+**Percentage of inertia explained according to the axes :**
+
+```{r}
+#| label: tbl-CA_interiabyaxis
+#| tbl-cap: "Inertia explained by axis"
+#| tbl-subcap: 
+#| - "With the bassin"
+#| - "Without the bassin"
+#| layout-nrow: 1
+#| layout-ncol: 2
+
+
+pourcentage <- CA_ade4$eig/sum(CA_ade4$eig)*100
+kable(round(pourcentage[1:10],2),'html',col.names = "With bassin")
+
+pourcentage_sansbassin <- CA_ade4_sansbassin$eig/sum(CA_ade4_sansbassin$eig)*100
+kable(round(pourcentage_sansbassin[1:10],2),'html',col.names = "Without bassin")
+```
+
+Here we only show the first ten axes. We can see that the first axis explains more inertia when we remove the bassin, 16.75% versus 14.56% (@tbl-CA_interiabyaxis).
+
+**Cumulative inertia :**
+
+```{r}
+#| label: fig-CA_eigcumul
+#| fig-cap: "Cumulative eigenvalues associates to CA dimensions"
+#| fig-subcap: 
+#| - "With Bassin samples"
+#| - "Without Bassin samples"
+#| layout-nrow: 1
+#| layout-ncol: 2
+
+inertie_cumulee <- data.frame(axes = 1:37, inertie = cumsum(pourcentage))
+inertie_cumulee_sansbassin <- data.frame(axes = 1:36, inertie = cumsum(pourcentage_sansbassin))
+
+ggplot(inertie_cumulee) +
+  aes(y = inertie, x = axes) +
+  geom_col() +
+  theme_bw()
+
+ggplot(inertie_cumulee_sansbassin) +
+  aes(y = inertie, x = axes) +
+  geom_col() +
+  theme_bw()
+
+```
+
+It is interesting to look at the cumulative inertia to choose how many axis are interesting to keep. It is common to keep the first one to three or the ones that explain up to 50% of the inertia. But in ecology it can be hard to get to that percentage so it's okay if the inertia is not that high.
+
+Here we can see that when we remove the bassin the axis cumulatively explain more inertia (@fig-CA_eigcumul).
+
+## Exploration of the CA
+
+```{r, message = FALSE, warning = FALSE}
+#| label: fig-CA_ade4
+#| fig-cap: "CA projection with ade4 package"
+#| fig-subcap: 
+#| - "Sites and families together"
+#| - "Only sites"
+#| - "Only families"
+#| layout: [[45, 45], [100]]
+
+scatter(CA_ade4, posieig = "none")
+s.label(CA_ade4$li, xax = 1, yax = 2, boxes = FALSE)
+s.label(CA_ade4$co, xax = 1, yax = 2, boxes = FALSE)
+```
+
+The first two axes explain $28.58%$ of the total inertia, with approximately $14%$ for each axis (@fig-CA_eigcumul). Although this is not a large proportion, such values are not uncommon in ecological datasets. Axis 1 represents essentially a Bivalve gradient, with Bivalve contributing $69%$, followed by *Thaumaleidae* ($12%$), *Culicidae* ($5.3%$), and *Asellidae* ($3.7%$) (@tbl-CA_spcontrib). Axis 2 is mainly explained by *Thaumaleidae* ($79%$), with smaller yet notable contributions from Bivalve ($8.8%$) and *Simuliidae* ($3.5%$), as we can see on @tbl-CA_spcontrib.
+
+The high contribution of *Bivalve* may be explained by the fact that, unlike the other taxa (at the family level), it refers to a class and therefore represents a much broader group. This could account for the prevalence of various Bivalve individuals across some sampling stations (e.g. between 62 and 700 individuals in "Ruche" samples), and consequently, its dominant role in shaping Axis 1.\
+The $79%$ contribution of *Thaumaleidae* likely reflects its high density in three stations ("Bassin"), a peculiar environment where only *Thaumaleidae* were found, while they were nearly absent from other sites. This group thus stretches Axis 2. "Bassin" environnement was a cemented artificial pound which is hard to colonize for most organisms other than *Thaumaleidae*. Indeed, this taxon belongs to the *Diptera* order, very tolerant to pollution (@vivier_macroinv1970) and ubiquitous (@faunefrance_macroin1927).
+
+Regarding the correspondances between stations and species, the analysis shows - as expected - a proximity between *Thaumaleidae* and stations 28, 27 and 29, which are the stations it was almost exclusively sampled from. It could therefore be interesting to redo the analysis without those 3 stations to remove the high correlation between these "Bassin" samples and *Thaumaleidae*.
+
+```{r}
+scatter(CA_ade4_sansbassin)
+#we can see things more clearly when we remove the bassin
+```
+
+```{r}
+# Link samples position (CA$li = rows) on CA axis and the wetlands -------------
+CA_ade4_ligne_ZH <- merge(CA_ade4$li, macroinv_red$ZH, by=0)
+
+CA_ade4_sansbassin_ligne_ZH <- merge(CA_ade4_sansbassin$li, macroinv_red$ZH, by=0)
+
+# Link species position (CA$co = columns) on CA axis and the family / order ----
+CA_ade4_col_ZH <- data.frame(CA_ade4$co) %>% 
+  mutate("Family" = rownames(.)) %>%
+  left_join(., classification, by = c("Family" = "X2"))
+
+CA_ade4_sansbassin_col_ZH <- data.frame(CA_ade4_sansbassin$co) %>% 
+  mutate("Family" = rownames(.)) %>%
+  left_join(., classification, by = c("Family" = "X2"))
+```
+
+**Plot CA for the lines, dim 1 and 2, colour depends on the water source type :**
+
+```{r}
+#| label: fig-CA_CAwetland_position
+#| fig-cap: Samples position on Axis 1 and 2 of the CA, depending on wetland
+#| fig-subcap: 
+#| - "CA with Bassin samples"
+#| - "CA without Bassin samples"
+#| layout-nrow: 2
+
+ggplot(data = CA_ade4_ligne_ZH) +
+  aes(x = Axis1, y = Axis2, color = y) +
+  geom_point() +
+  geom_hline(yintercept = 0) +
+  geom_vline(xintercept = 0) +
+  xlab("**CA Axis 1**") + 
+  ylab("**CA Axis 2**") +
+  labs(color = "**Wetland**") +
+  theme_bw() + 
+  theme(axis.text.x = element_markdown(vjust = 1, hjust = 1, size = 11), 
+        axis.text.y = element_markdown(size = 11),
+        axis.title = element_markdown(size = 13),
+        legend.title = element_markdown(size = 13), 
+        legend.text = element_markdown(size = 13),
+        legend.position = "top")
+
+ggplot(data = CA_ade4_sansbassin_ligne_ZH) +
+  aes(x = Axis1, y = Axis2, color = y) +
+  geom_point() +
+  geom_hline(yintercept = 0) +
+  geom_vline(xintercept = 0) +
+  xlab("**CA Axis 1**") + 
+  ylab("**CA Axis 2**") +
+  theme_bw() + 
+  theme(axis.text.x = element_markdown(vjust = 1, hjust = 1, size = 11), 
+        axis.text.y = element_markdown(size = 11),
+        axis.title = element_markdown(size = 13),
+        legend.position = "none") 
+```
+
+To help us interpret the graph, it can be useful to colour the points depending on an ecological variable.
+
+In @fig-CA_CAwetland_position, the points correspond to the projection of the samples onto the two axes of the CA. The position of each sampling point corresponds to the barycenter (average) of the coordinates of the species present at that site. We can see that the sites coming from the same wetland are more or less grouped together meaning that the groups of families present in each of them are similar. It is not surprising because the ecological conditions are usually similar in one type of wetland.
+
+**Plot CA for the lines, dim 1 and 2, colour depends on the order :**
+
+```{r}
+#| label: fig-CA_CAspecies_position
+#| fig-cap: Species position on Axis 1 and 2 of the CA, depending on wetland
+#| fig-subcap: 
+#| - "CA with Bassin samples"
+#| - "CA without Bassin samples"
+#| layout-nrow: 2
+
+ggplot(data = CA_ade4_col_ZH) +
+  aes(x = Comp1, y = Comp2, color = X1) +
+  geom_point() +
+  geom_hline(yintercept = 0) +
+  geom_vline(xintercept = 0) +
+  xlab("**CA Axis 1**") + 
+  ylab("**CA Axis 2**") +
+  labs(color = "**Order**") +
+  theme_bw() + 
+  theme(axis.text.x = element_markdown(vjust = 1, hjust = 1, size = 11), 
+        axis.text.y = element_markdown(size = 11),
+        axis.title = element_markdown(size = 13),
+        legend.title = element_markdown(size = 13), 
+        legend.text = element_markdown(size = 13),
+        legend.position = "top")
+
+ggplot(data = CA_ade4_sansbassin_col_ZH) +
+  aes(x = Comp1, y = Comp2, color = X1) +
+  geom_point() +
+  geom_hline(yintercept = 0) +
+  geom_vline(xintercept = 0) +
+  xlab("**CA Axis 1**") + 
+  ylab("**CA Axis 2**") +
+  theme_bw() + 
+  theme(axis.text.x = element_markdown(vjust = 1, hjust = 1, size = 11), 
+        axis.text.y = element_markdown(size = 11),
+        axis.title = element_markdown(size = 13),
+        legend.position = "none") 
+```
+
+In @fig-CA_CAspecies_position, the points correspond to the projection of the families onto the two axes of the CA. The position of each family corresponds to the barycenter (average) of the coordinates of the sites where this species was present. (je crois que je comprends pas bien cette phrase)
+
+### Table value
+
+```{r}
+#| label: fig-CA_tablevalues
+#| fig-cap: Data reorganized according to the CA results
+#| fig-subcap: 
+#| - "With Bassin samples"
+#| - "Without Bassin samples"
+#| layout-nrow: 2
+
+table.value(macroinv_red[,-c(1,2)][order(CA_ade4$li[,1]),
+                                   order(CA_ade4$co[,1])],
+            grid = T, csize = 0.5, clabel.col = 0.6)
+table.value(macroinv_red[,-c(1,2)][order(CA_ade4_sansbassin$li[,1]),
+                                   order(CA_ade4_sansbassin$co[,1])], 
+            grid = T, csize = 0.5, clabel.col = 0.6)
+```
+
+This table value shows presence and abundance, each square representing the presence of a family in a site. The square size varies with abundance of the family. On the first table (@fig-CA_tablevalues-1) - which includes the 3 bassin stations - we can see that the presence profils are highly impacted by the peculiar macroinvertebrate composition of said stations. 
+
+When we get rid of these stations (@fig-CA_tablevalues-2), it reveals presence patterns that couldn't be seen. The most obvious is the bivalve presence in the first sations, which is likely due to their prevalence in "Ruche" stations. The graph also shows that the presence of *Culicidae* is similar in all stations. For *Physidae*, we observe the same tendency although they are not present on the station "Rieu_Querelle". Some species are only present in a few, or even a single station. That is the case for *Hydrobiidae* which are only present in one sample, "Foot_2". Finally, *Baetidae*'s presence is really high on the "Verdanson" Stations.
+
+### Species distribution
+
+We can look at how each species is distributed on the CA in the first two axis. It can help us visualize how much influence they have on the axis.
+
+```{r}
+#| label: fig-CA_CAspecies_distrib
+#| fig-cap: Species distribution in samples on Axis 1 and 2 of the CA
+
+par(mfrow = c(2, 2))
+s.distri(CA_ade4_sansbassin$li, macroinv_red[-c(27,28,29), 26], cell = 1.5, 
+         sub = colnames(macroinv_red[26]), csub = 2) #rare family
+s.distri(CA_ade4_sansbassin$li, macroinv_red[-c(27,28,29), 36], cell = 1.5, 
+         sub = colnames(macroinv_red[36]), csub = 2) #rare family
+s.distri(CA_ade4$li, macroinv_red[, 22], cell = 1.5,
+         sub = colnames(macroinv_red[22]), csub = 2) #common family
+s.distri(CA_ade4_sansbassin$li, macroinv_red[-c(27,28,29), 5], cell = 1.5, 
+         sub = colnames(macroinv_red[5]), csub = 2) #family very abundant in 1 station
+```
+
+@fig-CA_CAspecies_distrib shows the distribution of the different families across the sites. Each point corresponds to the coordinates of a site. The points connected to each other correspond to all the points where the family is present. Their **barycenter** (average of the site positions) corresponds to the position of the family on the CA projections in @fig-CA_CAspecies_position.
+
+The barycenter corresponds to the average of the sampled environmental conditions where the family is present (i.e. the central position of the ecological niche).\
+The **size of the ellipse** corresponds to the **width of the ecological niche**. A generalist family will tend to be present at the center of the CA with a large ellipse, while a more specialized family, present in a few site, will have a smaller ellipse (e.g., Thaunaleidae).
+
+**However, for abundance data (as here), the barycenter is attracted to sites where the family is present in greater numbers (e.g., Bivalves in Ruche).**
+
+### Sites distribution
+
+Similarly, we can project the distribution of sites. Each point corresponds to the coordinates of a family. For a given site, the families present on that site are connected, and the barycenter of these families' coordinates form the site's position in the CA (@fig-CA_CAwetland_position)
+
+The **size of the ellipses** can be interpreted as the **alpha diversity** (i.e., species richness) present at a site : the larger the ellipse, the more families it will contain.
+
+# Conclusion
+
+Certain stations having very specific physico-chemical caracteristics, their macro-invertebrate composition is very peculiar and influence greatly the CA results. However, after removing them from the analysis, we can highlight macro invertebrate compositions and presence for our different stations.

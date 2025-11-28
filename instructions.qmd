@@ -16,13 +16,14 @@ format:
 
 **Repository**: `https://github.com/MarieEtienne/stats-reminder`
 
-::: {.callout-important}
+::: callout-important
 ## Deliverables
+
 Each team creates **1 example** among one of the major theme:
 
-- Linear models
-- Differential equations  
-- Multivariate analysis
+-   Linear models
+-   Differential equations\
+-   Multivariate analysis
 
 Each student should devote time to the review process ass well
 
@@ -30,16 +31,16 @@ The repository will close on December 1st at 1PM and only the work merged on mas
 
 Final mark for this assignment will consider
 
-* Mastering git workflow (commit, pull push , handling conflict, Pull Request, optimmaly rebase to have a clean history)
+-   Mastering git workflow (commit, pull push , handling conflict, Pull Request, optimmaly rebase to have a clean history)
 
-* Taking part of the reviewing process to increase global quality of the project
+-   Taking part of the reviewing process to increase global quality of the project
 
 During the last lab on git, November 5th, students will have a test to evaluate the overall understanding of git process
 
 The final grad will be based on both evaluation
 :::
 
----
+------------------------------------------------------------------------
 
 ## Project requirements {#sec-requirements}
 
@@ -47,29 +48,29 @@ The final grad will be based on both evaluation
 
 Each `.qmd` example must include:
 
-- Clear ecological question with real/realistic data
-- Proper cross-references: sections (`@sec-methods`), figures (`@fig-plot`), tables (`@tbl-results`) or equations (`@eq-model`)
-- Citations and bibliography
-- Well-documented code and results
+-   Clear ecological question with real/realistic data
+-   Proper cross-references: sections (`@sec-methods`), figures (`@fig-plot`), tables (`@tbl-results`) or equations (`@eq-model`)
+-   Citations and bibliography
+-   Well-documented code and results
 
 ### Git Workflow
 
-1. **One branch per example**: `team-[names]-[method]-[description]`
-2. **Update `_quarto.yml`** to include your examples in the website structure (see @sec-quarto-config)
-3. Optimally **Rebase before PR** to ensure linear history (see @sec-rebase)
-4. **PR requirements** (see @sec-pr-requirements):
-   - ✅ No merge conflicts
-   - ✅ Automated checks pass
-   - ✅ One peer review
-   - ✅ At least one discussion thread
+1.  **One branch per example**: `team-[names]-[method]-[description]`
+2.  **Update `_quarto.yml`** to include your examples in the website structure (see @sec-quarto-config)
+3.  Optimally **Rebase before PR** to ensure linear history (see @sec-rebase)
+4.  **PR requirements** (see @sec-pr-requirements):
+    -   ✅ No merge conflicts
+    -   ✅ Automated checks pass
+    -   ✅ One peer review
+    -   ✅ At least one discussion thread
 
----
+------------------------------------------------------------------------
 
 ## Git Workflow {#sec-workflow}
 
 ### Setup
 
-```bash
+``` bash
 # Clone repository
 git clone https://github.com/MarieEtienne/stats-reminder.git
 cd stats-reminder
@@ -81,7 +82,7 @@ git push origin teamA
 
 ### Create one branch per task {#sec-branches}
 
-```bash
+``` bash
 # From your team branch, create example branches
 git switch teamA
 git switch -b teamA-intro
@@ -102,12 +103,11 @@ git switch teamA
 git merge teamA-intro
 ```
 
-
 ### Updating `_quarto.yml` {#sec-quarto-config}
 
 Add your examples to the website structure:
 
-```yaml
+``` yaml
 website:
   navbar:
     left:
@@ -121,15 +121,15 @@ website:
                 href: team-smith-diffeq-predator.qmd
 ```
 
----
+------------------------------------------------------------------------
 
 ### Update Before PR {#sec-rebase}
 
-::: {.callout-warning}
+::: callout-warning
 Always rebase on master before creating PR to ensure clean linear history and avoid conflicts.
 :::
 
-```bash
+``` bash
 git switch teamA
 git switch -c teamA_PR #create a new branch to avoid destruction
 
@@ -149,30 +149,30 @@ git push origin teamA_PR
 
 ### Creating a PR
 
-1. Go to repository → **Pull requests** → **New pull request**
-2. Base: `master`, Compare: `teamA_PR`
-3. Write clear description (method, question, team)
+1.  Go to repository → **Pull requests** → **New pull request**
+2.  Base: `master`, Compare: `teamA_PR`
+3.  Write clear description (method, question, team)
 
 ### PR Requirements {#sec-pr-requirements}
 
 All must be met before merge:
 
-- ✅ **No conflicts** (rebase if needed, see @sec-rebase)
-- ✅ **Automated checks pass** (builds website successfully)
-- ✅ **One review** from peer/instructor
-- ✅ **One discussion thread** (respond to reviewer comments)
+-   ✅ **No conflicts** (rebase if needed, see @sec-rebase)
+-   ✅ **Automated checks pass** (builds website successfully)
+-   ✅ **One review** from peer/instructor
+-   ✅ **One discussion thread** (respond to reviewer comments)
 
 After merge, the website automatically deploys to GitHub Pages.
 
 [Be careful that, history in teamA and teamA_PR differ, and teamA_PR is the one to be merged. So if you want to add more contents to your project, remove local and remote teamA branch (and teamA_PR once merge into master) and starts a new branch from the current master branch]{.care}
 
----
+------------------------------------------------------------------------
 
 ## Cross-References & Citations {#sec-markdown}
 
 ### Cross-References
 
-````markdown
+```` markdown
 ## Methods {#sec-methods}
 
 The model (@eq-linear) uses data shown in @fig-scatter and @tbl-summary.
@@ -191,7 +191,8 @@ As described in @sec-methods...
 ### Citations
 
 Create `references.bib`:
-```bibtex
+
+``` bibtex
 @article{smith2020,
   author = {Smith, J.},
   title = {Statistical Methods},
@@ -201,26 +202,28 @@ Create `references.bib`:
 ```
 
 In your YAML:
-```yaml
+
+``` yaml
 bibliography: references.bib
 ```
 
 In text:
-```markdown
+
+``` markdown
 According to @smith2020, the method...
 ```
 
----
+------------------------------------------------------------------------
 
 ## Important Rules {#sec-rules}
 
-::: {.callout-important}
-- **Master is protected** - you cannot push directly
-- **Use rebase** not merge (see @sec-rebase) as much as possible, that is the good practice
-- **Pass all checks** before requesting merge
+::: callout-important
+-   **Master is protected** - you cannot push directly
+-   **Use rebase** not merge (see @sec-rebase) as much as possible, that is the good practice
+-   **Pass all checks** before requesting merge
 :::
 
----
+------------------------------------------------------------------------
 
 ## Common Issues {#sec-troubleshooting}
 
@@ -228,28 +231,27 @@ According to @smith2020, the method...
 
 **Can't push to master:** Expected! Create a branch instead (see @sec-branches).
 
----
+------------------------------------------------------------------------
 
 ## Checklist {#sec-checklist}
 
 Before submitting PR:
 
-- [ ] `_quarto.yml` updated
-- [ ] Cross-references used throughout
-- [ ] Citations included
-- [ ] No conflicts
-- [ ] Rebased on master
-- [ ] PR created with clear description
-- [ ] Checks passing
-- [ ] Review requested
+-   [ ] `_quarto.yml` updated
+-   [ ] Cross-references used throughout
+-   [ ] Citations included
+-   [ ] No conflicts
+-   [ ] Rebased on master
+-   [ ] PR created with clear description
+-   [ ] Checks passing
+-   [ ] Review requested
 
----
+------------------------------------------------------------------------
 
 ## Resources {#sec-resources}
 
-- [Quarto Cross-References](https://quarto.org/docs/authoring/cross-references.html)
-- [Git Rebase Tutorial](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
-- [Creating Pull Requests](https://docs.github.com/en/pull-requests)
+-   [Quarto Cross-References](https://quarto.org/docs/authoring/cross-references.html)
+-   [Git Rebase Tutorial](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
+-   [Creating Pull Requests](https://docs.github.com/en/pull-requests)
 
 Questions? Check GitHub Issues or contact the instructor. Good luck! 🚀
-
