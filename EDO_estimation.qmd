@@ -14,7 +14,7 @@ We first simulate the data on which we will illustrate two estimation methods. T
 \frac{dN}{dt} = rN(1-\frac{N}{K})
 $$ where N is the size of a population, r is the growth rate and K is the carrying capacity. In logistic growth, the growth rate of a population declines as the size of the population approaches the carrying capacity. This carrying capacity represents the maximum number of individuals in the population that can be sustained by the available environmental resources.
 
-A biological example of this is *Paramecium aurelia*, a paramecia species that exhibits logistic growth when maintained in isolated populations.
+A biological example of this is *Paramecium aurelia*, a paramecia species that exhibits logistic growth when maintained in isolated populations @gause1934influence.
 
 Thankfully, there is an explicit solution of the Verhulst model that allows us to simulate the data easily. For each x (the time), we calculate the deterministic solution and add a noise, a centered, normally distributed deviation from the deterministic model.
 
