@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Mp Etienne">
 
-<title>Exploration données sur les manchots</title>
+<title>EDO Estimation of parameters : the logistic growth</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -56,27 +55,7 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -124,9 +103,37 @@ div.csl-indent {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="theme.scss">
-<link rel="stylesheet" href="theme.css">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -220,7 +227,23 @@ div.csl-indent {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#references" id="toc-references" class="nav-link active" data-scroll-target="#references">References</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#data-simulation" id="toc-data-simulation" class="nav-link" data-scroll-target="#data-simulation">Data Simulation</a></li>
+  <li><a href="#estimation-of-the-parameters" id="toc-estimation-of-the-parameters" class="nav-link" data-scroll-target="#estimation-of-the-parameters">Estimation of the parameters</a>
+  <ul class="collapse">
+  <li><a href="#general-theory" id="toc-general-theory" class="nav-link" data-scroll-target="#general-theory">General theory</a>
+  <ul class="collapse">
+  <li><a href="#least-squares" id="toc-least-squares" class="nav-link" data-scroll-target="#least-squares">Least squares</a></li>
+  <li><a href="#maximum-likelihood" id="toc-maximum-likelihood" class="nav-link" data-scroll-target="#maximum-likelihood">Maximum likelihood</a></li>
+  </ul></li>
+  <li><a href="#implementation-of-the-two-methods" id="toc-implementation-of-the-two-methods" class="nav-link" data-scroll-target="#implementation-of-the-two-methods">Implementation of the two methods</a>
+  <ul class="collapse">
+  <li><a href="#least-squares-1" id="toc-least-squares-1" class="nav-link" data-scroll-target="#least-squares-1">Least squares</a></li>
+  <li><a href="#maximum-likelihood-1" id="toc-maximum-likelihood-1" class="nav-link" data-scroll-target="#maximum-likelihood-1">Maximum likelihood</a></li>
+  </ul></li>
+  <li><a href="#data-visualization-simulated-dynamics-with-estimated-trends" id="toc-data-visualization-simulated-dynamics-with-estimated-trends" class="nav-link" data-scroll-target="#data-visualization-simulated-dynamics-with-estimated-trends">Data visualization : simulated dynamics with estimated trends</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul>
 </nav>
     </div>
@@ -229,19 +252,13 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Exploration données sur les manchots</h1>
+<h1 class="title">EDO Estimation of parameters : the logistic growth</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Mp Etienne </p>
-          </div>
-  </div>
     
   
     
@@ -252,37 +269,172 @@ div.csl-indent {
 </header>
 
 
-<p>Pourquoi manchot se traduit Penguins en anglais ?</p>
-<p>(O)&gt; ( ) W</p>
-<p>(O)&gt; ( ) W</p>
-<p>(O)&gt; ( ) W</p>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>This document aims to be a roadmap to estimate the parameters of a logistic growth from a population: from the data simulation to the estimation of the parameters. The following document will thus be organized in two parts : the data simulation and the estimation of the parameters.</p>
+</section>
+<section id="data-simulation" class="level1">
+<h1>Data Simulation</h1>
+<p>We first simulate the data on which we will illustrate two estimation methods. The simulation is based on the logistic growth (Verhulst model). The ordinary differential equation describing the logistic growth is defined as <span class="math display">\[
+\frac{dN}{dt} = rN(1-\frac{N}{K})
+\]</span> where N is the size of a population, r is the growth rate and K is the carrying capacity. In logistic growth, the growth rate of a population declines as the size of the population approaches the carrying capacity. This carrying capacity represents the maximum number of individuals in the population that can be sustained by the available environmental resources.</p>
+<p>A biological example of this is <em>Paramecium aurelia</em>, a paramecia species that exhibits logistic growth when maintained in isolated populations <span class="citation" data-cites="gause1934influence">@gause1934influence</span>.</p>
+<p>Thankfully, there is an explicit solution of the Verhulst model that allows us to simulate the data easily. For each x (the time), we calculate the deterministic solution and add a noise, a centered, normally distributed deviation from the deterministic model.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.4     ✔ readr     2.1.5
-✔ forcats   1.0.0     ✔ stringr   1.5.2
-✔ ggplot2   4.0.0     ✔ tibble    3.3.0
-✔ lubridate 1.9.4     ✔ tidyr     1.3.1
-✔ purrr     1.1.0     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>K <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>error <span class="ot">&lt;-</span> <span class="dv">15</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>y0 <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a logistic growth function with noise</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>logistic_noised <span class="ot">&lt;-</span> <span class="cf">function</span>(t, r, K, y0, error) {</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  growth <span class="ot">&lt;-</span> K <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> ((K <span class="sc">-</span> y0) <span class="sc">/</span> y0) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>r <span class="sc">*</span> t))</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(growth <span class="sc">+</span> <span class="fu">rpois</span>(<span class="dv">1</span>, <span class="at">lambda =</span> error)) <span class="co"># Add random error</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the time vector</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>time <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">25</span>, <span class="fl">0.25</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply the logistic function over the time vector</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>sim_data <span class="ot">&lt;-</span> <span class="fu">sapply</span>(time, logistic_noised, <span class="at">r =</span> r, <span class="at">K =</span> K, <span class="at">y0 =</span> y0, <span class="at">error =</span> error)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="EDO_estimation_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
 </div>
 </div>
-<p>les magnifiques pingouins : (O)&gt; ( ) W</p>
+</div>
+</section>
+<section id="estimation-of-the-parameters" class="level1">
+<h1>Estimation of the parameters</h1>
+<p>We have p parameters <span class="math inline">\(\theta = (\theta_1,\theta_2,...,\theta_p)\)</span>. Several methods can be used to optimize model parameters, such as least squares and maximum likelihood. In this section, we will examine the application of each method to estimate the parameters of the previously simulated logistic growth.</p>
+<section id="general-theory" class="level2">
+<h2 class="anchored" data-anchor-id="general-theory">General theory</h2>
+<section id="least-squares" class="level3">
+<h3 class="anchored" data-anchor-id="least-squares">Least squares</h3>
+<section id="definition" class="level4">
+<h4 class="anchored" data-anchor-id="definition">Definition</h4>
+<p>One of the most used methods to assess the quality of a model is the least squares method, also known as mean square error method (MSE). It quantifies how the simulated data match with the real ones by measuring the gap between the simulated and the real points (<span class="citation" data-cites="cornillon2007regression">@cornillon2007regression</span>). This gap is estimated with the following formula:</p>
+<p><span class="math display">\[
+\text{MSE} = \sum_{i}^{}(Y_{i}-\hat{Y})^{2}\\\hat{Y} = \text{mean value of the data set}\\Y_{i} = \text{value of the individual i}
+\]</span></p>
+<p>A good model minimizes the MSE. Graphically, this means that the vertical distance between each simulated point and its corresponding observed value is as small as possible.</p>
+</section>
+<section id="specific-aspects" class="level4">
+<h4 class="anchored" data-anchor-id="specific-aspects">Specific aspects</h4>
+<p>The MSE is one of the most common method to assess the quality of a model. However, it has some limitations that may call its use into question. First, as it compares the simulated data and the observed ones point by point, the presence of outliers can strongly deviate the MSE estimation. Moreover, this estimation method assumes a linear relation between the variables. Therefore, if the relation between the variables is not linear, the MSE may not reflect the true performance of the model.</p>
+</section>
+</section>
+<section id="maximum-likelihood" class="level3">
+<h3 class="anchored" data-anchor-id="maximum-likelihood">Maximum likelihood</h3>
+<section id="definition-1" class="level4">
+<h4 class="anchored" data-anchor-id="definition-1">Definition</h4>
+<p>Likelihood corresponds to the probability of observing the data, knowing the parameters <span class="math inline">\(\theta\)</span> (<span class="citation" data-cites="fisher1922mathematical">@fisher1922mathematical</span>). The likelihood function is as follows : <span class="math display">\[
+L(\theta) = \prod_{i=1}^n f(x_i , \theta)
+\]</span> In this function, <span class="math inline">\(x_i\)</span> corresponds to the observations and <span class="math inline">\(f(x_i,\theta)\)</span> corresponds to the probability density function of the random variable <span class="math inline">\(X\)</span>.</p>
+<p>The maximum likelihood method consists in determining the estimated parameters <span class="math inline">\(\hat\theta\)</span> that maximize the likelihood function: <span class="math display">\[
+\hat\theta = \arg\max_\theta L(\theta)
+\]</span> Maximizing <span class="math inline">\(L(\theta)\)</span> means finding the parameter values that make the data most plausible under the chosen model.</p>
+</section>
+<section id="specific-aspects-1" class="level4">
+<h4 class="anchored" data-anchor-id="specific-aspects-1">Specific aspects</h4>
+<p>If the errors of the data are independent and identically distributed, this method is equivalent to the least squares method :</p>
+<p><span class="math display">\[
+\hat{\theta} = \arg\max_{\theta} L(\theta) = \arg\min_{\theta} SCE(\theta)
+\]</span> We prefer to work with the logarithm of the likelihood function <span class="math inline">\(L(\theta)\)</span>, as it converts products into sums: <span class="math display">\[
+LL(\theta) = ln(L(\theta)) = \sum_{i=1}^n lnf(x_i,\theta)
+\]</span></p>
+</section>
+</section>
+</section>
+<section id="implementation-of-the-two-methods" class="level2">
+<h2 class="anchored" data-anchor-id="implementation-of-the-two-methods">Implementation of the two methods</h2>
+<p>We first need to redefine a function of the model we want to fit (without noise this time).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"penguins_raw.csv"</span>, <span class="at">sep =</span> <span class="st">","</span> , <span class="at">header =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>logistic <span class="ot">&lt;-</span> <span class="cf">function</span>(t, r, K, y0) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  K <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> ((K <span class="sc">-</span> y0) <span class="sc">/</span> y0) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>r <span class="sc">*</span> t))</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>A citation <span class="citation" data-cites="alston2021beginner">Alston and Rick (<a href="#ref-alston2021beginner" role="doc-biblioref">2021</a>)</span></p>
-<section id="references" class="level3">
-<h3 class="anchored" data-anchor-id="references">References</h3>
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-alston2021beginner" class="csl-entry" role="listitem">
-Alston, Jesse M, and Jessica A Rick. 2021. <span>“A Beginner’s Guide to Conducting Reproducible Research.”</span> <em>Bulletin of the Ecological Society of America</em> 102 (2): 1–14.
+<section id="least-squares-1" class="level3">
+<h3 class="anchored" data-anchor-id="least-squares-1">Least squares</h3>
+<p>We need a function that compute the sum of the squared errors between the data and the model prediction y given a x.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># NB : theta is a vector of parameters</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>SSE <span class="ot">&lt;-</span> <span class="cf">function</span>(theta) {</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  r <span class="ot">&lt;-</span> theta[<span class="dv">1</span>]</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  K <span class="ot">&lt;-</span> theta[<span class="dv">2</span>]</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  y0 <span class="ot">&lt;-</span> theta[<span class="dv">3</span>]</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  mod_pred <span class="ot">&lt;-</span> <span class="fu">sapply</span>(time, logistic, <span class="at">r =</span> r, <span class="at">K =</span> K, <span class="at">y0 =</span> y0)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>((sim_data <span class="sc">-</span> mod_pred)<span class="sc">**</span><span class="dv">2</span>))</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We now have to find a way to modify the parameters iteratively to find the best ones : the set of parameters <span class="math inline">\(\theta\)</span> that minimize the sum of squared errors. Thankfully, there are several functions implemented in R to do so. We’ll use optim(), based on a gradient descent algorithm. We need to specify initial guess on the parameters to initialize the gradient descent algorithm. We’ll take biologically meaningful parameters as initial guess.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ig_r <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ig_K <span class="ot">&lt;-</span> <span class="dv">75</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>ig_y0 <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>fitted_params_SSE <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="fu">c</span>(ig_r, ig_K, ig_y0), SSE)<span class="sc">$</span>par</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(fitted_params_SSE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]   0.4038295 116.0801331  13.1639033</code></pre>
 </div>
 </div>
+<p>For practicality, or for some EDO models that are not explicitly solvable (i. e. we can’t find a unique solution to the Cauchy problem), we can locally and numerically solve in the same time we calculate the likelihood. This alternative is used in the next part. We use the function ode() from the package deSolve to do so.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(deSolve)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>logistic_ODE <span class="ot">=</span><span class="cf">function</span>(t,N,parametre){</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  r<span class="ot">=</span>parametre[<span class="dv">1</span>]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  K<span class="ot">=</span>parametre[<span class="dv">2</span>]</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  dNdt <span class="ot">=</span> r<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>N<span class="sc">/</span>K)<span class="sc">*</span>N</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="fu">c</span>(dNdt))</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="maximum-likelihood-1" class="level3">
+<h3 class="anchored" data-anchor-id="maximum-likelihood-1">Maximum likelihood</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>MMV <span class="ot">&lt;-</span> <span class="cf">function</span>(theta){</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  r1 <span class="ot">&lt;-</span> theta[<span class="dv">1</span>]</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  K1 <span class="ot">&lt;-</span> theta[<span class="dv">2</span>]</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  N0 <span class="ot">&lt;-</span> theta[<span class="dv">3</span>]</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  sol <span class="ot">=</span> <span class="fu">ode</span>(<span class="at">y =</span> N0, <span class="at">times =</span> time, <span class="at">func =</span> logistic_ODE, <span class="at">parms =</span> <span class="fu">c</span>(r1, K1))</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  mod_pred <span class="ot">&lt;-</span> sol[, <span class="dv">2</span>]</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  loglik <span class="ot">=</span> <span class="fu">dnorm</span>(sim_data, <span class="at">mean =</span> mod_pred, <span class="at">sd =</span> error, <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(loglik))</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ig_r <span class="ot">&lt;-</span> <span class="fl">0.1</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>ig_K <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>ig_y0 <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>fitted_params_MMV <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="fu">c</span>(ig_r, ig_K, ig_y0), MMV, <span class="at">control=</span><span class="fu">list</span>(<span class="at">fnscale=</span><span class="sc">-</span><span class="dv">1</span>))<span class="sc">$</span>par</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(fitted_params_MMV)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="data-visualization-simulated-dynamics-with-estimated-trends" class="level2">
+<h2 class="anchored" data-anchor-id="data-visualization-simulated-dynamics-with-estimated-trends">Data visualization : simulated dynamics with estimated trends</h2>
+<p>As we could expect on this kind of data, the estimated parameters are almost the same with the two methods, The two estimated trends we show on the following graph are even indistinguishable.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="EDO_estimation_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>Estimating model parameters is one of the main tasks of a modelor in ecology. We have explained and illustrated two methods to estimate the parameters of a logistic growth, which is a common approach in population dynamics. There are other methods including Bayesian statistics we didn’t developed in this document.</p>
 
 
 </section>
