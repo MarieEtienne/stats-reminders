@@ -70,7 +70,7 @@ The data are available in the file `Badger.txt`. The variables are:
 -   `Proteinblocks` : presence / absence of protein blocks
 -   `Sugarbeet` : presence / absence of sugar beet
 -   `Vegetables` : presence / absence of vegetables
--   `Molasses` : presence / absence of molasses :::
+-   `Molasses` : presence / absence of molasses
 
 ## **Dataset import**
 
@@ -349,7 +349,7 @@ mod<-glmer(Activity~N_setts
 ```
 
 ```{r backwardselection, include = TRUE, warning = FALSE}
-# Backward selection procedure based on AIC
+#Backward selection procedure based on AIC
 drop1(mod,test="Chi") # We remove season
 mod1<-glmer(Activity~N_setts
               + N_buildings
@@ -505,7 +505,7 @@ The model summary details both the fixed and the random effects. The model can b
 
 The significance of the random effect is tested via a **bootstrap** method: the likelihood of the model including the random effect is compared to the likelihood of 1000 models without the random effect.
 
-```{r boot random, echo=TRUE,fig.height=4, fig.width=4, warning=FALSE}
+```{r boot random, echo=TRUE,fig.height=4, fig.width=4, warning=FALSE, message = FALSE}
 nBoot <- 1000 # number of simulations
 lrStat <- rep(NA, nBoot) # initializes a vector of size 1000 to store the likelihood ratio statistic
 ft.null <-glm(Activity~N_setts,data=dataBadger,family=binomial(link=logit)) # fits the null model (without the random effect)
@@ -623,3 +623,5 @@ For this prediction, the overall accuracy was 0.86, which means that 86% of pred
 # **DISCUSSION**
 
 # **CONCLUSION**
+
+# **REFERENCES**
