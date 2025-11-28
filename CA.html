@@ -1,0 +1,1894 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Capucine, Marion et Maite">
+
+<title>What is a CA and how to use it ?</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-169b6d0432b1a799c6e7691d07d1a7fb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="theme.scss">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/MarieEtienne/stats-reminders"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./instructions.html"> 
+<span class="menu-text">Instructions</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-two-examples" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Two examples</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-two-examples">    
+        <li>
+    <a class="dropdown-item" href="./r_chapter.html">
+ <span class="dropdown-text">Basic quarto cross ref example</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Penguins_chapter.html">
+ <span class="dropdown-text">Penguins example</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-linear-model" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Linear Model</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-linear-model">    
+        <li>
+    <a class="dropdown-item" href="./Linear_Model_1.html">
+ <span class="dropdown-text">Penguins</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Linear_Model_2.html">
+ <span class="dropdown-text">Badgers</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-factorial-analysis" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Factorial Analysis</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-factorial-analysis">    
+        <li class="dropdown-header">pca.qmd</li>
+        <li class="dropdown-header">cca.qmd</li>
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-differential-equation" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Differential Equation</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-differential-equation">    
+        <li class="dropdown-header">EDO_ESTIMATION.qmd</li>
+        <li class="dropdown-header">EDO_LOTKA_VOLTERRA.qmd</li>
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction-to-the-correspondence-analysis" id="toc-introduction-to-the-correspondence-analysis" class="nav-link active" data-scroll-target="#introduction-to-the-correspondence-analysis">Introduction to the Correspondence Analysis</a></li>
+  <li><a href="#ecological-exemple" id="toc-ecological-exemple" class="nav-link" data-scroll-target="#ecological-exemple">Ecological exemple</a>
+  <ul class="collapse">
+  <li><a href="#ecological-context" id="toc-ecological-context" class="nav-link" data-scroll-target="#ecological-context">Ecological context</a></li>
+  <li><a href="#packages" id="toc-packages" class="nav-link" data-scroll-target="#packages">Packages</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a>
+  <ul class="collapse">
+  <li><a href="#remove-species-absent-from-the-sampling" id="toc-remove-species-absent-from-the-sampling" class="nav-link" data-scroll-target="#remove-species-absent-from-the-sampling">Remove species absent from the sampling</a></li>
+  </ul></li>
+  <li><a href="#data-exploration" id="toc-data-exploration" class="nav-link" data-scroll-target="#data-exploration">Data exploration</a></li>
+  </ul></li>
+  <li><a href="#analysis-correspondance-analysis" id="toc-analysis-correspondance-analysis" class="nav-link" data-scroll-target="#analysis-correspondance-analysis">Analysis : Correspondance Analysis</a>
+  <ul class="collapse">
+  <li><a href="#ca-with-factominer" id="toc-ca-with-factominer" class="nav-link" data-scroll-target="#ca-with-factominer">CA with FactoMineR</a></li>
+  <li><a href="#ca-with-ade4" id="toc-ca-with-ade4" class="nav-link" data-scroll-target="#ca-with-ade4">CA with ade4</a>
+  <ul class="collapse">
+  <li><a href="#inertia-explained" id="toc-inertia-explained" class="nav-link" data-scroll-target="#inertia-explained">Inertia explained</a></li>
+  </ul></li>
+  <li><a href="#exploration-of-the-ca" id="toc-exploration-of-the-ca" class="nav-link" data-scroll-target="#exploration-of-the-ca">Exploration of the CA</a>
+  <ul class="collapse">
+  <li><a href="#table-value" id="toc-table-value" class="nav-link" data-scroll-target="#table-value">Table value</a></li>
+  <li><a href="#species-distribution" id="toc-species-distribution" class="nav-link" data-scroll-target="#species-distribution">Species distribution</a></li>
+  <li><a href="#sites-distribution" id="toc-sites-distribution" class="nav-link" data-scroll-target="#sites-distribution">Sites distribution</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">What is a CA and how to use it ?</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Capucine, Marion et Maite </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction-to-the-correspondence-analysis" class="level1">
+<h1>Introduction to the Correspondence Analysis</h1>
+<p>A <strong>Correspondence Analysis</strong> (CA), or <strong>Analyse Factorielle de Correspondance</strong> (AFC) in French, is a multivariate statistical method used to measure the distance between different profiles in your data, or the discrepancy between the data and the chi-square <span class="math inline">\(\chi²\)</span> independence hypothesis. This hypothesis (also called the null hypothesis H0) implies that the 2 variables studied are independent.</p>
+<p>The values can be <strong>quantitative, qualitative or semi-qualitative</strong>. It is usually applied to <strong>contingency tables</strong> or when you have a table with data about species abundance in different places and another one with data about the ecology of those same places.</p>
+<p>Just like in the PCA, we will be looking at the orthogonal axes that maximize the inertia. The parameter used is the <span class="math inline">\(\chi²\)</span> distance : this distance is calculated between 2 rows or 2 columns. The CA gives a weight to each profile, proportional to the abundance of the profile.</p>
+<p>The columns and lines have a symmetrical role, so you’ll have the same results in both directions.</p>
+<p>To use it you’ll need to pay attention to certain things :<br>
+- all values need to be <strong>positive</strong> (which shouldn’t be a problem if it’s a contingency table),<br>
+- if you have <strong>rare species</strong>, it may change the shape of your results significantly. It’s not always a bad thing, just something you need to be aware of.</p>
+<p>Two R packages can be used to perform CA : <em>ade4</em> (<span class="citation" data-cites="ade4_dray2007">Dray and Dufour (<a href="#ref-ade4_dray2007" role="doc-biblioref">2007</a>)</span>) and <em>FactoMineR</em> (<span class="citation" data-cites="factominer_le2008">Lê, Josse, and Husson (<a href="#ref-factominer_le2008" role="doc-biblioref">2008</a>)</span>).</p>
+</section>
+<section id="ecological-exemple" class="level1">
+<h1>Ecological exemple</h1>
+<section id="ecological-context" class="level2">
+<h2 class="anchored" data-anchor-id="ecological-context">Ecological context</h2>
+<p>A study was conducted in 2022 on the permanent wetlands of the municipality of Grabels (34), as part of a Municipal Biodiversity Atlas (<span class="citation" data-cites="ABC_macroinv2022">GEB (<a href="#ref-ABC_macroinv2022" role="doc-biblioref">2023</a>)</span>). The aim was to characterize the state of these environments using bioindicator species : benthic macroinvertebrates (<a href="#fig-CA_macroinvertebrates" class="quarto-xref">Figure&nbsp;1</a>). This taxon, which is sensitive to pollution, can be used to study water quality.</p>
+<section id="imports" class="level4">
+<h4 class="anchored" data-anchor-id="imports">Imports</h4>
+<div id="fig-CA_macroinvertebrates" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-CA_macroinvertebrates-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-CA_macroinvertebrates" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-CA_macroinvertebrates-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-CA_macroinvertebrates-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/Libellulidae.jpg" class="img-fluid figure-img" data-ref-parent="fig-CA_macroinvertebrates" width="1296">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-CA_macroinvertebrates-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Libellulidae
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-CA_macroinvertebrates" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-CA_macroinvertebrates-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-CA_macroinvertebrates-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/Physidae.jpg" class="img-fluid figure-img" data-ref-parent="fig-CA_macroinvertebrates" width="1296">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-CA_macroinvertebrates-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Physidae
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-CA_macroinvertebrates-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Example of two families of benthic macroinvertebrates
+</figcaption>
+</figure>
+</div>
+<p>In this study, the standardised <strong>I2M2 protocol</strong> of the Water Framework Directive (<span class="citation" data-cites="DCE_2014">European Parliament (<a href="#ref-DCE_2014" role="doc-biblioref">2014</a>)</span>) was adapted to a context of ponds and very shallow watercourses.<br>
+Two streams (the <em>Rieu Querelle</em> and the <em>Verdanson</em>), permanent ponds (<em>Ruche</em>, <em>Terrain de Foot</em> and <em>Foot2</em>) and an artificial water source (<em>Bassin</em>) were sampled and the macroinvertebrates collected were identified. Each wetland was sampled at several randomly selected points (<em>Zi</em>), and three replicas were made at each point (<em>Zi_j</em>).</p>
+<p>The purpose of this analysis is to study the species assemblages depending of the site. In this context, the CA is one of the right choices.</p>
+</section>
+</section>
+<section id="packages" class="level2">
+<h2 class="anchored" data-anchor-id="packages">Packages</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>())</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>requiredPackages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"dplyr"</span>,<span class="st">"readr"</span>, <span class="st">"stringi"</span>, <span class="st">"ggplot2"</span>, <span class="st">"vegan"</span>, </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"tidyr"</span>, <span class="st">"gridtext"</span>, <span class="st">"ggtext"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(package <span class="cf">in</span> requiredPackages){ <span class="co">#Installs packages if not yet installed</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">requireNamespace</span>(package, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(package)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringi)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(FactoMineR)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ade4)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vegan)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(factoextra)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridtext)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggtext)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import data</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>macroinv <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"ABC_macroinv.csv"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fileEncoding =</span> <span class="st">"latin1"</span>, </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">sep =</span> <span class="st">";"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>classification <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">"classif_macroinv.csv"</span>, <span class="at">delim =</span> <span class="st">";"</span>, </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>                             <span class="at">col_names =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                             <span class="at">locale =</span> <span class="fu">locale</span>(<span class="at">encoding =</span> <span class="st">"latin1"</span>),</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>                             <span class="at">name_repair =</span> <span class="st">"minimal"</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace colnames in both dataframes</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(macroinv) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(macroinv) <span class="sc">%&gt;%</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">stri_trans_general</span>(<span class="st">"Latin-ASCII"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">."</span>, <span class="st">"_"</span>, .) <span class="sc">%&gt;%</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">gsub</span>(<span class="st">"[^A-Za-z0-9_]"</span>, <span class="st">""</span>, .)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>classification <span class="ot">&lt;-</span> classification <span class="sc">%&gt;%</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), \(x)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>                x <span class="sc">%&gt;%</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">stri_trans_general</span>(<span class="st">"Latin-ASCII"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">gsub</span>(<span class="st">" "</span>, <span class="st">"_"</span>, .) <span class="sc">%&gt;%</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">gsub</span>(<span class="st">"[^A-Za-z0-9_]"</span>, <span class="st">""</span>, .)))</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Rotate classification tabs</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>classification <span class="ot">&lt;-</span> classification <span class="sc">%&gt;%</span> </span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>In each sample (each row), macroinvertebrates have been identified at the family level (<a href="#tbl-CA_datamacroinv" class="quarto-xref">Table&nbsp;1</a>), and the CA analysis will be performed at the taxonomic level.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(macroinv[,<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]), <span class="st">"html"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="tbl-CA_datamacroinv" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-CA_datamacroinv-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Overview of the dataset
+</figcaption>
+<div aria-describedby="tbl-CA_datamacroinv-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Echantillon</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">ZH</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Acariforme_hydracarien</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Niphargidae</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Triops</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Gammaridae</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Astacidae</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Atyidae</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Asellidae</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Cambaridae</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Z1_1</td>
+<td style="text-align: left;">Ruche</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Z1_2</td>
+<td style="text-align: left;">Ruche</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Z1_3</td>
+<td style="text-align: left;">Ruche</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Z1_1</td>
+<td style="text-align: left;">Terrain_foot</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Z1_2</td>
+<td style="text-align: left;">Terrain_foot</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Z1_3</td>
+<td style="text-align: left;">Terrain_foot</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>However, the taxonomic level of the order was also taken in most cases (Coleoptera, Odonata, etc.) in order to be able to group together the numerous identified families and allow an ecological interpretation (<a href="#tbl-CA_classifmacroinv" class="quarto-xref">Table&nbsp;2</a>). Other families were grouped at the class level (Bivalves, Gastropods, etc.) and the paraphyletic group of Crustaceans was kept.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(classification[,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]), <span class="st">"html"</span>, <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Order"</span>, <span class="st">"Family"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="tbl-CA_classifmacroinv" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-CA_classifmacroinv-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Correspondence between taxonomic levels of macroinvertebrates families and orders
+</figcaption>
+<div aria-describedby="tbl-CA_classifmacroinv-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Order</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Family</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">X1</td>
+<td style="text-align: left;">Arachnides</td>
+<td style="text-align: left;">Acariformehydracarien</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">X2</td>
+<td style="text-align: left;">Crustaces</td>
+<td style="text-align: left;">Niphargidae</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">X3</td>
+<td style="text-align: left;">Crustaces_branchiop</td>
+<td style="text-align: left;">Triops</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">X4</td>
+<td style="text-align: left;">Crustaces_amphipod</td>
+<td style="text-align: left;">Gammaridae</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">X5</td>
+<td style="text-align: left;">Crustaces_decapod</td>
+<td style="text-align: left;">Astacidae</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">X6</td>
+<td style="text-align: left;">Crustaces_decapod</td>
+<td style="text-align: left;">Atyidae</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<section id="remove-species-absent-from-the-sampling" class="level3">
+<h3 class="anchored" data-anchor-id="remove-species-absent-from-the-sampling">Remove species absent from the sampling</h3>
+<p>Species absent from all surveys (empty columns) or present in only one sample were removed to prevent double absences from impacting the analysis.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#check each specie count</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>species_sum <span class="ot">&lt;-</span> <span class="fu">colSums</span>(macroinv[,<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)])</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#keep only names of species with &lt;1 occurences</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>species_keep <span class="ot">&lt;-</span> <span class="fu">names</span>(species_sum[species_sum <span class="sc">&gt;</span> <span class="dv">1</span>])</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#create reduced dataframe</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>macroinv_red <span class="ot">&lt;-</span> macroinv[, <span class="fu">c</span>(<span class="fu">names</span>(macroinv)[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], species_keep)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+<section id="data-exploration" class="level2">
+<h2 class="anchored" data-anchor-id="data-exploration">Data exploration</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>macroinv_red <span class="sc">%&gt;%</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(ZH, Echantillon) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(., <span class="fu">aes</span>(<span class="at">x =</span> ZH, <span class="at">fill =</span> ZH)) <span class="sc">+</span>  </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span> </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"**Wetland**"</span>) <span class="sc">+</span> </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"**Number of replicates**"</span>) <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_markdown</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">vjust =</span> <span class="dv">1</span>, </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">11</span>), </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_markdown</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title =</span> <span class="fu">element_markdown</span>(<span class="at">size =</span> <span class="dv">13</span>),</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-CA_nbreplicates" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-CA_nbreplicates-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="CA_files/figure-html/fig-CA_nbreplicates-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-CA_nbreplicates-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Number of replicates per wetland
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A different number of samples was taken in each wetland (see <a href="#fig-CA_nbreplicates" class="quarto-xref">Figure&nbsp;2</a>), depending on their size. For small wetlands (less than 20m²), such as Ruche or Foot2, it was decided to adjust the number of sampling points in order to limit the ecological impact on these environments. For watercourses such as the Rieu Querelle and the Verdanson, sampling points were distributed to cover the upstream-downstream gradient, with different habitats present.</p>
+<div class="cell" data-layout-nrow="2">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>macroinv_red <span class="sc">%&gt;%</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(ZH) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(<span class="dv">3</span><span class="sc">:</span><span class="dv">40</span>), <span class="at">names_to =</span> <span class="st">"Familles"</span>, <span class="at">values_to =</span> <span class="st">"Abondance"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(., <span class="fu">aes</span>(<span class="at">x =</span> Echantillon, <span class="at">y =</span> Abondance, <span class="at">fill =</span> Familles)) <span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> ZH) <span class="sc">+</span> </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"**Sample**"</span>) <span class="sc">+</span> </span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"**Number of individuals by sample**"</span>) <span class="sc">+</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">"**Family**"</span>) <span class="sc">+</span> </span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_markdown</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">hjust =</span> <span class="dv">1</span>), </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_markdown</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title =</span> <span class="fu">element_markdown</span>(<span class="at">size =</span> <span class="dv">13</span>),</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_markdown</span>())</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>macroinv_red <span class="sc">%&gt;%</span> </span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(ZH) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(<span class="dv">3</span><span class="sc">:</span><span class="dv">40</span>), <span class="at">names_to =</span> <span class="st">"Family"</span>, <span class="at">values_to =</span> <span class="st">"Abondance"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(., classification, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"Family"</span> <span class="ot">=</span> <span class="st">"X2"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(., <span class="fu">aes</span>(<span class="at">x =</span> Echantillon, <span class="at">y =</span> Abondance, <span class="at">fill =</span> X1)) <span class="sc">+</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> ZH) <span class="sc">+</span> </span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"**Sample**"</span>) <span class="sc">+</span> </span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"**Number of individuals by sample**"</span>) <span class="sc">+</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">"**Order**"</span>) <span class="sc">+</span> </span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_markdown</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">hjust =</span> <span class="dv">1</span>), </span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_markdown</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title =</span> <span class="fu">element_markdown</span>(<span class="at">size =</span> <span class="dv">13</span>),</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_markdown</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">15</span>),</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_markdown</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-CA_abundFamily" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-CA_abundFamily-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-CA_abundFamily" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-CA_abundFamily-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-CA_abundFamily-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="CA_files/figure-html/fig-CA_abundFamily-1.png" class="img-fluid figure-img" data-ref-parent="fig-CA_abundFamily" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-CA_abundFamily-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Family level
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-CA_abundFamily" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-CA_abundFamily-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-CA_abundFamily-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="CA_files/figure-html/fig-CA_abundFamily-2.png" class="img-fluid figure-img" data-ref-parent="fig-CA_abundFamily" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-CA_abundFamily-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Order level
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-CA_abundFamily-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Abundance of individuals per macroinvertebrate taxonomic level for each sample per wetland
+</figcaption>
+</figure>
+</div>
+</div>
+<p><a href="#fig-CA_abundFamily" class="quarto-xref">Figure&nbsp;3</a> shows the number of individuals sampled by family (<a href="#fig-CA_abundFamily-1" class="quarto-xref">Figure&nbsp;3 (a)</a>) and by order (<a href="#fig-CA_abundFamily-2" class="quarto-xref">Figure&nbsp;3 (b)</a>) for each sample.</p>
+<p>Some taxa are present in large quantities (e.g., Bivalves in Ruche).</p>
+<p>Some orders are very generalist and present in all wetlands (e.g., Diptera, Gastropoda, Bivalvia). Odonata are also represented in all sites, except in the Bassin. Other orders have more specific ecological preferences and are more sensitive to pollution, such as Trichoptera and Plecoptera. The low representation of the latter could be explained by their ecological preference for rocks in streams rather than ponds.</p>
+</section>
+</section>
+<section id="analysis-correspondance-analysis" class="level1">
+<h1>Analysis : Correspondance Analysis</h1>
+<section id="ca-with-factominer" class="level2">
+<h2 class="anchored" data-anchor-id="ca-with-factominer">CA with FactoMineR</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#First CA with the reduced data set</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>CA <span class="ot">&lt;-</span> <span class="fu">CA</span>(macroinv_red[,<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)], <span class="at">axes =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#plot(CA$eig[,2], type = "h")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-CA_FactoMineR" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-CA_FactoMineR-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="CA_files/figure-html/fig-CA_FactoMineR-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-CA_FactoMineR-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: CA with the FactoMineR package
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Here we can see our first CA (<a href="#fig-CA_FactoMineR" class="quarto-xref">Figure&nbsp;4</a>) using the <em>FactoMineR</em> package. The first two axes are displayed. These are the ones that explain the most inertia in the data set, 14,56% and 14,02 as we can see in the parenthesis.<br>
+The position of the families and sites on the graph indicate how similar they are to each other and how the affect the axis. The more close together they are the more similar they are according to the axes displayed. If they are very far away from the center, they play a bigger role in the contribution to the axis.</p>
+<p>CA allows to see species and sites contribution to the main axis (<a href="#tbl-CA_spcontrib" class="quarto-xref">Table&nbsp;3</a>, <a href="#fig-CA_plotspcontrib" class="quarto-xref">Figure&nbsp;5</a>). Here we only show the species contribution and which ones contribute significantly.</p>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Selection of the species that contribute significantly to axes one and two</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>which_contrib_high1 <span class="ot">&lt;-</span> <span class="fu">which</span>(CA<span class="sc">$</span>col<span class="sc">$</span>contrib[,<span class="dv">1</span>] <span class="sc">&gt;=</span> <span class="dv">100</span><span class="sc">/</span><span class="fu">nrow</span>(CA<span class="sc">$</span>col<span class="sc">$</span>contrib))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>which_contrib_high2 <span class="ot">&lt;-</span> <span class="fu">which</span>(CA<span class="sc">$</span>col<span class="sc">$</span>contrib[,<span class="dv">2</span>] <span class="sc">&gt;=</span> <span class="dv">100</span><span class="sc">/</span><span class="fu">nrow</span>(CA<span class="sc">$</span>col<span class="sc">$</span>contrib))</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(CA<span class="sc">$</span>col<span class="sc">$</span>contrib[which_contrib_high1, ], <span class="st">"html"</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(CA<span class="sc">$</span>col<span class="sc">$</span>contrib[which_contrib_high2, ], <span class="st">"html"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="tbl-CA_spcontrib" class="quarto-layout-panel anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-CA_spcontrib-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Species that contribute significantly to Axis 1-2
+</figcaption>
+<div aria-describedby="tbl-CA_spcontrib-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="tbl-CA_spcontrib" style="flex-basis: 100.0%;justify-content: center;">
+<div id="tbl-CA_spcontrib-1" class="do-not-create-environment quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true">
+<figure class="quarto-float quarto-subfloat-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-CA_spcontrib-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Species that contribute significantly to axe 1
+</figcaption>
+<div aria-describedby="tbl-CA_spcontrib-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table id="tbl-CA_spcontrib-1" class="do-not-create-environment caption-top table" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Dim 1</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Dim 2</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Dim 3</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Dim 4</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Dim 5</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Asellidae</td>
+<td style="text-align: right;">3.680245</td>
+<td style="text-align: right;">0.0953079</td>
+<td style="text-align: right;">0.0754097</td>
+<td style="text-align: right;">28.3995886</td>
+<td style="text-align: right;">5.2119085</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bivalve</td>
+<td style="text-align: right;">68.867884</td>
+<td style="text-align: right;">8.7892169</td>
+<td style="text-align: right;">0.3125365</td>
+<td style="text-align: right;">0.0920696</td>
+<td style="text-align: right;">0.0793127</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Thaunaleidae</td>
+<td style="text-align: right;">12.359512</td>
+<td style="text-align: right;">78.6994068</td>
+<td style="text-align: right;">0.2334673</td>
+<td style="text-align: right;">3.0135863</td>
+<td style="text-align: right;">0.1551988</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Culicidae</td>
+<td style="text-align: right;">5.331786</td>
+<td style="text-align: right;">2.5103813</td>
+<td style="text-align: right;">9.2840921</td>
+<td style="text-align: right;">1.7645808</td>
+<td style="text-align: right;">30.1538840</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="tbl-CA_spcontrib" style="flex-basis: 100.0%;justify-content: center;">
+<div id="tbl-CA_spcontrib-2" class="do-not-create-environment quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true">
+<figure class="quarto-float quarto-subfloat-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-CA_spcontrib-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Species that contribute significantly to axe 2
+</figcaption>
+<div aria-describedby="tbl-CA_spcontrib-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table id="tbl-CA_spcontrib-2" class="do-not-create-environment caption-top table" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Dim 1</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Dim 2</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Dim 3</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Dim 4</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Dim 5</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Bivalve</td>
+<td style="text-align: right;">68.867884</td>
+<td style="text-align: right;">8.789217</td>
+<td style="text-align: right;">0.3125365</td>
+<td style="text-align: right;">0.0920696</td>
+<td style="text-align: right;">0.0793127</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Simulidae</td>
+<td style="text-align: right;">1.958174</td>
+<td style="text-align: right;">3.539633</td>
+<td style="text-align: right;">0.0035563</td>
+<td style="text-align: right;">4.4930038</td>
+<td style="text-align: right;">1.4898874</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Thaunaleidae</td>
+<td style="text-align: right;">12.359512</td>
+<td style="text-align: right;">78.699407</td>
+<td style="text-align: right;">0.2334673</td>
+<td style="text-align: right;">3.0135863</td>
+<td style="text-align: right;">0.1551988</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</figure>
+</div>
+<p>To check if they contribute significantly to the axis we look at their contribution. If it is greater than the sum of all contributions divided by the number of species we consider that the contribution is significant. Here (<a href="#tbl-CA_spcontrib" class="quarto-xref">Table&nbsp;3</a>) we can see that four families contribute significantly to the construction of the first axis and three families for the second one. Without surprise, <em>Thaunaleidae</em> contributes to both of them, <em>Bivalve</em> also appears in both. Then <em>Culicidae</em> and <em>Asellidae</em> contribute significantly to the first axis and <em>Simulidae</em> to the second axis.</p>
+<div class="cell" data-layout-nrow="2">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># BONUS : visualize axis contribution</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_contrib</span>(CA, <span class="at">choice =</span> <span class="st">"col"</span>, <span class="at">axes =</span> <span class="dv">1</span>, <span class="at">top =</span> <span class="cn">Inf</span>)  <span class="co"># contributions Axis 1</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_contrib</span>(CA, <span class="at">choice =</span> <span class="st">"col"</span>, <span class="at">axes =</span> <span class="dv">2</span>, <span class="at">top =</span> <span class="cn">Inf</span>)  <span class="co"># contributions Axis 2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-CA_plotspcontrib" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-CA_plotspcontrib-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-CA_plotspcontrib" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-CA_plotspcontrib-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-CA_plotspcontrib-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="CA_files/figure-html/fig-CA_plotspcontrib-1.png" class="img-fluid figure-img" data-ref-parent="fig-CA_plotspcontrib" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-CA_plotspcontrib-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Species contribution to axe 1
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-CA_plotspcontrib" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-CA_plotspcontrib-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-CA_plotspcontrib-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="CA_files/figure-html/fig-CA_plotspcontrib-2.png" class="img-fluid figure-img" data-ref-parent="fig-CA_plotspcontrib" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-CA_plotspcontrib-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Species contribution to axe 2
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-CA_plotspcontrib-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Species contribution to Axis 1-2
+</figcaption>
+</figure>
+</div>
+</div>
+<p>Here (<a href="#fig-CA_plotspcontrib" class="quarto-xref">Figure&nbsp;5</a>) is another way of presenting the contributions. The red line represents the threshold for the signicance of the contribution.</p>
+<p>FactoMineR is not the only package that can be used for a CA. Here are a few examples of functions that can be useful in the ade4 package.</p>
+<p>We noticed that <em>Thaunaleidae</em> are only present in one of the sites, a bassin, and it is dragging the CA. In this next section we will also look at the CA without the odd bassin.</p>
+</section>
+<section id="ca-with-ade4" class="level2">
+<h2 class="anchored" data-anchor-id="ca-with-ade4">CA with ade4</h2>
+<p>When using the ade4 package we need to specify <em>nf</em>, it defines the number of axes in the CA constructed : it is calculated by taking minimum(number of columns, number of rows) - 1 (here 38 - 1 = 37)</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>CA_ade4 <span class="ot">&lt;-</span> <span class="fu">dudi.coa</span>(macroinv_red[,<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)], <span class="at">scannf =</span> <span class="cn">FALSE</span>, <span class="at">nf =</span> <span class="dv">37</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>CA_ade4_sansbassin <span class="ot">&lt;-</span> <span class="fu">dudi.coa</span>(macroinv_red[<span class="sc">-</span><span class="fu">c</span>(<span class="dv">27</span>,<span class="dv">28</span>,<span class="dv">29</span>), <span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)], </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                               <span class="at">scannf =</span> <span class="cn">FALSE</span>, <span class="at">nf =</span> <span class="dv">37</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>After studying the contribution to each axis we can look at how much information is contained in each axis : the inertia.</p>
+<section id="inertia-explained" class="level3">
+<h3 class="anchored" data-anchor-id="inertia-explained">Inertia explained</h3>
+<p><strong>Percentage of inertia explained according to the axes :</strong></p>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>pourcentage <span class="ot">&lt;-</span> CA_ade4<span class="sc">$</span>eig<span class="sc">/</span><span class="fu">sum</span>(CA_ade4<span class="sc">$</span>eig)<span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">round</span>(pourcentage[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>],<span class="dv">2</span>),<span class="st">'html'</span>,<span class="at">col.names =</span> <span class="st">"With bassin"</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>pourcentage_sansbassin <span class="ot">&lt;-</span> CA_ade4_sansbassin<span class="sc">$</span>eig<span class="sc">/</span><span class="fu">sum</span>(CA_ade4_sansbassin<span class="sc">$</span>eig)<span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">round</span>(pourcentage_sansbassin[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>],<span class="dv">2</span>),<span class="st">'html'</span>,<span class="at">col.names =</span> <span class="st">"Without bassin"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="tbl-CA_interiabyaxis" class="quarto-layout-panel anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-CA_interiabyaxis-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4: Inertia explained by axis
+</figcaption>
+<div aria-describedby="tbl-CA_interiabyaxis-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="tbl-CA_interiabyaxis" style="flex-basis: 50.0%;justify-content: center;">
+<div id="tbl-CA_interiabyaxis-1" class="do-not-create-environment quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true">
+<figure class="quarto-float quarto-subfloat-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-CA_interiabyaxis-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) With the bassin
+</figcaption>
+<div aria-describedby="tbl-CA_interiabyaxis-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table id="tbl-CA_interiabyaxis-1" class="do-not-create-environment caption-top table" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">With bassin</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">14.56</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">14.02</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">12.06</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10.33</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">8.13</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4.99</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4.76</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4.20</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3.98</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2.79</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="tbl-CA_interiabyaxis" style="flex-basis: 50.0%;justify-content: center;">
+<div id="tbl-CA_interiabyaxis-2" class="do-not-create-environment quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true">
+<figure class="quarto-float quarto-subfloat-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-CA_interiabyaxis-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Without the bassin
+</figcaption>
+<div aria-describedby="tbl-CA_interiabyaxis-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table id="tbl-CA_interiabyaxis-2" class="do-not-create-environment caption-top table" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">Without bassin</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">16.75</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">13.95</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">12.16</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">9.44</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5.80</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5.57</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4.86</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4.62</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3.23</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3.06</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</figure>
+</div>
+<p>Here we only show the first ten axes. We can see that the first axis explains more inertia when we remove the bassin, 16.75% versus 14.56% (<a href="#tbl-CA_interiabyaxis" class="quarto-xref">Table&nbsp;4</a>).</p>
+<p><strong>Cumulative inertia :</strong></p>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>inertie_cumulee <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">axes =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">37</span>, <span class="at">inertie =</span> <span class="fu">cumsum</span>(pourcentage))</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>inertie_cumulee_sansbassin <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">axes =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">36</span>, <span class="at">inertie =</span> <span class="fu">cumsum</span>(pourcentage_sansbassin))</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(inertie_cumulee) <span class="sc">+</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">y =</span> inertie, <span class="at">x =</span> axes) <span class="sc">+</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(inertie_cumulee_sansbassin) <span class="sc">+</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">y =</span> inertie, <span class="at">x =</span> axes) <span class="sc">+</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-CA_eigcumul" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-CA_eigcumul-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-CA_eigcumul" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-CA_eigcumul-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-CA_eigcumul-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="CA_files/figure-html/fig-CA_eigcumul-1.png" class="img-fluid figure-img" data-ref-parent="fig-CA_eigcumul" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-CA_eigcumul-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) With Bassin samples
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-CA_eigcumul" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-CA_eigcumul-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-CA_eigcumul-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="CA_files/figure-html/fig-CA_eigcumul-2.png" class="img-fluid figure-img" data-ref-parent="fig-CA_eigcumul" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-CA_eigcumul-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Without Bassin samples
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-CA_eigcumul-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Cumulative eigenvalues associates to CA dimensions
+</figcaption>
+</figure>
+</div>
+<p>It is interesting to look at the cumulative inertia to choose how many axis are interesting to keep. It is common to keep the first one to three or the ones that explain up to 50% of the inertia. But in ecology it can be hard to get to that percentage so it’s okay if the inertia is not that high.</p>
+<p>Here we can see that when we remove the bassin the axis cumulatively explain more inertia (<a href="#fig-CA_eigcumul" class="quarto-xref">Figure&nbsp;6</a>).</p>
+</section>
+</section>
+<section id="exploration-of-the-ca" class="level2">
+<h2 class="anchored" data-anchor-id="exploration-of-the-ca">Exploration of the CA</h2>
+<div class="cell" data-layout="[[45,45],[100]]">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">scatter</span>(CA_ade4, <span class="at">posieig =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>NULL</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">s.label</span>(CA_ade4<span class="sc">$</span>li, <span class="at">xax =</span> <span class="dv">1</span>, <span class="at">yax =</span> <span class="dv">2</span>, <span class="at">boxes =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">s.label</span>(CA_ade4<span class="sc">$</span>co, <span class="at">xax =</span> <span class="dv">1</span>, <span class="at">yax =</span> <span class="dv">2</span>, <span class="at">boxes =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-CA_ade4" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-CA_ade4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-CA_ade4" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-CA_ade4-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-CA_ade4-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="CA_files/figure-html/fig-CA_ade4-1.png" class="img-fluid figure-img" data-ref-parent="fig-CA_ade4" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-CA_ade4-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Sites and families together
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-CA_ade4" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-CA_ade4-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-CA_ade4-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="CA_files/figure-html/fig-CA_ade4-2.png" class="img-fluid figure-img" data-ref-parent="fig-CA_ade4" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-CA_ade4-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Only sites
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-CA_ade4" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-CA_ade4-3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-CA_ade4-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="CA_files/figure-html/fig-CA_ade4-3.png" class="img-fluid figure-img" data-ref-parent="fig-CA_ade4" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-CA_ade4-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(c) Only families
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-CA_ade4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: CA projection with ade4 package
+</figcaption>
+</figure>
+</div>
+</div>
+<p>The first two axes explain <span class="math inline">\(28.58%\)</span> of the total inertia, with approximately <span class="math inline">\(14%\)</span> for each axis (<a href="#fig-CA_eigcumul" class="quarto-xref">Figure&nbsp;6</a>). Although this is not a large proportion, such values are not uncommon in ecological datasets. Axis 1 represents essentially a Bivalve gradient, with Bivalve contributing <span class="math inline">\(69%\)</span>, followed by <em>Thaumaleidae</em> (<span class="math inline">\(12%\)</span>), <em>Culicidae</em> (<span class="math inline">\(5.3%\)</span>), and <em>Asellidae</em> (<span class="math inline">\(3.7%\)</span>) (<a href="#tbl-CA_spcontrib" class="quarto-xref">Table&nbsp;3</a>). Axis 2 is mainly explained by <em>Thaumaleidae</em> (<span class="math inline">\(79%\)</span>), with smaller yet notable contributions from Bivalve (<span class="math inline">\(8.8%\)</span>) and <em>Simuliidae</em> (<span class="math inline">\(3.5%\)</span>), as we can see on <a href="#tbl-CA_spcontrib" class="quarto-xref">Table&nbsp;3</a>.</p>
+<p>The high contribution of <em>Bivalve</em> may be explained by the fact that, unlike the other taxa (at the family level), it refers to a class and therefore represents a much broader group. This could account for the prevalence of various Bivalve individuals across some sampling stations (e.g.&nbsp;between 62 and 700 individuals in “Ruche” samples), and consequently, its dominant role in shaping Axis 1.<br>
+The <span class="math inline">\(79%\)</span> contribution of <em>Thaumaleidae</em> likely reflects its high density in three stations (“Bassin”), a peculiar environment where only <em>Thaumaleidae</em> were found, while they were nearly absent from other sites. This group thus stretches Axis 2. “Bassin” environnement was a cemented artificial pound which is hard to colonize for most organisms other than <em>Thaumaleidae</em>. Indeed, this taxon belongs to the <em>Diptera</em> order, very tolerant to pollution (<span class="citation" data-cites="vivier_macroinv1970">Vivier, P. (<a href="#ref-vivier_macroinv1970" role="doc-biblioref">1970</a>)</span>) and ubiquitous (<span class="citation" data-cites="faunefrance_macroin1927">I. (<a href="#ref-faunefrance_macroin1927" role="doc-biblioref">1927</a>)</span>).</p>
+<p>Regarding the correspondances between stations and species, the analysis shows - as expected - a proximity between <em>Thaumaleidae</em> and stations 28, 27 and 29, which are the stations it was almost exclusively sampled from. It could therefore be interesting to redo the analysis without those 3 stations to remove the high correlation between these “Bassin” samples and <em>Thaumaleidae</em>.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">scatter</span>(CA_ade4_sansbassin)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="CA_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#we can see things more clearly when we remove the bassin</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Link samples position (CA$li = rows) on CA axis and the wetlands -------------</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>CA_ade4_ligne_ZH <span class="ot">&lt;-</span> <span class="fu">merge</span>(CA_ade4<span class="sc">$</span>li, macroinv_red<span class="sc">$</span>ZH, <span class="at">by=</span><span class="dv">0</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>CA_ade4_sansbassin_ligne_ZH <span class="ot">&lt;-</span> <span class="fu">merge</span>(CA_ade4_sansbassin<span class="sc">$</span>li, macroinv_red<span class="sc">$</span>ZH, <span class="at">by=</span><span class="dv">0</span>)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Link species position (CA$co = columns) on CA axis and the family / order ----</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>CA_ade4_col_ZH <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(CA_ade4<span class="sc">$</span>co) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">"Family"</span> <span class="ot">=</span> <span class="fu">rownames</span>(.)) <span class="sc">%&gt;%</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(., classification, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"Family"</span> <span class="ot">=</span> <span class="st">"X2"</span>))</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>CA_ade4_sansbassin_col_ZH <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(CA_ade4_sansbassin<span class="sc">$</span>co) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">"Family"</span> <span class="ot">=</span> <span class="fu">rownames</span>(.)) <span class="sc">%&gt;%</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(., classification, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"Family"</span> <span class="ot">=</span> <span class="st">"X2"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong>Plot CA for the lines, dim 1 and 2, colour depends on the water source type :</strong></p>
+<div class="cell" data-layout-nrow="2">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> CA_ade4_ligne_ZH) <span class="sc">+</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> Axis1, <span class="at">y =</span> Axis2, <span class="at">color =</span> y) <span class="sc">+</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"**CA Axis 1**"</span>) <span class="sc">+</span> </span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"**CA Axis 2**"</span>) <span class="sc">+</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">color =</span> <span class="st">"**Wetland**"</span>) <span class="sc">+</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_markdown</span>(<span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">11</span>), </span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_markdown</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title =</span> <span class="fu">element_markdown</span>(<span class="at">size =</span> <span class="dv">13</span>),</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_markdown</span>(<span class="at">size =</span> <span class="dv">13</span>), </span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_markdown</span>(<span class="at">size =</span> <span class="dv">13</span>),</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"top"</span>)</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> CA_ade4_sansbassin_ligne_ZH) <span class="sc">+</span></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> Axis1, <span class="at">y =</span> Axis2, <span class="at">color =</span> y) <span class="sc">+</span></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"**CA Axis 1**"</span>) <span class="sc">+</span> </span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"**CA Axis 2**"</span>) <span class="sc">+</span></span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_markdown</span>(<span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">11</span>), </span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_markdown</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title =</span> <span class="fu">element_markdown</span>(<span class="at">size =</span> <span class="dv">13</span>),</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"none"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-CA_CAwetland_position" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-CA_CAwetland_position-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-CA_CAwetland_position" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-CA_CAwetland_position-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-CA_CAwetland_position-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="CA_files/figure-html/fig-CA_CAwetland_position-1.png" class="img-fluid figure-img" data-ref-parent="fig-CA_CAwetland_position" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-CA_CAwetland_position-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) CA with Bassin samples
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-CA_CAwetland_position" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-CA_CAwetland_position-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-CA_CAwetland_position-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="CA_files/figure-html/fig-CA_CAwetland_position-2.png" class="img-fluid figure-img" data-ref-parent="fig-CA_CAwetland_position" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-CA_CAwetland_position-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) CA without Bassin samples
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-CA_CAwetland_position-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Samples position on Axis 1 and 2 of the CA, depending on wetland
+</figcaption>
+</figure>
+</div>
+</div>
+<p>To help us interpret the graph, it can be useful to colour the points depending on an ecological variable.</p>
+<p>In <a href="#fig-CA_CAwetland_position" class="quarto-xref">Figure&nbsp;8</a>, the points correspond to the projection of the samples onto the two axes of the CA. The position of each sampling point corresponds to the barycenter (average) of the coordinates of the species present at that site. We can see that the sites coming from the same wetland are more or less grouped together meaning that the groups of families present in each of them are similar. It is not surprising because the ecological conditions are usually similar in one type of wetland.</p>
+<p><strong>Plot CA for the lines, dim 1 and 2, colour depends on the order :</strong></p>
+<div class="cell" data-layout-nrow="2">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> CA_ade4_col_ZH) <span class="sc">+</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> Comp1, <span class="at">y =</span> Comp2, <span class="at">color =</span> X1) <span class="sc">+</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"**CA Axis 1**"</span>) <span class="sc">+</span> </span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"**CA Axis 2**"</span>) <span class="sc">+</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">color =</span> <span class="st">"**Order**"</span>) <span class="sc">+</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_markdown</span>(<span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">11</span>), </span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_markdown</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title =</span> <span class="fu">element_markdown</span>(<span class="at">size =</span> <span class="dv">13</span>),</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_markdown</span>(<span class="at">size =</span> <span class="dv">13</span>), </span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_markdown</span>(<span class="at">size =</span> <span class="dv">13</span>),</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"top"</span>)</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> CA_ade4_sansbassin_col_ZH) <span class="sc">+</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> Comp1, <span class="at">y =</span> Comp2, <span class="at">color =</span> X1) <span class="sc">+</span></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"**CA Axis 1**"</span>) <span class="sc">+</span> </span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"**CA Axis 2**"</span>) <span class="sc">+</span></span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_markdown</span>(<span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">11</span>), </span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_markdown</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title =</span> <span class="fu">element_markdown</span>(<span class="at">size =</span> <span class="dv">13</span>),</span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"none"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-CA_CAspecies_position" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-CA_CAspecies_position-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-CA_CAspecies_position" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-CA_CAspecies_position-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-CA_CAspecies_position-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="CA_files/figure-html/fig-CA_CAspecies_position-1.png" class="img-fluid figure-img" data-ref-parent="fig-CA_CAspecies_position" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-CA_CAspecies_position-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) CA with Bassin samples
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-CA_CAspecies_position" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-CA_CAspecies_position-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-CA_CAspecies_position-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="CA_files/figure-html/fig-CA_CAspecies_position-2.png" class="img-fluid figure-img" data-ref-parent="fig-CA_CAspecies_position" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-CA_CAspecies_position-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) CA without Bassin samples
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-CA_CAspecies_position-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Species position on Axis 1 and 2 of the CA, depending on wetland
+</figcaption>
+</figure>
+</div>
+</div>
+<p>In <a href="#fig-CA_CAspecies_position" class="quarto-xref">Figure&nbsp;9</a>, the points correspond to the projection of the families onto the two axes of the CA. The position of each family corresponds to the barycenter (average) of the coordinates of the sites where this species was present. (je crois que je comprends pas bien cette phrase)</p>
+<section id="table-value" class="level3">
+<h3 class="anchored" data-anchor-id="table-value">Table value</h3>
+<div class="cell" data-layout-nrow="2">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table.value</span>(macroinv_red[,<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)][<span class="fu">order</span>(CA_ade4<span class="sc">$</span>li[,<span class="dv">1</span>]),</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>                                   <span class="fu">order</span>(CA_ade4<span class="sc">$</span>co[,<span class="dv">1</span>])],</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">grid =</span> T, <span class="at">csize =</span> <span class="fl">0.5</span>, <span class="at">clabel.col =</span> <span class="fl">0.6</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">table.value</span>(macroinv_red[,<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)][<span class="fu">order</span>(CA_ade4_sansbassin<span class="sc">$</span>li[,<span class="dv">1</span>]),</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>                                   <span class="fu">order</span>(CA_ade4_sansbassin<span class="sc">$</span>co[,<span class="dv">1</span>])], </span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">grid =</span> T, <span class="at">csize =</span> <span class="fl">0.5</span>, <span class="at">clabel.col =</span> <span class="fl">0.6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-CA_tablevalues" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-CA_tablevalues-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-CA_tablevalues" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-CA_tablevalues-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-CA_tablevalues-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="CA_files/figure-html/fig-CA_tablevalues-1.png" class="img-fluid figure-img" data-ref-parent="fig-CA_tablevalues" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-CA_tablevalues-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) With Bassin samples
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-CA_tablevalues" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-CA_tablevalues-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-CA_tablevalues-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="CA_files/figure-html/fig-CA_tablevalues-2.png" class="img-fluid figure-img" data-ref-parent="fig-CA_tablevalues" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-CA_tablevalues-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Without Bassin samples
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-CA_tablevalues-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: Data reorganized according to the CA results
+</figcaption>
+</figure>
+</div>
+</div>
+<p>This table value shows presence and abundance, each square representing the presence of a family in a site. The square size varies with abundance of the family. On the first table (<a href="#fig-CA_tablevalues-1" class="quarto-xref">Figure&nbsp;10 (a)</a>) - which includes the 3 bassin stations - we can see that the presence profils are highly impacted by the peculiar macroinvertebrate composition of said stations.</p>
+<p>When we get rid of these stations (<a href="#fig-CA_tablevalues-2" class="quarto-xref">Figure&nbsp;10 (b)</a>), it reveals presence patterns that couldn’t be seen. The most obvious is the bivalve presence in the first sations, which is likely due to their prevalence in “Ruche” stations. The graph also shows that the presence of <em>Culicidae</em> is similar in all stations. For <em>Physidae</em>, we observe the same tendency although they are not present on the station “Rieu_Querelle”. Some species are only present in a few, or even a single station. That is the case for <em>Hydrobiidae</em> which are only present in one sample, “Foot_2”. Finally, <em>Baetidae</em>’s presence is really high on the “Verdanson” Stations.</p>
+</section>
+<section id="species-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="species-distribution">Species distribution</h3>
+<p>We can look at how each species is distributed on the CA in the first two axis. It can help us visualize how much influence they have on the axis.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">s.distri</span>(CA_ade4_sansbassin<span class="sc">$</span>li, macroinv_red[<span class="sc">-</span><span class="fu">c</span>(<span class="dv">27</span>,<span class="dv">28</span>,<span class="dv">29</span>), <span class="dv">26</span>], <span class="at">cell =</span> <span class="fl">1.5</span>, </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">sub =</span> <span class="fu">colnames</span>(macroinv_red[<span class="dv">26</span>]), <span class="at">csub =</span> <span class="dv">2</span>) <span class="co">#rare family</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">s.distri</span>(CA_ade4_sansbassin<span class="sc">$</span>li, macroinv_red[<span class="sc">-</span><span class="fu">c</span>(<span class="dv">27</span>,<span class="dv">28</span>,<span class="dv">29</span>), <span class="dv">36</span>], <span class="at">cell =</span> <span class="fl">1.5</span>, </span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">sub =</span> <span class="fu">colnames</span>(macroinv_red[<span class="dv">36</span>]), <span class="at">csub =</span> <span class="dv">2</span>) <span class="co">#rare family</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="fu">s.distri</span>(CA_ade4<span class="sc">$</span>li, macroinv_red[, <span class="dv">22</span>], <span class="at">cell =</span> <span class="fl">1.5</span>,</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">sub =</span> <span class="fu">colnames</span>(macroinv_red[<span class="dv">22</span>]), <span class="at">csub =</span> <span class="dv">2</span>) <span class="co">#common family</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="fu">s.distri</span>(CA_ade4_sansbassin<span class="sc">$</span>li, macroinv_red[<span class="sc">-</span><span class="fu">c</span>(<span class="dv">27</span>,<span class="dv">28</span>,<span class="dv">29</span>), <span class="dv">5</span>], <span class="at">cell =</span> <span class="fl">1.5</span>, </span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">sub =</span> <span class="fu">colnames</span>(macroinv_red[<span class="dv">5</span>]), <span class="at">csub =</span> <span class="dv">2</span>) <span class="co">#family very abundant in 1 station</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-CA_CAspecies_distrib" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-CA_CAspecies_distrib-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="CA_files/figure-html/fig-CA_CAspecies_distrib-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-CA_CAspecies_distrib-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11: Species distribution in samples on Axis 1 and 2 of the CA
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-CA_CAspecies_distrib" class="quarto-xref">Figure&nbsp;11</a> shows the distribution of the different families across the sites. Each point corresponds to the coordinates of a site. The points connected to each other correspond to all the points where the family is present. Their <strong>barycenter</strong> (average of the site positions) corresponds to the position of the family on the CA projections in <a href="#fig-CA_CAspecies_position" class="quarto-xref">Figure&nbsp;9</a>.</p>
+<p>The barycenter corresponds to the average of the sampled environmental conditions where the family is present (i.e.&nbsp;the central position of the ecological niche).<br>
+The <strong>size of the ellipse</strong> corresponds to the <strong>width of the ecological niche</strong>. A generalist family will tend to be present at the center of the CA with a large ellipse, while a more specialized family, present in a few site, will have a smaller ellipse (e.g., Thaunaleidae).</p>
+<p><strong>However, for abundance data (as here), the barycenter is attracted to sites where the family is present in greater numbers (e.g., Bivalves in Ruche).</strong></p>
+</section>
+<section id="sites-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="sites-distribution">Sites distribution</h3>
+<p>Similarly, we can project the distribution of sites. Each point corresponds to the coordinates of a family. For a given site, the families present on that site are connected, and the barycenter of these families’ coordinates form the site’s position in the CA (<a href="#fig-CA_CAwetland_position" class="quarto-xref">Figure&nbsp;8</a>)</p>
+<p>The <strong>size of the ellipses</strong> can be interpreted as the <strong>alpha diversity</strong> (i.e., species richness) present at a site : the larger the ellipse, the more families it will contain.</p>
+</section>
+</section>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>Certain stations having very specific physico-chemical caracteristics, their macro-invertebrate composition is very peculiar and influence greatly the CA results. However, after removing them from the analysis, we can highlight macro invertebrate compositions and presence for our different stations.</p>
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-ade4_dray2007" class="csl-entry" role="listitem">
+Dray, Stéphane, and Anne–Béatrice Dufour. 2007. <span>“The <span class="nocase">ade4</span> Package: Implementing the Duality Diagram for Ecologists.”</span> <em>Journal of Statistical Software</em> 22 (4): 1–20. <a href="https://doi.org/10.18637/jss.v022.i04">https://doi.org/10.18637/jss.v022.i04</a>.
+</div>
+<div id="ref-DCE_2014" class="csl-entry" role="listitem">
+European Parliament. 2014. <span>“Directive 2000/60/EC of the European Parliament and of the Council of 23 October 2000 Establishing a Framework for Community Action in the Field of Water Policy.”</span>
+</div>
+<div id="ref-ABC_macroinv2022" class="csl-entry" role="listitem">
+GEB, Master. 2023. <span>“Atlas de La Biodiversite Communale de Grabels.”</span> Montpellier University.
+</div>
+<div id="ref-faunefrance_macroin1927" class="csl-entry" role="listitem">
+I., A. D. 1927. <span>“Faune de France 13: Diptères (Brachycères) (Stratiomyiidæ, Erianidæ, Cænomyiidæ, Rhagionidæ, Tabanidæ, Codidæ, Nemestrinidæ, Mydaidæ, Romoyiidæ, Therevidæ, Omphralidæ).”</span> <em>Nature</em> 120 (3018): 328–28. <a href="https://doi.org/10.1038/120328a0">https://doi.org/10.1038/120328a0</a>.
+</div>
+<div id="ref-factominer_le2008" class="csl-entry" role="listitem">
+Lê, Sébastien, Julie Josse, and François Husson. 2008. <span>“<span>FactoMineR</span>: A Package for Multivariate Analysis.”</span> <em>Journal of Statistical Software</em> 25 (1): 1–18. <a href="https://doi.org/10.18637/jss.v025.i01">https://doi.org/10.18637/jss.v025.i01</a>.
+</div>
+<div id="ref-vivier_macroinv1970" class="csl-entry" role="listitem">
+Vivier, P. 1970. <span>“Influence de La Pollution Organique Sur La Faune Aquatique Des Eaux Courantes.”</span> <em>Bull. Fr. Piscic.</em>, no. 236: 89–104. <a href="https://doi.org/10.1051/kmae:1970009">https://doi.org/10.1051/kmae:1970009</a>.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
