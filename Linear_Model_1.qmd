@@ -377,6 +377,8 @@ Concerning the other variables : For bill length, bill depth and flipper length,
 
 Once the data exploration is done, we can focus on finding the model that is adapted to our study. First, we write a full model including all variables presented before and possible interactions between them. Then, the goal is to obtain a fitted model (candidate model) that we can analyze in order to identify the main effects on our response variable `body_mass_g`. This candidate model can be obtained thanks to a selection based on **Akaike Information Criterion (AIC)**. After selection, the conditions of the linear model (i.e. **independence of residuals**, **normality of residuals** and **homoscedasticity** ) must be validated before making interpretations and conclusions.
 
+### 1. Construction of the model
+
 Firstly, let's write the full model, including all variables and possible interactions.
 
 ```{r fullmodel, echo=FALSE, results='markup', include=TRUE}
@@ -397,6 +399,8 @@ mod_penguins<-lm(body_mass_g ~ bill_length_mm
 #We check for significance
 drop1(mod_penguins,test="F")
 ```
+
+### 2. Variable selection
 
 Now, we have to select the significant terms of the model, based on the AIC, with a forward-backward selection method.
 
@@ -419,6 +423,92 @@ We can explain the part of the variance explained by the model, by using the adj
 
 ```{r}
 summary(mod_final)
+drop1(mod_final)
 ```
 
 The value of the adjusted R\^2\^ is equal to 0.88. It means that 88% of the variance of the body mass of penguins is explained by the relation given by mod_final.
+
+### 3. Validation of the model
+
+The assumptions of the regression are the same as for any general linear model (simple or multiple regressions, ANOVA, ANCOVA). These assumptions concern the residuals and relate to their normality, the homogeneity of their variances, and their independence.
+
+**Normality of the residuals**
+
+The normality of the residuals can be verified in two ways: using a histogram or a QQ plot of the residuals. The histogram of the residuals must correspond to a normal distribution. The points of the QQ plot must lie primarily on the plotted line. If these conditions are met, the residuals are normally distributed.
+
+```{r normality, echo=FALSE, results='markup'}
+par(mfrow=c(1,2))
+# Histogram
+hist(mod_final$residuals,col='dodgerblue3',xlab="residuals",main="Check Normality")
+# Quantile-Quantile plot
+qqnorm(mod_final$residuals,pch=16,col='dodgerblue3',xlab='')
+qqline(mod_final$residuals,col='red',lwd=2)
+```
+
+We clearly see that the residuals follow a normal distribution.
+
+**Homogeneity of the variance**
+
+The hypothesis of the homogeneity of the variance means that the variation of residuals is equal over the entire range of explanatory variables. To verify this hypothesis, the residuals must be plotted against the estimated values ​​and against the values ​​of the significant variables. We can validate this hypothesis if the residuals show no trend.
+
+```{r, homogeneity, echo=FALSE, results='markup'}
+par(mfrow=c(2,3))
+
+# residuals vs fitted
+plot(residuals(mod_final)~fitted(mod_final)
+      , col='dodgerblue3'
+      , pch=16)
+abline(h = 0)
+
+# residuals against Bill length
+plot(residuals(mod_final)~ penguins$bill_length_mm, 
+         pch=16,
+         col="dodgerblue3",
+         ylab = "Residuals",
+         xlab = "Bill length",
+         main = "")
+abline(h = 0)
+
+# residuals against Bill depth
+plot(residuals(mod_final)~ penguins$bill_depth_mm, 
+         pch=16,
+         col="dodgerblue3",
+         ylab = "Residuals",
+         xlab = "Bill depth",
+         main = "")
+abline(h = 0)
+
+# residuals against Flipper length
+plot(residuals(mod_final)~ penguins$flipper_length_mm, 
+         pch=16,
+         col="dodgerblue3",
+         ylab = "Residuals",
+         xlab = "Flipper length",
+         main = "")
+abline(h = 0)
+
+# residuals against Species
+plot(residuals(mod_final)~ penguins$species, 
+         pch=16,
+         col="dodgerblue3",
+         ylab = "Residuals",
+         xlab = "Species",
+         main = "")
+abline(h = 0)
+
+# residuals against Sex
+plot(residuals(mod_final)~ penguins$sex, 
+         pch=16,
+         col="dodgerblue3",
+         ylab = "Residuals",
+         xlab = "Sex",
+         main = "")
+abline(h = 0)
+
+```
+
+The graphs show that residuals variances are homogeneous, for all variables. We can thus, validate the hypothesis of homogeneity of variance.
+
+**Independence**
+
+The linear model, whether it involves an ANOVA or ANCOVA regression, assumes that the statistical units studied, and therefore their associated residuals, are independent of each other. This independence must be taken into account during the research design phase. In our case, the measurements taken for each penguin in our study were carried out over three years in a large penguin colony; we can therefore consider the measurements to be independent.
