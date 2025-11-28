@@ -19,7 +19,7 @@ jobs:
       - name: Install R packages
         run: |
           Rscript -e "install.packages(c('RefManageR', 'wesanderson', 'palmerpenguins', 'corrplot', 'lme4', 'rsq','deSolve','devtools'))"
-          Rscript -e "devtools::install_github("mjg211/phaseR")"
+          Rscript -e "devtools::install_github('mjg211/phaseR')"
       - name: Generate slides
         run: "quarto render"
       - name: GitHub Pages action
