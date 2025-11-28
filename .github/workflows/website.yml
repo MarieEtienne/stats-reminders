@@ -18,8 +18,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Install R packages
         run: |
-          Rscript -e "install.packages(c('RefManageR', 'wesanderson', 'palmerpenguins', 'corrplot', 'lme4', 'rsq','deSolve'))"
-
+          Rscript -e "install.packages(c('RefManageR', 'wesanderson', 'palmerpenguins', 'corrplot', 'lme4', 'rsq','deSolve','phaseR'))"
       - name: Generate slides
         run: "quarto render"
       - name: GitHub Pages action
