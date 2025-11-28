@@ -506,7 +506,7 @@ The model summary details both the fixed and the random effects. The model can b
 The significance of the random effect is tested via a **bootstrap** method: the likelihood of the model including the random effect is compared to the likelihood of 1000 models without the random effect.
 
 ```{r boot random, echo=TRUE,fig.height=4, fig.width=4, warning=FALSE, message = FALSE}
-nBoot <- 1000 # number of simulations
+nBoot <- 100 # number of simulations
 lrStat <- rep(NA, nBoot) # initializes a vector of size 1000 to store the likelihood ratio statistic
 ft.null <-glm(Activity~N_setts,data=dataBadger,family=binomial(link=logit)) # fits the null model (without the random effect)
 ft.alt <- glmer(Activity~N_setts+(1|farm_code),data=dataBadger,family=binomial) # fits the alternate model (with the random effect)
@@ -622,6 +622,14 @@ For this prediction, the overall accuracy was 0.86, which means that 86% of pred
 
 # **DISCUSSION**
 
+Our model shows a positive association between the number of setts on farmland and the likelihood of badger activity. However, while sett number explains 21% of variance, farm-level random effects explain 38%, bringing the total explained variance to 59%: while the number of setts is clearly an important predictor, a considerable portion of variation remains due to farm-specific factors.
+
+The positive association between badger activity and the number of setts is not surprising and consistant with the litterature: in a study using cameras to detect the presence of badgers in 155 south-western English and Welsh farms, @Robertson2019 found that badger activity increased with the density of setts in a 500m radius around the farm, and decreased with the distance to the nearest sett. It is however surprising that no other variable was retained, as in the same study, badger activity was also negatively impacted by the maximum cattle capacity and the presence of inhabited buildings, and positively impacted by the number of feed stores and the number of cattle sheds.
+
+Our model does include season or year. Yet badger activity is known to vary seasonally (@Kowalczyk2003), which means that we may have missed important dynamics.
+
 # **CONCLUSION**
+
+Our results provide evidence that the number of setts is a predictor of badger activity on farms. However, substantial unexplained variation indicates that other farm-specific characteristics influence badger activity.
 
 # **REFERENCES**
