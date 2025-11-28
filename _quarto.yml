@@ -31,7 +31,7 @@ website:
         - cca.qmd 
       - text: "Differential Equation"
         menu:
-        - ode.qmd
+        - EDO_ESTIMATION.qmd
         - EDO_LOTKA_VOLTERRA.qmd 
 
 
