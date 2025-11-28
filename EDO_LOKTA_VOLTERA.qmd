@@ -40,20 +40,20 @@ predator_equation <- function(N,P,r2,b2){
 ## K      : carrying capacity of prey
 simul_traj <- function(N_0,P_0,t_end,pas,r1,b1,r2,b2,K){
   list_N <- c(N_0)
-  dN <- N_0
+  N <- N_0
   list_P <- c(P_0)
-  dP <- P_0
+  P <- P_0
   list_t <- c(0)
   t <- 0
   while (t<t_end){
     t<- t+pas
     list_t <- c(list_t,t)
-    dN <- prey_equation(dN,dP,r1,b1,K)*pas
-    if (dN<0){dN <- 0}
-    dP <- predator_equation(dN,dP,r2,b2)*pas
-    if (dP<0){dP <- 0}
-    list_N <- c(list_N,dN)
-    list_P <- c(list_P,dP)
+    N <- N + prey_equation(N,P,r1,b1,K)*pas
+    if (N<0){N <- 0}
+    P <- P + predator_equation(N,P,r2,b2)*pas
+    if (P<0){P <- 0}
+    list_N <- c(list_N,N)
+    list_P <- c(list_P,P)
   }
   
   ##data_wrangling
@@ -82,15 +82,15 @@ What is the intuition behind this? Lynxes need hares to survive, and so the lynx
 #| fig-show: 'asis'  
 #| results: 'hide'
 ##An exemple of a prey-predator dynamic
-simul_traj(N_0= 50,
+simul_traj(N_0= 20,
            P_0= 5,
            t_end= 100,
            pas= 1,
-           r1= 1.5,
+           r1= 0.5,
            b1= 0.05,
            r2= 0.5,
            b2= 0.05,
-           K= 500)
+           K= 50)
 ```
 
 **Logistic Prey-Predator model (in a limited environment)** :
@@ -134,8 +134,7 @@ $$
 
 $$
 \text{with}\;\ \begin{cases} \frac{dN_{1}}{dt}=f_{1}(N1,N2) \\ \frac{dN_{2}}{dt}=f_{2}(N1,N2) \end{cases}
-$$
-Those equilibrium points carry the information about the population sizes at which the system does not change. They can be either locally asymptotically stable (LAS), unstable (repeller) and in the case the system has more than one differential equation, saddle points may appear. Around LAS points, system will go towards the equilibrium, around repeller points, system will tend to move away from equilibrium. As for saddle points, depending on the area the system will go toward or away the equilibrium
+$$ Those equilibrium points carry the information about the population sizes at which the system does not change. They can be either locally asymptotically stable (LAS), unstable (repeller) and in the case the system has more than one differential equation, saddle points may appear. Around LAS points, system will go towards the equilibrium, around repeller points, system will tend to move away from equilibrium. As for saddle points, depending on the area the system will go toward or away the equilibrium
 
 In contrast to equilibrium points, where all derivative must be equal to zero, isoclines correspond to lines for which an equation of the system is individually equal to zero. Mathematically it's expressed as following :
 
@@ -218,6 +217,19 @@ flowField(
   )
 # Generating the isoclines for our equation
 nullclines(Proiepred,xlim=c(-10,100),ylim=c(-10,100),parameters = parameters1, points = 500,add.legend = FALSE,add = TRUE)
+trajectory(Proiepred,y0=c(40,40),tlim=c(0,100),parameters=parameters1)
+```
+
+```{r}
+simul_traj(N_0= 40,
+           P_0= 40,
+           t_end= 50,
+           pas= 1,
+           r1= 0.5,
+           b1= 0.02,
+           r2= 0.3,
+           b2= 0.01,
+           K= 50)
 ```
 
 From this graphic we could already interpret the isoclines and the equilibrium point. We can also use the function *findEquilibrium* to discuss those equilibrium points. We can approximate the equilibrium points from the graphic, looking at the intersect of isoclines.
@@ -257,8 +269,9 @@ Let's repeat the process but with different parameters values :)
 #| fig-show: 'asis'  
 #| results: 'hide'
 #| warning: false
-parameters2 <- parameters1 <- c(r1 = 0.5, r2 = 0.3, b1 = 0.02, b2 = 0.01,K=25)
+
 # Defining the limit for the studied window by flowField
+parameters2 <- c(r1 = 0.5, r2 = 0.3, b1 = 0.02, b2 = 0.01,K=25)
 xlim <- c(0, 50)  # N
 ylim <- c(0, 50)  # P
 flowField(
@@ -271,6 +284,19 @@ flowField(
   tend=100, xlab="Prey", ylab="Predator"
   )
 nullclines(Proiepred,xlim=c(-10,100),ylim=c(-10,100),parameters = parameters2, points = 500,add.legend = FALSE,add = TRUE)
+trajectory(Proiepred,y0=c(40,40),tlim=c(0,100),parameters=parameters2)
+```
+
+```{r}
+simul_traj(N_0= 40,
+           P_0= 40,
+           t_end= 50,
+           pas= 1,
+           r1= 0.5,
+           b1= 0.02,
+           r2= 0.3,
+           b2= 0.01,
+           K= 25)
 ```
 
 After changing the parameter values, it now appears that there is only two equilibrium points! But what about their stability?
