@@ -72,9 +72,13 @@ The data are available in the file `Badger.txt`. The variables are:
 -   `Vegetables` : presence / absence of vegetables
 -   `Molasses` : presence / absence of molasses
 
-To visualize the subject of our analysis, please see Figure @fig-badger .
+To visualize the subject of our analysis, please see Figure @fig-badger.
 
-[![Picture from Scottish SPCA](images/clipboard-2678335023.jpeg)](https://www.scottishspca.org/advice/badger/badger-sett/)
+::: {#fig-badger}
+[![](images/clipboard-2678335023.jpeg)](https://www.scottishspca.org/advice/badger/badger-sett/)
+
+Figure: Picture from Scottish SPCA. Source: [Scottish SPCA](https://www.scottishspca.org/advice/badger/badger-sett/)
+:::
 
 ## **Dataset import**
 
