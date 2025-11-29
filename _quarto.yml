@@ -33,8 +33,8 @@ website:
         - cca.qmd 
       - text: "Differential Equation"
         menu:
-        - EDO_ESTIMATION.qmd
-        - EDO_LOTKA_VOLTERRA.qmd 
+        - EDO_estimation.qmd
+        - EDO_LOKTA_VOLTERA.qmd 
 
 
 format:
