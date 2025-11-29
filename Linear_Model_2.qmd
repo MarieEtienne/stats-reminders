@@ -10,7 +10,9 @@ bibliography: references.bib
 
 We present here a reminder sheet on Generalized Linear Mixed Models (GLMMs) and its specific features. Its use will be illustrated through a study applied on badgers from @Walker2009 .
 
-Remark : the concepts covered are taken from our Master's courses and tutorials, written and taught by @A_Masson and @Y_Outreman .
+::: {.callout-note appearance="simple"}
+Note : The concepts covered in this reminder sheet are taken from our Master's lectures and tutorials, written by @Y_Outreman and taught by @A_Masson .
+:::
 
 ## **Generalities**
 
