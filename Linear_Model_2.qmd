@@ -40,8 +40,6 @@ Depending on the sampling design or the experimental set-up, independence of res
 
 The resulting model, called Generalized Linear Mixed Model (GLMM) extends the GLM by adding these random effects alongside the fixed effects. Therefore, GLMMs allow us to model both the relationship between predictors and responses and the non-independence among observations.
 
-[![Badger picture from Scottish SPCA](images/Badger-wild-sett-2.jpg){fig-align="center"}](https://www.scottishspca.org/advice/badger/badger-sett/)
-
 # **DATA PRESENTATION**
 
 The data used come from @Walker2009a and consist of signs of badger (*Meles meles*) activity around farms located in the southwest of England, where badger density is high. This study was carried out in the context of bovine tuberculosis and its possible transmission to cattle through badgers. Reducing the number of farm visits by badgers — especially in places where they might come into contact with livestock — could help limit the spread of the disease. Thus, the aim of this study is to predict the occurrence of badger activity signs on farms.
@@ -73,6 +71,10 @@ The data are available in the file `Badger.txt`. The variables are:
 -   `Sugarbeet` : presence / absence of sugar beet
 -   `Vegetables` : presence / absence of vegetables
 -   `Molasses` : presence / absence of molasses
+
+To visualize the subject of our analysis, please see Figure @fig-badger .
+
+[![Picture from Scottish SPCA](images/clipboard-2678335023.jpeg)](https://www.scottishspca.org/advice/badger/badger-sett/)
 
 ## **Dataset import**
 
