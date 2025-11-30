@@ -407,8 +407,12 @@ As for the other variables : For bill length, bill depth and flipper length, we 
 
 # **MODEL AND STATISTICAL ANALYSIS**
 
+Let's recall our research question : we would like to identify the quantitative and qualitative variables that can explain the variation in penguin `body_mass_g`.
+
+Once the data exploration is done, we can focus on finding the model that is adapted to our study. First, we write a full model including all variables presented before and possible interactions between them. Then, the goal is to obtain a fitted model (candidate model) that we can analyze in order to identify the main effects on our response variable `body_mass_g` and answer our research question. This candidate model can be obtained thanks to a selection based on **Akaike Information Criterion (AIC)**.
+
 ::: {#conditionsBACK}
-Once the data exploration is done, we can focus on finding the model that is adapted to our study. First, we write a full model including all variables presented before and possible interactions between them. Then, the goal is to obtain a fitted model (candidate model) that we can analyze in order to identify the main effects on our response variable `body_mass_g`. This candidate model can be obtained thanks to a selection based on **Akaike Information Criterion (AIC)**. After selection, the [conditions](#conditions) of the linear model must be validated before making interpretations and conclusions.
+After selection, the [conditions](#conditions) of the linear model must be validated before making interpretations and conclusions.
 :::
 
 ### **1. Construction of the model**
@@ -430,13 +434,13 @@ mod_penguins<-lm(body_mass_g ~ bill_length_mm
         + species : flipper_length_mm
         , data=penguins)
 
-#We check for significance
+# Let's check for significance
 drop1(mod_penguins,test="F")
 ```
 
 ### **2. Variable selection**
 
-Now, we have to select the significant terms of the model, based on the AIC, with a forward-backward selection method.
+Now, let's select the significant terms of the model, based on AIC, using a forward-backward selection method. We can use the stepAIC function from the library MASS to select variables using the AIC. The function tests adding and removing interactions and variables to see which ones improve the AIC. The final model is the one with the lowest AIC.
 
 ```{r variable selection, echo=TRUE, results='markup'}
 library(MASS)
@@ -446,29 +450,24 @@ mod_final <- stepAIC(mod_penguins, direction = "both")
 We can then use the coefficient given by the model :
 
 ```{r final mod, echo=TRUE, results='markup'}
+coef(mod_final)
 summary(mod_final)
 ```
+Some effects are not significant but they were kept in the model with the lowest AIC.
 
 We can write the full model :
 
-$$ Body\:mass = -2357,33 \:+\: 19,67.Bill\:length\:+\: 105,46.Bill\:depth\\ \:+\: 16,69.Flipper\:length \:-\: 87,13.Species\:Chinstrap \:+\: 1088,53.Species\:Gentoo\\ \:+\: 1605,64.Sex\:male \:-\: 360,63.Species\:Chinstrap:Sex\:male\\ \:-\: 173,40.Species\:Gentoo:Sex\:male \:-\: 63,11.Bill\:depth:Sex\:male$$
+$$ Body\:mass = -2357,33 \:+\: 19,67.Bill\:length\:+\: 105,46.Bill\:depth\\ \:+\: 16,69.Flipper\:length \:-\: 87,13.Species\:Chinstrap \:+\: 1088,53.Species\:Gentoo\\ \:+\: 1605,64.Sex\:male \:-\: 360,63.(Species\:Chinstrap:Sex\:male)\\ \:-\: 173,40.(Species\:Gentoo:Sex\:male) \:-\: 63,11.(Bill\:depth:Sex\:male) + ε $$
 
-We can explain the part of the variance explained by the model, by using the adjusted R\^2\^.
-
-```{r final mod 2, echo=TRUE, results='markup'}
-summary(mod_final)
-drop1(mod_final)
-```
-
-The value of the adjusted R\^2\^ is equal to 0.88. It means that 88% of the variance of the body mass of penguins is explained by the relation given by mod_final.
+We can check the part of the variance explained by the model, by using the adjusted R\^2\^. In the summary of the model, the adjusted R\^2\^ is equal to 0.88. It means that 88% of the variance of the body mass of penguins is explained by the relation given by mod_final.
 
 ### **3. Validation of the model**
 
-The assumptions of the regression are the same as for any general linear model (simple or multiple regressions, ANOVA, ANCOVA). These assumptions concern the residuals and relate to their normality, the homogeneity of their variances, and their independence.
+Let's check the conditions to validate our model. We need to verify the normality of the residuals, the homogeneity of their variances, and their independence.
 
 **Normality of the residuals**
 
-The normality of the residuals can be verified in two ways: using a histogram or a QQ plot of the residuals. The histogram of the residuals must correspond to a normal distribution. The points of the QQ plot must lie primarily on the plotted line. If these conditions are met, the residuals are normally distributed.
+The normality of the residuals can be verified using a histogram and a QQ plot of the residuals. The histogram of the residuals must correspond to a normal distribution. The points of the QQ plot must lie primarily on the plotted line. If these conditions are met, the residuals are normally distributed.
 
 ```{r normality, echo=TRUE, results='markup'}
 par(mfrow=c(1,2))
@@ -479,11 +478,11 @@ qqnorm(mod_final$residuals,pch=16,col='dodgerblue3',xlab='')
 qqline(mod_final$residuals,col='red',lwd=2)
 ```
 
-We clearly see that the residuals follow a normal distribution.
+We see that the residuals follow a normal distribution : we can validate the first condition.
 
 **Homogeneity of the variance**
 
-The hypothesis of the homogeneity of the variance means that the variation of residuals is equal over the entire range of explanatory variables. To verify this hypothesis, the residuals must be plotted against the estimated values ​​and against the values ​​of the significant variables. We can validate this hypothesis if the residuals show no trend.
+The hypothesis of the homogeneity of the variance means that the variaance of residuals is constant over the entire range of explanatory variables. The residuals must be plotted against the estimated values and against the values of the significant variables. We can validate this hypothesis if the residuals show no trend.
 
 ```{r, homogeneity, echo=TRUE, results='markup'}
 par(mfrow=c(2,3))
@@ -541,11 +540,11 @@ abline(h = 0)
 
 ```
 
-The graphs show that residuals variances are homogeneous, for all variables. We can thus, validate the hypothesis of homogeneity of variance.
+The graphs show that residuals variances are homogeneous, for all variables. Thus, we validate the hypothesis of homogeneity of variance.
 
 **Independence**
 
-The linear model, whether it involves an ANOVA or ANCOVA regression, assumes that the statistical units studied, and therefore their associated residuals, are independent of each other. This independence must be taken into account during the research design phase. In our case, the measurements taken for each penguin in our study were carried out over three years in a large penguin colony; we can therefore consider the measurements to be independent.
+A linear model assumes that the statistical units studied, and their associated residuals, are independent of each other. This independence must be taken into account during the research design phase. In this study, measurements for each penguin were taken over three years in a large penguin colony; we can therefore consider the observations to be independent.
 
 # **DISCUSSION**
 
