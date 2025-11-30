@@ -163,30 +163,30 @@ par(mfrow=c(3,3))
 
 # Number of badger setts on farm
 # Cleveland plot
-dotchart(dataBadger$N_setts_in_fields,pch=16,col='blue',xlab='Number of setts')
+dotchart(dataBadger$N_setts_in_fields,pch=16,col='aquamarine3',xlab='Number of setts')
 # Histogram
-hist(dataBadger$N_setts_in_fields,col='blue',xlab="Number of setts",main="")
+hist(dataBadger$N_setts_in_fields,col='aquamarine3',xlab="Number of setts",main="")
 # Quantile-Quantile plot
-qqnorm(dataBadger$N_setts_in_fields,pch=16,col='blue',xlab='')
-qqline(dataBadger$N_setts_in_fields,col='red')
+qqnorm(dataBadger$N_setts_in_fields,pch=16,col='aquamarine3',xlab='')
+qqline(dataBadger$N_setts_in_fields,col='pink1')
 
 # Number of buildings on farm
 # Cleveland plot
-dotchart(dataBadger$N_buildings,pch=16,col='blue',xlab='Number of buildings')
+dotchart(dataBadger$N_buildings,pch=16,col='aquamarine3',xlab='Number of buildings')
 # Histogram
-hist(dataBadger$N_buildings,col='blue',xlab="Number of buildings",main="")
+hist(dataBadger$N_buildings,col='aquamarine3',xlab="Number of buildings",main="")
 # Quantile-Quantile plot
-qqnorm(dataBadger$N_buildings,pch=16,col='blue',xlab='')
-qqline(dataBadger$N_buildings,col='red')
+qqnorm(dataBadger$N_buildings,pch=16,col='aquamarine3',xlab='')
+qqline(dataBadger$N_buildings,col='pink1')
 
 # Number of cattle housed in buildings on farm
 # Cleveland plot
-dotchart(dataBadger$N_cattle_in_buildings_yard,pch=16,col='blue',xlab='Number of cattle')
+dotchart(dataBadger$N_cattle_in_buildings_yard,pch=16,col='aquamarine3',xlab='Number of cattle')
 # Histogram
-hist(dataBadger$N_cattle_in_buildings_yard,col='blue',xlab="Number of cattle",main="")
+hist(dataBadger$N_cattle_in_buildings_yard,col='aquamarine3',xlab="Number of cattle",main="")
 # Quantile-Quantile plot
-qqnorm(dataBadger$N_cattle_in_buildings_yard,pch=16,col='blue',xlab='')
-qqline(dataBadger$N_cattle_in_buildings_yard,col='red')
+qqnorm(dataBadger$N_cattle_in_buildings_yard,pch=16,col='aquamarine3',xlab='')
+qqline(dataBadger$N_cattle_in_buildings_yard,col='pink1')
 ```
 
 The exploratory plots show that all three quantitative variables (number of setts, number of buildings, and number of cattle) display right-skewed distributions, with most farms having relatively low values and a few having much higher ones. No extreme or abnormal outliers are clearly visible, although some high values are present, especially for the number of cattle. The Q-Q plots confirm that none of these variables follow a normal distribution.
@@ -238,57 +238,57 @@ Scatterplots were used to visualize how badger activity varies with continuous p
 
 par(mfrow=c(1,3))
 # Number of setts
-plot(dataBadger$signs_in_yard~dataBadger$N_setts_in_fields,pch=16,col='blue',xlab='Number of setts',ylab='Presence of a sign of badger activity')
+plot(dataBadger$signs_in_yard~dataBadger$N_setts_in_fields,pch=16,col='aquamarine3',xlab='Number of setts',ylab='Presence of a sign of badger activity')
 
 # Number of buildings
-plot(dataBadger$signs_in_yard~dataBadger$N_buildings,pch=16,col='blue',xlab='Number of buildings',ylab='Presence of a sign of badger activity')
+plot(dataBadger$signs_in_yard~dataBadger$N_buildings,pch=16,col='aquamarine3',xlab='Number of buildings',ylab='Presence of a sign of badger activity')
 
 # Number of cattle housed in buildings
-plot(dataBadger$signs_in_yard~dataBadger$N_cattle_in_buildings_yard,pch=16,col='blue',xlab='Number of cattle',ylab='Presence of a sign of badger activity')
+plot(dataBadger$signs_in_yard~dataBadger$N_cattle_in_buildings_yard,pch=16,col='aquamarine3',xlab='Number of cattle',ylab='Presence of a sign of badger activity')
 
 par(mfrow=c(2,5))
 # Factor season
 mosaicplot(dataBadger$signs_in_yard~dataBadger$season
-           ,color=c('blue3','red2')
+           ,color=c('aquamarine3','pink1')
            ,main="Activity & Season")
 
 # Factor feed store
 mosaicplot(dataBadger$signs_in_yard~dataBadger$accessible_feed_store_present
-           ,color=c('blue3','red2')
+           ,color=c('aquamarine3','pink1')
            ,main="Activity & Feed store")
 
 # Factor accessible_cattle_house_present 
 mosaicplot(dataBadger$signs_in_yard~dataBadger$accessible_cattle_house_present
-           ,color=c('blue3','red2')
+           ,color=c('aquamarine3','pink1')
            ,main="Activity & cattle house")
 
 # Factor feed
 mosaicplot(dataBadger$signs_in_yard~dataBadger$accessible_feed_present
-           ,color=c('blue3','red2')
+           ,color=c('aquamarine3','pink1')
            ,main="Activity & feed")
 # Factor grass
 mosaicplot(dataBadger$signs_in_yard~dataBadger$grass_silage
-           ,color=c('blue3','red2')
+           ,color=c('aquamarine3','pink1')
            ,main="Activity & Grass")
 # Factor cereal_silage
 mosaicplot(dataBadger$signs_in_yard~dataBadger$cereal_silage
-           ,color=c('blue3','red2')
+           ,color=c('aquamarine3','pink1')
            ,main="Activity & Cereal silage")
 # Factor straw
 mosaicplot(dataBadger$signs_in_yard~dataBadger$hay_straw
-           ,color=c('blue3','red2')
+           ,color=c('aquamarine3','pink1')
            ,main="Activity & Straw")
 # Factor grains
 mosaicplot(dataBadger$signs_in_yard~dataBadger$cereal_grains
-           ,color=c('blue3','red2')
+           ,color=c('aquamarine3','pink1')
            ,main="Activity & Grains")
 # Factor concentrates
 mosaicplot(dataBadger$signs_in_yard~dataBadger$concentrates
-           ,color=c('blue3','red2')
+           ,color=c('aquamarine3','pink1')
            ,main="Activity & Concentrates")
 # Factor sugar_beet
 mosaicplot(dataBadger$signs_in_yard~dataBadger$sugar_beet
-           ,color=c('blue3','red2')
+           ,color=c('aquamarine3','pink1')
            ,main="Activity & Sugar beet")
 ```
 
@@ -312,7 +312,7 @@ Given the large number of predictors, only key results are summarized below.
 
 ```{r data_collinearity, echo=TRUE, results='markup'}
 # We represent plot for each continuous covariate pairs
-plot(dataBadger[7:9],pch=16,col='blue')
+plot(dataBadger[7:9],pch=16,col='aquamarine3')
 
 # We calculate correlation between each pair of covariate
 M<-cor(dataBadger[7:9])
@@ -505,11 +505,11 @@ The model summary details both the fixed and the random effects. The model can b
 
 ## **Significance of the random effect**
 
-The significance of the random effect is tested via a **bootstrap** method: the likelihood of the model including the random effect is compared to the likelihood of 1000 models without the random effect.
+The significance of the random effect is tested via a **bootstrap** method: the likelihood of the model including the random effect is compared to the likelihood of 100 models without the random effect.
 
 ```{r boot random, echo=TRUE,fig.height=4, fig.width=4, warning=FALSE, message = FALSE}
 nBoot <- 100 # number of simulations
-lrStat <- rep(NA, nBoot) # initializes a vector of size 1000 to store the likelihood ratio statistic
+lrStat <- rep(NA, nBoot) # initializes a vector of size 100 to store the likelihood ratio statistic
 ft.null <-glm(signs_in_yard~N_setts_in_fields,data=dataBadger,family=binomial(link=logit)) # fits the null model (without the random effect)
 ft.alt <- glmer(signs_in_yard~N_setts_in_fields+(1|farm_code),data=dataBadger,family=binomial) # fits the alternate model (with the random effect)
 lrObs <- 2 * logLik(ft.alt) - 2 * logLik(ft.null) # computes the observed likelihood ratio statistic 
@@ -535,8 +535,8 @@ for (iBoot in 1:nBoot) # for each simulation
 mean(lrStat > lrObs, na.rm = TRUE) # Proportion of bootstrap likelihood ratio statistic superior to the observed statistic
 # It corresponds to the p value
 
-hist(lrStat,xlim = c(0,40), col='blue', main = "Histogram of the likelihood ratio statistic", xlab = "Likelihood ratio statistic") # Histogram of the 1000 values of likelihood of the simulated model
-abline(v = lrObs, col="red", lwd=3, lty=2) # Vertical red line representing the likelihood of the model including the random factor
+hist(lrStat,xlim = c(0,40), col='aquamarine3', main = "Histogram of the likelihood ratio statistic", xlab = "Likelihood ratio statistic") # Histogram of the 100 values of likelihood of the simulated model
+abline(v = lrObs, col="pink1", lwd=3, lty=2) # Vertical red line representing the likelihood of the model including the random factor
 ```
 
 All simulations lead to a likelihood ratio statistic lower than the observed statistic, which suggests that the random effect is highly significant.
