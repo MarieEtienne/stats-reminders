@@ -636,4 +636,7 @@ Our results provide evidence that the number of setts is a predictor of badger a
 
 Thank you for reading. We hope this reminder on Generalized Linear Models, with this example, has been helpful. We wish you all the best.
 
+
+![Badgers - image from Pixabay](images/badger2.jpg)
+
 # **REFERENCES**
