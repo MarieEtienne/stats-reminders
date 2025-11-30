@@ -7,7 +7,7 @@ editor: visual
 bibliography: references.bib
 ---
 
-# GENERAL INTRODUCTION
+# **GENERAL INTRODUCTION**
 
 ::: {#GLM}
 We present here, a reminder sheet on the **General Linear Model [(GLM)](#GLMback)** and its specific features. Its use will be illustrated with an example applied to ecological data on penguins from @Gorman2014 .
@@ -17,7 +17,7 @@ We present here, a reminder sheet on the **General Linear Model [(GLM)](#GLMback
 Note : The concepts covered in this reminder sheet are taken from our Master's lectures, written by @Y_Outreman and then taught by @A_Masson . During these courses, we learned how to explore data and then analyze it using this type of model.
 :::
 
-### Generalities
+## **Generalities**
 
 ::: {#GLMback}
 The objective of the [GLM](#GLM) is to explain a dependent variable as a function of independent explanatory variables measured on statistical units from a sample of a population. This type of model is generally constructed as follows:
@@ -27,7 +27,7 @@ $$Y = β*X + ε$$
 
 $Y$ is the response (dependent) variable to be explained. $X$ is an explanatory (independent) variable that can explain $Y$. There can be several in the model. βi represents a coefficient, placed in front of the $X$ variables, to measure their effect on the response variable. ε represents the errors in the model, i.e. what the model cannot explain.
 
-### Type of General Linear Model
+## **Types of General Linear Models**
 
 There are three general types of linear models:
 
@@ -57,7 +57,7 @@ Another important aspect to consider is that for this type of model to be valid,
 
 These conditions are systematically verified after modeling : the verification will be illustrated in the following example.
 
-### Data presentation and objectives
+# **DATA PRESENTATION AND OBJECTIVES**
 
 ![Gentoo penguins - image from Pixabay](images/penguin1.jpg)
 
@@ -82,7 +82,7 @@ In this case, the response variable is `body_mass_g`, and the other variables ar
 
 The model can be build like this : model \<- **lm (`body_mass_g` \~ `...`, data = `penguins`)**
 
-# DATA IMPORTATION
+## **Data importation**
 
 Firstly, we need to import the data, explore it, and see if there are any NA values, outliers, and so on. The data is accessible via the package *palmerpenguins* by @Horst2020.
 
@@ -112,11 +112,11 @@ colSums(is.na(penguins))
 
 We now have handled NA values and we can continue to explore the data before implementing the model to answer our question.
 
-# DATA EXPLORATION
+## **Data exploration**
 
 Exploring the dataset is always the first step before analysis and model creation. This step is essential for identifying the structure of the variables and checking for outliers, correlations, or unbalanced distributions, mainly for qualitative variable categories, and assumptions.
 
-### 1. Outliers and distribution of the dependent variable ($Y$)
+### **1. Outliers and distribution of the dependent variable** ($Y$)
 
 ```{r data_response_variable, echo=FALSE, results='markup'}
 #Don't show the code 
@@ -155,7 +155,7 @@ qqline(penguins$body_mass_g, col='red', lwd=2)
 
 Based on the 3 first graphs (Boxplot, Cleveland plot and Histogram), it seems that there are no outliers in the $Y$ variable `body_mass_g`. With the Q-Q plot, the data appears to follow a Gaussian distribution. However, $Y$ normality is not a required assumption for our model. Keep in mind that we will need to check something about normality later on : the model residuals must follow a normal distribution in the case of a linear model.
 
-### 2. **Outliers and Distributions of Quantitative Predictors (**$X$**)**
+### **2. Outliers and Distributions of Quantitative Predictors (**$X$**)**
 
 ```{r data_quantitative_explain_variables, echo=FALSE, results='markup'}
 #Don't show the code 
@@ -249,7 +249,7 @@ There appear to be no outliers for any of the quantitative variables.
 
 Let's describe what we observe. From the Cleveland plot, for the bill length variable, we can observe two distinct clusters which might be related to sexual dimorphism. For the bill depth, 3 clusters are observed on the Cleveland Plot : this variable might be related to the difference of bill depth between species. For flipper length, the Cleveland plot also reveals three distinct clusters. All these variables seem to follow a Gaussian distribution. Visualizing the distributions of the quantitative $X$ variables allows us to formulate hypotheses regarding species differences and sexual dimorphism.
 
-### 3. **Number of Levels and Individuals per Level of Qualitative Predictors (**$X$**)**
+### **3. Number of Levels and Individuals per Level of Qualitative Predictors (**$X$**)**
 
 ```{r data_qualitative_explain_variables, echo=FALSE, results='markup'}
 summary(penguins$species) 
@@ -278,7 +278,7 @@ boxplot(penguins$body_mass_g~penguins$species, varwidth = TRUE, ylab = "Body Mas
 
 There appears to be a positive linear relationship between body mass and other quantitative variables. A sexual dimorphism is observed : females tend to have a lower body mass than males. In addition, there may be species differences : Gentoo penguins appear to have higher body mass compared to Adelie and Chinstrap penguins, which have similar body mass measurements.
 
-### 5. Analysis of possible interactions between both independent variables
+### **5. Analysis of possible interactions between both independent variables**
 
 This section aims to check for potential interaction effects between the two qualitative variables. To do so, all combinations of their categories must be present in the data.
 
@@ -348,7 +348,7 @@ Flipper length and species : there appears to be no interaction between flipper 
 
 These are only observations. For the moment, we don't know which interactions are significant. This will be tested afterwards.
 
-### **6. Check for Collinearity Between Predictors (**$Xs$**)**
+### **6. Check for collinearity between predictors (**$Xs$**)**
 
 Collinearity must be avoided in modeling. Indeed, collinearity can affect the modeling and significance of variables in the model, therefore the conclusions of the study are affected. Let's check how the explanatory variables are related.
 
@@ -384,13 +384,13 @@ Note : In some cases, there may be a strong correlation between a specific varia
 
 Concerning the other variables : For bill length, bill depth and flipper length, we observe a small difference between males and females. It looks like Adelie penguins have a shorter bill length than to the two other species. It appears Gentoo penguins have a smaller bill depth and bigger flipper length than the other species.
 
-# MODEL AND STATISTICAL ANALYSIS
+# **MODEL AND STATISTICAL ANALYSIS**
 
 ::: {#conditionsBACK}
 Once the data exploration is done, we can focus on finding the model that is adapted to our study. First, we write a full model including all variables presented before and possible interactions between them. Then, the goal is to obtain a fitted model (candidate model) that we can analyze in order to identify the main effects on our response variable `body_mass_g`. This candidate model can be obtained thanks to a selection based on **Akaike Information Criterion (AIC)**. After selection, the [conditions](#conditions) of the linear model must be validated before making interpretations and conclusions.
 :::
 
-### 1. Construction of the model
+### **1. Construction of the model**
 
 Firstly, let's write the full model, including all variables and possible interactions.
 
@@ -413,7 +413,7 @@ mod_penguins<-lm(body_mass_g ~ bill_length_mm
 drop1(mod_penguins,test="F")
 ```
 
-### 2. Variable selection
+### **2. Variable selection**
 
 Now, we have to select the significant terms of the model, based on the AIC, with a forward-backward selection method.
 
@@ -441,7 +441,7 @@ drop1(mod_final)
 
 The value of the adjusted R\^2\^ is equal to 0.88. It means that 88% of the variance of the body mass of penguins is explained by the relation given by mod_final.
 
-### 3. Validation of the model
+### **3. Validation of the model**
 
 The assumptions of the regression are the same as for any general linear model (simple or multiple regressions, ANOVA, ANCOVA). These assumptions concern the residuals and relate to their normality, the homogeneity of their variances, and their independence.
 
