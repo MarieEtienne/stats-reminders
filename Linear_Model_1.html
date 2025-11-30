@@ -6,6 +6,13 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Mathilde Duclos">
+<meta name="author" content="Lily Houles">
+<meta name="author" content="Adèle Kieffer">
+<meta name="author" content="Lokian Le Gal-Audebourg">
+<meta name="author" content="Valentin Lucas">
+<meta name="author" content="Lyssandre Marchand">
+<meta name="author" content="Quentin Petitjean">
 
 <title>GENERAL LINEAR MODEL</title>
 <style>
@@ -205,11 +212,11 @@ window.Quarto = {
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-linear-model">    
         <li>
     <a class="dropdown-item" href="./Linear_Model_1.html">
- <span class="dropdown-text">Penguins</span></a>
+ <span class="dropdown-text">General Linear Model</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="./Linear_Model_2.html">
- <span class="dropdown-text">Badgers</span></a>
+ <span class="dropdown-text">Generalized Linear Mixed Model</span></a>
   </li>  
     </ul>
   </li>
@@ -253,23 +260,34 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#general-introduction" id="toc-general-introduction" class="nav-link active" data-scroll-target="#general-introduction">GENERAL INTRODUCTION</a>
+  <li><a href="#general-introduction" id="toc-general-introduction" class="nav-link active" data-scroll-target="#general-introduction"><strong>GENERAL INTRODUCTION</strong></a>
   <ul class="collapse">
-  <li><a href="#generalities" id="toc-generalities" class="nav-link" data-scroll-target="#generalities">Generalities</a></li>
-  <li><a href="#type-of-general-linear-model" id="toc-type-of-general-linear-model" class="nav-link" data-scroll-target="#type-of-general-linear-model">Type of General Linear Model</a></li>
-  <li><a href="#data-presentation-and-objectives" id="toc-data-presentation-and-objectives" class="nav-link" data-scroll-target="#data-presentation-and-objectives">Data presentation and objectives</a></li>
+  <li><a href="#generalities" id="toc-generalities" class="nav-link" data-scroll-target="#generalities"><strong>Generalities</strong></a></li>
+  <li><a href="#types-of-general-linear-models" id="toc-types-of-general-linear-models" class="nav-link" data-scroll-target="#types-of-general-linear-models"><strong>Types of General Linear Models</strong></a></li>
   </ul></li>
-  <li><a href="#data-importation" id="toc-data-importation" class="nav-link" data-scroll-target="#data-importation">DATA IMPORTATION</a></li>
-  <li><a href="#data-exploration" id="toc-data-exploration" class="nav-link" data-scroll-target="#data-exploration">DATA EXPLORATION</a>
+  <li><a href="#data-presentation-and-objectives" id="toc-data-presentation-and-objectives" class="nav-link" data-scroll-target="#data-presentation-and-objectives"><strong>DATA PRESENTATION AND OBJECTIVES</strong></a>
   <ul class="collapse">
-  <li><a href="#outliers-and-distribution-of-the-dependent-variable-y" id="toc-outliers-and-distribution-of-the-dependent-variable-y" class="nav-link" data-scroll-target="#outliers-and-distribution-of-the-dependent-variable-y">1. Outliers and distribution of the dependent variable (<span class="math inline">\(Y\)</span>)</a></li>
-  <li><a href="#outliers-and-distributions-of-quantitative-predictors-x" id="toc-outliers-and-distributions-of-quantitative-predictors-x" class="nav-link" data-scroll-target="#outliers-and-distributions-of-quantitative-predictors-x">2. <strong>Outliers and Distributions of Quantitative Predictors (</strong><span class="math inline">\(X\)</span><strong>)</strong></a></li>
-  <li><a href="#number-of-levels-and-individuals-per-level-of-qualitative-predictors-x" id="toc-number-of-levels-and-individuals-per-level-of-qualitative-predictors-x" class="nav-link" data-scroll-target="#number-of-levels-and-individuals-per-level-of-qualitative-predictors-x">3. <strong>Number of Levels and Individuals per Level of Qualitative Predictors (</strong><span class="math inline">\(X\)</span><strong>)</strong></a></li>
+  <li><a href="#import-useful-libraries" id="toc-import-useful-libraries" class="nav-link" data-scroll-target="#import-useful-libraries"><strong>Import useful libraries</strong></a></li>
+  <li><a href="#data-import" id="toc-data-import" class="nav-link" data-scroll-target="#data-import"><strong>Data import</strong></a></li>
+  <li><a href="#data-exploration" id="toc-data-exploration" class="nav-link" data-scroll-target="#data-exploration"><strong>Data exploration</strong></a>
+  <ul class="collapse">
+  <li><a href="#outliers-and-distribution-of-the-dependent-variable-y" id="toc-outliers-and-distribution-of-the-dependent-variable-y" class="nav-link" data-scroll-target="#outliers-and-distribution-of-the-dependent-variable-y"><strong>1. Outliers and distribution of the dependent variable</strong> (<span class="math inline">\(Y\)</span>)</a></li>
+  <li><a href="#outliers-and-distributions-of-quantitative-predictors-x" id="toc-outliers-and-distributions-of-quantitative-predictors-x" class="nav-link" data-scroll-target="#outliers-and-distributions-of-quantitative-predictors-x"><strong>2. Outliers and Distributions of Quantitative Predictors (</strong><span class="math inline">\(X\)</span><strong>)</strong></a></li>
+  <li><a href="#number-of-levels-and-individuals-per-level-of-qualitative-predictors-x" id="toc-number-of-levels-and-individuals-per-level-of-qualitative-predictors-x" class="nav-link" data-scroll-target="#number-of-levels-and-individuals-per-level-of-qualitative-predictors-x"><strong>3. Number of Levels and Individuals per Level of Qualitative Predictors (</strong><span class="math inline">\(X\)</span><strong>)</strong></a></li>
   <li><a href="#analysis-of-the-potential-relationships-between-y-and-the-xs" id="toc-analysis-of-the-potential-relationships-between-y-and-the-xs" class="nav-link" data-scroll-target="#analysis-of-the-potential-relationships-between-y-and-the-xs"><strong>4. Analysis of the Potential Relationships Between</strong> <span class="math inline">\(Y\)</span> <strong>and the</strong> <span class="math inline">\(Xs\)</span></a></li>
-  <li><a href="#analysis-of-possible-interactions-between-both-independent-variables" id="toc-analysis-of-possible-interactions-between-both-independent-variables" class="nav-link" data-scroll-target="#analysis-of-possible-interactions-between-both-independent-variables">5. Analysis of possible interactions between both independent variables</a></li>
-  <li><a href="#check-for-collinearity-between-predictors-xs" id="toc-check-for-collinearity-between-predictors-xs" class="nav-link" data-scroll-target="#check-for-collinearity-between-predictors-xs"><strong>6. Check for Collinearity Between Predictors (</strong><span class="math inline">\(Xs\)</span><strong>)</strong></a></li>
+  <li><a href="#analysis-of-possible-interactions-between-both-independent-variables" id="toc-analysis-of-possible-interactions-between-both-independent-variables" class="nav-link" data-scroll-target="#analysis-of-possible-interactions-between-both-independent-variables"><strong>5. Analysis of possible interactions between both independent variables</strong></a></li>
+  <li><a href="#check-for-collinearity-between-predictors-xs" id="toc-check-for-collinearity-between-predictors-xs" class="nav-link" data-scroll-target="#check-for-collinearity-between-predictors-xs"><strong>6. Check for collinearity between predictors (</strong><span class="math inline">\(Xs\)</span><strong>)</strong></a></li>
   </ul></li>
-  <li><a href="#model-and-statstical-analysis" id="toc-model-and-statstical-analysis" class="nav-link" data-scroll-target="#model-and-statstical-analysis">MODEL AND STATSTICAL ANALYSIS</a></li>
+  </ul></li>
+  <li><a href="#model-and-statistical-analysis" id="toc-model-and-statistical-analysis" class="nav-link" data-scroll-target="#model-and-statistical-analysis"><strong>MODEL AND STATISTICAL ANALYSIS</strong></a>
+  <ul class="collapse">
+  <li><a href="#construction-of-the-model" id="toc-construction-of-the-model" class="nav-link" data-scroll-target="#construction-of-the-model"><strong>1. Construction of the model</strong></a></li>
+  <li><a href="#variable-selection" id="toc-variable-selection" class="nav-link" data-scroll-target="#variable-selection"><strong>2. Variable selection</strong></a></li>
+  <li><a href="#validation-of-the-model" id="toc-validation-of-the-model" class="nav-link" data-scroll-target="#validation-of-the-model"><strong>3. Validation of the model</strong></a></li>
+  </ul></li>
+  <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion"><strong>DISCUSSION</strong></a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><strong>CONCLUSION</strong></a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><strong>REFERENCES</strong></a></li>
   </ul>
 </nav>
     </div>
@@ -286,6 +304,18 @@ window.Quarto = {
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Authors</div>
+    <div class="quarto-title-meta-contents">
+             <p>Mathilde Duclos </p>
+             <p>Lily Houles </p>
+             <p>Adèle Kieffer </p>
+             <p>Lokian Le Gal-Audebourg </p>
+             <p>Valentin Lucas </p>
+             <p>Lyssandre Marchand </p>
+             <p>Quentin Petitjean </p>
+          </div>
+  </div>
     
   
     
@@ -297,26 +327,33 @@ window.Quarto = {
 
 
 <section id="general-introduction" class="level1">
-<h1>GENERAL INTRODUCTION</h1>
-<p>We present here, a reminder sheet on the <strong>General Linear Model</strong> <strong>(GLM)</strong> and its specific features. Its use will be illustrated with an example applied to ecological data on penguins from <span class="citation" data-cites="Gorman2014">Gorman (<a href="#ref-Gorman2014" role="doc-biblioref">2014</a>)</span> .</p>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
+<h1><strong>GENERAL INTRODUCTION</strong></h1>
+<div id="GLM">
+<p>We present here, a reminder sheet on the <strong>General Linear Model <a href="#GLMback">(GLM)</a></strong> and its specific features. Its use will be illustrated with an example applied to ecological data on penguins from <span class="citation" data-cites="Gorman2014">Gorman, Williams, and Fraser (<a href="#ref-Gorman2014" role="doc-biblioref">2014</a>)</span> .</p>
+</div>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-body-container">
-<p>Note : The concepts covered in this reminder sheet are taken from our Master’s lectures, written by <span class="citation" data-cites="Y_Outreman">Outreman (<a href="#ref-Y_Outreman" role="doc-biblioref">n.d.</a>)</span> and then taught by <span class="citation" data-cites="A_Masson">AbelMasson (<a href="#ref-A_Masson" role="doc-biblioref">n.d.</a>)</span> . During these courses, we learned how to explore data and then analyze it using this type of model.</p>
+<div class="callout-title-container flex-fill">
+Note
 </div>
 </div>
+<div class="callout-body-container callout-body">
+<p>The concepts covered in this reminder sheet are taken from our Master’s lectures, written by <span class="citation" data-cites="Y_Outreman">Outreman (<a href="#ref-Y_Outreman" role="doc-biblioref">n.d.</a>)</span> and then taught by <span class="citation" data-cites="A_Masson">Masson (<a href="#ref-A_Masson" role="doc-biblioref">n.d.</a>)</span> . During these courses, we learned how to explore data and then analyze it using this type of model.</p>
 </div>
-<section id="generalities" class="level3">
-<h3 class="anchored" data-anchor-id="generalities">Generalities</h3>
-<p>The objective of the GLM is to explain a dependent variable as a function of independent explanatory variables measured on statistical units from a sample of a population. This type of model is generally constructed as follows:</p>
+</div>
+<section id="generalities" class="level2">
+<h2 class="anchored" data-anchor-id="generalities"><strong>Generalities</strong></h2>
+<div id="GLMback">
+<p>The objective of the <a href="#GLM">GLM</a> is to explain a dependent variable as a function of independent explanatory variables measured on statistical units from a sample of a population. This type of model is generally constructed as follows:</p>
+</div>
 <p><span class="math display">\[Y = β*X + ε\]</span></p>
-<p><span class="math inline">\(Y\)</span> is the response (dependent) variable to be explained. <span class="math inline">\(X\)</span> is an explanatory (independent) variable that can explain <span class="math inline">\(Y\)</span>. There can be several in the model. βi represents a coefficient, placed in front of the <span class="math inline">\(X\)</span> variables, to measure their effect on the response variable. ε represents the errors in the model, i.e.&nbsp;what the model cannot explain.</p>
+<p><span class="math inline">\(Y\)</span> is the response (dependent) variable to be explained. <span class="math inline">\(X\)</span> is an explanatory (independent) variable that can explain <span class="math inline">\(Y\)</span>. There can be several explanatory variables in the model. β represents a coefficient, placed in front of the <span class="math inline">\(X\)</span> variables, to measure their effect on the response variable. ε represents the errors in the model, i.e.&nbsp;what the model cannot explain.</p>
 </section>
-<section id="type-of-general-linear-model" class="level3">
-<h3 class="anchored" data-anchor-id="type-of-general-linear-model">Type of General Linear Model</h3>
+<section id="types-of-general-linear-models" class="level2">
+<h2 class="anchored" data-anchor-id="types-of-general-linear-models"><strong>Types of General Linear Models</strong></h2>
 <p>There are three general types of linear models:</p>
 <ul>
 <li><strong>Linear regression</strong></li>
@@ -326,86 +363,98 @@ window.Quarto = {
 <p>They each have their own specific characteristics and depend on the nature of the independent variables <span class="math inline">\(X\)</span>, which can be quantitative or qualitative. The response variable <span class="math inline">\(Y\)</span> is always quantitative.</p>
 <p>Linear regression is used when we want to determine whether a linear relationship exists between the response variable <span class="math inline">\(Y\)</span> and one or more quantitative <span class="math inline">\(X\)</span> variables (then called covariates).</p>
 <p>ANOVA is used when the explanatory variables <span class="math inline">\(X\)</span> are qualitative (then called factors). These qualitative <span class="math inline">\(X\)</span> variables often have multiple categories (levels).</p>
-<p>ANCOVA is used when we want to model the variable <span class="math inline">\(Y\)</span> as a function of several <span class="math inline">\(X\)</span> variables, which can be qualitative and quantitative.</p>
-<p>Another important aspect to consider is that for this type of model to be valid, three conditions must be met:</p>
+<div id="ANCOVA">
+<p><a href="#ANCOVAback">ANCOVA</a> is used when we want to model the variable <span class="math inline">\(Y\)</span> as a function of several <span class="math inline">\(X\)</span> variables, which can be qualitative and quantitative.</p>
+</div>
+<div id="conditions">
+<p>Another important aspect to consider is that for this type of model to be valid, three <a href="#conditionsBACK">conditions</a> must be met:</p>
+</div>
 <ul>
 <li><p>the model residuals must follow a <strong>normal distribution</strong></p></li>
 <li><p><strong>homoscedasticity</strong> (homogeneity of the variance of the residuals) must be respected</p></li>
 <li><p>the residuals are <strong>independent</strong></p></li>
 </ul>
-<p>These conditions are systematically verified after modeling : the verification will be illustrated in the following example.</p>
+<p>These conditions are systematically verified after modelling : the verification will be illustrated in the following example.</p>
 </section>
-<section id="data-presentation-and-objectives" class="level3">
-<h3 class="anchored" data-anchor-id="data-presentation-and-objectives">Data presentation and objectives</h3>
+</section>
+<section id="data-presentation-and-objectives" class="level1">
+<h1><strong>DATA PRESENTATION AND OBJECTIVES</strong></h1>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="Adelie_Penguins.jpg" class="img-fluid figure-img"></p>
-<figcaption>Adelie Penguins from Petrel Island - Adelie Land - C. Cornec (IPEV/CNRS/CSM)</figcaption>
+<p><img src="images/penguin1.jpg" class="img-fluid figure-img"></p>
+<figcaption>Gentoo penguins - image from Pixabay</figcaption>
 </figure>
 </div>
-<p>In this application example, we will use data from a study conducted by Dr.&nbsp;Kristen Gorman, who studied the <strong>physical characteristics</strong> <strong>of three species of penguins</strong> in the Palmer Archipelago in Antarctica. The data was collected on three islands of the archipelago in 2007, 2008, and 2009.</p>
+<p>In this application example, we will use data from a study conducted by Dr.&nbsp;Kristen Gorman, who studied the <strong>physical characteristics of three species of penguins</strong> in the Palmer Archipelago in Antarctica. The data was collected on three islands of the archipelago in 2007, 2008, and 2009.</p>
 <p>The researcher noted the following characteristics in the individuals studied:</p>
 <ul>
-<li><code>species</code> = species of individuals, qualitative variables, 3 levels (Adelie, Gentoo, Chinstrap)</li>
-<li><code>sex</code> = sex of individuals, qualitative variables, 2 levels (male, female)</li>
-<li><code>bill_length_mm</code> = bill length, quantitative variable</li>
-<li><code>bill_depth_mm</code> = bill depth, quantitative variable</li>
-<li><code>flipper_length_mm</code> = flipper length, quantitative variable</li>
-<li><code>body_mass_g</code> = body mass, quantitative variable</li>
+<li><code>species</code> : species of individuals, qualitative variables, 3 levels (Adelie, Gentoo, Chinstrap)</li>
+<li><code>sex</code> : sex of individuals, qualitative variables, 2 levels (male, female)</li>
+<li><code>bill_length_mm</code> : bill length, quantitative variable</li>
+<li><code>bill_depth_mm</code> : bill depth, quantitative variable</li>
+<li><code>flipper_length_mm</code> : flipper length, quantitative variable</li>
+<li><code>body_mass_g</code> : body mass, quantitative variable</li>
 </ul>
 <p>We also have information about the year of measurement and the island where the individuals live. We decide not to focus on these variables while studying the model. Indeed, we choose to focus our study on biological and morphological characteristics.</p>
 <p>We will try to answer the following question : <strong>Which quantitative and qualitative variables can explain the variation in penguin <code>body_mass_g</code>?</strong></p>
-<p>In this case, the response variable is <code>body_mass_g</code>, and the other variables are assumed to be explanatory variables. We want to model the variable <span class="math inline">\(Y\)</span> as a function of several qualitative and quantitative variables, therefore we do an ANCOVA.</p>
+<div id="ANCOVAback">
+<p>In this case, the response variable is <code>body_mass_g</code>, and the other variables are assumed to be explanatory variables. We want to model the variable <span class="math inline">\(Y\)</span> as a function of several qualitative and quantitative variables, therefore we do an <a href="#ANCOVA">ANCOVA</a>.</p>
+</div>
 <p>The model can be build like this : model &lt;- <strong>lm (<code>body_mass_g</code> ~ <code>...</code>, data = <code>penguins</code>)</strong></p>
+<section id="import-useful-libraries" class="level2">
+<h2 class="anchored" data-anchor-id="import-useful-libraries"><strong>Import useful libraries</strong></h2>
+<p>Here we import the libraries we will use during the analysis.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>corrplot 0.95 loaded</code></pre>
+</div>
+</div>
 </section>
-</section>
-<section id="data-importation" class="level1">
-<h1>DATA IMPORTATION</h1>
+<section id="data-import" class="level2">
+<h2 class="anchored" data-anchor-id="data-import"><strong>Data import</strong></h2>
 <p>Firstly, we need to import the data, explore it, and see if there are any NA values, outliers, and so on. The data is accessible via the package <em>palmerpenguins</em> by <span class="citation" data-cites="Horst2020">Horst, Hill, and Gorman (<a href="#ref-Horst2020" role="doc-biblioref">2020</a>)</span>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data importation </span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'palmerpenguins'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:datasets':
-
-    penguins, penguins_raw</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"penguins"</span>) </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Change categorical variables as factor </span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>penguins<span class="sc">$</span>sex<span class="ot">&lt;-</span><span class="fu">as.factor</span>(penguins<span class="sc">$</span>sex) </span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>penguins<span class="sc">$</span>species<span class="ot">&lt;-</span><span class="fu">as.factor</span>(penguins<span class="sc">$</span>species)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(penguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>tibble [344 × 8] (S3: tbl_df/tbl/data.frame)
- $ species          : Factor w/ 3 levels "Adelie","Chinstrap",..: 1 1 1 1 1 1 1 1 1 1 ...
- $ island           : Factor w/ 3 levels "Biscoe","Dream",..: 3 3 3 3 3 3 3 3 3 3 ...
- $ bill_length_mm   : num [1:344] 39.1 39.5 40.3 NA 36.7 39.3 38.9 39.2 34.1 42 ...
- $ bill_depth_mm    : num [1:344] 18.7 17.4 18 NA 19.3 20.6 17.8 19.6 18.1 20.2 ...
- $ flipper_length_mm: int [1:344] 181 186 195 NA 193 190 181 195 193 190 ...
- $ body_mass_g      : int [1:344] 3750 3800 3250 NA 3450 3650 3625 4675 3475 4250 ...
- $ sex              : Factor w/ 2 levels "female","male": 2 1 1 NA 1 2 1 2 NA NA ...
- $ year             : int [1:344] 2007 2007 2007 2007 2007 2007 2007 2007 2007 2007 ...</code></pre>
-</div>
-</div>
-<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data import </span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins) </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"penguins"</span>) </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Change categorical variables as factor </span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>penguins<span class="sc">$</span>sex<span class="ot">&lt;-</span><span class="fu">as.factor</span>(penguins<span class="sc">$</span>sex) </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>penguins<span class="sc">$</span>species<span class="ot">&lt;-</span><span class="fu">as.factor</span>(penguins<span class="sc">$</span>species)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for presence of missing values </span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(penguins))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>          species            island    bill_length_mm     bill_depth_mm 
                 0                 0                 2                 2 
 flipper_length_mm       body_mass_g               sex              year 
                 2                 2                11                 0 </code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins<span class="sc">$</span>sex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>female   male   NA's 
    165    168     11 </code></pre>
 </div>
 </div>
-<p>There are NA values in the dataset. 2 rows of the dataset contain missing values for all the studied variables, except <code>species</code>. Values are missing for the variable <code>sex</code> in 9 other rows. There are different ways to process NA values. In our case, we decide to delete the two rows with almost complete missing information. Then, an option would be to replace the other missing values for the <code>sex</code> variable by “<code>unknown</code>” to specify that we don’t know if the individual is a male or a female and to create a new level for this variable. However, with this option, the group in which the sex is unknown would be under-represented compared to male and female group. As it seems interesting to test if being a female or a male has an influence on the body mass of penguins, having rows where the sex of individuals is unknown is not really useful and could add noise to the analysis. Therefore, we finally decide to delete all rows with NA values in the dataset. Moreover, the rows that include NA values only represented around 3% of the dataset.</p>
+<p>There are NA values in the dataset. Two rows contain missing values for all variables, except <code>species</code>. Values are missing for the variable <code>sex</code> in nine additional rows. There are different ways to process NA values. We decide to delete the two rows where almost all information is missing. Then, one option would be to replace the other missing values for the <code>sex</code> variable by “unknown” to specify that we don’t know whether the individual is a male or a female and to create a new level for this variable. However, with this option, the group whose sex is unknown would be underrepresented compared to male and female groups. As it seems interesting to test whether being a female or a male has an influence on the body mass of penguins, having rows where the sex of individuals is unknown is not really useful and could add noise to the analysis. Therefore, we decide to delete all rows containing NA values. Moreover, the rows including NA values only represented about 3% of the dataset.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for presence of missing values</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>penguins<span class="ot">&lt;-</span><span class="fu">na.omit</span>(penguins)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(penguins))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>          species            island    bill_length_mm     bill_depth_mm 
                 0                 0                 0                 0 
@@ -413,13 +462,55 @@ flipper_length_mm       body_mass_g               sex              year
                 0                 0                 0                 0 </code></pre>
 </div>
 </div>
-<p>We now have handled NA values and we can continue to explore the data before implementing the model to answer our question.</p>
+<p>We now have handled NA values and can continue to explore the data before implementing the model to answer our question.</p>
 </section>
-<section id="data-exploration" class="level1">
-<h1>DATA EXPLORATION</h1>
-<p>Exploring the dataset is always the first step before analysis and model creation. This step is essential for identifying the structure of the variables and checking for outliers, correlations, or unbalanced distributions, mainly for qualitative variable categories, and assumptions.</p>
+<section id="data-exploration" class="level2">
+<h2 class="anchored" data-anchor-id="data-exploration"><strong>Data exploration</strong></h2>
+<p><strong>Data exploration</strong> is always the first step before analysis and model creation. This step is essential for identifying the structure of variables and checking for outliers, correlations, unbalanced distributions that could bias the results of the analysis.</p>
 <section id="outliers-and-distribution-of-the-dependent-variable-y" class="level3">
-<h3 class="anchored" data-anchor-id="outliers-and-distribution-of-the-dependent-variable-y">1. Outliers and distribution of the dependent variable (<span class="math inline">\(Y\)</span>)</h3>
+<h3 class="anchored" data-anchor-id="outliers-and-distribution-of-the-dependent-variable-y"><strong>1. Outliers and distribution of the dependent variable</strong> (<span class="math inline">\(Y\)</span>)</h3>
+<p><span class="math inline">\(Y\)</span> (i.e <code>body_mass_g</code> ) is a continuous quantitative variable. Let’s take a look at its distribution, using the following graphs.</p>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>),      </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">1</span>),           </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">bg=</span><span class="st">"gray95"</span>,              </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">col.axis=</span><span class="st">"gray20"</span>,      </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">col.lab=</span><span class="st">"gray20"</span>,     </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">col.main=</span><span class="st">"gray20"</span>,     </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">cex.axis=</span><span class="fl">0.9</span>,      </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">cex.lab=</span><span class="dv">1</span>) </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>col_transp <span class="ot">&lt;-</span> <span class="fu">adjustcolor</span>(<span class="st">"aquamarine3"</span>, <span class="at">alpha.f=</span><span class="fl">0.5</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Boxplot </span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(penguins<span class="sc">$</span>body_mass_g,         </span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">col=</span>col_transp, <span class="at">border=</span><span class="st">"gray30"</span>,         </span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab=</span><span class="st">'Body Mass (g)'</span>,         </span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">'Boxplot'</span>,         </span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">notch=</span><span class="cn">TRUE</span>)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Cleveland plot </span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="fu">dotchart</span>(penguins<span class="sc">$</span>body_mass_g,          </span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>         <span class="at">pch=</span><span class="dv">16</span>, <span class="at">col=</span>col_transp,          </span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>         <span class="at">xlab=</span><span class="st">'Body Mass (g)'</span>,          </span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>         <span class="at">main =</span> <span class="st">'Cleveland plot'</span>,          </span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>         <span class="at">cex=</span><span class="fl">0.8</span>)</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogram </span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(penguins<span class="sc">$</span>body_mass_g,      </span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span>col_transp, </span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>     <span class="at">border=</span><span class="st">"white"</span>,      </span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Body Mass (g)"</span>,      </span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">'Histogram'</span>,      </span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>     <span class="at">breaks=</span><span class="dv">20</span>)</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Quantile-Quantile plot </span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(penguins<span class="sc">$</span>body_mass_g, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">col=</span>col_transp, <span class="at">xlab=</span><span class="st">''</span>, <span class="at">ylab=</span><span class="st">''</span>,<span class="at">main=</span><span class="st">"QQ plot"</span>) </span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a><span class="fu">qqline</span>(penguins<span class="sc">$</span>body_mass_g, <span class="at">col=</span><span class="st">'red'</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-distrib-bodymass" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-distrib-bodymass-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -429,43 +520,158 @@ flipper_length_mm       body_mass_g               sex              year
 </div>
 </div>
 </div>
-<p>Based on the 3 first graphs (Boxplot, Cleveland plot and Histogram), it seems that there are no outliers in the <span class="math inline">\(Y\)</span> variable <code>body_mass_g</code>. With the Q-Q plot, the data appears to follow a Gaussian distribution. However, <span class="math inline">\(Y\)</span> normality is not a required assumption for our model. Keep in mind that we will need to check something about normality later on : the model residuals must follow a normal distribution in the case of a linear model.</p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-distrib-bodymass-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1
+</figcaption>
+</figure>
+</div>
+<p>Based on the Boxplot, Cleveland plot and Histogram (<a href="#fig-distrib-bodymass" class="quarto-xref">Figure&nbsp;1</a>), it seems that there are no outliers in the <span class="math inline">\(Y\)</span> variable <code>body_mass_g</code>. With the Q-Q plot, the data appears to follow a Gaussian distribution. However, <span class="math inline">\(Y\)</span> normality is not a required assumption for our model. Keep in mind that we will need to check something about normality later on : the model residuals must follow a normal distribution in the case of a linear model.</p>
 </section>
 <section id="outliers-and-distributions-of-quantitative-predictors-x" class="level3">
-<h3 class="anchored" data-anchor-id="outliers-and-distributions-of-quantitative-predictors-x">2. <strong>Outliers and Distributions of Quantitative Predictors (</strong><span class="math inline">\(X\)</span><strong>)</strong></h3>
+<h3 class="anchored" data-anchor-id="outliers-and-distributions-of-quantitative-predictors-x"><strong>2. Outliers and Distributions of Quantitative Predictors (</strong><span class="math inline">\(X\)</span><strong>)</strong></h3>
+<p>We also take a look at the distribution of <span class="math inline">\(Xs\)</span>, using the same graphs.</p>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Don't show the code </span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>),      </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">1</span>),           </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">bg=</span><span class="st">"gray95"</span>,              </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">col.axis=</span><span class="st">"gray20"</span>,      </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">col.lab=</span><span class="st">"gray20"</span>,      </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">col.main=</span><span class="st">"gray20"</span>,      </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">cex.axis=</span><span class="fl">0.9</span>,      </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">cex.lab=</span><span class="dv">1</span>) </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>col_transp <span class="ot">&lt;-</span> <span class="fu">adjustcolor</span>(<span class="st">"darkgreen"</span>, <span class="at">alpha.f=</span><span class="fl">0.5</span>)  </span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Bill lenght  </span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Boxplot </span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(penguins<span class="sc">$</span>bill_length_mm,         </span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">col=</span>col_transp, <span class="at">border=</span><span class="st">"gray30"</span>,         </span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab=</span><span class="st">'Bill Length'</span>,         </span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">'Boxplot'</span>,         </span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">notch=</span><span class="cn">TRUE</span>) </span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Cleveland plot </span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="fu">dotchart</span>(penguins<span class="sc">$</span>bill_length_mm,          </span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>         <span class="at">pch=</span><span class="dv">16</span>,          </span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>         <span class="at">col=</span>col_transp,          </span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>         <span class="at">xlab=</span><span class="st">'Bill Length'</span>,          </span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>         <span class="at">main =</span> <span class="st">'Cleveland plot'</span>) </span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogram </span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(penguins<span class="sc">$</span>bill_length_mm,      </span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span>col_transp,      </span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Bill Length"</span>,      </span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>     <span class="at">main=</span><span class="st">"Histogram"</span>) </span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Quantile-Quantile plot </span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(penguins<span class="sc">$</span>bill_length_mm,        </span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>       <span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span>col_transp,<span class="at">xlab=</span><span class="st">''</span>,         </span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="st">'QQ plot'</span>) </span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a><span class="fu">qqline</span>(penguins<span class="sc">$</span>bill_length_mm,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bill depth</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Boxplot </span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(penguins<span class="sc">$</span>bill_depth_mm,         </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">col=</span>col_transp, <span class="at">border=</span><span class="st">"gray30"</span>,         </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab=</span><span class="st">'Bill Depth'</span>,         </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">'Boxplot'</span>,         </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">notch=</span><span class="cn">TRUE</span>) </span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Cleveland plot </span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="fu">dotchart</span>(penguins<span class="sc">$</span>bill_depth_mm,          </span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">pch=</span><span class="dv">16</span>,          </span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">col=</span>col_transp,          </span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">xlab=</span><span class="st">'Bill Depth'</span>,          </span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">main =</span> <span class="st">'Cleveland plot'</span>) </span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogram </span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(penguins<span class="sc">$</span>bill_depth_mm,      </span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span>col_transp,     </span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Bill Depth"</span>,      </span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>     <span class="at">main=</span><span class="st">"Histogram"</span>) </span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Quantile-Quantile plot </span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(penguins<span class="sc">$</span>bill_depth_mm,        </span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">pch=</span><span class="dv">16</span>,        </span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>       <span class="at">col=</span>col_transp,<span class="at">xlab=</span><span class="st">''</span>,        </span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="st">'QQ plot'</span>) </span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="fu">qqline</span>(penguins<span class="sc">$</span>bill_depth_mm,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Flipper lenght  </span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Boxplot </span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(penguins<span class="sc">$</span>flipper_length_mm,         </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">col=</span>col_transp, <span class="at">border=</span><span class="st">"gray30"</span>,         </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab=</span><span class="st">'Flipper Length'</span>,         </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">'Boxplot'</span>,         </span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">notch=</span><span class="cn">TRUE</span>) </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Cleveland plot </span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="fu">dotchart</span>(penguins<span class="sc">$</span>flipper_length_mm,          </span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">pch=</span><span class="dv">16</span>,          </span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">col=</span>col_transp,          </span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">xlab=</span><span class="st">'Flipper Length'</span>,          </span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">main =</span> <span class="st">'Cleveland plot'</span>) </span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogram </span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(penguins<span class="sc">$</span>flipper_length_mm,      </span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span>col_transp,      </span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Flipper Length"</span>,      </span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>     <span class="at">main=</span><span class="st">"Histogram"</span>) </span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Quantile-Quantile plot </span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(penguins<span class="sc">$</span>flipper_length_mm,        </span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">pch=</span><span class="dv">16</span>,        </span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>       <span class="at">col=</span>col_transp,<span class="at">xlab=</span><span class="st">''</span>,        </span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="st">'QQ plot'</span>) </span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="fu">qqline</span>(penguins<span class="sc">$</span>flipper_length_mm,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-quantitative-explanatory-var" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-quantitative-explanatory-var-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Linear_Model_1_files/figure-html/data_quantitative_explain_variables-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Linear_Model_1_files/figure-html/data_quantitative_explanatory_variables-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Linear_Model_1_files/figure-html/data_quantitative_explain_variables-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Linear_Model_1_files/figure-html/data_quantitative_explanatory_variables-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Linear_Model_1_files/figure-html/data_quantitative_explain_variables-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Linear_Model_1_files/figure-html/data_quantitative_explanatory_variables-3.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-quantitative-explanatory-var-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2
+</figcaption>
+</figure>
 </div>
 <p>There appear to be no outliers for any of the quantitative variables.</p>
-<p>Let’s describe what we observe. From the Cleveland plot, for the bill length variable, we can observe two distinct clusters which might be related to sexual dimorphism. For the bill depth, 3 clusters are observed on the Cleveland Plot : this variable might be related to the difference of bill depth between species. For flipper length, the Cleveland plot also reveals three distinct clusters. All these variables seem to follow a Gaussian distribution. Visualizing the distributions of the quantitative <span class="math inline">\(X\)</span> variables allows us to formulate hypotheses regarding species differences and sexual dimorphism.</p>
+<p>Let’s describe what we observe while looking at the graphs in <a href="#fig-quantitative-explanatory-var" class="quarto-xref">Figure&nbsp;2</a>. From the Cleveland plot, for the bill length variable, we can observe two distinct clusters which might be related to sexual dimorphism. For the bill depth, 3 clusters are observed on the Cleveland Plot : this variable might be related to the difference of bill depth between species. For flipper length, the Cleveland plot also reveals three distinct clusters. All these variables seem to follow a Gaussian distribution. Visualizing the distributions of the quantitative <span class="math inline">\(X\)</span> variables allows us to formulate hypotheses regarding species differences and sexual dimorphism.</p>
 </section>
 <section id="number-of-levels-and-individuals-per-level-of-qualitative-predictors-x" class="level3">
-<h3 class="anchored" data-anchor-id="number-of-levels-and-individuals-per-level-of-qualitative-predictors-x">3. <strong>Number of Levels and Individuals per Level of Qualitative Predictors (</strong><span class="math inline">\(X\)</span><strong>)</strong></h3>
+<h3 class="anchored" data-anchor-id="number-of-levels-and-individuals-per-level-of-qualitative-predictors-x"><strong>3. Number of Levels and Individuals per Level of Qualitative Predictors (</strong><span class="math inline">\(X\)</span><strong>)</strong></h3>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins<span class="sc">$</span>species) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Adelie Chinstrap    Gentoo 
       146        68       119 </code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins<span class="sc">$</span>sex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>female   male 
    165    168 </code></pre>
@@ -476,6 +682,9 @@ flipper_length_mm       body_mass_g               sex              year
 <section id="analysis-of-the-potential-relationships-between-y-and-the-xs" class="level3">
 <h3 class="anchored" data-anchor-id="analysis-of-the-potential-relationships-between-y-and-the-xs"><strong>4. Analysis of the Potential Relationships Between</strong> <span class="math inline">\(Y\)</span> <strong>and the</strong> <span class="math inline">\(Xs\)</span></h3>
 <p>Now, we can explore the potential relationship between the response variable <span class="math inline">\(Y\)</span> (<code>body_mass_g</code>) and the <span class="math inline">\(Xs\)</span> variables. Keep in mind that this part of the analysis is based on graphs and doesn’t tell us if the relationships between variables are significant or not.</p>
+<div id="fig-relation-XY" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-relation-XY-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -485,12 +694,22 @@ flipper_length_mm       body_mass_g               sex              year
 </div>
 </div>
 </div>
-<p>There appears to be a positive linear relationship between body mass and other quantitative variables. A sexual dimorphism is observed : females tend to have a lower body mass than males. In addition, there may be species differences : Gentoo penguins appear to have higher body mass compared to Adelie and Chinstrap penguins, which have similar body mass measurements.</p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-relation-XY-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3
+</figcaption>
+</figure>
+</div>
+<p>Looking at these graphs (<a href="#fig-relation-XY" class="quarto-xref">Figure&nbsp;3</a>), there appears to be a positive linear relationship between body mass and other quantitative variables. A sexual dimorphism is observed : females tend to have a lower body mass than males. In addition, there may be species differences : Gentoo penguins appear to have higher body mass compared to Adelie and Chinstrap penguins, which have similar body mass measurements.</p>
 </section>
 <section id="analysis-of-possible-interactions-between-both-independent-variables" class="level3">
-<h3 class="anchored" data-anchor-id="analysis-of-possible-interactions-between-both-independent-variables">5. Analysis of possible interactions between both independent variables</h3>
+<h3 class="anchored" data-anchor-id="analysis-of-possible-interactions-between-both-independent-variables"><strong>5. Analysis of possible interactions between both independent variables</strong></h3>
 <p>This section aims to check for potential interaction effects between the two qualitative variables. To do so, all combinations of their categories must be present in the data.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(penguins<span class="sc">$</span>species, penguins<span class="sc">$</span>sex) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>           
             female male
@@ -501,6 +720,10 @@ flipper_length_mm       body_mass_g               sex              year
 </div>
 <p>All categories are present and well balanced across the factors, allowing us to test for potential interactions between them.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(penguins<span class="sc">$</span>body_mass_g<span class="sc">~</span>penguins<span class="sc">$</span>sex<span class="sc">*</span>penguins<span class="sc">$</span>species, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"Body Mass"</span>, <span class="at">col=</span><span class="st">'green4'</span>, <span class="at">main =</span> <span class="st">""</span>,<span class="at">cex.axis=</span><span class="fl">0.7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -511,6 +734,45 @@ flipper_length_mm       body_mass_g               sex              year
 </div>
 <p>Males appear to have a higher body mass than females for the three species. The difference between males and females may vary a little depending on the species. There may be a small interaction between the tow factors <code>sex</code> and <code>species</code>.</p>
 <p>Then, we also check for potential interactions between explanatory quantitative variables and explanatory qualitative variables, using the following graphs.</p>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">2</span>)) </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Interactions between Bill Length &amp; Sex </span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(penguins<span class="sc">$</span>body_mass_g<span class="sc">~</span>penguins<span class="sc">$</span>bill_length_mm,<span class="at">type=</span><span class="st">'n'</span>,<span class="at">ylab =</span> <span class="st">"Body Mass"</span>,<span class="at">xlab=</span><span class="st">"Bill Length"</span>) </span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(penguins<span class="sc">$</span>body_mass_g[penguins<span class="sc">$</span>sex<span class="sc">==</span><span class="st">"male"</span>]<span class="sc">~</span>penguins<span class="sc">$</span>bill_length_mm[penguins<span class="sc">$</span>sex<span class="sc">==</span><span class="st">"male"</span>],<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'#E69F00'</span>) </span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(penguins<span class="sc">$</span>body_mass_g[penguins<span class="sc">$</span>sex<span class="sc">==</span><span class="st">"female"</span>]<span class="sc">~</span>penguins<span class="sc">$</span>bill_length_mm[penguins<span class="sc">$</span>sex<span class="sc">==</span><span class="st">"female"</span>],<span class="at">pch=</span><span class="dv">17</span>,<span class="at">col=</span><span class="st">'#CC79A7'</span>)  </span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Interactions between Bill Length &amp; Species </span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(penguins<span class="sc">$</span>body_mass_g<span class="sc">~</span>penguins<span class="sc">$</span>bill_length_mm,<span class="at">type=</span><span class="st">'n'</span>,<span class="at">ylab =</span> <span class="st">"Body Mass"</span>,<span class="at">xlab=</span><span class="st">"Bill Length"</span>) </span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(penguins<span class="sc">$</span>body_mass_g[penguins<span class="sc">$</span>species<span class="sc">==</span><span class="st">"Adelie"</span>]<span class="sc">~</span>penguins<span class="sc">$</span>bill_length_mm[penguins<span class="sc">$</span>species<span class="sc">==</span><span class="st">"Adelie"</span>],<span class="at">pch=</span><span class="dv">15</span>,<span class="at">col=</span><span class="st">'#FDE725'</span>) </span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(penguins<span class="sc">$</span>body_mass_g[penguins<span class="sc">$</span>species<span class="sc">==</span><span class="st">"Chinstrap"</span>]<span class="sc">~</span>penguins<span class="sc">$</span>bill_length_mm[penguins<span class="sc">$</span>species<span class="sc">==</span><span class="st">"Chinstrap"</span>],<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'#35B779'</span>) </span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(penguins<span class="sc">$</span>body_mass_g[penguins<span class="sc">$</span>species<span class="sc">==</span><span class="st">"Gentoo"</span>]<span class="sc">~</span>penguins<span class="sc">$</span>bill_length_mm[penguins<span class="sc">$</span>species<span class="sc">==</span><span class="st">"Gentoo"</span>],<span class="at">pch=</span><span class="dv">17</span>,<span class="at">col=</span><span class="st">'#31688E'</span>)</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Interactions between Bill Depth &amp; Sex </span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(penguins<span class="sc">$</span>body_mass_g<span class="sc">~</span>penguins<span class="sc">$</span>bill_depth_mm,<span class="at">type=</span><span class="st">'n'</span>,<span class="at">ylab =</span> <span class="st">"Body Mass"</span>,<span class="at">xlab=</span><span class="st">"Bill Depth"</span>)</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(penguins<span class="sc">$</span>body_mass_g[penguins<span class="sc">$</span>sex<span class="sc">==</span><span class="st">"male"</span>]<span class="sc">~</span>penguins<span class="sc">$</span>bill_depth_mm[penguins<span class="sc">$</span>sex<span class="sc">==</span><span class="st">"male"</span>],<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'#E69F00'</span>) </span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(penguins<span class="sc">$</span>body_mass_g[penguins<span class="sc">$</span>sex<span class="sc">==</span><span class="st">"female"</span>]<span class="sc">~</span>penguins<span class="sc">$</span>bill_depth_mm[penguins<span class="sc">$</span>sex<span class="sc">==</span><span class="st">"female"</span>],<span class="at">pch=</span><span class="dv">17</span>,<span class="at">col=</span><span class="st">'#CC79A7'</span>)  </span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Interactions between Bill Depth &amp; Species </span></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(penguins<span class="sc">$</span>body_mass_g<span class="sc">~</span>penguins<span class="sc">$</span>bill_depth_mm,<span class="at">type=</span><span class="st">'n'</span>,<span class="at">ylab =</span> <span class="st">"Body Mass"</span>,<span class="at">xlab=</span><span class="st">"Bill Depth"</span>) </span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(penguins<span class="sc">$</span>body_mass_g[penguins<span class="sc">$</span>species<span class="sc">==</span><span class="st">"Adelie"</span>]<span class="sc">~</span>penguins<span class="sc">$</span>bill_depth_mm[penguins<span class="sc">$</span>species<span class="sc">==</span><span class="st">"Adelie"</span>],<span class="at">pch=</span><span class="dv">15</span>,<span class="at">col=</span><span class="st">'#FDE725'</span>) </span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(penguins<span class="sc">$</span>body_mass_g[penguins<span class="sc">$</span>species<span class="sc">==</span><span class="st">"Chinstrap"</span>]<span class="sc">~</span>penguins<span class="sc">$</span>bill_depth_mm[penguins<span class="sc">$</span>species<span class="sc">==</span><span class="st">"Chinstrap"</span>],<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'#35B779'</span>) </span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(penguins<span class="sc">$</span>body_mass_g[penguins<span class="sc">$</span>species<span class="sc">==</span><span class="st">"Gentoo"</span>]<span class="sc">~</span>penguins<span class="sc">$</span>bill_depth_mm[penguins<span class="sc">$</span>species<span class="sc">==</span><span class="st">"Gentoo"</span>],<span class="at">pch=</span><span class="dv">17</span>,<span class="at">col=</span><span class="st">'#31688E'</span>)</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Interactions between Flipper Length &amp; Sex </span></span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(penguins<span class="sc">$</span>body_mass_g<span class="sc">~</span>penguins<span class="sc">$</span>flipper_length_mm,<span class="at">type=</span><span class="st">'n'</span>,<span class="at">ylab =</span> <span class="st">"Body Mass"</span>,<span class="at">xlab=</span><span class="st">"Flipper Length"</span>) </span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(penguins<span class="sc">$</span>body_mass_g[penguins<span class="sc">$</span>sex <span class="sc">==</span><span class="st">"male"</span>]<span class="sc">~</span>penguins<span class="sc">$</span>flipper_length_mm[penguins<span class="sc">$</span>sex<span class="sc">==</span><span class="st">"male"</span>],<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'#E69F00'</span>) </span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(penguins<span class="sc">$</span>body_mass_g[penguins<span class="sc">$</span>sex<span class="sc">==</span><span class="st">"female"</span>]<span class="sc">~</span>penguins<span class="sc">$</span>flipper_length_mm[penguins<span class="sc">$</span>sex<span class="sc">==</span><span class="st">"female"</span>],<span class="at">pch=</span><span class="dv">17</span>,<span class="at">col=</span><span class="st">'#CC79A7'</span>)  </span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Interactions between Flipper Length &amp; Species </span></span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(penguins<span class="sc">$</span>body_mass_g<span class="sc">~</span>penguins<span class="sc">$</span>flipper_length_mm,<span class="at">type=</span><span class="st">'n'</span>,<span class="at">ylab =</span> <span class="st">"Body Mass"</span>,<span class="at">xlab=</span><span class="st">"Flipper Length"</span>) </span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(penguins<span class="sc">$</span>body_mass_g[penguins<span class="sc">$</span>species<span class="sc">==</span><span class="st">"Adelie"</span>]<span class="sc">~</span>penguins<span class="sc">$</span>flipper_length_mm[penguins<span class="sc">$</span>species<span class="sc">==</span><span class="st">"Adelie"</span>],<span class="at">pch=</span><span class="dv">15</span>,<span class="at">col=</span><span class="st">'#FDE725'</span>) </span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(penguins<span class="sc">$</span>body_mass_g[penguins<span class="sc">$</span>species<span class="sc">==</span><span class="st">"Chinstrap"</span>]<span class="sc">~</span>penguins<span class="sc">$</span>flipper_length_mm[penguins<span class="sc">$</span>species<span class="sc">==</span><span class="st">"Chinstrap"</span>],<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'#35B779'</span>) </span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(penguins<span class="sc">$</span>body_mass_g[penguins<span class="sc">$</span>species<span class="sc">==</span><span class="st">"Gentoo"</span>]<span class="sc">~</span>penguins<span class="sc">$</span>flipper_length_mm[penguins<span class="sc">$</span>species<span class="sc">==</span><span class="st">"Gentoo"</span>],<span class="at">pch=</span><span class="dv">17</span>,<span class="at">col=</span><span class="st">'#31688E'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-interactions" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-interactions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -520,7 +782,13 @@ flipper_length_mm       body_mass_g               sex              year
 </div>
 </div>
 </div>
-<p>Observations regarding possible interactions :</p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-interactions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4
+</figcaption>
+</figure>
+</div>
+<p>Here are our observations regarding possible interactions, based on the graphs of <a href="#fig-interactions" class="quarto-xref">Figure&nbsp;4</a> :</p>
 <p>Bill length and sex : there is a possible interaction. For some values of bill length, body mass is higher for males than females but for some values the opposite is true and females have a higher body mass than males.</p>
 <p>Bill length and species : there are three color clusters that do not appear to mix on the graph. Individuals of the Gentoo species appear to have a higher body mass than the other species, but sometimes slightly lower depending on bill length values. A small interaction is possible.</p>
 <p>Bill depth and sex : there appears to be no interaction between bill depth and sex. The relation between body mass and bill depth is the same for males and females and males body mass is higher than females body mass.</p>
@@ -530,12 +798,39 @@ flipper_length_mm       body_mass_g               sex              year
 <p>These are only observations. For the moment, we don’t know which interactions are significant. This will be tested afterwards.</p>
 </section>
 <section id="check-for-collinearity-between-predictors-xs" class="level3">
-<h3 class="anchored" data-anchor-id="check-for-collinearity-between-predictors-xs"><strong>6. Check for Collinearity Between Predictors (</strong><span class="math inline">\(Xs\)</span><strong>)</strong></h3>
-<p>Collinearity must be avoided in modeling. Indeed, collinearity can affect the modeling and significance of variables in the model, therefore the conclusions of the study are affected. Let’s check how the explanatory variables are related.</p>
+<h3 class="anchored" data-anchor-id="check-for-collinearity-between-predictors-xs"><strong>6. Check for collinearity between predictors (</strong><span class="math inline">\(Xs\)</span><strong>)</strong></h3>
+<p>Collinearity should be avoided in modelling. Indeed, it can affect the modelling and the significance of the variables in the model, which affects the conclusions. Let’s check how the explanatory variables are related (<a href="#fig-collinearity" class="quarto-xref">Figure&nbsp;5</a>).</p>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking collinearity between continuous independent variables</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(penguins[,<span class="dv">3</span><span class="sc">:</span><span class="dv">5</span>],<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'darkolivegreen4'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>M<span class="ot">&lt;-</span><span class="fu">cor</span>(penguins[,<span class="dv">3</span><span class="sc">:</span><span class="dv">5</span>])</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot.mixed</span>(M,<span class="at">upper=</span><span class="st">"square"</span>,<span class="at">lower.col=</span><span class="st">"black"</span>, <span class="at">tl.col=</span><span class="st">"black"</span>,<span class="at">cl.cex =</span> <span class="fl">0.8</span>,<span class="at">tl.cex =</span> <span class="fl">0.7</span>,<span class="at">number.cex =</span><span class="fl">0.8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking collinearity between categorical and continuous independent variables</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>))</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Bill Length and Sex</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(penguins<span class="sc">$</span>bill_length_mm<span class="sc">~</span>penguins<span class="sc">$</span>sex, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"Bill Length"</span>, <span class="at">xlab =</span> <span class="st">"Sex"</span>, <span class="at">col=</span><span class="st">'grey'</span>, <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Bill Depth and Sex</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(penguins<span class="sc">$</span>bill_depth_mm<span class="sc">~</span>penguins<span class="sc">$</span>sex, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"Bill Depth"</span>, <span class="at">xlab =</span> <span class="st">"Sex"</span>, <span class="at">col=</span><span class="st">'grey'</span>, <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Flipper Length and Sex</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(penguins<span class="sc">$</span>flipper_length_mm<span class="sc">~</span>penguins<span class="sc">$</span>sex, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"Flipper Length"</span>, <span class="at">xlab =</span> <span class="st">"Sex"</span>, <span class="at">col=</span><span class="st">'grey'</span>, <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="co">#Bill Length and Species</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(penguins<span class="sc">$</span>bill_length_mm<span class="sc">~</span>penguins<span class="sc">$</span>species, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"Bill Length"</span>, <span class="at">xlab =</span> <span class="st">"Species"</span>, <span class="at">col=</span><span class="st">'grey'</span>, <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="co">#Bill Depth and Species</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(penguins<span class="sc">$</span>bill_depth_mm<span class="sc">~</span>penguins<span class="sc">$</span>species, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"Bill Depth"</span>, <span class="at">xlab =</span> <span class="st">"Species"</span>, <span class="at">col=</span><span class="st">'grey'</span>, <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="co">#Flipper Length and Species</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(penguins<span class="sc">$</span>flipper_length_mm<span class="sc">~</span>penguins<span class="sc">$</span>species, <span class="at">varwidth =</span> <span class="cn">TRUE</span>, <span class="at">ylab =</span> <span class="st">"Flipper Length"</span>, <span class="at">xlab =</span> <span class="st">"Species"</span>, <span class="at">col=</span><span class="st">'grey'</span>, <span class="at">main =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-collinearity" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-collinearity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>corrplot 0.95 loaded</code></pre>
-</div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -558,32 +853,48 @@ flipper_length_mm       body_mass_g               sex              year
 </div>
 </div>
 </div>
-<p>This verification of collinearity between <span class="math inline">\(Xs\)</span> revealed a positive correlation between Flipper Length and Bill Length. The coefficient is below the threshold of 0.7, so we will not exclude either of these variables.</p>
-<p>Note : In some cases, there may be a strong correlation between a specific variable and some other variables, with a high correlation coefficient (greater than 0.7, which is the threshold set in most cases). This situation can lead you to exclude this specific variable but you always need to justify your choice.</p>
-<p>Concerning the other variables : For bill length, bill depth and flipper length, we observe a small difference between males and females. It looks like Adelie penguins have a shorter bill length than to the two other species. It appears Gentoo penguins have a smaller bill depth and bigger flipper length than the other species.</p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-collinearity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5
+</figcaption>
+</figure>
+</div>
+<p>This verification of collinearity between <span class="math inline">\(Xs\)</span> revealed a positive correlation between Flipper Length and Bill Length. The coefficient is below the threshold of 0.7, so we will not exclude any of these variables.</p>
+<p>Note : In some cases, there may be a strong correlation between a specific variable and some other variables, with a high correlation coefficient (above 0.7, which is the threshold set in most cases). This situation can lead you to exclude this specific variable to avoid collinearity but you always need to justify your choice.</p>
+<p>As for the other variables : For bill length, bill depth and flipper length, we observe a small difference between males and females. It appears that Adelie penguins have a shorter bill length than to the two other species. It appears that Gentoo penguins have a smaller bill depth and bigger flipper length than the other species.</p>
 </section>
 </section>
-<section id="model-and-statstical-analysis" class="level1">
-<h1>MODEL AND STATSTICAL ANALYSIS</h1>
-<p>Once the data exploration is done, we can focus on finding the model that is adapted to our study. First, we write a full model including all variables presented before and possible interactions between them. Then, the goal is to obtain a fitted model (candidate model) that we can analyze in order to identify the main effects on our response variable <code>body_mass_g</code>. This candidate model can be obtained thanks to a selection based on <strong>Akaike Information Criterion (AIC)</strong>. After selection, the conditions of the linear model (i.e.&nbsp;<strong>independence of residuals</strong>, <strong>normality of residuals</strong> and <strong>homoscedasticity</strong> ) must be validated before making interpretations and conclusions.</p>
+</section>
+<section id="model-and-statistical-analysis" class="level1">
+<h1><strong>MODEL AND STATISTICAL ANALYSIS</strong></h1>
+<p>Let’s recall our research question : we would like to identify the quantitative and qualitative variables that can explain the variation in penguin <code>body_mass_g</code>.</p>
+<p>Once the data exploration is done, we can focus on finding the model that is adapted to our study. First, we write a full model including all variables presented before and possible interactions between them. Then, the goal is to obtain a fitted model (candidate model) that we can analyze in order to identify the main effects on our response variable <code>body_mass_g</code> and answer our research question. This candidate model can be obtained thanks to a selection based on <strong>Akaike Information Criterion (AIC)</strong>.</p>
+<div id="conditionsBACK">
+<p>After selection, the <a href="#conditions">conditions</a> of the linear model must be validated before making interpretations and conclusions.</p>
+</div>
+<section id="construction-of-the-model" class="level3">
+<h3 class="anchored" data-anchor-id="construction-of-the-model"><strong>1. Construction of the model</strong></h3>
 <p>Firstly, let’s write the full model, including all variables and possible interactions.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>mod_penguins<span class="ot">&lt;-</span><span class="fu">lm</span>(body_mass_g <span class="sc">~</span> bill_length_mm</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>        <span class="sc">+</span> bill_depth_mm</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>        <span class="sc">+</span> flipper_length_mm</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>        <span class="sc">+</span> species</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>        <span class="sc">+</span> sex</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>        <span class="sc">+</span> sex <span class="sc">:</span> species</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        <span class="sc">+</span> sex <span class="sc">:</span> bill_length_mm</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>        <span class="sc">+</span> sex <span class="sc">:</span> bill_depth_mm</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>        <span class="sc">+</span> sex <span class="sc">:</span> flipper_length_mm</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>        <span class="sc">+</span> species <span class="sc">:</span> bill_length_mm</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>        <span class="sc">+</span> species <span class="sc">:</span> bill_depth_mm</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>        <span class="sc">+</span> species <span class="sc">:</span> flipper_length_mm</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>        , <span class="at">data=</span>penguins)</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co">#We check for significance</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="fu">drop1</span>(mod_penguins,<span class="at">test=</span><span class="st">"F"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>mod_penguins<span class="ot">&lt;-</span><span class="fu">lm</span>(body_mass_g <span class="sc">~</span> bill_length_mm</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>        <span class="sc">+</span> bill_depth_mm</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>        <span class="sc">+</span> flipper_length_mm</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>        <span class="sc">+</span> species</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>        <span class="sc">+</span> sex</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>        <span class="sc">+</span> sex <span class="sc">:</span> species</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>        <span class="sc">+</span> sex <span class="sc">:</span> bill_length_mm</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>        <span class="sc">+</span> sex <span class="sc">:</span> bill_depth_mm</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>        <span class="sc">+</span> sex <span class="sc">:</span> flipper_length_mm</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>        <span class="sc">+</span> species <span class="sc">:</span> bill_length_mm</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>        <span class="sc">+</span> species <span class="sc">:</span> bill_depth_mm</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>        <span class="sc">+</span> species <span class="sc">:</span> flipper_length_mm</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>        , <span class="at">data=</span>penguins)</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's check for significance</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a><span class="fu">drop1</span>(mod_penguins,<span class="at">test=</span><span class="st">"F"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Single term deletions
 
@@ -605,10 +916,15 @@ flipper_length_mm:species  2    137527 24597032 3764.9  0.8856 0.41350
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
-<p>Now, we have to select the significant terms of the model, based on the AIC, with a forward-backward selection method.</p>
+</section>
+<section id="variable-selection" class="level3">
+<h3 class="anchored" data-anchor-id="variable-selection"><strong>2. Variable selection</strong></h3>
+<p>Now, let’s select the significant terms of the model, based on AIC, using a forward-backward selection method. We can use the stepAIC function from the library MASS to select variables using the AIC. The function tests adding and removing interactions and variables to see which ones improve the AIC. The final model is the one with the lowest AIC.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>mod_final <span class="ot">&lt;-</span> <span class="fu">stepAIC</span>(mod_penguins, <span class="at">direction =</span> <span class="st">"both"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>mod_final <span class="ot">&lt;-</span> <span class="fu">stepAIC</span>(mod_penguins, <span class="at">direction =</span> <span class="st">"both"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Start:  AIC=3767.06
 body_mass_g ~ bill_length_mm + bill_depth_mm + flipper_length_mm + 
@@ -705,7 +1021,24 @@ body_mass_g ~ bill_length_mm + bill_depth_mm + flipper_length_mm +
 </div>
 <p>We can then use the coefficient given by the model :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod_final)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(mod_final)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>             (Intercept)           bill_length_mm            bill_depth_mm 
+             -2357.33392                 19.67307                105.46257 
+       flipper_length_mm         speciesChinstrap            speciesGentoo 
+                16.69243                -87.13281               1088.53204 
+                 sexmale speciesChinstrap:sexmale    speciesGentoo:sexmale 
+              1605.64215               -360.62936               -173.40442 
+   bill_depth_mm:sexmale 
+               -64.10611 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod_final)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -736,59 +1069,146 @@ Multiple R-squared:  0.8854,    Adjusted R-squared:  0.8822
 F-statistic: 277.1 on 9 and 323 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
+<p>Some effects are not significant but they were kept in the model with the lowest AIC.</p>
 <p>We can write the full model :</p>
-<p><span class="math display">\[ Body\:mass = -2357,33 \:+\: 19,67.Bill\:length\:+\: 105,46.Bill\:depth\\ \:+\: 16,69.Flipper\:length \:-\: 87,13.Species\:Chinstrap \:+\: 1088,53.Species\:Gentoo\\ \:+\: 1605,64.Sex\:male \:-\: 360,63.Species\:Chinstrap:Sex\:male\\ \:-\: 173,40.Species\:Gentoo:Sex\:male \:-\: 63,11.Bill\:depth:Sex\:male\]</span></p>
-<p>We can explain the part of the variance explained by the model, by using the adjusted R^2^.</p>
+<p><span class="math display">\[ Body\:mass = -2357,33 \:+\: 19,67.Bill\:length\:+\: 105,46.Bill\:depth\\ \:+\: 16,69.Flipper\:length \:-\: 87,13.Species\:Chinstrap \:+\: 1088,53.Species\:Gentoo\\ \:+\: 1605,64.Sex\:male \:-\: 360,63.(Species\:Chinstrap:Sex\:male)\\ \:-\: 173,40.(Species\:Gentoo:Sex\:male) \:-\: 63,11.(Bill\:depth:Sex\:male) + ε \]</span></p>
+<p>We can check the part of the variance explained by the model, by using the adjusted R^2^. In the summary of the model, the adjusted R^2^ is equal to 0.88. It means that 88% of the variance of the body mass of penguins is explained by the relation given by mod_final.</p>
+</section>
+<section id="validation-of-the-model" class="level3">
+<h3 class="anchored" data-anchor-id="validation-of-the-model"><strong>3. Validation of the model</strong></h3>
+<p>Let’s check the conditions to validate our model. We need to verify the normality of the residuals, the homogeneity of their variances, and their independence.</p>
+<p><strong>Normality of the residuals</strong></p>
+<p>The normality of the residuals can be verified using a histogram and a QQ plot of the residuals. The histogram of the residuals must correspond to a normal distribution. The points of the QQ plot must lie primarily on the plotted line. If these conditions are met, the residuals are normally distributed.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod_final)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = body_mass_g ~ bill_length_mm + bill_depth_mm + flipper_length_mm + 
-    species + sex + species:sex + bill_depth_mm:sex, data = penguins)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--733.83 -172.09  -13.83  173.04  851.00 
-
-Coefficients:
-                          Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)              -2357.334    689.805  -3.417 0.000713 ***
-bill_length_mm              19.673      6.882   2.858 0.004534 ** 
-bill_depth_mm              105.463     27.955   3.773 0.000192 ***
-flipper_length_mm           16.692      2.854   5.849 1.21e-08 ***
-speciesChinstrap           -87.133     85.150  -1.023 0.306941    
-speciesGentoo             1088.532    142.221   7.654 2.27e-13 ***
-sexmale                   1605.642    682.022   2.354 0.019159 *  
-speciesChinstrap:sexmale  -360.629     82.067  -4.394 1.51e-05 ***
-speciesGentoo:sexmale     -173.404    144.087  -1.203 0.229674    
-bill_depth_mm:sexmale      -64.106     37.190  -1.724 0.085708 .  
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 276.4 on 323 degrees of freedom
-Multiple R-squared:  0.8854,    Adjusted R-squared:  0.8822 
-F-statistic: 277.1 on 9 and 323 DF,  p-value: &lt; 2.2e-16</code></pre>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogram</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(mod_final<span class="sc">$</span>residuals,<span class="at">col=</span><span class="st">'dodgerblue3'</span>,<span class="at">xlab=</span><span class="st">"residuals"</span>,<span class="at">main=</span><span class="st">"Check Normality"</span>)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Quantile-Quantile plot</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(mod_final<span class="sc">$</span>residuals,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">col=</span><span class="st">'dodgerblue3'</span>,<span class="at">xlab=</span><span class="st">''</span>)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="fu">qqline</span>(mod_final<span class="sc">$</span>residuals,<span class="at">col=</span><span class="st">'red'</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Linear_Model_1_files/figure-html/normality-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
-<p>The value of the adjusted R^2^ is equal to 0.88. It means that 88% of the variance of the body mass of penguins is explained by the relation given by mod_final.</p>
+</div>
+<p>We see that the residuals follow a normal distribution : we can validate the first condition.</p>
+<p><strong>Homogeneity of the variance</strong></p>
+<p>The hypothesis of the homogeneity of the variance means that the variance of residuals is constant over the entire range of explanatory variables. The residuals must be plotted against the estimated values and against the values of the significant variables. We can validate this hypothesis if the residuals show no trend.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>))</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="co"># residuals vs fitted</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">residuals</span>(mod_final)<span class="sc">~</span><span class="fu">fitted</span>(mod_final)</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>      , <span class="at">col=</span><span class="st">'dodgerblue3'</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>      , <span class="at">pch=</span><span class="dv">16</span>)</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>)</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="co"># residuals against Bill length</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">residuals</span>(mod_final)<span class="sc">~</span> penguins<span class="sc">$</span>bill_length_mm, </span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">pch=</span><span class="dv">16</span>,</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">col=</span><span class="st">"dodgerblue3"</span>,</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">ylab =</span> <span class="st">"Residuals"</span>,</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">xlab =</span> <span class="st">"Bill length"</span>,</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>)</span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a><span class="co"># residuals against Bill depth</span></span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">residuals</span>(mod_final)<span class="sc">~</span> penguins<span class="sc">$</span>bill_depth_mm, </span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>         <span class="at">pch=</span><span class="dv">16</span>,</span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>         <span class="at">col=</span><span class="st">"dodgerblue3"</span>,</span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>         <span class="at">ylab =</span> <span class="st">"Residuals"</span>,</span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>         <span class="at">xlab =</span> <span class="st">"Bill depth"</span>,</span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a>         <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>)</span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a><span class="co"># residuals against Flipper length</span></span>
+<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">residuals</span>(mod_final)<span class="sc">~</span> penguins<span class="sc">$</span>flipper_length_mm, </span>
+<span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a>         <span class="at">pch=</span><span class="dv">16</span>,</span>
+<span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a>         <span class="at">col=</span><span class="st">"dodgerblue3"</span>,</span>
+<span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a>         <span class="at">ylab =</span> <span class="st">"Residuals"</span>,</span>
+<span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a>         <span class="at">xlab =</span> <span class="st">"Flipper length"</span>,</span>
+<span id="cb33-33"><a href="#cb33-33" aria-hidden="true" tabindex="-1"></a>         <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb33-34"><a href="#cb33-34" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>)</span>
+<span id="cb33-35"><a href="#cb33-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-36"><a href="#cb33-36" aria-hidden="true" tabindex="-1"></a><span class="co"># residuals against Species</span></span>
+<span id="cb33-37"><a href="#cb33-37" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">residuals</span>(mod_final)<span class="sc">~</span> penguins<span class="sc">$</span>species, </span>
+<span id="cb33-38"><a href="#cb33-38" aria-hidden="true" tabindex="-1"></a>         <span class="at">pch=</span><span class="dv">16</span>,</span>
+<span id="cb33-39"><a href="#cb33-39" aria-hidden="true" tabindex="-1"></a>         <span class="at">col=</span><span class="st">"dodgerblue3"</span>,</span>
+<span id="cb33-40"><a href="#cb33-40" aria-hidden="true" tabindex="-1"></a>         <span class="at">ylab =</span> <span class="st">"Residuals"</span>,</span>
+<span id="cb33-41"><a href="#cb33-41" aria-hidden="true" tabindex="-1"></a>         <span class="at">xlab =</span> <span class="st">"Species"</span>,</span>
+<span id="cb33-42"><a href="#cb33-42" aria-hidden="true" tabindex="-1"></a>         <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb33-43"><a href="#cb33-43" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>)</span>
+<span id="cb33-44"><a href="#cb33-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-45"><a href="#cb33-45" aria-hidden="true" tabindex="-1"></a><span class="co"># residuals against Sex</span></span>
+<span id="cb33-46"><a href="#cb33-46" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">residuals</span>(mod_final)<span class="sc">~</span> penguins<span class="sc">$</span>sex, </span>
+<span id="cb33-47"><a href="#cb33-47" aria-hidden="true" tabindex="-1"></a>         <span class="at">pch=</span><span class="dv">16</span>,</span>
+<span id="cb33-48"><a href="#cb33-48" aria-hidden="true" tabindex="-1"></a>         <span class="at">col=</span><span class="st">"dodgerblue3"</span>,</span>
+<span id="cb33-49"><a href="#cb33-49" aria-hidden="true" tabindex="-1"></a>         <span class="at">ylab =</span> <span class="st">"Residuals"</span>,</span>
+<span id="cb33-50"><a href="#cb33-50" aria-hidden="true" tabindex="-1"></a>         <span class="at">xlab =</span> <span class="st">"Sex"</span>,</span>
+<span id="cb33-51"><a href="#cb33-51" aria-hidden="true" tabindex="-1"></a>         <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb33-52"><a href="#cb33-52" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Linear_Model_1_files/figure-html/homogeneity-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The graphs show that residuals variances are homogeneous, for all variables. Thus, we validate the hypothesis of homogeneity of variance.</p>
+<p><strong>Independence</strong></p>
+<p>A linear model assumes that the statistical units studied, and their associated residuals, are independent of each other. This independence must be taken into account during the research design phase. In this study, measurements for each penguin were taken over three years in a large penguin colony; we can therefore consider the observations to be independent.</p>
+</section>
+</section>
+<section id="discussion" class="level1">
+<h1><strong>DISCUSSION</strong></h1>
+<p>Our model reveals that penguin body mass is strongly associated with several morphological traits. Flipper length, bill depth, and bill length all show positive effects, with flipper length being the strongest predictor. Sex also contributes significantly, with males generally heavier than female. We can also identify species differences : Gentoo penguins are substantially heavier than Adelie and Chinstraps. Additionally, the negative interaction between species and sex (especially for Gentoo penguins) suggests species-specific patterns of sexual dimorphism that have a significant effect on body mass.</p>
+<p>These results are consistent with the literature : morphological traits such as flipper length and bill depth are known to scale positively with structural size in penguins, and species-level differences in body mass, particularly the larger size of Gentoo penguins, have been documented (<span class="citation" data-cites="Williams1995">Williams (<a href="#ref-Williams1995" role="doc-biblioref">1995</a>)</span>).</p>
+<p>Some effects are weaker or non-significant, such as the Gentoo × male interaction or the bill depth × sex interaction, which may reflect either natural biological variation or other possibilities. Importantly, our model does not include ecological or temporal, or individual-condition covariates, even though body mass may vary with season, breeding stage, and foraging success. This suggests that while morphology and species identity explain much of the variation, other ecological factors are likely to contribute to differences in body mass among penguins.</p>
+</section>
+<section id="conclusion" class="level1">
+<h1><strong>CONCLUSION</strong></h1>
+<p>In summary, these results provide evidence that body mass in penguins is strongly predicted by some morphological traits, particularly flipper length, bill length and bill depth. Species and sex also contribute to variation in body mass. However, substantial unexplained variation suggests that additional factors also influence penguin body mass but are not captured by our model.</p>
+<p>Using a <strong>General Linear Model</strong> helped us answering the question we initially formulated quite well.</p>
+<p>Thank you for reading. We hope this reminder on <strong>General Linear Models</strong>, with this example, has been helpful. We wish you all the best.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/penguin2.jpg" class="img-fluid figure-img"></p>
+<figcaption>Gentoo penguins : adult and juveniles - image from Pixabay</figcaption>
+</figure>
+</div>
+</section>
+<section id="references" class="level1">
+
 
 
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-A_Masson" class="csl-entry" role="listitem">
-AbelMasson. n.d. <a href="https://github.com/AbelMasson" class="uri">https://github.com/AbelMasson</a>.
-</div>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">REFERENCES</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-Gorman2014" class="csl-entry" role="listitem">
-Gorman, Tony D. AND Fraser, Kristen B. AND Williams. 2014. <span>“Ecological Sexual Dimorphism and Environmental Variability Within a Community of Antarctic Penguins (Genus Pygoscelis).”</span> <em>PLOS ONE</em> 9 (3): 1–14. <a href="https://doi.org/10.1371/journal.pone.0090081">https://doi.org/10.1371/journal.pone.0090081</a>.
+Gorman, Kristen B, Tony D Williams, and William R Fraser. 2014. <span>“Ecological Sexual Dimorphism and Environmental Variability Within a Community of Antarctic Penguins (Genus Pygoscelis).”</span> <em>PLOS ONE</em> 9 (3): 1–14. <a href="https://doi.org/10.1371/journal.pone.0090081">https://doi.org/10.1371/journal.pone.0090081</a>.
 </div>
 <div id="ref-Horst2020" class="csl-entry" role="listitem">
 Horst, Allison Marie, Alison Presmanes Hill, and Kristen B Gorman. 2020. <em>Palmerpenguins: Palmer Archipelago (Antarctica) Penguin Data</em>. <a href="https://doi.org/10.5281/zenodo.3960218">https://doi.org/10.5281/zenodo.3960218</a>.
 </div>
+<div id="ref-A_Masson" class="csl-entry" role="listitem">
+Masson, Abel. n.d. <a href="https://github.com/AbelMasson" class="uri">https://github.com/AbelMasson</a>. Accessed November 30, 2025.
+</div>
 <div id="ref-Y_Outreman" class="csl-entry" role="listitem">
-Outreman, Yannick. n.d. <a href="https://sites.google.com/site/yannickoutreman/home" class="uri">https://sites.google.com/site/yannickoutreman/home</a>.
+Outreman, Yannick. n.d. <a href="https://sites.google.com/site/yannickoutreman/home" class="uri">https://sites.google.com/site/yannickoutreman/home</a>. Accessed November 30, 2025.
+</div>
+<div id="ref-Williams1995" class="csl-entry" role="listitem">
+Williams, T. D. 1995. <em>The Penguins: Spheniscidae</em>. Bird Families of the World. Oxford University Press. <a href="https://books.google.fr/books?id=cHMXAQAAIAAJ">https://books.google.fr/books?id=cHMXAQAAIAAJ</a>.
 </div>
 </div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
