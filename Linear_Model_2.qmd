@@ -29,7 +29,7 @@ Applying a General Linear Model to this type of data is problematic for two main
 
 -   For discrete responses, the variance of $Y$ typically depends on its **mean-variance relationship**. As a result, the variance is not constant across observations, directly invalidating the assumption of homogeneity.
 
--   Fitting a General Linear Model to count data also lead to **negative predicted values and non-normal residuals**, which are not interpretable given the nature of the response variable.
+-   Fitting a General Linear Model to count data also leads to **negative predicted values and non-normal residuals**, which are not interpretable given the nature of the response variable.
 
 In short, General Linear Models are not well-suited for discrete responses. Hence, we need specific tools to analyse discrete response data. These are **Generalized Linear Models (GLMs)**.
 
@@ -57,11 +57,13 @@ The resulting model, called **Generalized Linear Mixed Model** **(GLMM)** extend
 
 # **DATA PRESENTATION AND OBJECTIVES**
 
-The data used come from @Walker2009 and consist of signs of badger (*Meles meles*) activity around farms located in the southwest of England, where badger density is high. This study was carried out in the context of bovine tuberculosis and its possible transmission to cattle through badgers. Reducing the number of farm visits by badgers — especially in places where they might come into contact with livestock — could help limit the spread of the disease. Thus, the aim of this study is to predict the occurrence of badger activity signs on farms.
+The data used come from @Walker2009 and consist of signs of badger (*Meles meles*) activity around farms located in the southwest of England, where badger density is high. This study was carried out in the context of bovine tuberculosis and its possible transmission to cattle through badgers. Reducing the number of farm visits by badgers (especially in places where they might come into contact with livestock) could help limit the spread of the disease. 
 
-Between autumn 2003 and summer 2005, a survey was conducted on 36 different farms; the data are therefore longitudinal, since each farm was monitored over eight consecutive seasons. Within the same farm, observations may be temporally autocorrelated.
+Thus, the aim of this study is **to predict the occurrence of signs of badger activity on farms**, using the dataset presented below and an appropriate model.
 
-The response variable (presence or absence of signs of badger activity) is binary: it takes the value 1 when signs of activity were detected, and 0 otherwise. Signs of activity include the presence of feces, setts, or feeding traces.
+Between autumn 2003 and summer 2005, a survey was conducted on 36 different farms; the data are therefore longitudinal, since each farm was monitored over eight consecutive seasons. Within the same farm, observations may be autocorrelated. This is an aspect that we will take into account while analyzing the data.
+
+The response variable (presence or absence of signs of badger activity) is binary : it takes the value 1 when signs of activity were detected, and 0 otherwise. Signs of activity include the presence of feces, setts, or feeding traces.
 
 The data are available in the file `Badger.txt`. The variables are:
 
@@ -93,14 +95,15 @@ To visualize the subject of our analysis, please see Figure @fig-badger.
 ![Badger in a garden](images/badger1.jpg)
 :::
 
-## **Dataset import**
+## **Data import**
 
-```{r}
+```{r libraries, message = FALSE}
 # library import
 library(corrplot)
 library(lme4)
 library(rsq)
 ```
+Let's import the dataset and tansform some variables into factors for the analysis. We also check for missing values.
 
 ```{r global data, include=TRUE,echo=TRUE}
 # Dataset import
@@ -121,8 +124,8 @@ dataBadger$molasses<-as.factor(dataBadger$molasses)
 
 # Check for presence of missing values
 colSums(is.na(dataBadger))
-# There is no missing value.
 ```
+There are no missing value in the dataset.
 
 ## **Data exploration**
 
@@ -132,7 +135,7 @@ Before carrying out any statistical modeling, it is essential to perform a thoro
 
 Since $Y$ is a binary variable, it does not have a continuous distribution. Instead, we inspect the frequency of each category (0 and 1) to check for imbalance in the response variable.
 
-```{r dataY, include=TRUE}
+```{r, include=TRUE}
 # Number of 0 and 1 in Y
 table(dataBadger$signs_in_yard)
 ```
@@ -190,7 +193,7 @@ The exploratory plots show that all three quantitative variables (number of sett
 
 ### **2. Categorical variables: number of levels and individuals per level**
 
-For categorical (factor) variables, it is important to examine the number of levels (categories) and the number of observations in each level. This helps identify potential issues such as:
+For categorical variables (factors), it is important to examine the number of levels (categories) and the number of observations in each level. This helps identify potential issues such as:
 
 -   Levels with very few observations (which may cause estimation problems in statistical models)
 
@@ -200,7 +203,7 @@ For categorical (factor) variables, it is important to examine the number of lev
 
 The following code summarizes the distribution of individuals across levels for each categorical predictor:
 
-```{r datafact, include=TRUE}
+```{r datafact, include=TRUE, echo=TRUE}
 # Factor season
 summary(dataBadger$season)
 # Factor accessible_feed_store_present
@@ -223,11 +226,11 @@ summary(dataBadger$concentrates)
 summary(dataBadger$sugar_beet)
 ```
 
-The categorical variables show that most factors are **binary**, with varying levels of balance between categories. For example, variables such as accessible_feed_store_present, accessible_cattle_house_present, and feed display moderate imbalance, with one category being more frequent than the other. The season variable has four well-represented levels, each containing a similar number of observations, which ensures adequate variability for analysis. Overall, the categorical predictors appear suitable for modeling.
+Most factors are **binary**, with varying levels of balance between categories. For example, variables such as `accessible_feed_store_present`, `accessible_cattle_house_present`, and `accessible_feed_present` display moderate imbalance, with one category being more frequent than the other. The season variable has four well-represented levels, each containing a similar number of observations, which ensures adequate variability for analysis. Overall, the categorical predictors appear suitable for modelling.
 
 ### **3. Analysis of the potential relationships between** $Y$ **and the** $X$**s**
 
-To gain preliminary insight into the relationships between the response variable (signs_in_yard) and the predictors, both quantitative and categorical variables were explored graphically.
+To gain preliminary insight into the relationships between the response variable (`signs_in_yard`) and the predictors, both quantitative and categorical variables were explored graphically.
 
 Scatterplots were used to visualize how badger activity varies with continuous predictors such as the number of setts, number of buildings and number of cattle housed. These visual analyses provide a first impression of potential patterns, dependencies, or nonlinear relationships that may influence badger activity on farms.
 
@@ -289,17 +292,17 @@ mosaicplot(dataBadger$signs_in_yard~dataBadger$sugar_beet
            ,main="Activity & Sugar beet")
 ```
 
-These visual analyses provide an initial understanding of how badger activity may relate to farm characteristics. The scatterplots show that no clear linear relationship exists between badger activity and the number of setts, buildings, or cattle, although activity tends to occur slightly more often on farms with more setts or larger cattle numbers. The mosaic plots complement this by revealing possible associations between activity and certain categorical management factors, such as the presence of feed stores, cattle housing, or specific feeding practices.
+These visual analyses provide an initial understanding of how badger activity may relate on farm characteristics. Based on the scatterplots, there appears to be no clear linear relationship between badger activity and the number of setts, buildings, or cattle, although activity tends to be slightly more frequent on farms with more setts or larger number of cattle. The mosaic plots complement this by revealing possible associations between activity and certain categorical management factors, such as the presence of feed stores, cattle housing, or specific feeding practices.
 
 ### **4. Analysis of possible interactions between both independent variables**
 
-Here, given the large number of predictors, we will not include interactions in modelling
+Here, given the large number of predictors, we choose not to include interactions in modelling.
 
 ### **5. Check for collinearity between predictors** ($X$s)
 
-To avoid multicolinearity issues during modeling, the relationships among predictor variables were examined. This step includes:
+To avoid multicollinearity issues during modelling, the relationships among predictor variables were examined. This step includes:
 
-1.  Evaluating **correlations between the three quantitative variables**
+1.  Evaluating **correlations between the quantitative variables**
 
 2.  Assessing **potential overlap between categorical factors**
 
@@ -307,33 +310,26 @@ To avoid multicolinearity issues during modeling, the relationships among predic
 
 Given the large number of predictors, only key results are summarized below.
 
-```{r datacolin, include=TRUE, fig.height=5, fig.width=5}
-
-# Checking collinearity between the 3 quantitative independent variables
-
-# We represent plot for each X continuous covariate pairs
+```{r data_collinearity, echo=TRUE, results='markup'}
+# We represent plot for each continuous covariate pairs
 plot(dataBadger[7:9],pch=16,col='blue')
 
-#We calculate correlation between each pair of X covariate
+# We calculate correlation between each pair of covariate
 M<-cor(dataBadger[7:9])
 corrplot.mixed(M,upper="square",lower.col="black", tl.col="black",cl.cex = 0.8,tl.cex = 0.7,number.cex =0.8)
 
-# Checking collinearity between  categorical independent variables
-# produce all crossed tables between pairs of factors - not detailed here
-
-# Checking collinearity between categorical and quantitative independent variables
-# for each quantitative independent variable, use boxplot graphics to check whether factors influence it - not detailed here
 ```
+A moderate positive correlation (r ≈ 0.52) is observed between the number of buildings and the number of cattle in the yard, suggesting a slight interdependence between these two variables. In contrast, the number of setts in fields shows almost no correlation with the others (r close to 0). Overall, no strong collinearity is detected, allowing these predictors to be retained for further modelling without major redundancy concerns.
 
-The collinearity analysis indicates that the three quantitative variables are largely independent. A moderate positive correlation (r ≈ 0.52) is observed between the number of buildings and the number of cattle in the yard, suggesting a slight interdependence between these two variables. In contrast, the number of setts in fields shows almost no correlation with the others (r close to 0). Overall, no strong collinearity is detected, allowing these predictors to be retained for further modelling without major redundancy concerns.
+We could also check collinearity between categorical independent variables and between between categorical and quantitative independent variables (mostly using boxplots), but we don't give the details here.
 
-# **GENERALIZED LINEAR MIXED MODEL (GLMM)**
+# **STATISTICAL ANALYSIS : GENERALIZED LINEAR MIXED MODEL (GLMM)**
 
-Because the response variable is binary, we will use a **Generalized Linear Mixed Model (GLMM)** to examine how the different predictors influence badger activity. We assume that badger activity follows a **binomial distribution**, and we will therefore use a **logit link function**. The farm code is included as a **random effect**, to take into account the temporal autocorrelation between observations.
+Because the response variable is binary, we will use a **Generalized Linear Mixed Model (GLMM)** to examine how the different predictors influence badger activity. We assume that badger activity follows a **binomial distribution**, and we will therefore use a **logit link function**. The farm code is included as a **random effect**, to take into account the dependency between observations made in the same farm.
 
 ## **Building the model**
 
-The best model is identified using a **backward selection procedure**. This model selection method is based on the **Akaike Information Criterion (AIC)**, which allows to take into account both the goodness of fit and the simplicity of the model. Starting with the full model, the function `drop1` is used to evaluate each predictor's contribution to the AIC. The predictor whose removal leads to the smallest AIC is then removed and the model is refitted without this variable. The selection stops when the candidate model has the lowest AIC.
+The best model is identified using a **backward selection procedure**. This model selection method is based on the **Akaike Information Criterion (AIC)**, which allows to take into account both the goodness of fit and the complexity of the model. Starting with the full model, the function `drop1` is used to evaluate each predictor's contribution to the AIC. The predictor whose removal leads to the smallest AIC is then removed and the model is refitted without this variable. The selection stops when the candidate model has the lowest AIC.
 
 ```{r fullmodel, include = TRUE}
 mod<-glmer(signs_in_yard~N_setts_in_fields
@@ -349,9 +345,9 @@ mod<-glmer(signs_in_yard~N_setts_in_fields
               + cereal_grains
               + concentrates
               + sugar_beet
-              + (1|farm_code)
+              + (1|farm_code)  #random effect
               ,data=dataBadger
-              ,family=binomial)
+              ,family=binomial) #for the binomial distribution
 ```
 
 ```{r backwardselection, include = TRUE, warning = FALSE}
@@ -628,9 +624,9 @@ For this prediction, the overall accuracy was 0.86, which means that 86% of pred
 
 # **DISCUSSION**
 
-Our model shows a positive association between the number of setts on farmland and the likelihood of badger activity. However, while sett number explains 21% of variance, farm-level random effects explain 38%, bringing the total explained variance to 59%: while the number of setts is clearly an important predictor, a considerable portion of variation remains due to farm-specific factors.
+Our model shows a positive association between the number of setts on farmland and the likelihood of badger activity. However, while the number of setts explains 21% of variance, farm-level random effects explain 38%, bringing the total explained variance to 59%: while the number of setts is clearly an important predictor, a considerable portion of variation remains due to farm-specific factors.
 
-The positive association between badger activity and the number of setts is not surprising and consistant with the litterature: in a study using cameras to detect the presence of badgers in 155 south-western English and Welsh farms, @Robertson2019 found that badger activity increased with the density of setts in a 500m radius around the farm, and decreased with the distance to the nearest sett. It is however surprising that no other variable was retained, as in the same study, badger activity was also negatively impacted by the maximum cattle capacity and the presence of inhabited buildings, and positively impacted by the number of feed stores and the number of cattle sheds.
+The positive association between badger activity and the number of setts is not surprising and consistent with the literature : in a study using cameras to detect the presence of badgers in 155 south-western English and Welsh farms, @Robertson2019 found that badger activity increased with the density of setts in a 500m radius around the farm, and decreased with the distance to the nearest sett. It is however surprising that no other variable was retained, as in the same study, badger activity was also negatively impacted by the maximum cattle capacity and the presence of inhabited buildings, and positively impacted by the number of feed stores and the number of cattle sheds.
 
 Our model does include season or year. Yet badger activity is known to vary seasonally (@Kowalczyk2003), which means that we may have missed important dynamics.
 
