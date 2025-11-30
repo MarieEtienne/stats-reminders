@@ -8,9 +8,9 @@ bibliography: references.bib
 
 # GENERAL INTRODUCTION
 
-We present here, a reminder sheet on the **General Linear Model** **[(GLM)](#GLMback)** 
-<span id="GLM"></span> 
-and its specific features. Its use will be illustrated with an example applied to ecological data on penguins from @Gorman2014 .
+::: {#GLM}
+We present here, a reminder sheet on the **General Linear Model [(GLM)](#GLMback)** and its specific features. Its use will be illustrated with an example applied to ecological data on penguins from @Gorman2014 .
+:::
 
 ::: {.callout-note appearance="simple"}
 Note : The concepts covered in this reminder sheet are taken from our Master's lectures, written by @Y_Outreman and then taught by @A_Masson . During these courses, we learned how to explore data and then analyze it using this type of model.
@@ -18,9 +18,9 @@ Note : The concepts covered in this reminder sheet are taken from our Master's l
 
 ### Generalities
 
-The objective of the [GLM](#GLM) 
-<span id="GLMback"></span> 
-is to explain a dependent variable as a function of independent explanatory variables measured on statistical units from a sample of a population. This type of model is generally constructed as follows:
+::: {#GLMback}
+The objective of the [GLM](#GLM) is to explain a dependent variable as a function of independent explanatory variables measured on statistical units from a sample of a population. This type of model is generally constructed as follows:
+:::
 
 $$Y = β*X + ε$$
 
@@ -40,12 +40,13 @@ Linear regression is used when we want to determine whether a linear relationshi
 
 ANOVA is used when the explanatory variables $X$ are qualitative (then called factors). These qualitative $X$ variables often have multiple categories (levels).
 
-[ANCOVA](#ANCOVAback)
-<span id="ANCOVA"></span> 
-is used when we want to model the variable $Y$ as a function of several $X$ variables, which can be qualitative and quantitative.
+::: {#ANCOVA}
+[ANCOVA](#ANCOVAback) is used when we want to model the variable $Y$ as a function of several $X$ variables, which can be qualitative and quantitative.
+:::
 
+::: {#conditions}
 Another important aspect to consider is that for this type of model to be valid, three [conditions](#conditionsBACK) must be met:
-<span id="conditions"></span> 
+:::
 
 -   the model residuals must follow a **normal distribution**
 
@@ -74,8 +75,9 @@ We also have information about the year of measurement and the island where the 
 
 We will try to answer the following question : **Which quantitative and qualitative variables can explain the variation in penguin `body_mass_g`?**
 
+::: {#ANCOVAback}
 In this case, the response variable is `body_mass_g`, and the other variables are assumed to be explanatory variables. We want to model the variable $Y$ as a function of several qualitative and quantitative variables, therefore we do an [ANCOVA](#ANCOVA).
-<span id="ANCOVAback"></span> 
+:::
 
 The model can be build like this : model \<- **lm (`body_mass_g` \~ `...`, data = `penguins`)**
 
@@ -383,11 +385,9 @@ Concerning the other variables : For bill length, bill depth and flipper length,
 
 # MODEL AND STATISTICAL ANALYSIS
 
-Once the data exploration is done, we can focus on finding the model that is adapted to our study. First, we write a full model including all variables presented before and possible interactions between them. Then, the goal is to obtain a fitted model (candidate model) that we can analyze in order to identify the main effects on our response variable `body_mass_g`. This candidate model can be obtained thanks to a selection based on **Akaike Information Criterion (AIC)**. After selection, the [conditions](#conditions)
-<span id="conditionsBACK"></span> 
-of the linear model (i.e. **independence of residuals**, **normality of residuals** and **homoscedasticity** )
-
-must be validated before making interpretations and conclusions.
+::: {#conditionsBACK}
+Once the data exploration is done, we can focus on finding the model that is adapted to our study. First, we write a full model including all variables presented before and possible interactions between them. Then, the goal is to obtain a fitted model (candidate model) that we can analyze in order to identify the main effects on our response variable `body_mass_g`. This candidate model can be obtained thanks to a selection based on **Akaike Information Criterion (AIC)**. After selection, the [conditions](#conditions) of the linear model must be validated before making interpretations and conclusions.
+:::
 
 ### 1. Construction of the model
 
@@ -529,11 +529,6 @@ The linear model, whether it involves an ANOVA or ANCOVA regression, assumes tha
 
 # **CONCLUSION**
 
-
-
-
 Thank you for reading. We hope this reminder on General Linear Models, with this example, has been helpful. We wish you all the best.
 
 ![Gentoo penguins : adult and juveniles - image from Pixabay](images/penguin2.jpg)
-
-
