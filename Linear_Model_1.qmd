@@ -485,7 +485,7 @@ We see that the residuals follow a normal distribution : we can validate the fir
 
 **Homogeneity of the variance**
 
-The hypothesis of the homogeneity of the variance means that the variaance of residuals is constant over the entire range of explanatory variables. The residuals must be plotted against the estimated values and against the values of the significant variables. We can validate this hypothesis if the residuals show no trend.
+The hypothesis of the homogeneity of the variance means that the variance of residuals is constant over the entire range of explanatory variables. The residuals must be plotted against the estimated values and against the values of the significant variables. We can validate this hypothesis if the residuals show no trend.
 
 ```{r, homogeneity, echo=TRUE, results='markup'}
 par(mfrow=c(2,3))
