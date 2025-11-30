@@ -23,17 +23,17 @@ Note : The concepts covered in this reminder sheet are taken from our Master's l
 
 General Linear Models are traditionally used to describe the relationship between a continuous response ($Y$) and one or more explanatory variables ($X_{1}$,$X_{2}$...$X_{p}$). They rely on three main assumptions : *independence of residuals*, *normality of residuals* and *homogeneity of variances* (homoscedasticity). However, in many fields (ecology, epidemiology, etc), the response variable ($Y$) is **discrete**, for example it can take the form of *counts*, *binary outcomes* (presence/absence), and so on.
 
-Applying a General Linear Model to this type of data is problematic for two main reasons :
+Applying a General Linear Model to this type of data is problematic for two main reasons:
 
 -   For discrete responses, the variance of $Y$ typically depends on its **mean-variance relationship**. As a result, the variance is not constant across observations, directly invalidating the assumption of homogeneity.
 
 -   Fitting a General Linear Model to count data also lead to **negative predicted values and non-normal residuals**, which are not interpretable given the nature of the response variable.
 
-In shorts, General Linear Models are not well-suited for discrete responses. Hence, we need specific tools to analyse discrete response data. These are **Generalized Linear Models (GLMs)**.
+In short, General Linear Models are not well-suited for discrete responses. Hence, we need specific tools to analyse discrete response data. These are **Generalized Linear Models (GLMs)**.
 
 ## **Structure of a Generalized Linear Model**
 
-A **Generalized Linear Model** extends the classical linear model through three steps :
+A **Generalized Linear Model** extends the classical linear model through three steps:
 
 1.  **Assumption of the distribution** : the distribution of the response variable $Y_{i}$ is assumed to belong to a certain distribution law (e.g. Poisson, Binomial, Gamma)
 
