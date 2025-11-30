@@ -8,7 +8,11 @@ bibliography: references.bib
 
 # **GENERAL INTRODUCTION**
 
-We present here a reminder sheet on Generalized Linear Mixed Models (GLMMs) and its specific features. Its use will be illustrated through a study applied on badgers from @Walker2009 .
+::: {#GLMMs}
+We present here a reminder sheet on Generalized Linear Mixed Models [(GLMMs)](#GLMMsBACK) and its specific features. Its use will be illustrated through a study applied on badgers from @Walker2009
+:::
+
+.
 
 ::: {.callout-note appearance="simple"}
 Note : The concepts covered in this reminder sheet are taken from our Master's lectures and tutorials, written by @Y_Outreman and taught by @A_Masson .
@@ -38,7 +42,9 @@ The linear predictor $\eta$, emerges from the linear model as a sum of the terms
 
 Depending on the sampling design or the experimental set-up, independence of residuals is often not respected : some statistical units are related. To account for this dependence structure, we can include **random effects** in the model.
 
-The resulting model, called Generalized Linear Mixed Model (GLMM) extends the GLM by adding these random effects alongside the fixed effects. Therefore, GLMMs allow us to model both the relationship between predictors and responses and the non-independence among observations.
+::: {#GLMMsBACK}
+The resulting model, called Generalized Linear Mixed Model (GLMM) extends the GLM by adding these random effects alongside the fixed effects. Therefore, [GLMMs](#GLMMs) allow us to model both the relationship between predictors and responses and the non-independence among observations.
+:::
 
 # **DATA PRESENTATION**
 
@@ -160,29 +166,29 @@ par(mfrow=c(3,3))
 
 # Number of badger setts on farm
 # Cleveland plot
-dotchart(dataBadger$N_setts,pch=16,col='blue',xlab='Number of setts')
+dotchart(dataBadger$N_setts,pch=16,col='olivedrab',xlab='Number of setts')
 # Histogram
-hist(dataBadger$N_setts,col='blue',xlab="Number of setts",main="")
+hist(dataBadger$N_setts,col='olivedrab',xlab="Number of setts",main="")
 # Quantile-Quantile plot
-qqnorm(dataBadger$N_setts,pch=16,col='blue',xlab='')
+qqnorm(dataBadger$N_setts,pch=16,col='olivedrab',xlab='')
 qqline(dataBadger$N_setts,col='red')
 
 # Number of buildings on farm
 # Cleveland plot
-dotchart(dataBadger$N_buildings,pch=16,col='blue',xlab='Number of buildings')
+dotchart(dataBadger$N_buildings,pch=16,col='olivedrab',xlab='Number of buildings')
 # Histogram
-hist(dataBadger$N_buildings,col='blue',xlab="Number of buildings",main="")
+hist(dataBadger$N_buildings,col='olivedrab',xlab="Number of buildings",main="")
 # Quantile-Quantile plot
-qqnorm(dataBadger$N_buildings,pch=16,col='blue',xlab='')
+qqnorm(dataBadger$N_buildings,pch=16,col='olivedrab',xlab='')
 qqline(dataBadger$N_buildings,col='red')
 
 # Number of cattle housed in buildings on farm
 # Cleveland plot
-dotchart(dataBadger$N_cattle,pch=16,col='blue',xlab='Number of cattle')
+dotchart(dataBadger$N_cattle,pch=16,col='olivedrab',xlab='Number of cattle')
 # Histogram
-hist(dataBadger$N_cattle,col='blue',xlab="Number of cattle",main="")
+hist(dataBadger$N_cattle,col='olivedrab',xlab="Number of cattle",main="")
 # Quantile-Quantile plot
-qqnorm(dataBadger$N_cattle,pch=16,col='blue',xlab='')
+qqnorm(dataBadger$N_cattle,pch=16,col='olivedrab',xlab='')
 qqline(dataBadger$N_cattle,col='red')
 ```
 
@@ -235,57 +241,57 @@ Scatterplots were used to visualize how badger activity varies with continuous p
 
 par(mfrow=c(1,3))
 # Number of setts
-plot(dataBadger$Activity~dataBadger$N_setts,pch=16,col='blue',xlab='Number of setts',ylab='Presence of a sign of badger activity')
+plot(dataBadger$Activity~dataBadger$N_setts,pch=16,col='olivedrab',xlab='Number of setts',ylab='Presence of a sign of badger activity')
 
 # Number of buildings
-plot(dataBadger$Activity~dataBadger$N_buildings,pch=16,col='blue',xlab='Number of buildings',ylab='Presence of a sign of badger activity')
+plot(dataBadger$Activity~dataBadger$N_buildings,pch=16,col='olivedrab',xlab='Number of buildings',ylab='Presence of a sign of badger activity')
 
 # Number of cattle housed in buildings
-plot(dataBadger$Activity~dataBadger$N_cattle,pch=16,col='blue',xlab='Number of cattle',ylab='Presence of a sign of badger activity')
+plot(dataBadger$Activity~dataBadger$N_cattle,pch=16,col='olivedrab',xlab='Number of cattle',ylab='Presence of a sign of badger activity')
 
 par(mfrow=c(2,5))
 # Factor season
 mosaicplot(dataBadger$Activity~dataBadger$season
-           ,color=c('blue3','red2')
+           ,color=c('skyblue','red2')
            ,main="Activity & Season")
 
 # Factor feed store
 mosaicplot(dataBadger$Activity~dataBadger$feed_store
-           ,color=c('blue3','red2')
+           ,color=c('skyblue','red2')
            ,main="Activity & Feed store")
 
 # Factor cattle_house 
 mosaicplot(dataBadger$Activity~dataBadger$cattle_house
-           ,color=c('blue3','red2')
+           ,color=c('skyblue','red2')
            ,main="Activity & cattle house")
 
 # Factor feed
 mosaicplot(dataBadger$Activity~dataBadger$feed
-           ,color=c('blue3','red2')
+           ,color=c('skyblue','red2')
            ,main="Activity & feed")
 # Factor grass
 mosaicplot(dataBadger$Activity~dataBadger$grass
-           ,color=c('blue3','red2')
+           ,color=c('skyblue','red2')
            ,main="Activity & Grass")
 # Factor cereal
 mosaicplot(dataBadger$Activity~dataBadger$cereal
-           ,color=c('blue3','red2')
+           ,color=c('skyblue','red2')
            ,main="Activity & Cereal")
 # Factor straw
 mosaicplot(dataBadger$Activity~dataBadger$straw
-           ,color=c('blue3','red2')
+           ,color=c('skyblue','red2')
            ,main="Activity & Straw")
 # Factor grains
 mosaicplot(dataBadger$Activity~dataBadger$grains
-           ,color=c('blue3','red2')
+           ,color=c('skyblue','red2')
            ,main="Activity & Grains")
 # Factor concen
 mosaicplot(dataBadger$Activity~dataBadger$concen
-           ,color=c('blue3','red2')
+           ,color=c('skyblue','red2')
            ,main="Activity & Concentrates")
 # Factor sugar
 mosaicplot(dataBadger$Activity~dataBadger$sugar
-           ,color=c('blue3','red2')
+           ,color=c('skyblue','red2')
            ,main="Activity & Sugar Beet")
 ```
 
@@ -312,7 +318,7 @@ Given the large number of predictors, only key results are summarized below.
 # Checking collinearity between the 3 quantitative independent variables
 
 # We represent plot for each X continuous covariate pairs
-plot(dataBadger[7:9],pch=16,col='blue')
+plot(dataBadger[7:9],pch=16,col='olivedrab')
 
 #We calculate correlation between each pair of X covariate
 M<-cor(dataBadger[7:9])
@@ -539,7 +545,7 @@ for (iBoot in 1:nBoot) # for each simulation
 mean(lrStat > lrObs, na.rm = TRUE) # Proportion of bootstrap likelihood ratio statistic superior to the observed statistic
 # It corresponds to the p value
 
-hist(lrStat,xlim = c(0,40), col='blue', main = "Histogram of the likelihood ratio statistic", xlab = "Likelihood ratio statistic") # Histogram of the 1000 values of likelihood of the simulated model
+hist(lrStat,xlim = c(0,40), col='olivedrab', main = "Histogram of the likelihood ratio statistic", xlab = "Likelihood ratio statistic") # Histogram of the 1000 values of likelihood of the simulated model
 abline(v = lrObs, col="red", lwd=3, lty=2) # Vertical red line representing the likelihood of the model including the random factor
 ```
 
@@ -567,14 +573,14 @@ resid<-residuals(mod12, type="pearson")
 par(mfrow=c(1,2))
 # Plotting the residuals against the fitted data
 plot(resid~fitted(mod12)
-      , col='dodgerblue4'
+      , col='dodgerolivedrab4'
       , pch=16)
 abline(h = 0)
 
 # Plotting the residuals against the number of setts
 plot(resid~ dataBadger$N_setts, 
          pch=16,
-         col="dodgerblue4",
+         col="dodgerolivedrab4",
          ylab = "Residuals",
          xlab = "Number of Setts",
          main = "")
@@ -610,7 +616,7 @@ for (i in 1:NSim) { # for each simulation
   diagZ[i]<-sum(diag(Z)) # computes and stores the accuracy
   }
 # Boxplot of the accuracy and average accuracy
-boxplot(diagZ, col='dodgerblue4',ylab='#Rate of farms well-classified')
+boxplot(diagZ, col='dodgerolivedrab4',ylab='#Rate of farms well-classified')
 mean(diagZ)
 ```
 
