@@ -57,7 +57,7 @@ These conditions are systematically verified after modeling : the verification w
 
 ### Data presentation and objectives
 
-![Adelie Penguins from Petrel Island - Adelie Land - C. Cornec (IPEV/CNRS/CSM)](Adelie_Penguins.jpg)
+![Gentoo penguins - image from Pixabay](images/penguin1.jpg)
 
 In this application example, we will use data from a study conducted by Dr. Kristen Gorman, who studied the **physical characteristics** **of three species of penguins** in the Palmer Archipelago in Antarctica. The data was collected on three islands of the archipelago in 2007, 2008, and 2009.
 
@@ -524,3 +524,7 @@ The graphs show that residuals variances are homogeneous, for all variables. We 
 **Independence**
 
 The linear model, whether it involves an ANOVA or ANCOVA regression, assumes that the statistical units studied, and therefore their associated residuals, are independent of each other. This independence must be taken into account during the research design phase. In our case, the measurements taken for each penguin in our study were carried out over three years in a large penguin colony; we can therefore consider the measurements to be independent.
+
+![Gentoo penguins : adult and juveniles - image from Pixabay](images/penguin2.jpg)
+
+
