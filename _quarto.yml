@@ -23,9 +23,9 @@ website:
     right:
       - text: "Linear Model"
         menu:
-        - text : "Penguins"
+        - text : "General Linear Model"
           href : Linear_Model_1.qmd
-        - text : "Badgers"
+        - text : "Generalized Linear Mixed Model"
           href : Linear_Model_2.qmd 
       - text: "Factorial Analysis"
         menu:
