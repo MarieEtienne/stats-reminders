@@ -86,6 +86,15 @@ In this case, the response variable is `body_mass_g`, and the other variables ar
 
 The model can be build like this : model \<- **lm (`body_mass_g` \~ `...`, data = `penguins`)**
 
+## **Import useful libraries**
+
+Here we import the libraries we will use during the analysis.
+
+```{r}
+library(MASS)
+library(corrplot)
+```
+
 ## **Data import**
 
 Firstly, we need to import the data, explore it, and see if there are any NA values, outliers, and so on. The data is accessible via the package *palmerpenguins* by @Horst2020.
@@ -369,11 +378,6 @@ These are only observations. For the moment, we don't know which interactions ar
 
 Collinearity should be avoided in modelling. Indeed, it can affect the modelling and the significance of the variables in the model, which affects the conclusions. Let's check how the explanatory variables are related (@fig-collinearity).
 
-```{r}
-#Import library
-library(corrplot)
-```
-
 ::: {#fig-collinearity}
 ```{r data_collinearity, echo=TRUE, results='markup'}
 # Checking collinearity between continuous independent variables
@@ -443,7 +447,6 @@ drop1(mod_penguins,test="F")
 Now, let's select the significant terms of the model, based on AIC, using a forward-backward selection method. We can use the stepAIC function from the library MASS to select variables using the AIC. The function tests adding and removing interactions and variables to see which ones improve the AIC. The final model is the one with the lowest AIC.
 
 ```{r variable selection, echo=TRUE, results='markup'}
-library(MASS)
 mod_final <- stepAIC(mod_penguins, direction = "both")
 ```
 
