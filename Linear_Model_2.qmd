@@ -61,27 +61,27 @@ The response variable (presence or absence of signs of badger activity) is binar
 
 The data are available in the file `Badger.txt`. The variables are:
 
--   `Year` : studied year
--   `Season` : 1 = spring, 2 = summer, 3 = autumn, 4 = winter
+-   `year` : studied year
+-   `season` : 1 = spring, 2 = summer, 3 = autumn, 4 = winter
 -   `farm_code_numeric` : farm identifier
--   `Survey` : survey identifier (time indicator)
--   `Signs_in_yard` : binary indicator of badger activity (response variable)
--   `No_setts_in_fields` : number of setts
--   `No_active_setts_in_fields` : number of actively occupied setts
--   `No_buildings` : number of buildings in the farm
--   `No_cattle_in_buildings_yard` : number of cattle in building yards
--   `Accessible_feed_store_present` : presence / absence of an accessible feed store
--   `Accessible_cattle_house_present` : presence / absence of a direct access to the cattle house
--   `Accessible_feed_present` : presence / absence of accessible feed in the farm
--   `Grass_silage` : presence / absence of grass silage
--   `Cereal_silage` : presence / absence of cereal silage
--   `HayStraw` : presence / absence of hay and / or straw
--   `Cereal_grains` : presence / absence of cereal grains
--   `Concentrates` : presence / absence of concentrates
--   `Proteinblocks` : presence / absence of protein blocks
--   `Sugarbeet` : presence / absence of sugar beet
--   `Vegetables` : presence / absence of vegetables
--   `Molasses` : presence / absence of molasses
+-   `survey` : survey identifier (time indicator)
+-   `signs_in_yard` : binary indicator of badger activity (response variable)
+-   `no_setts_in_fields` : number of setts
+-   `no_active_setts_in_fields` : number of actively occupied setts
+-   `no_buildings` : number of buildings in the farm
+-   `no_cattle_in_buildings_yard` : number of cattle in building yards
+-   `accessible_feed_store_present` : presence / absence of an accessible feed store
+-   `accessible_cattle_house_present` : presence / absence of a direct access to the cattle house
+-   `accessible_feed_present` : presence / absence of accessible feed in the farm
+-   `grass_silage` : presence / absence of grass silage
+-   `cereal_silage` : presence / absence of cereal silage
+-   `hay_straw` : presence / absence of hay and / or straw
+-   `cereal_grains` : presence / absence of cereal grains
+-   `concentrates` : presence / absence of concentrates
+-   `proteinblocks` : presence / absence of protein blocks
+-   `sugar_beet` : presence / absence of sugar beet
+-   `vegetables` : presence / absence of vegetables
+-   `molasses` : presence / absence of molasses
 
 To visualize the subject of our analysis, please see Figure @fig-badger.
 
@@ -102,20 +102,17 @@ library(rsq)
 # Dataset import
 dataBadger <- read.table("Badger.txt", dec=".", header = TRUE)
 
-# Reduce name and change categorical variables as factor
-dataBadger$Activity<- dataBadger$signs_in_yard
-dataBadger$N_setts<-dataBadger$N_setts_in_fields
-dataBadger$N_cattle<-dataBadger$N_cattle_in_buildings_yard
+# Change categorical variables to factors
 dataBadger$season<-as.factor(dataBadger$season)
-dataBadger$feed_store<-as.factor(dataBadger$accessible_feed_store_present)
-dataBadger$cattle_house<-as.factor(dataBadger$accessible_cattle_house_present)
-dataBadger$feed<-as.factor(dataBadger$accessible_feed_present)
-dataBadger$grass<-as.factor(dataBadger$grass_silage)
-dataBadger$cereal<-as.factor(dataBadger$cereal_silage)
-dataBadger$straw<-as.factor(dataBadger$hay_straw)
-dataBadger$grains<-as.factor(dataBadger$cereal_grains)
-dataBadger$concen<-as.factor(dataBadger$concentrates)
-dataBadger$sugar<-as.factor(dataBadger$sugar_beet)
+dataBadger$accessible_feed_store_present<-as.factor(dataBadger$accessible_feed_store_present)
+dataBadger$accessible_cattle_house_present<-as.factor(dataBadger$accessible_cattle_house_present)
+dataBadger$accessible_feed_present<-as.factor(dataBadger$accessible_feed_present)
+dataBadger$grass_silage<-as.factor(dataBadger$grass_silage)
+dataBadger$cereal_silage<-as.factor(dataBadger$cereal_silage)
+dataBadger$hay_straw<-as.factor(dataBadger$hay_straw)
+dataBadger$cereal_grains<-as.factor(dataBadger$cereal_grains)
+dataBadger$concentrates<-as.factor(dataBadger$concentrates)
+dataBadger$sugar_beet<-as.factor(dataBadger$sugar_beet)
 dataBadger$molasses<-as.factor(dataBadger$molasses)
 
 # Check for presence of missing values
@@ -127,25 +124,13 @@ colSums(is.na(dataBadger))
 
 Before carrying out any statistical modeling, it is essential to perform a thorough **data exploration**. This step helps identify potential issues such as outliers, collinearity, or imbalanced distributions that could bias the results or invalidate model assumptions.
 
-Below is a checklist of preliminary exploratory analyses to perform before modeling:
-
-1.  **Check for outliers and distribution of the dependent variable** ($Y$).
-
-2.  **Check for outliers and distribution of the explicative variable** ($X$). **If** $X$ is quantitative: assess the distribution and presence of outliers. **If** $X$ **is qualitative:** analyze the number of levels and the number of observations per level.
-
-3.  **Explore the potential relationships between** $Y$ **and each** $X_i$.
-
-4.  **Check for potential interactions between explanatory variables** ($X_i$).
-
-5.  **Assess multicollinearity among the** $X_i$ **variables.**
-
 ### **1. Outliers and Distribution of** $Y$
 
 Since $Y$ is a binary variable, it does not have a continuous distribution. Instead, we inspect the frequency of each category (0 and 1) to check for imbalance in the response variable.
 
 ```{r dataY, include=TRUE}
 # Number of 0 and 1 in Y
-table(dataBadger$Activity)
+table(dataBadger$signs_in_yard)
 ```
 
 ### **2. Outliers and distributions of quantitative predictors** ($X$)
@@ -171,12 +156,12 @@ par(mfrow=c(3,3))
 
 # Number of badger setts on farm
 # Cleveland plot
-dotchart(dataBadger$N_setts,pch=16,col='blue',xlab='Number of setts')
+dotchart(dataBadger$N_setts_in_fields,pch=16,col='blue',xlab='Number of setts')
 # Histogram
-hist(dataBadger$N_setts,col='blue',xlab="Number of setts",main="")
+hist(dataBadger$N_setts_in_fields,col='blue',xlab="Number of setts",main="")
 # Quantile-Quantile plot
-qqnorm(dataBadger$N_setts,pch=16,col='blue',xlab='')
-qqline(dataBadger$N_setts,col='red')
+qqnorm(dataBadger$N_setts_in_fields,pch=16,col='blue',xlab='')
+qqline(dataBadger$N_setts_in_fields,col='red')
 
 # Number of buildings on farm
 # Cleveland plot
@@ -189,12 +174,12 @@ qqline(dataBadger$N_buildings,col='red')
 
 # Number of cattle housed in buildings on farm
 # Cleveland plot
-dotchart(dataBadger$N_cattle,pch=16,col='blue',xlab='Number of cattle')
+dotchart(dataBadger$N_cattle_in_buildings_yard,pch=16,col='blue',xlab='Number of cattle')
 # Histogram
-hist(dataBadger$N_cattle,col='blue',xlab="Number of cattle",main="")
+hist(dataBadger$N_cattle_in_buildings_yard,col='blue',xlab="Number of cattle",main="")
 # Quantile-Quantile plot
-qqnorm(dataBadger$N_cattle,pch=16,col='blue',xlab='')
-qqline(dataBadger$N_cattle,col='red')
+qqnorm(dataBadger$N_cattle_in_buildings_yard,pch=16,col='blue',xlab='')
+qqline(dataBadger$N_cattle_in_buildings_yard,col='red')
 ```
 
 The exploratory plots show that all three quantitative variables (number of setts, number of buildings, and number of cattle) display right-skewed distributions, with most farms having relatively low values and a few having much higher ones. No extreme or abnormal outliers are clearly visible, although some high values are present, especially for the number of cattle. The Q-Q plots confirm that none of these variables follow a normal distribution.
@@ -214,31 +199,31 @@ The following code summarizes the distribution of individuals across levels for 
 ```{r datafact, include=TRUE}
 # Factor season
 summary(dataBadger$season)
-# Factor feed_store
-summary(dataBadger$feed_store)
-# Factor cattle_house 
-summary(dataBadger$cattle_house )
+# Factor accessible_feed_store_present
+summary(dataBadger$accessible_feed_store_present)
+# Factor accessible_cattle_house_present 
+summary(dataBadger$accessible_cattle_house_present )
 # Factor feed
-summary(dataBadger$feed)
+summary(dataBadger$accessible_feed_present)
 # Factor grass
-summary(dataBadger$grass)
-# Factor cereal
-summary(dataBadger$cereal)
+summary(dataBadger$grass_silage)
+# Factor cereal_silage
+summary(dataBadger$cereal_silage)
 # Factor straw
-summary(dataBadger$straw)
+summary(dataBadger$hay_straw)
 # Factor grains
-summary(dataBadger$grains)
-# Factor concen
-summary(dataBadger$concen)
-# Factor sugar
-summary(dataBadger$sugar)
+summary(dataBadger$cereal_grains)
+# Factor concentrates
+summary(dataBadger$concentrates)
+# Factor sugar_beet
+summary(dataBadger$sugar_beet)
 ```
 
-The categorical variables show that most factors are **binary**, with varying levels of balance between categories. For example, variables such as feed_store, cattle_house, and feed display moderate imbalance, with one category being more frequent than the other. The season variable has four well-represented levels, each containing a similar number of observations, which ensures adequate variability for analysis. Overall, the categorical predictors appear suitable for modeling.
+The categorical variables show that most factors are **binary**, with varying levels of balance between categories. For example, variables such as accessible_feed_store_present, accessible_cattle_house_present, and feed display moderate imbalance, with one category being more frequent than the other. The season variable has four well-represented levels, each containing a similar number of observations, which ensures adequate variability for analysis. Overall, the categorical predictors appear suitable for modeling.
 
 ### **3. Analysis of the potential relationships between** $Y$ **and the** $X$**s**
 
-To gain preliminary insight into the relationships between the response variable (Activity) and the predictors, both quantitative and categorical variables were explored graphically.
+To gain preliminary insight into the relationships between the response variable (signs_in_yard) and the predictors, both quantitative and categorical variables were explored graphically.
 
 Scatterplots were used to visualize how badger activity varies with continuous predictors such as the number of setts, number of buildings and number of cattle housed. These visual analyses provide a first impression of potential patterns, dependencies, or nonlinear relationships that may influence badger activity on farms.
 
@@ -246,58 +231,58 @@ Scatterplots were used to visualize how badger activity varies with continuous p
 
 par(mfrow=c(1,3))
 # Number of setts
-plot(dataBadger$Activity~dataBadger$N_setts,pch=16,col='blue',xlab='Number of setts',ylab='Presence of a sign of badger activity')
+plot(dataBadger$signs_in_yard~dataBadger$N_setts_in_fields,pch=16,col='blue',xlab='Number of setts',ylab='Presence of a sign of badger activity')
 
 # Number of buildings
-plot(dataBadger$Activity~dataBadger$N_buildings,pch=16,col='blue',xlab='Number of buildings',ylab='Presence of a sign of badger activity')
+plot(dataBadger$signs_in_yard~dataBadger$N_buildings,pch=16,col='blue',xlab='Number of buildings',ylab='Presence of a sign of badger activity')
 
 # Number of cattle housed in buildings
-plot(dataBadger$Activity~dataBadger$N_cattle,pch=16,col='blue',xlab='Number of cattle',ylab='Presence of a sign of badger activity')
+plot(dataBadger$signs_in_yard~dataBadger$N_cattle_in_buildings_yard,pch=16,col='blue',xlab='Number of cattle',ylab='Presence of a sign of badger activity')
 
 par(mfrow=c(2,5))
 # Factor season
-mosaicplot(dataBadger$Activity~dataBadger$season
+mosaicplot(dataBadger$signs_in_yard~dataBadger$season
            ,color=c('blue3','red2')
            ,main="Activity & Season")
 
 # Factor feed store
-mosaicplot(dataBadger$Activity~dataBadger$feed_store
+mosaicplot(dataBadger$signs_in_yard~dataBadger$accessible_feed_store_present
            ,color=c('blue3','red2')
            ,main="Activity & Feed store")
 
-# Factor cattle_house 
-mosaicplot(dataBadger$Activity~dataBadger$cattle_house
+# Factor accessible_cattle_house_present 
+mosaicplot(dataBadger$signs_in_yard~dataBadger$accessible_cattle_house_present
            ,color=c('blue3','red2')
            ,main="Activity & cattle house")
 
 # Factor feed
-mosaicplot(dataBadger$Activity~dataBadger$feed
+mosaicplot(dataBadger$signs_in_yard~dataBadger$accessible_feed_present
            ,color=c('blue3','red2')
            ,main="Activity & feed")
 # Factor grass
-mosaicplot(dataBadger$Activity~dataBadger$grass
+mosaicplot(dataBadger$signs_in_yard~dataBadger$grass_silage
            ,color=c('blue3','red2')
            ,main="Activity & Grass")
-# Factor cereal
-mosaicplot(dataBadger$Activity~dataBadger$cereal
+# Factor cereal_silage
+mosaicplot(dataBadger$signs_in_yard~dataBadger$cereal_silage
            ,color=c('blue3','red2')
-           ,main="Activity & Cereal")
+           ,main="Activity & Cereal silage")
 # Factor straw
-mosaicplot(dataBadger$Activity~dataBadger$straw
+mosaicplot(dataBadger$signs_in_yard~dataBadger$hay_straw
            ,color=c('blue3','red2')
            ,main="Activity & Straw")
 # Factor grains
-mosaicplot(dataBadger$Activity~dataBadger$grains
+mosaicplot(dataBadger$signs_in_yard~dataBadger$cereal_grains
            ,color=c('blue3','red2')
            ,main="Activity & Grains")
-# Factor concen
-mosaicplot(dataBadger$Activity~dataBadger$concen
+# Factor concentrates
+mosaicplot(dataBadger$signs_in_yard~dataBadger$concentrates
            ,color=c('blue3','red2')
            ,main="Activity & Concentrates")
-# Factor sugar
-mosaicplot(dataBadger$Activity~dataBadger$sugar
+# Factor sugar_beet
+mosaicplot(dataBadger$signs_in_yard~dataBadger$sugar_beet
            ,color=c('blue3','red2')
-           ,main="Activity & Sugar Beet")
+           ,main="Activity & Sugar beet")
 ```
 
 These visual analyses provide an initial understanding of how badger activity may relate to farm characteristics. The scatterplots show that no clear linear relationship exists between badger activity and the number of setts, buildings, or cattle, although activity tends to occur slightly more often on farms with more setts or larger cattle numbers. The mosaic plots complement this by revealing possible associations between activity and certain categorical management factors, such as the presence of feed stores, cattle housing, or specific feeding practices.
@@ -347,19 +332,19 @@ Because the response variable is binary, we will use a **Generalized Linear Mixe
 The best model is identified using a **backward selection procedure**. This model selection method is based on the **Akaike Information Criterion (AIC)**, which allows to take into account both the goodness of fit and the simplicity of the model. Starting with the full model, the function `drop1` is used to evaluate each predictor's contribution to the AIC. The predictor whose removal leads to the smallest AIC is then removed and the model is refitted without this variable. The selection stops when the candidate model has the lowest AIC.
 
 ```{r fullmodel, include = TRUE}
-mod<-glmer(Activity~N_setts
+mod<-glmer(signs_in_yard~N_setts_in_fields
               + N_buildings
-              + N_cattle
+              + N_cattle_in_buildings_yard
               + season
-              + feed_store
-              + cattle_house
-              + feed
-              + grass
-              + cereal
-              + straw
-              + grains
-              + concen
-              + sugar
+              + accessible_feed_store_present
+              + accessible_cattle_house_present
+              + accessible_feed_present
+              + grass_silage
+              + cereal_silage
+              + hay_straw
+              + cereal_grains
+              + concentrates
+              + sugar_beet
               + (1|farm_code)
               ,data=dataBadger
               ,family=binomial)
@@ -368,139 +353,139 @@ mod<-glmer(Activity~N_setts
 ```{r backwardselection, include = TRUE, warning = FALSE}
 #Backward selection procedure based on AIC
 drop1(mod,test="Chi") # We remove season
-mod1<-glmer(Activity~N_setts
+mod1<-glmer(signs_in_yard~N_setts_in_fields
               + N_buildings
-              + N_cattle
-              + feed_store
-              + cattle_house
-              + feed
-              + grass
-              + cereal
-              + straw
-              + grains
-              + concen
-              + sugar
+              + N_cattle_in_buildings_yard
+              + accessible_feed_store_present
+              + accessible_cattle_house_present
+              + accessible_feed_present
+              + grass_silage
+              + cereal_silage
+              + hay_straw
+              + cereal_grains
+              + concentrates
+              + sugar_beet
               + (1|farm_code)
               ,data=dataBadger
               ,family=binomial)
 
-drop1(mod1,test="Chi") # We remove concentration
-mod2<-glmer(Activity~N_setts
+drop1(mod1,test="Chi") # We remove concentrates
+mod2<-glmer(signs_in_yard~N_setts_in_fields
               + N_buildings
-              + N_cattle
-              + feed_store
-              + cattle_house
-              + feed
-              + grass
-              + cereal
-              + straw
-              + grains
-              + sugar
+              + N_cattle_in_buildings_yard
+              + accessible_feed_store_present
+              + accessible_cattle_house_present
+              + accessible_feed_present
+              + grass_silage
+              + cereal_silage
+              + hay_straw
+              + cereal_grains
+              + sugar_beet
               + (1|farm_code)
               ,data=dataBadger
               ,family=binomial)
 
-drop1(mod2,test="Chi") # We remove feed
-mod3<-glmer(Activity~N_setts
+drop1(mod2,test="Chi") # We remove accessible_feed_present
+mod3<-glmer(signs_in_yard~N_setts_in_fields
               + N_buildings
-              + N_cattle
-              + feed_store
-              + cattle_house
-              + grass
-              + cereal
-              + straw
-              + grains
-              + sugar
+              + N_cattle_in_buildings_yard
+              + accessible_feed_store_present
+              + accessible_cattle_house_present
+              + grass_silage
+              + cereal_silage
+              + hay_straw
+              + cereal_grains
+              + sugar_beet
               + (1|farm_code)
               ,data=dataBadger
               ,family=binomial)
 
-drop1(mod3,test="Chi") # We remove grass
-mod4<-glmer(Activity~N_setts
+drop1(mod3,test="Chi") # We remove grass_silage
+mod4<-glmer(signs_in_yard~N_setts_in_fields
               + N_buildings
-              + N_cattle
-              + feed_store
-              + cattle_house
-              + cereal
-              + straw
-              + grains
-              + sugar
+              + N_cattle_in_buildings_yard
+              + accessible_feed_store_present
+              + accessible_cattle_house_present
+              + cereal_silage
+              + hay_straw
+              + cereal_grains
+              + sugar_beet
               + (1|farm_code)
               ,data=dataBadger
               ,family=binomial)
 
 drop1(mod4,test="Chi") # We remove cattle house
-mod5<-glmer(Activity~N_setts
+mod5<-glmer(signs_in_yard~N_setts_in_fields
               + N_buildings
-              + N_cattle
-              + feed_store
-              + cereal
-              + straw
-              + grains
-              + sugar
+              + N_cattle_in_buildings_yard
+              + accessible_feed_store_present
+              + cereal_silage
+              + hay_straw
+              + cereal_grains
+              + sugar_beet
               + (1|farm_code)
               ,data=dataBadger
               ,family=binomial)
 
-drop1(mod5,test="Chi") # We remove grains
-mod6<-glmer(Activity~N_setts
+drop1(mod5,test="Chi") # We remove cereal_grains
+mod6<-glmer(signs_in_yard~N_setts_in_fields
               + N_buildings
-              + N_cattle
-              + feed_store
-              + cereal
-              + straw
-              + sugar
+              + N_cattle_in_buildings_yard
+              + accessible_feed_store_present
+              + cereal_silage
+              + hay_straw
+              + sugar_beet
               + (1|farm_code)
               ,data=dataBadger
               ,family=binomial)
 
-drop1(mod6,test="Chi") # We remove cereal
-mod7<-glmer(Activity~N_setts
+drop1(mod6,test="Chi") # We remove cereal_silage
+mod7<-glmer(signs_in_yard~N_setts_in_fields
               + N_buildings
-              + N_cattle
-              + feed_store
-              + straw
-              + sugar
+              + N_cattle_in_buildings_yard
+              + accessible_feed_store_present
+              + hay_straw
+              + sugar_beet
               + (1|farm_code)
               ,data=dataBadger
               ,family=binomial)
 
-drop1(mod7,test="Chi") # We remove N_cattle
-mod8<-glmer(Activity~N_setts
+drop1(mod7,test="Chi") # We remove N_cattle_in_buildings_yard
+mod8<-glmer(signs_in_yard~N_setts_in_fields
               + N_buildings
-              + feed_store
-              + straw
-              + sugar
+              + accessible_feed_store_present
+              + hay_straw
+              + sugar_beet
               + (1|farm_code)
               ,data=dataBadger
               ,family=binomial)
 
-drop1(mod8,test="Chi") # We remove feed_store (same AIC as straw, but higher p value)
-mod9<-glmer(Activity~N_setts
+drop1(mod8,test="Chi") # We remove accessible_feed_store_present (same AIC as hay_straw, but higher p value)
+mod9<-glmer(signs_in_yard~N_setts_in_fields
               + N_buildings
-              + straw
-              + sugar
+              + hay_straw
+              + sugar_beet
               + (1|farm_code)
               ,data=dataBadger
               ,family=binomial)
 
-drop1(mod9,test="Chi") # We remove straw
-mod10<-glmer(Activity~N_setts
+drop1(mod9,test="Chi") # We remove hay_straw
+mod10<-glmer(signs_in_yard~N_setts_in_fields
               + N_buildings
-              + sugar
+              + sugar_beet
               + (1|farm_code)
               ,data=dataBadger
               ,family=binomial)
 
-drop1(mod10,test="Chi") # We remove sugar
-mod11<-glmer(Activity~N_setts
+drop1(mod10,test="Chi") # We remove sugar_beet
+mod11<-glmer(signs_in_yard~N_setts_in_fields
               + N_buildings
               + (1|farm_code)
               ,data=dataBadger
               ,family=binomial)
 
 drop1(mod11,test="Chi") # We remove N_buildings
-mod12<-glmer(Activity~N_setts
+mod12<-glmer(signs_in_yard~N_setts_in_fields
               + (1|farm_code)
               ,data=dataBadger
               ,family=binomial)
@@ -525,17 +510,17 @@ The significance of the random effect is tested via a **bootstrap** method: the 
 ```{r boot random, echo=TRUE,fig.height=4, fig.width=4, warning=FALSE, message = FALSE}
 nBoot <- 100 # number of simulations
 lrStat <- rep(NA, nBoot) # initializes a vector of size 1000 to store the likelihood ratio statistic
-ft.null <-glm(Activity~N_setts,data=dataBadger,family=binomial(link=logit)) # fits the null model (without the random effect)
-ft.alt <- glmer(Activity~N_setts+(1|farm_code),data=dataBadger,family=binomial) # fits the alternate model (with the random effect)
+ft.null <-glm(signs_in_yard~N_setts_in_fields,data=dataBadger,family=binomial(link=logit)) # fits the null model (without the random effect)
+ft.alt <- glmer(signs_in_yard~N_setts_in_fields+(1|farm_code),data=dataBadger,family=binomial) # fits the alternate model (with the random effect)
 lrObs <- 2 * logLik(ft.alt) - 2 * logLik(ft.null) # computes the observed likelihood ratio statistic 
 
 for (iBoot in 1:nBoot) # for each simulation
 {
-  dataBadger$ActivitySim <- unlist(simulate(ft.null)) # badger activity is simulated from the distribution corresponding to the null model
+  dataBadger$signs_in_yardSim <- unlist(simulate(ft.null)) # badger activity is simulated from the distribution corresponding to the null model
   tryCatch(
     { # in case the glmm does not converge
-      bNull <-glm(ActivitySim ~ N_setts,data=dataBadger,family=binomial(link=logit)) # fits the null model to the simulated data
-      bAlt <- glmer(ActivitySim ~ N_setts+(1|farm_code),data=dataBadger,family=binomial) # fits the alternate model to the simulated data
+      bNull <-glm(signs_in_yardSim ~ N_setts_in_fields,data=dataBadger,family=binomial(link=logit)) # fits the null model to the simulated data
+      bAlt <- glmer(signs_in_yardSim ~ N_setts_in_fields+(1|farm_code),data=dataBadger,family=binomial) # fits the alternate model to the simulated data
       lrStat[iBoot] <- 2 * logLik(bAlt) - 2 * logLik(bNull) # computes the likelihood ratio statistic for the resampled data
     },
     warning = function(war) { # if there is a warning or an error, the likelihood ratio statistic is NA (to ensure the loop does not stop)
@@ -583,7 +568,7 @@ plot(resid~fitted(mod12)
 abline(h = 0)
 
 # Plotting the residuals against the number of setts
-plot(resid~ dataBadger$N_setts, 
+plot(resid~ dataBadger$N_setts_in_fields, 
          pch=16,
          col="dodgerblue4",
          ylab = "Residuals",
@@ -605,7 +590,7 @@ Pi   <- fitted(mod12) # predicted probabilities that activity = 1
 dataBadger$Ysim <- rbinom(N, size = 1, Pi) # generates a binary outcome for badger activity, drawn from a binomial distribution with Pi as a success probability
 
 # Confusion matrix
-Z <- table(dataBadger$Activity, dataBadger$Ysim) / N
+Z <- table(dataBadger$signs_in_yard, dataBadger$Ysim) / N
 rownames(Z) <- c("Observed 0", "Observed 1")
 colnames(Z) <- c("Predicted 0", "Predicted 1")
 Z
@@ -617,7 +602,7 @@ NSim <- 1000
 diagZ <- numeric(NSim) # we store one accuracy value per simulation
 for (i in 1:NSim) { # for each simulation
   Ysim <- rbinom(N, size = 1, Pi) # a new simulated response is generated
-  Z<- table(dataBadger$Activity, Ysim) / N # creates the confusion matrix for this simulation
+  Z<- table(dataBadger$signs_in_yard, Ysim) / N # creates the confusion matrix for this simulation
   diagZ[i]<-sum(diag(Z)) # computes and stores the accuracy
   }
 # Boxplot of the accuracy and average accuracy
