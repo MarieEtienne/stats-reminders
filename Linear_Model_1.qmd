@@ -525,6 +525,15 @@ The graphs show that residuals variances are homogeneous, for all variables. We 
 
 The linear model, whether it involves an ANOVA or ANCOVA regression, assumes that the statistical units studied, and therefore their associated residuals, are independent of each other. This independence must be taken into account during the research design phase. In our case, the measurements taken for each penguin in our study were carried out over three years in a large penguin colony; we can therefore consider the measurements to be independent.
 
+# **DISCUSSION**
+
+# **CONCLUSION**
+
+
+
+
+Thank you for reading. We hope this reminder on General Linear Models, with this example, has been helpful. We wish you all the best.
+
 ![Gentoo penguins : adult and juveniles - image from Pixabay](images/penguin2.jpg)
 
 
