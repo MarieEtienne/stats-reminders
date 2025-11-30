@@ -2,7 +2,9 @@
 title: "GENERALIZED LINEAR MIXED MODEL"
 subtitle: "BADGER EXAMPLE"
 author: [Mathilde Duclos, Lily Houles, Adèle Kieffer, Lokian Le Gal-Audebourg, Valentin Lucas, Lyssandre Marchand, Quentin Petitjean]
-format: html
+format:
+  html:
+    code-fold: true
 editor: visual
 bibliography: references.bib
 ---
