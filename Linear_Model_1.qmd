@@ -548,16 +548,23 @@ A linear model assumes that the statistical units studied, and their associated 
 
 # **DISCUSSION**
 
-Our model reveals that penguin body mass is strongly associated with several morphological traits. Flipper length, bill depth, and bill length all show positive effects, with flipper length being the strongest predictor. Sex also contributes significantly, with males generally heavier than female. We can also identify species differences : Gentoo penguins are substantially heavier than Adelie and Chinstraps. Additionnaly, the significant negative interaction between species and sex (at least for Gentoo penguins) suggests species-specific patterns of sexual dimorphism that have a significant effect on body mass.
+Our model reveals that penguin body mass is strongly associated with several morphological traits. Flipper length, bill depth, and bill length all show positive effects, with flipper length being the strongest predictor. Sex also contributes significantly, with males generally heavier than female. We can also identify species differences : Gentoo penguins are substantially heavier than Adelie and Chinstraps.  Additionally, the negative interaction between species and sex (especially for Gentoo penguins) suggests species-specific patterns of sexual dimorphism that have a significant effect on body mass.
 
-These results are consistent with the literature: morphological traits such as flipper length and bill depth are known to scale positively with structural size in penguins, and species-level differences in body mass, particularly the larger size of Gentoo penguins, have been repeatedly documented (Williams 1995).
+These results are consistent with the literature : morphological traits such as flipper length and bill depth are known to scale positively with structural size in penguins, and species-level differences in body mass, particularly the larger size of Gentoo penguins, have been documented (@Williams1995).
 
-Some effects were weaker or non-significant, such as the Gentoo × male interaction or the bill depth × sex interaction, which may reflect sample size imbalance or genuine biological variation. Importantly, our model does not include ecological, temporal, or individual-condition covariates, even though body mass is known to vary with season, breeding stage, and foraging success. This suggests that while morphology and species identity explain a large share of variation, additional ecological factors are likely to contribute to differences in penguin body mass.
+Some effects are weaker or non-significant, such as the Gentoo × male interaction or the bill depth × sex interaction, which may reflect either natural biological variation or other possibilities. Importantly, our model does not include ecological or temporal, or individual-condition covariates, even though body mass may vary with season, breeding stage, and foraging success. This suggests that while morphology and species identity explain much of the variation, other ecological factors are likely to contribute to differences in body mass among penguins.
 
 # **CONCLUSION**
 
-Our results provide evidence that body mass in penguins is strongly predicted by key morphological traits, particularly flipper length, bill length and bill depth. Species identity and sex also contribute to variation in mass. However, substantial unexplained variation suggests that additional ecological or individual factors (such as breeding stage, foraging success, or seasonal condition) also influence penguin body mass but are not captured by our model.
+In summary, these results provide evidence that body mass in penguins is strongly predicted by some morphological traits, particularly flipper length, bill length and bill depth. Species and sex also contribute to variation in body mass. However, substantial unexplained variation suggests that additional factors also influence penguin body mass but are not captured by our model.
 
-Thank you for reading. We hope this reminder on General Linear Models, with this example, has been helpful. We wish you all the best.
+Using a **General Linear Model** helped us answering the question we initially formulated quite well.
+
+Thank you for reading. We hope this reminder on **General Linear Models**, with this example, has been helpful. We wish you all the best.
 
 ![Gentoo penguins : adult and juveniles - image from Pixabay](images/penguin2.jpg)
+
+# **REFERENCES**
+
+
+
