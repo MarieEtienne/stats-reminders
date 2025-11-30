@@ -51,7 +51,7 @@ Depending on the sampling design or the experimental setup, independence of resi
 The resulting model, called **Generalized Linear Mixed Model** **(GLMM)** extends the Generalized Linear Model by adding these random effects alongside the fixed effects. Therefore, [GLMMs](#GLMMs) allow us to model both the relationship between predictors, responses and the non-independence in the data.
 :::
 
-# **DATA PRESENTATION**
+# **DATA PRESENTATION AND OBJECTIVES**
 
 The data used come from @Walker2009a and consist of signs of badger (*Meles meles*) activity around farms located in the southwest of England, where badger density is high. This study was carried out in the context of bovine tuberculosis and its possible transmission to cattle through badgers. Reducing the number of farm visits by badgers — especially in places where they might come into contact with livestock — could help limit the spread of the disease. Thus, the aim of this study is to predict the occurrence of badger activity signs on farms.
 
@@ -129,26 +129,26 @@ Before carrying out any statistical modeling, it is essential to perform a thoro
 
 Below is a checklist of preliminary exploratory analyses to perform before modeling:
 
-1.  **Check for outliers and distribution of the dependent variable (\$Y\$).**
+1.  **Check for outliers and distribution of the dependent variable** ($Y$).
 
-2.  **Check for outliers and distribution of the explicative variable (\$X\$). If \$X\$ is quantitative:** assess the distribution and presence of outliers. **If \$X\$ is qualitative:** analyze the number of levels and the number of observations per level.
+2.  **Check for outliers and distribution of the explicative variable** ($X$). **If** $X$ is quantitative: assess the distribution and presence of outliers. **If** $X$ **is qualitative:** analyze the number of levels and the number of observations per level.
 
-3.  **Explore the potential relationships between \$Y\$ and each \$X_i\$.**
+3.  **Explore the potential relationships between** $Y$ **and each** $X_i$.
 
-4.  **Check for potential interactions between explanatory variables (\$X_i\$).**
+4.  **Check for potential interactions between explanatory variables** ($X_i$).
 
-5.  **Assess multicollinearity among the \$X_i\$ variables.**
+5.  **Assess multicollinearity among the** $X_i$ **variables.**
 
-### **1. Outliers and Distribution in \$Y\$**
+### **1. Outliers and Distribution of** $Y$
 
-Since \$Y\$ is a binary variable, it does not have a continuous distribution. Instead, we inspect the frequency of each category (0 and 1) to check for imbalance in the response variable.
+Since $Y$ is a binary variable, it does not have a continuous distribution. Instead, we inspect the frequency of each category (0 and 1) to check for imbalance in the response variable.
 
 ```{r dataY, include=TRUE}
 # Number of 0 and 1 in Y
 table(dataBadger$Activity)
 ```
 
-### **2. Outliers and Distributions of Quantitative Predictors (\$X\$)**
+### **2. Outliers and distributions of quantitative predictors** ($X$)
 
 For continuous independent variables, it is important to:
 
@@ -199,7 +199,7 @@ qqline(dataBadger$N_cattle,col='red')
 
 The exploratory plots show that all three quantitative variables (number of setts, number of buildings, and number of cattle) display right-skewed distributions, with most farms having relatively low values and a few having much higher ones. No extreme or abnormal outliers are clearly visible, although some high values are present, especially for the number of cattle. The Q-Q plots confirm that none of these variables follow a normal distribution.
 
-### **2. Categorical Variables: Number of Levels and Individuals per Level**
+### **2. Categorical variables: number of levels and individuals per level**
 
 For categorical (factor) variables, it is important to examine the number of levels (categories) and the number of observations in each level. This helps identify potential issues such as:
 
@@ -236,7 +236,7 @@ summary(dataBadger$sugar)
 
 The categorical variables show that most factors are **binary**, with varying levels of balance between categories. For example, variables such as feed_store, cattle_house, and feed display moderate imbalance, with one category being more frequent than the other. The season variable has four well-represented levels, each containing a similar number of observations, which ensures adequate variability for analysis. Overall, the categorical predictors appear suitable for modeling.
 
-### **3. Analysis of the Potential Relationships Between \$Y\$ and the \$X\$s**
+### **3. Analysis of the potential relationships between** $Y$ **and the** $X$**s**
 
 To gain preliminary insight into the relationships between the response variable (Activity) and the predictors, both quantitative and categorical variables were explored graphically.
 
@@ -306,7 +306,7 @@ These visual analyses provide an initial understanding of how badger activity ma
 
 Here, given the large number of predictors, we will not include interactions in modelling
 
-### **5. Check for Colinearity Between Predictors (\$X\$s)**
+### **5. Check for collinearity between predictors** ($X$s)
 
 To avoid multicolinearity issues during modeling, the relationships among predictor variables were examined. This step includes:
 
@@ -649,9 +649,6 @@ Our model does include season or year. Yet badger activity is known to vary seas
 
 Our results provide evidence that the number of setts is a predictor of badger activity on farms. However, substantial unexplained variation indicates that other farm-specific characteristics influence badger activity.
 
-# **REFERENCES**
-
-
 Thank you for reading. We hope this reminder on Generalized Linear Models, with this example, has been helpful. We wish you all the best.
 
-
+# **REFERENCES**
