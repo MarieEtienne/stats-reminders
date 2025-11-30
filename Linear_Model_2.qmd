@@ -16,7 +16,9 @@ We present here a reminder sheet on **Generalized Linear Mixed Models** [(GLMMs)
 :::
 
 ::: {.callout-note appearance="simple"}
-Note : The concepts covered in this reminder sheet are taken from our Master's lectures and tutorials, written by @Y_Outreman and taught by @A_Masson .
+## Note
+
+The concepts covered in this reminder sheet are taken from our Master's lectures and tutorials, written by @Y_Outreman and taught by @A_Masson .
 :::
 
 ## **Generalities**
@@ -55,7 +57,7 @@ The resulting model, called **Generalized Linear Mixed Model** **(GLMM)** extend
 
 # **DATA PRESENTATION AND OBJECTIVES**
 
-The data used come from @Walker2009a and consist of signs of badger (*Meles meles*) activity around farms located in the southwest of England, where badger density is high. This study was carried out in the context of bovine tuberculosis and its possible transmission to cattle through badgers. Reducing the number of farm visits by badgers — especially in places where they might come into contact with livestock — could help limit the spread of the disease. Thus, the aim of this study is to predict the occurrence of badger activity signs on farms.
+The data used come from @Walker2009 and consist of signs of badger (*Meles meles*) activity around farms located in the southwest of England, where badger density is high. This study was carried out in the context of bovine tuberculosis and its possible transmission to cattle through badgers. Reducing the number of farm visits by badgers — especially in places where they might come into contact with livestock — could help limit the spread of the disease. Thus, the aim of this study is to predict the occurrence of badger activity signs on farms.
 
 Between autumn 2003 and summer 2005, a survey was conducted on 36 different farms; the data are therefore longitudinal, since each farm was monitored over eight consecutive seasons. Within the same farm, observations may be temporally autocorrelated.
 
