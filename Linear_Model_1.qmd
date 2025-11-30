@@ -16,7 +16,9 @@ We present here, a reminder sheet on the **General Linear Model [(GLM)](#GLMback
 :::
 
 ::: {.callout-note appearance="simple"}
-Note : The concepts covered in this reminder sheet are taken from our Master's lectures, written by @Y_Outreman and then taught by @A_Masson . During these courses, we learned how to explore data and then analyze it using this type of model.
+## Note
+
+The concepts covered in this reminder sheet are taken from our Master's lectures, written by @Y_Outreman and then taught by @A_Masson . During these courses, we learned how to explore data and then analyze it using this type of model.
 :::
 
 ## **Generalities**
