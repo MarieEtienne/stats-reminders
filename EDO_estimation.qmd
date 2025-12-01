@@ -72,7 +72,13 @@ We have p parameters $\theta = (\theta_1,\theta_2,...,\theta_p)$. Several method
 One of the most used methods to assess the quality of a model is the least squares method, also known as mean square error method (MSE). It quantifies how the simulated data match with the real ones by measuring the gap between the simulated and the real points (@cornillon2007regression). This gap is estimated with the following formula:
 
 $$
-\text{MSE} = \sum_{i}^{}(Y_{i}-\hat{Y})^{2}\\\hat{Y} = \text{mean value of the data set}\\Y_{i} = \text{value of the individual i}
+\text{MSE} = \sum_{i}^{}(Y_{i}-\hat{Y})^{2}
+$$
+$$
+\hat{Y} = \text{mean value of the data set}
+$$
+$$
+Y_{i} = \text{value of the individual i}
 $$
 
 A good model minimizes the MSE. Graphically, this means that the vertical distance between each simulated point and its corresponding observed value is as small as possible.
@@ -99,7 +105,9 @@ If the errors of the data are independent and identically distributed, this meth
 
 $$
 \hat{\theta} = \arg\max_{\theta} L(\theta) = \arg\min_{\theta} SCE(\theta)
-$$ We prefer to work with the logarithm of the likelihood function $L(\theta)$, as it converts products into sums: $$
+$$
+We prefer to work with the logarithm of the likelihood function $L(\theta)$, as it converts products into sums:
+$$
 LL(\theta) = ln(L(\theta)) = \sum_{i=1}^n lnf(x_i,\theta)
 $$
 
