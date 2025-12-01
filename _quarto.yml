@@ -29,8 +29,8 @@ website:
           href : Linear_Model_2.qmd 
       - text: "Factorial Analysis"
         menu:
-        - pca.qmd
-        - cca.qmd 
+        - PCA.qmd
+        - CA.qmd 
       - text: "Differential Equation"
         menu:
         - EDO_estimation.qmd

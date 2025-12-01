@@ -38,17 +38,21 @@ We don't want to analyze all species so we just keep the families. Also we keep 
 
 Description of the quantitative variables :
 
--   rAME : relative Anterior Median Eyes (colored in yellow in @fig1)
+-   rAME : relative Anterior Median Eyes (colored in yellow in @fig-fig1)
 
--   rALE : relative Anterior Lateral Eyes (colored in red in @fig1)
+-   rALE : relative Anterior Lateral Eyes (colored in red in @fig-fig1)
 
--   rPME : relative Posterior Median Eyes (colored in blue in @fig1)
+-   rPME : relative Posterior Median Eyes (colored in blue in @fig-fig1)
 
--   rPLE : relative Posterior Lateral Eyes (colored in green in @fig1)
+-   rPLE : relative Posterior Lateral Eyes (colored in green in @fig-fig1)
 
-::: {#fig1 style="text-align:center"}
-![Figure 1 --- Typical arrangements of spider eyes and their modification across spider families](arrangements_of_spider_eyes.jpg){width="50%"}
-:::
+```{r}
+#| echo: false
+#| label: fig-fig1
+#| fig-cap: "Typical arrangements of spider eyes and their modification across spider families"
+
+knitr::include_graphics("./arrangements_of_spider_eyes.jpg")
+```
 
 ```{r}
 spiders <- read.delim("S2_WolffData-Curated.txt", header = TRUE, stringsAsFactors = TRUE)
@@ -144,7 +148,7 @@ The output of the `PCA()` is a list of several components :
 To visualize the results from the PCA, we can analyse the percentage of inertia explained by the principal components through the **graph of inertia.**
 
 ```{r}
-#| label: PCA_inertia
+#| label: fig-PCA_inertia
 #| fig-cap: "Percentage of inertia explained by axes"
 #| fig-subcap: 
 #| - "Table of eigenvalue and percentage of variance"
@@ -174,7 +178,7 @@ The variables and individuals are well projected and can be interpreted.
 We can also see how the variables contribute to the the two principal components.
 
 ```{r}
-#| label: var_contrib
+#| label: fig-var_contrib
 #| fig-cap: "Contribution of variables to the axes"
 #| fig-subcap: 
 #| - "Table of contribution of variables to the axes"
@@ -193,7 +197,7 @@ All variables are contributing a lot to the first axis. However, lateral eyes (r
 We can also plot the individuals into principal component space.
 
 ```{r}
-#| label: indiviual_graph
+#| label: fig-indiviual_graph
 #| fig-cap: "Scatterplot of individuals on the two main axes"
 
 fviz_pca_ind(res.pca,
@@ -210,7 +214,7 @@ The individuals are mainly distributed along the first axis which can be interpr
 Because there are 106 families of species, we will concentrate only on the first height most frequent family in order to have a clearer vision.
 
 ```{r}
-#| label: indiviual_graph_selectind
+#| label: fig-indiviual_graph_selectind
 #| fig-cap: "Scatterplot of individuals of the first height most frequent family on the two main axes"
 
 top_families <- names(sort(table(spiders$Family), decreasing = TRUE))[1:8] #only frequent families to have a clearer graph
@@ -267,7 +271,7 @@ When we visualise families, it looks like individuals from the *Salticidae* are 
 
 ## Conclusion
 
-According to @var_contrib, the first axis is positively correlated with the relative size of both the anterior and posterior lateral eyes (the red and green ones in @fig1). For the second axis, there seems to be an antagonistic relationship between the anterior and posterior eyes.
+According to @fig-var_contrib, the first axis is positively correlated with the relative size of both the anterior and posterior lateral eyes (the red and green ones in @fig-fig1). For the second axis, there seems to be an antagonistic relationship between the anterior and posterior eyes.
 
 This provides information about how eye sizes evolve together. However, from an ecological perspective, it would be interesting to study whether body size or spider activity is linked to eye size, as done in the original article @Chong2024. For example, we could test whether nocturnal spider species have larger eyes than diurnal ones.
 
