@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Erwan, Margot, Justine">
 
 <title>EDO Estimation of parameters : the logistic growth</title>
 <style>
@@ -55,7 +56,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -271,6 +292,12 @@ window.Quarto = {
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Erwan, Margot, Justine </p>
+          </div>
+  </div>
     
   
     
@@ -290,9 +317,11 @@ window.Quarto = {
 <p>We first simulate the data on which we will illustrate two estimation methods. The simulation is based on the logistic growth (Verhulst model). The ordinary differential equation describing the logistic growth is defined as <span class="math display">\[
 \frac{dN}{dt} = rN(1-\frac{N}{K})
 \]</span> where N is the size of a population, r is the growth rate and K is the carrying capacity. In logistic growth, the growth rate of a population declines as the size of the population approaches the carrying capacity. This carrying capacity represents the maximum number of individuals in the population that can be sustained by the available environmental resources.</p>
-<p>A biological example of this is <em>Paramecium aurelia</em>, a paramecia species that exhibits logistic growth when maintained in isolated populations <span class="citation" data-cites="gause1934influence">@gause1934influence</span>.</p>
+<p>A biological example of this is <em>Paramecium aurelia</em>, a paramecia species that exhibits logistic growth when maintained in isolated populations (<span class="citation" data-cites="gause1934influence">Gause (<a href="#ref-gause1934influence" role="doc-biblioref">1934</a>)</span>).</p>
 <p>Thankfully, there is an explicit solution of the Verhulst model that allows us to simulate the data easily. For each x (the time), we calculate the deterministic solution and add a noise, a centered, normally distributed deviation from the deterministic model.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>K <span class="ot">&lt;-</span> <span class="dv">100</span></span>
@@ -310,6 +339,7 @@ window.Quarto = {
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply the logistic function over the time vector</span></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>sim_data <span class="ot">&lt;-</span> <span class="fu">sapply</span>(time, logistic_noised, <span class="at">r =</span> r, <span class="at">K =</span> K, <span class="at">y0 =</span> y0, <span class="at">error =</span> error)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -330,7 +360,7 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="least-squares">Least squares</h3>
 <section id="definition" class="level4">
 <h4 class="anchored" data-anchor-id="definition">Definition</h4>
-<p>One of the most used methods to assess the quality of a model is the least squares method, also known as mean square error method (MSE). It quantifies how the simulated data match with the real ones by measuring the gap between the simulated and the real points (<span class="citation" data-cites="cornillon2007regression">@cornillon2007regression</span>). This gap is estimated with the following formula:</p>
+<p>One of the most used methods to assess the quality of a model is the least squares method, also known as mean square error method (MSE). It quantifies how the simulated data match with the real ones by measuring the gap between the simulated and the real points (<span class="citation" data-cites="cornillon2007regression">Cornillon and Matzner-Løber (<a href="#ref-cornillon2007regression" role="doc-biblioref">2007</a>)</span>). This gap is estimated with the following formula:</p>
 <p><span class="math display">\[
 \text{MSE} = \sum_{i}^{}(Y_{i}-\hat{Y})^{2}\\\hat{Y} = \text{mean value of the data set}\\Y_{i} = \text{value of the individual i}
 \]</span></p>
@@ -345,7 +375,7 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="maximum-likelihood">Maximum likelihood</h3>
 <section id="definition-1" class="level4">
 <h4 class="anchored" data-anchor-id="definition-1">Definition</h4>
-<p>Likelihood corresponds to the probability of observing the data, knowing the parameters <span class="math inline">\(\theta\)</span> (<span class="citation" data-cites="fisher1922mathematical">@fisher1922mathematical</span>). The likelihood function is as follows : <span class="math display">\[
+<p>Likelihood corresponds to the probability of observing the data, knowing the parameters <span class="math inline">\(\theta\)</span> (<span class="citation" data-cites="fisher1922mathematical">Fisher (<a href="#ref-fisher1922mathematical" role="doc-biblioref">1922</a>)</span>). The likelihood function is as follows : <span class="math display">\[
 L(\theta) = \prod_{i=1}^n f(x_i , \theta)
 \]</span> In this function, <span class="math inline">\(x_i\)</span> corresponds to the observations and <span class="math inline">\(f(x_i,\theta)\)</span> corresponds to the probability density function of the random variable <span class="math inline">\(X\)</span>.</p>
 <p>The maximum likelihood method consists in determining the estimated parameters <span class="math inline">\(\hat\theta\)</span> that maximize the likelihood function: <span class="math display">\[
@@ -367,14 +397,19 @@ LL(\theta) = ln(L(\theta)) = \sum_{i=1}^n lnf(x_i,\theta)
 <h2 class="anchored" data-anchor-id="implementation-of-the-two-methods">Implementation of the two methods</h2>
 <p>We first need to redefine a function of the model we want to fit (without noise this time).</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>logistic <span class="ot">&lt;-</span> <span class="cf">function</span>(t, r, K, y0) {</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  K <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> ((K <span class="sc">-</span> y0) <span class="sc">/</span> y0) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>r <span class="sc">*</span> t))</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <section id="least-squares-1" class="level3">
 <h3 class="anchored" data-anchor-id="least-squares-1">Least squares</h3>
 <p>We need a function that compute the sum of the squared errors between the data and the model prediction y given a x.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># NB : theta is a vector of parameters</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>SSE <span class="ot">&lt;-</span> <span class="cf">function</span>(theta) {</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  r <span class="ot">&lt;-</span> theta[<span class="dv">1</span>]</span>
@@ -383,34 +418,46 @@ LL(\theta) = ln(L(\theta)) = \sum_{i=1}^n lnf(x_i,\theta)
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  mod_pred <span class="ot">&lt;-</span> <span class="fu">sapply</span>(time, logistic, <span class="at">r =</span> r, <span class="at">K =</span> K, <span class="at">y0 =</span> y0)</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>((sim_data <span class="sc">-</span> mod_pred)<span class="sc">**</span><span class="dv">2</span>))</span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>We now have to find a way to modify the parameters iteratively to find the best ones : the set of parameters <span class="math inline">\(\theta\)</span> that minimize the sum of squared errors. Thankfully, there are several functions implemented in R to do so. We’ll use optim(), based on a gradient descent algorithm. We need to specify initial guess on the parameters to initialize the gradient descent algorithm. We’ll take biologically meaningful parameters as initial guess.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ig_r <span class="ot">&lt;-</span> <span class="dv">1</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ig_K <span class="ot">&lt;-</span> <span class="dv">75</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>ig_y0 <span class="ot">&lt;-</span> <span class="dv">2</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>fitted_params_SSE <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="fu">c</span>(ig_r, ig_K, ig_y0), SSE)<span class="sc">$</span>par</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(fitted_params_SSE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1]   0.4041669 116.5129090  12.5182139</code></pre>
+<pre><code>[1]   0.4142634 116.5507131  12.1070075</code></pre>
 </div>
 </div>
 <p>For practicality, or for some EDO models that are not explicitly solvable (i. e. we can’t find a unique solution to the Cauchy problem), we can locally and numerically solve in the same time we calculate the likelihood. This alternative is used in the next part. We use the function ode() from the package deSolve to do so.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(deSolve)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>logistic_ODE <span class="ot">=</span><span class="cf">function</span>(t,N,parametre){</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  r<span class="ot">=</span>parametre[<span class="dv">1</span>]</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  K<span class="ot">=</span>parametre[<span class="dv">2</span>]</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  dNdt <span class="ot">=</span> r<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>N<span class="sc">/</span>K)<span class="sc">*</span>N</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="fu">c</span>(dNdt))</span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 <section id="maximum-likelihood-1" class="level3">
 <h3 class="anchored" data-anchor-id="maximum-likelihood-1">Maximum likelihood</h3>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>MMV <span class="ot">&lt;-</span> <span class="cf">function</span>(theta){</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  r1 <span class="ot">&lt;-</span> theta[<span class="dv">1</span>]</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  K1 <span class="ot">&lt;-</span> theta[<span class="dv">2</span>]</span>
@@ -420,13 +467,17 @@ LL(\theta) = ln(L(\theta)) = \sum_{i=1}^n lnf(x_i,\theta)
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  loglik <span class="ot">=</span> <span class="fu">dnorm</span>(sim_data, <span class="at">mean =</span> mod_pred, <span class="at">sd =</span> error, <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(loglik))</span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ig_r <span class="ot">&lt;-</span> <span class="fl">0.1</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>ig_K <span class="ot">&lt;-</span> <span class="dv">100</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>ig_y0 <span class="ot">&lt;-</span> <span class="dv">1</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>fitted_params_MMV <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="fu">c</span>(ig_r, ig_K, ig_y0), MMV, <span class="at">control=</span><span class="fu">list</span>(<span class="at">fnscale=</span><span class="sc">-</span><span class="dv">1</span>))<span class="sc">$</span>par</span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(fitted_params_MMV)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 </section>
@@ -449,9 +500,20 @@ LL(\theta) = ln(L(\theta)) = \sum_{i=1}^n lnf(x_i,\theta)
 <p>Estimating model parameters is one of the main tasks of a modelor in ecology. We have explained and illustrated two methods to estimate the parameters of a logistic growth, which is a common approach in population dynamics. There are other methods including Bayesian statistics we didn’t developed in this document.</p>
 
 
+
 </section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-cornillon2007regression" class="csl-entry" role="listitem">
+Cornillon, Pierre-André, and Éric Matzner-Løber. 2007. <em>R<span>é</span>gression: Th<span>é</span>orie Et Applications</em>. Springer.
+</div>
+<div id="ref-fisher1922mathematical" class="csl-entry" role="listitem">
+Fisher, Ronald A. 1922. <span>“On the Mathematical Foundations of Theoretical Statistics.”</span> <em>Philosophical Transactions of the Royal Society of London. Series A, Containing Papers of a Mathematical or Physical Character</em> 222 (594-604): 309–68.
+</div>
+<div id="ref-gause1934influence" class="csl-entry" role="listitem">
+Gause, Georgy Frantsevitch. 1934. <span>“The Influence of Biologically Conditioned Media on the Growth of a Mixed Population of Paramecium Caudatum and p. Aureliax.”</span> <em>Journal of Animal Ecology</em> 3 (2): 222–30.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
