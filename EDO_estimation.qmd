@@ -1,7 +1,11 @@
 ---
 title: "EDO Estimation of parameters : the logistic growth"
-format: html
+author: "Erwan, Margot, Justine"
+format:
+  html:
+    code-fold: true
 editor: visual
+bibliography: references.bib
 ---
 
 # Introduction
