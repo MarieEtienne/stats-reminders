@@ -198,8 +198,14 @@ window.Quarto = {
  <span class="menu-text">Factorial Analysis</span>
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-factorial-analysis">    
-        <li class="dropdown-header">pca.qmd</li>
-        <li class="dropdown-header">cca.qmd</li>
+        <li>
+    <a class="dropdown-item" href="./PCA.html">
+ <span class="dropdown-text">Principal Component Analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./CA.html">
+ <span class="dropdown-text">What is a CA and how to use it ?</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -386,7 +392,7 @@ LL(\theta) = ln(L(\theta)) = \sum_{i=1}^n lnf(x_i,\theta)
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>fitted_params_SSE <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="fu">c</span>(ig_r, ig_K, ig_y0), SSE)<span class="sc">$</span>par</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(fitted_params_SSE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1]   0.3862886 115.9195880  14.5534231</code></pre>
+<pre><code>[1]   0.4041669 116.5129090  12.5182139</code></pre>
 </div>
 </div>
 <p>For practicality, or for some EDO models that are not explicitly solvable (i. e. we can’t find a unique solution to the Cauchy problem), we can locally and numerically solve in the same time we calculate the likelihood. This alternative is used in the next part. We use the function ode() from the package deSolve to do so.</p>

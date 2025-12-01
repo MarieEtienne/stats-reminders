@@ -189,8 +189,14 @@ div.csl-indent {
  <span class="menu-text">Factorial Analysis</span>
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-factorial-analysis">    
-        <li class="dropdown-header">pca.qmd</li>
-        <li class="dropdown-header">cca.qmd</li>
+        <li>
+    <a class="dropdown-item" href="./PCA.html">
+ <span class="dropdown-text">Principal Component Analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./CA.html">
+ <span class="dropdown-text">What is a CA and how to use it ?</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -381,17 +387,23 @@ div.csl-indent {
 <p>We don’t want to analyze all species so we just keep the families. Also we keep relative variables instead of absolute ones in order to be able to compare spider families with different sizes.</p>
 <p>Description of the quantitative variables :</p>
 <ul>
-<li><p>rAME : relative Anterior Median Eyes (colored in yellow in <span class="citation" data-cites="fig1">(<a href="#ref-fig1" role="doc-biblioref"><strong>fig1?</strong></a>)</span>)</p></li>
-<li><p>rALE : relative Anterior Lateral Eyes (colored in red in <span class="citation" data-cites="fig1">(<a href="#ref-fig1" role="doc-biblioref"><strong>fig1?</strong></a>)</span>)</p></li>
-<li><p>rPME : relative Posterior Median Eyes (colored in blue in <span class="citation" data-cites="fig1">(<a href="#ref-fig1" role="doc-biblioref"><strong>fig1?</strong></a>)</span>)</p></li>
-<li><p>rPLE : relative Posterior Lateral Eyes (colored in green in <span class="citation" data-cites="fig1">(<a href="#ref-fig1" role="doc-biblioref"><strong>fig1?</strong></a>)</span>)</p></li>
+<li><p>rAME : relative Anterior Median Eyes (colored in yellow in <a href="#fig-fig1" class="quarto-xref">Figure&nbsp;1</a>)</p></li>
+<li><p>rALE : relative Anterior Lateral Eyes (colored in red in <a href="#fig-fig1" class="quarto-xref">Figure&nbsp;1</a>)</p></li>
+<li><p>rPME : relative Posterior Median Eyes (colored in blue in <a href="#fig-fig1" class="quarto-xref">Figure&nbsp;1</a>)</p></li>
+<li><p>rPLE : relative Posterior Lateral Eyes (colored in green in <a href="#fig-fig1" class="quarto-xref">Figure&nbsp;1</a>)</p></li>
 </ul>
-<div id="fig1" style="text-align:center">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="arrangements_of_spider_eyes.jpg" class="img-fluid figure-img" style="width:50.0%"></p>
-<figcaption>Figure 1 — Typical arrangements of spider eyes and their modification across spider families</figcaption>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-fig1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fig1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./arrangements_of_spider_eyes.jpg" class="img-fluid figure-img" width="384">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fig1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Typical arrangements of spider eyes and their modification across spider families
+</figcaption>
 </figure>
+</div>
 </div>
 </div>
 <div class="cell">
@@ -518,15 +530,27 @@ comp 4  0.1693267               4.242137                         100.00000</code
 <pre><code>Warning in geom_bar(stat = "identity", fill = barfill, color = barcolor, :
 Ignoring empty aesthetic: `width`.</code></pre>
 </div>
+<div id="fig-PCA_inertia" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-PCA_inertia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="PCA_files/figure-html/PCA_inertia-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>Table of eigenvalue and percentage of variance</figcaption>
+<div id="fig-PCA_inertia" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-PCA_inertia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="PCA_files/figure-html/fig-PCA_inertia-1.png" class="img-fluid figure-img" data-ref-parent="fig-PCA_inertia" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-PCA_inertia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Table of eigenvalue and percentage of variance
+</figcaption>
 </figure>
 </div>
 </div>
-<p>Percentage of inertia explained by axes</p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-PCA_inertia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Percentage of inertia explained by axes
+</figcaption>
+</figure>
+</div>
 </div>
 <p>The two first axis explain more than 86% of the total variance so only two main components are selected for the analysis. The first dimension explains 61.9% of the variance while the second dimension explains 24.2% of the variance.</p>
 <p>Only well projected variables and individuals can be interpreted. The sum of cos2 on Dim.1 and Dim.2 should be around 1.</p>
@@ -573,15 +597,27 @@ rPLE 35.59532  1.133665  0.05636129 63.214655</code></pre>
 ℹ The deprecated feature was likely used in the ggpubr package.
   Please report the issue at &lt;https://github.com/kassambara/ggpubr/issues&gt;.</code></pre>
 </div>
+<div id="fig-var_contrib" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-var_contrib-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="PCA_files/figure-html/var_contrib-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>Table of contribution of variables to the axes</figcaption>
+<div id="fig-var_contrib" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-var_contrib-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="PCA_files/figure-html/fig-var_contrib-1.png" class="img-fluid figure-img" data-ref-parent="fig-var_contrib" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-var_contrib-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Table of contribution of variables to the axes
+</figcaption>
 </figure>
 </div>
 </div>
-<p>Contribution of variables to the axes</p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-var_contrib-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Contribution of variables to the axes
+</figcaption>
+</figure>
+</div>
 </div>
 <p>All variables are contributing a lot to the first axis. However, lateral eyes (rALE and rPLE) explain the best the axis with contributions higher than 30%. On the other hand, medium eyes (rAME and rPME) explain the second axis with contributions respectively equal to 54% and 44%.</p>
 <p>We can also plot the individuals into principal component space.</p>
@@ -594,10 +630,14 @@ rPLE 35.59532  1.133665  0.05636129 63.214655</code></pre>
 <span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">repel =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">pointshape =</span> <span class="dv">19</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="PCA_files/figure-html/indiviual_graph-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>Scatterplot of individuals on the two main axes</figcaption>
+<div id="fig-indiviual_graph" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-indiviual_graph-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="PCA_files/figure-html/fig-indiviual_graph-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-indiviual_graph-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Scatterplot of individuals on the two main axes
+</figcaption>
 </figure>
 </div>
 </div>
@@ -615,10 +655,14 @@ rPLE 35.59532  1.133665  0.05636129 63.214655</code></pre>
 <span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">label=</span><span class="st">"none"</span></span>
 <span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>             )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="PCA_files/figure-html/indiviual_graph_selectind-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>Scatterplot of individuals of the first height most frequent family on the two main axes</figcaption>
+<div id="fig-indiviual_graph_selectind" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-indiviual_graph_selectind-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="PCA_files/figure-html/fig-indiviual_graph_selectind-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-indiviual_graph_selectind-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Scatterplot of individuals of the first height most frequent family on the two main axes
+</figcaption>
 </figure>
 </div>
 </div>
@@ -703,7 +747,7 @@ rPLE 35.59532  1.133665  0.05636129 63.214655</code></pre>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>According to <span class="citation" data-cites="var_contrib">(<a href="#ref-var_contrib" role="doc-biblioref"><strong>var_contrib?</strong></a>)</span>, the first axis is positively correlated with the relative size of both the anterior and posterior lateral eyes (the red and green ones in <span class="citation" data-cites="fig1">(<a href="#ref-fig1" role="doc-biblioref"><strong>fig1?</strong></a>)</span>). For the second axis, there seems to be an antagonistic relationship between the anterior and posterior eyes.</p>
+<p>According to <a href="#fig-var_contrib" class="quarto-xref">Figure&nbsp;3</a>, the first axis is positively correlated with the relative size of both the anterior and posterior lateral eyes (the red and green ones in <a href="#fig-fig1" class="quarto-xref">Figure&nbsp;1</a>). For the second axis, there seems to be an antagonistic relationship between the anterior and posterior eyes.</p>
 <p>This provides information about how eye sizes evolve together. However, from an ecological perspective, it would be interesting to study whether body size or spider activity is linked to eye size, as done in the original article <span class="citation" data-cites="Chong2024">Chong (<a href="#ref-Chong2024" role="doc-biblioref">2024</a>)</span>. For example, we could test whether nocturnal spider species have larger eyes than diurnal ones.</p>
 <p>We performed a PCA to visualize the relationships between variables. The goal was also to reduce the dimensionality of the dataset. However, since our dataset includes only four variables, it is not the most suitable example to demonstrate the advantages of factorial analysis.</p>
 
